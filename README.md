@@ -1,69 +1,69 @@
-# Magnificent Seven Stock Crawler
+# 🚀 Magnificent Seven Stock Crawler
 
-A Python-based web crawler specifically designed to extract real-time stock information for the "Magnificent Seven" - the top seven U.S. technology stocks.
+A Python-based web crawler specifically designed to extract real-time stock information for the **"Magnificent Seven"** - the top seven U.S. technology stocks! 📈✨
 
-## The Magnificent Seven Stocks
+## 🏆 The Magnificent Seven Stocks
 
-This crawler targets the following stocks:
-- **AAPL** - Apple Inc.
-- **MSFT** - Microsoft Corporation
-- **GOOGL** - Alphabet Inc. (Google)
-- **AMZN** - Amazon.com Inc.
-- **NVDA** - NVIDIA Corporation
-- **TSLA** - Tesla Inc.
-- **META** - Meta Platforms Inc. (Facebook)
+This crawler targets the following legendary tech stocks:
+- 🍎 **AAPL** - Apple Inc.
+- 🖥️ **MSFT** - Microsoft Corporation
+- 🔍 **GOOGL** - Alphabet Inc. (Google)
+- 📦 **AMZN** - Amazon.com Inc.
+- 🎮 **NVDA** - NVIDIA Corporation
+- ⚡ **TSLA** - Tesla Inc.
+- 👥 **META** - Meta Platforms Inc. (Facebook)
 
-## Features
+## ✨ Features
 
-- **Real-time stock data extraction** from Yahoo Finance
-- **Multiple operation modes**:
-  - Crawl all Magnificent Seven stocks at once
-  - Crawl individual stocks
-  - General web crawling functionality
-- **Comprehensive data extraction**:
-  - Current stock price
-  - Price change and percentage change
-  - Market capitalization
-  - Trading volume
-  - Company information
-  - Timestamp of data retrieval
-- **Rate limiting** to respect website resources
-- **Error handling** and logging
-- **JSON output** for easy data processing
+- 🌐 **Real-time stock data extraction** from Yahoo Finance
+- 🎯 **Multiple operation modes**:
+  - 📊 Crawl all Magnificent Seven stocks at once
+  - 🎪 Crawl individual stocks
+  - 🌍 General web crawling functionality
+- 📋 **Comprehensive data extraction**:
+  - 💰 Current stock price
+  - 📈 Price change and percentage change
+  - 🏢 Market capitalization
+  - 📊 Trading volume
+  - 🏷️ Company information
+  - ⏰ Timestamp of data retrieval
+- ⚡ **Rate limiting** to respect website resources
+- 🛡️ **Error handling** and logging
+- 📄 **JSON output** for easy data processing
 
-## Installation
+## 🛠️ Installation
 
-1. Clone this repository:
+1. 📥 **Clone this repository:**
 ```bash
 git clone https://github.com/Nyam2C/crawling-program.git
 cd crawling-program
 ```
 
-2. Install required dependencies:
+2. 📦 **Install required dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-## Project Structure
+## 🏗️ Project Structure
 
 The crawler is now organized into modular components for better readability and maintainability:
 
 ```
-project/
-├── main.py              # Entry point
-├── cli.py               # Command line interface
-├── stock_crawler.py     # Main crawler logic
-├── http_client.py       # HTTP requests and session management
-├── data_extractors.py   # HTML parsing and data extraction
-├── config.py            # Configuration and constants
-├── test_crawler.py      # Test suite
-├── requirements.txt     # Dependencies
-└── README.md           # Documentation
+📁 project/
+├── 🎯 main.py              # Entry point
+├── 💬 cli.py               # Command line interface
+├── 🕷️ stock_crawler.py     # Main crawler logic
+├── 🌐 http_client.py       # HTTP requests and session management
+├── 🔍 data_extractors.py   # HTML parsing and data extraction
+├── ⚙️ config.py            # Configuration and constants
+├── 🧪 test_crawler.py      # Test suite
+├── 📋 requirements.txt     # Dependencies
+└── 📖 README.md           # Documentation
 ```
 
-## Usage
+## 🎮 Usage
 
-### Interactive Mode
+### 🎪 Interactive Mode
 
 Run the main application:
 ```bash
@@ -75,39 +75,39 @@ Or use the legacy entry point:
 python crawler.py
 ```
 
-Choose from three options:
-1. **Crawl all Magnificent Seven stocks** - Gets data for all 7 stocks
-2. **Crawl specific stock** - Enter a stock symbol (AAPL, MSFT, etc.)
-3. **General web crawling** - Use as a regular web crawler
+Choose from three exciting options:
+1. 🚀 **Crawl all Magnificent Seven stocks** - Gets data for all 7 stocks
+2. 🎯 **Crawl specific stock** - Enter a stock symbol (AAPL, MSFT, etc.)
+3. 🌍 **General web crawling** - Use as a regular web crawler
 
-### Programmatic Usage
+### 👨‍💻 Programmatic Usage
 
 ```python
 from stock_crawler import StockCrawler
 
-# Initialize crawler
+# 🚀 Initialize crawler
 crawler = StockCrawler(delay=2)
 
-# Get data for a single stock
+# 📈 Get data for a single stock
 stock_data = crawler.get_stock_data('AAPL')
 print(stock_data)
 
-# Get data for all Magnificent Seven stocks
+# 🎯 Get data for all Magnificent Seven stocks
 all_stocks = crawler.get_all_stocks_data()
 print(all_stocks)
 
-# Clean up resources
+# 🧹 Clean up resources
 crawler.close()
 ```
 
-### Testing
+### 🧪 Testing
 
 Run the comprehensive test suite:
 ```bash
 python test_crawler.py
 ```
 
-## Sample Output
+## 📊 Sample Output
 
 ```json
 {
@@ -126,37 +126,37 @@ python test_crawler.py
 }
 ```
 
-## Requirements
+## 📋 Requirements
 
-- Python 3.6+
-- requests
-- beautifulsoup4
-- lxml
+- 🐍 Python 3.6+
+- 🌐 requests
+- 🥄 beautifulsoup4
+- 🔍 lxml
 
-## Rate Limiting
+## ⏱️ Rate Limiting
 
-The crawler includes a 2-second delay between requests by default to be respectful to the target websites. You can adjust this in the `StockCrawler` initialization.
+The crawler includes a 2-second delay between requests by default to be respectful to the target websites. ⏰ You can adjust this in the `StockCrawler` initialization.
 
-## Legal Notice
+## ⚖️ Legal Notice
 
 This tool is for educational and research purposes only. Please:
-- Respect the terms of service of the websites you crawl
-- Use appropriate delays between requests
-- Consider the website's robots.txt file
-- Use the data responsibly and in compliance with applicable laws
+- 📜 Respect the terms of service of the websites you crawl
+- ⏳ Use appropriate delays between requests
+- 🤖 Consider the website's robots.txt file
+- 📊 Use the data responsibly and in compliance with applicable laws
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch
+3. ✨ Make your changes
+4. 🧪 Add tests if applicable
+5. 🚀 Submit a pull request
 
-## License
+## 📄 License
 
-This project is open source. Please use responsibly.
+This project is open source. Please use responsibly. 💚
 
-## Disclaimer
+## ⚠️ Disclaimer
 
-Stock prices and financial data are provided for informational purposes only. This tool does not provide investment advice. Always verify financial information from official sources before making investment decisions.
+Stock prices and financial data are provided for informational purposes only. 📊 This tool does not provide investment advice. Always verify financial information from official sources before making investment decisions. 💼
