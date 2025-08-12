@@ -75,12 +75,38 @@ class StockChartsFrame:
         
     def display_chart(self, fig):
         """Display a matplotlib figure in the GUI"""
-        if self.current_canvas:
-            self.current_canvas.destroy()
+        try:
+            if self.current_canvas:
+                # Properly destroy the canvas widget
+                self.current_canvas.get_tk_widget().destroy()
+                self.current_canvas = None
+                
+            self.current_canvas = FigureCanvasTkAgg(fig, self.chart_display_frame)
+            self.current_canvas.draw()
+            self.current_canvas.get_tk_widget().grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
             
-        self.current_canvas = FigureCanvasTkAgg(fig, self.chart_display_frame)
-        self.current_canvas.draw()
-        self.current_canvas.get_tk_widget().grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        except Exception as e:
+            # If chart display fails, show error message
+            import tkinter as tk
+            from tkinter import ttk
+            
+            if self.current_canvas:
+                try:
+                    self.current_canvas.get_tk_widget().destroy()
+                except:
+                    pass
+                self.current_canvas = None
+            
+            # Create error display
+            error_frame = ttk.Frame(self.chart_display_frame)
+            error_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+            
+            error_label = ttk.Label(error_frame, 
+                                  text=f"❌ Chart display error: {str(e)}\n\nPlease try a different chart or restart the application.",
+                                  font=('Arial', 12),
+                                  foreground='red',
+                                  justify='center')
+            error_label.pack(expand=True)
         
     def create_scores_chart(self):
         """Create bar chart of stock analysis scores"""
@@ -211,17 +237,32 @@ class StockChartsFrame:
         
     def update_with_real_data(self, analysis_data):
         """Update charts with real analysis data"""
-        # This method would be called by the main app to update charts with real data
-        if not analysis_data or 'ranked_recommendations' not in analysis_data:
-            return
+        try:
+            # This method would be called by the main app to update charts with real data
+            if not analysis_data or 'ranked_recommendations' not in analysis_data:
+                print("No analysis data available for charts")
+                return
+                
+            # Extract data for charts
+            stocks = analysis_data['ranked_recommendations']
+            if not stocks:
+                print("No stock recommendations available for charts")
+                return
+                
+            symbols = [stock['symbol'] for stock in stocks if 'symbol' in stock]
+            scores = [stock['overall_score'] for stock in stocks if 'overall_score' in stock]
             
-        # Extract data for charts
-        stocks = analysis_data['ranked_recommendations']
-        symbols = [stock['symbol'] for stock in stocks]
-        scores = [stock['overall_score'] for stock in stocks]
-        
-        # Update scores chart with real data
-        self.create_real_scores_chart(symbols, scores)
+            if not symbols or not scores:
+                print("Incomplete stock data for charts")
+                return
+            
+            # Update scores chart with real data
+            self.create_real_scores_chart(symbols, scores)
+            
+        except Exception as e:
+            print(f"Error updating charts with real data: {e}")
+            # Show placeholder chart instead
+            self.create_placeholder_chart()
         
     def create_real_scores_chart(self, symbols, scores):
         """Create scores chart with real data"""
