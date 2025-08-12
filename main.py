@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Main entry point for the Magnificent Seven Stock Crawler
+Main entry point for the Magnificent Seven Stock Analysis & Recommendation System
 """
 
 import logging
-from cli import StockCrawlerCLI
+from cli import StockAnalysisCLI
 
 
 def setup_logging():
@@ -19,7 +19,7 @@ def main():
     """Main function"""
     setup_logging()
     
-    cli = StockCrawlerCLI()
+    cli = StockAnalysisCLI()
     cli.run()
 
 
