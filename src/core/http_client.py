@@ -5,7 +5,7 @@ HTTP client for web requests with rate limiting and error handling
 import requests
 import time
 import logging
-from config import USER_AGENT
+from .config import USER_AGENT
 
 
 class HTTPClient:

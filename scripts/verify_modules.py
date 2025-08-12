@@ -3,24 +3,30 @@
 Quick verification script to test modular structure
 """
 
+import sys
+import os
+
+# Add the project root to Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 def test_imports():
     """Test that all modules can be imported without errors"""
     try:
         print("Testing imports...")
         
-        from config import MAGNIFICENT_SEVEN, DEFAULT_DELAY
+        from src.core.config import MAGNIFICENT_SEVEN, DEFAULT_DELAY
         print(f"✓ Config imported: {len(MAGNIFICENT_SEVEN)} stocks defined")
         
-        from http_client import HTTPClient
+        from src.core.http_client import HTTPClient
         print("✓ HTTPClient imported")
         
-        from data_extractors import HTMLExtractor, YahooFinanceExtractor
+        from src.data.data_extractors import HTMLExtractor, YahooFinanceExtractor
         print("✓ Data extractors imported")
         
-        from stock_crawler import StockCrawler
+        from src.data.stock_crawler import StockCrawler
         print("✓ StockCrawler imported")
         
-        from cli import StockCrawlerCLI
+        from scripts.cli import StockAnalysisCLI
         print("✓ CLI imported")
         
         print("\nAll modules imported successfully!")
@@ -38,8 +44,8 @@ def test_basic_functionality():
     try:
         print("\nTesting basic functionality...")
         
-        from stock_crawler import StockCrawler
-        from config import MAGNIFICENT_SEVEN
+        from src.data.stock_crawler import StockCrawler
+        from src.core.config import MAGNIFICENT_SEVEN
         
         # Create crawler instance
         crawler = StockCrawler(delay=1)

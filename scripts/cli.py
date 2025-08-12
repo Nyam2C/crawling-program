@@ -3,9 +3,15 @@ Command line interface for the Stock Analysis & Recommendation System
 """
 
 import json
-from stock_crawler import StockCrawler
-from recommendation_engine import RecommendationEngine
-from config import MAGNIFICENT_SEVEN
+import sys
+import os
+
+# Add the project root to Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.data.stock_crawler import StockCrawler
+from src.analysis.recommendation_engine import RecommendationEngine
+from src.core.config import MAGNIFICENT_SEVEN
 
 
 class StockAnalysisCLI:
