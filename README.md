@@ -1,6 +1,6 @@
 # 🚀 Magnificent Seven Stock Analysis & Recommendation System
 
-An intelligent Python-based system that not only crawls real-time stock information for the **"Magnificent Seven"** but also provides **AI-powered buy recommendations**! 📈🤖✨
+An intelligent Python-based **Windows desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, user-friendly GUI! 🖥️📈🤖✨
 
 ## 🏆 The Magnificent Seven Stocks
 
@@ -41,11 +41,19 @@ This crawler targets the following legendary tech stocks:
 - 📋 **Comprehensive Investment Reports**
 - 🌍 **General web crawling** functionality
 
+### 🖥️ GUI Features
+- **Modern Windows Desktop Interface** with tabbed navigation
+- **Real-time Data Display** in sortable tables
+- **Interactive Charts** with matplotlib integration
+- **Progress Indicators** and async data loading
+- **Export Functionality** for reports and analysis
+
 ### 🛡️ Technical Features
 - ⚡ **Rate limiting** to respect website resources
 - 🛡️ **Error handling** and logging
 - 📄 **JSON output** for easy data processing
 - 🧪 **Comprehensive test suite**
+- 🎨 **Professional GUI** with modern styling
 
 ## 🛠️ Installation
 
@@ -60,13 +68,46 @@ cd crawling-program
 pip install -r requirements.txt
 ```
 
+## 🎮 Usage
+
+### 🖥️ **GUI Application (Recommended)**
+
+Launch the modern desktop interface:
+```bash
+python run_gui.py
+```
+
+**GUI Features:**
+- **📊 Stock Data Tab**: View real-time data for all stocks in a sortable table
+- **💡 Recommendations Tab**: Generate AI-powered buy/sell recommendations
+- **🔍 Individual Analysis Tab**: Deep-dive analysis for specific stocks
+- **📈 Charts Tab**: Interactive visualizations and charts
+- **⚙️ Settings Tab**: Configure application settings
+
+### 🎪 **Command Line Interface**
+
+For CLI usage (legacy support):
+```bash
+python main.py
+```
+
+**Available Options:**
+1. 📊 Get stock data (all Magnificent Seven)
+2. 🎯 Get stock data (specific stock)
+3. 💡 Get buy recommendations (all stocks)
+4. 🔍 Analyze specific stock
+5. 🌍 General web crawling
+
 ## 🏗️ Project Structure
 
 The crawler is now organized into modular components for better readability and maintainability:
 
 ```
 📁 project/
-├── 🎯 main.py                        # Entry point
+├── 🚀 run_gui.py                     # GUI launcher (START HERE!)
+├── 🖥️ gui_app.py                     # Main GUI application
+├── 📈 gui_charts.py                  # Chart visualizations
+├── 🎯 main.py                        # CLI entry point  
 ├── 💬 cli.py                         # Command line interface
 ├── 🕷️ stock_crawler.py               # Stock data collection
 ├── 🤖 recommendation_engine.py       # AI recommendation system
@@ -80,26 +121,19 @@ The crawler is now organized into modular components for better readability and 
 └── 📖 README.md                     # Documentation
 ```
 
-## 🎮 Usage
+## 🖼️ Screenshots
 
-### 🎪 Interactive Mode
+### 📊 Stock Data View
+![Stock Data Tab - Real-time financial data in sortable tables]
 
-Run the main application:
-```bash
-python main.py
-```
+### 💡 AI Recommendations  
+![Recommendations Tab - Comprehensive investment analysis reports]
 
-Or use the legacy entry point:
-```bash
-python crawler.py
-```
+### 📈 Interactive Charts
+![Charts Tab - Visual analysis with matplotlib integration]
 
-Choose from five powerful options:
-1. 📊 **Get stock data (all Magnificent Seven)** - Raw financial data
-2. 🎯 **Get stock data (specific stock)** - Individual stock data
-3. 💡 **Get buy recommendations (all stocks)** - AI-powered investment advice
-4. 🔍 **Analyze specific stock** - Detailed analysis with scoring
-5. 🌍 **General web crawling** - Use as a regular web crawler
+### 🔍 Individual Analysis
+![Analysis Tab - Deep-dive stock analysis with scoring breakdown]
 
 ### 👨‍💻 Programmatic Usage
 
@@ -216,10 +250,13 @@ Stocks with Positive Momentum: 5/7
 
 ## 📋 Requirements
 
-- 🐍 Python 3.6+
-- 🌐 requests
-- 🥄 beautifulsoup4
-- 🔍 lxml
+- 🐍 **Python 3.6+** (Python 3.8+ recommended)
+- 🌐 **requests** - HTTP client library
+- 🥄 **beautifulsoup4** - HTML parsing
+- 🔍 **lxml** - XML/HTML parser
+- 📊 **matplotlib** - Chart visualizations
+- 🔢 **numpy** - Numerical computations
+- 🖥️ **tkinter** - GUI framework (included with Python)
 
 ## ⏱️ Rate Limiting
 
