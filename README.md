@@ -44,11 +44,33 @@ cd crawling-program
 pip install -r requirements.txt
 ```
 
+## Project Structure
+
+The crawler is now organized into modular components for better readability and maintainability:
+
+```
+project/
+├── main.py              # Entry point
+├── cli.py               # Command line interface
+├── stock_crawler.py     # Main crawler logic
+├── http_client.py       # HTTP requests and session management
+├── data_extractors.py   # HTML parsing and data extraction
+├── config.py            # Configuration and constants
+├── test_crawler.py      # Test suite
+├── requirements.txt     # Dependencies
+└── README.md           # Documentation
+```
+
 ## Usage
 
 ### Interactive Mode
 
-Run the main crawler script:
+Run the main application:
+```bash
+python main.py
+```
+
+Or use the legacy entry point:
 ```bash
 python crawler.py
 ```
@@ -61,23 +83,26 @@ Choose from three options:
 ### Programmatic Usage
 
 ```python
-from crawler import StockCrawler
+from stock_crawler import StockCrawler
 
 # Initialize crawler
 crawler = StockCrawler(delay=2)
 
 # Get data for a single stock
-stock_data = crawler.extract_stock_data_yahoo('AAPL')
+stock_data = crawler.get_stock_data('AAPL')
 print(stock_data)
 
 # Get data for all Magnificent Seven stocks
-all_stocks = crawler.crawl_all_magnificent_seven()
+all_stocks = crawler.get_all_stocks_data()
 print(all_stocks)
+
+# Clean up resources
+crawler.close()
 ```
 
 ### Testing
 
-Run the test script to verify functionality:
+Run the comprehensive test suite:
 ```bash
 python test_crawler.py
 ```
