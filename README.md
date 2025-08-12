@@ -92,7 +92,9 @@ sudo dnf install python3-tkinter
 
 Launch the modern desktop interface:
 ```bash
-python run_gui.py
+python main.py
+# OR
+python scripts/run_gui.py
 ```
 
 **GUI Features:**
@@ -106,7 +108,7 @@ python run_gui.py
 
 For CLI usage (legacy support):
 ```bash
-python main.py
+python scripts/cli.py
 ```
 
 **Available Options:**
@@ -118,25 +120,37 @@ python main.py
 
 ## 🏗️ Project Structure
 
-The crawler is now organized into modular components for better readability and maintainability:
+The project is now **beautifully organized** into a clean, modular structure for better maintainability and scalability:
 
 ```
 📁 project/
-├── 🚀 run_gui.py                     # GUI launcher (START HERE!)
-├── 🖥️ gui_app.py                     # Main GUI application
-├── 📈 gui_charts.py                  # Chart visualizations
-├── 🎯 main.py                        # CLI entry point  
-├── 💬 cli.py                         # Command line interface
-├── 🕷️ stock_crawler.py               # Stock data collection
-├── 🤖 recommendation_engine.py       # AI recommendation system
-├── 🧮 financial_analyzer.py          # Financial analysis algorithms
-├── 🌐 http_client.py                 # HTTP requests and session management
-├── 🔍 data_extractors.py             # HTML parsing and data extraction
-├── ⚙️ config.py                      # Configuration and constants
-├── 🧪 test_crawler.py                # Crawler test suite
-├── 🧪 test_recommendation_system.py  # Recommendation system tests
+├── 🚀 main.py                        # Main entry point (START HERE!)
 ├── 📋 requirements.txt               # Dependencies
-└── 📖 README.md                     # Documentation
+├── 📖 README.md                     # Documentation
+├── 🛠️ scripts/                      # Entry point scripts
+│   ├── 🖥️ run_gui.py                # GUI launcher
+│   ├── 💬 cli.py                    # Command line interface
+│   ├── 🎯 main.py                   # Legacy CLI entry point
+│   └── 🧩 verify_modules.py         # Dependency checker
+├── 🧬 src/                          # Source code (organized!)
+│   ├── 🧠 analysis/                 # Financial analysis engines
+│   │   ├── 🤖 recommendation_engine.py    # AI recommendation system
+│   │   ├── 🧮 financial_analyzer.py       # Basic financial analysis
+│   │   └── ⚡ advanced_financial_analyzer.py # Advanced multi-criteria analysis
+│   ├── 💾 data/                     # Data collection & processing
+│   │   ├── 🕷️ stock_crawler.py     # Stock data collection
+│   │   └── 🔍 data_extractors.py    # HTML parsing and data extraction
+│   ├── 🖥️ gui/                      # User interface components
+│   │   ├── 📱 gui_app.py            # Main GUI application
+│   │   └── 📈 gui_charts.py         # Chart visualizations
+│   └── ⚙️ core/                     # Core utilities
+│       ├── 🌐 http_client.py        # HTTP requests and session management
+│       └── 📊 config.py             # Configuration and constants
+└── 🧪 tests/                        # Test suite
+    ├── 🕷️ test_crawler.py           # Crawler functionality tests
+    ├── 🤖 test_recommendation_system.py # Recommendation system tests
+    ├── 🔧 test_fixes.py             # Bug fix verification tests
+    └── 🖥️ test_tkinter.py           # GUI dependency tests
 ```
 
 ## 🖼️ Screenshots
@@ -157,7 +171,7 @@ The crawler is now organized into modular components for better readability and 
 
 #### 📊 Basic Stock Data Collection
 ```python
-from stock_crawler import StockCrawler
+from src.data.stock_crawler import StockCrawler
 
 # 🚀 Initialize crawler
 crawler = StockCrawler(delay=2)
@@ -176,7 +190,7 @@ crawler.close()
 
 #### 🤖 AI-Powered Recommendations
 ```python
-from recommendation_engine import RecommendationEngine
+from src.analysis.recommendation_engine import RecommendationEngine
 
 # 🚀 Initialize recommendation engine
 engine = RecommendationEngine(delay=2)
@@ -200,10 +214,13 @@ engine.close()
 Run the test suites:
 ```bash
 # Test basic crawler functionality
-python test_crawler.py
+python tests/test_crawler.py
 
 # Test recommendation system
-python test_recommendation_system.py
+python tests/test_recommendation_system.py
+
+# Test bug fixes
+python tests/test_fixes.py
 ```
 
 ## 📊 Sample Output

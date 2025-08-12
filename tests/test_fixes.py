@@ -3,8 +3,8 @@
 Test script to verify the bug fixes
 """
 
-from data_extractors import YahooFinanceExtractor
-from stock_crawler import StockCrawler
+from src.data.data_extractors import YahooFinanceExtractor
+from src.data.stock_crawler import StockCrawler
 import json
 
 

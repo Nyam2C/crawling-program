@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
-from config import MAGNIFICENT_SEVEN
+from src.core.config import MAGNIFICENT_SEVEN
 
 
 class StockChartsFrame:

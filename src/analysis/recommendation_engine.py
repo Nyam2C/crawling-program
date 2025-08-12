@@ -3,9 +3,9 @@ Enhanced Stock recommendation engine for the Magnificent Seven with advanced ana
 """
 
 from typing import Dict, List
-from financial_analyzer import FinancialAnalyzer
-from advanced_financial_analyzer import AdvancedFinancialAnalyzer
-from stock_crawler import StockCrawler
+from src.analysis.financial_analyzer import FinancialAnalyzer
+from src.analysis.advanced_financial_analyzer import AdvancedFinancialAnalyzer
+from src.data.stock_crawler import StockCrawler
 import json
 
 
@@ -57,7 +57,7 @@ class RecommendationEngine:
         all_analyses = {}
         successful_analyses = []
         
-        from config import MAGNIFICENT_SEVEN
+        from src.core.config import MAGNIFICENT_SEVEN
         
         for symbol in MAGNIFICENT_SEVEN.keys():
             print(f"📊 Analyzing {symbol} using {analysis_type.lower()} analysis...")

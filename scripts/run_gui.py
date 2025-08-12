@@ -5,6 +5,10 @@ Launcher script for the Magnificent Seven Stock Analysis GUI
 
 import sys
 import platform
+import os
+
+# Add the project root to Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def check_tkinter():
     """Check if tkinter is available and provide installation instructions if not"""
@@ -120,7 +124,7 @@ def main():
         print("🔄 FALLBACK: Launching CLI version instead...")
         print("="*60)
         try:
-            from cli import StockAnalysisCLI
+            from scripts.cli import StockAnalysisCLI
             cli = StockAnalysisCLI()
             cli.run()
         except Exception as e:
@@ -142,7 +146,7 @@ def main():
         show_welcome_message()
         
         # Import and run the main GUI
-        from gui_app import StockAnalysisGUI
+        from src.gui.gui_app import StockAnalysisGUI
         
         print("✅ Dependencies verified")
         print("🎉 Launching GUI application...")
@@ -155,7 +159,7 @@ def main():
         print("📝 Make sure all files are in the same directory")
         print("\n🔄 Trying CLI fallback...")
         try:
-            from cli import StockAnalysisCLI
+            from scripts.cli import StockAnalysisCLI
             cli = StockAnalysisCLI()
             cli.run()
         except:

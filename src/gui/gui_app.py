@@ -8,13 +8,13 @@ from tkinter import ttk, messagebox, scrolledtext
 import threading
 import json
 from datetime import datetime
-from recommendation_engine import RecommendationEngine
-from stock_crawler import StockCrawler
-from config import MAGNIFICENT_SEVEN
+from src.analysis.recommendation_engine import RecommendationEngine
+from src.data.stock_crawler import StockCrawler
+from src.core.config import MAGNIFICENT_SEVEN
 
 # Try to import charts module
 try:
-    from gui_charts import StockChartsFrame
+    from src.gui.gui_charts import StockChartsFrame
     CHARTS_AVAILABLE = True
 except ImportError:
     CHARTS_AVAILABLE = False

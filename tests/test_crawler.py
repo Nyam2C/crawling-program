@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from stock_crawler import StockCrawler
+from src.data.stock_crawler import StockCrawler
 import json
 
 def test_single_stock():

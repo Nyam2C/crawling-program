@@ -3,9 +3,9 @@ Main stock crawler implementation
 """
 
 import logging
-from http_client import HTTPClient
-from data_extractors import HTMLExtractor, YahooFinanceExtractor
-from config import MAGNIFICENT_SEVEN, YAHOO_FINANCE_BASE_URL, DEFAULT_DELAY
+from src.core.http_client import HTTPClient
+from src.data.data_extractors import HTMLExtractor, YahooFinanceExtractor
+from src.core.config import MAGNIFICENT_SEVEN, YAHOO_FINANCE_BASE_URL, DEFAULT_DELAY
 
 
 class StockCrawler:

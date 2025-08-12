@@ -3,8 +3,8 @@
 Test suite for the Stock Recommendation System
 """
 
-from recommendation_engine import RecommendationEngine
-from financial_analyzer import FinancialAnalyzer
+from src.analysis.recommendation_engine import RecommendationEngine
+from src.analysis.financial_analyzer import FinancialAnalyzer
 import json
 
 
