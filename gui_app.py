@@ -184,12 +184,15 @@ class StockAnalysisGUI:
         rec_control_frame = ttk.LabelFrame(rec_frame, text="Generate Recommendations", padding="10")
         rec_control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(rec_control_frame, text="🤖 Generate All Recommendations",
-                  command=self.generate_all_recommendations,
+        ttk.Button(rec_control_frame, text="🧠 Advanced Analysis (Recommended)",
+                  command=self.generate_advanced_recommendations,
                   style='Success.TButton').grid(row=0, column=0, padx=(0, 10))
         
+        ttk.Button(rec_control_frame, text="📊 Basic Analysis",
+                  command=self.generate_basic_recommendations).grid(row=0, column=1, padx=(0, 10))
+        
         ttk.Button(rec_control_frame, text="📋 Export Report",
-                  command=self.export_report).grid(row=0, column=1)
+                  command=self.export_report).grid(row=0, column=2)
         
         # Recommendations display
         rec_display_frame = ttk.LabelFrame(rec_frame, text="Investment Recommendations", padding="10")
@@ -224,9 +227,12 @@ class StockAnalysisGUI:
                                     state='readonly', width=15)
         analysis_combo.grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(select_frame, text="🧮 Analyze Stock",
-                  command=self.analyze_individual_stock,
-                  style='Primary.TButton').grid(row=0, column=2)
+        ttk.Button(select_frame, text="🧠 Advanced Analysis",
+                  command=self.analyze_individual_stock_advanced,
+                  style='Primary.TButton').grid(row=0, column=2, padx=(0, 5))
+                  
+        ttk.Button(select_frame, text="📊 Basic Analysis",
+                  command=self.analyze_individual_stock_basic).grid(row=0, column=3)
         
         # Analysis results
         results_frame = ttk.LabelFrame(analysis_frame, text="Analysis Results", padding="10")
@@ -422,14 +428,14 @@ Not financial advice. Always do your own research!"""
             data.get('volume', '')
         ))
         
-    def generate_all_recommendations(self):
-        """Generate recommendations for all stocks"""
+    def generate_advanced_recommendations(self):
+        """Generate advanced multi-criteria recommendations"""
         def generate():
             try:
-                self.update_status("Generating AI recommendations...")
+                self.update_status("Generating Advanced AI Analysis with Multiple Investment Criteria...")
                 self.show_progress()
                 
-                results = self.recommendation_engine.analyze_all_magnificent_seven()
+                results = self.recommendation_engine.analyze_all_magnificent_seven(use_advanced=True)
                 report = self.recommendation_engine.generate_investment_report(results)
                 self.current_recommendations = results
                 
@@ -439,23 +445,54 @@ Not financial advice. Always do your own research!"""
                 if CHARTS_AVAILABLE and hasattr(self, 'charts_frame'):
                     self.root.after(0, self.charts_frame.update_with_real_data, results)
                 
-                self.root.after(0, self.update_status, "Recommendations generated successfully")
+                self.root.after(0, self.update_status, "Advanced analysis completed successfully")
                 self.root.after(0, self.hide_progress)
                 
             except Exception as e:
-                self.root.after(0, self.show_error, f"Error generating recommendations: {str(e)}")
-                self.root.after(0, self.update_status, "Error generating recommendations")
+                self.root.after(0, self.show_error, f"Error generating advanced recommendations: {str(e)}")
+                self.root.after(0, self.update_status, "Error generating advanced analysis")
                 self.root.after(0, self.hide_progress)
         
         threading.Thread(target=generate, daemon=True).start()
+    
+    def generate_basic_recommendations(self):
+        """Generate basic recommendations (legacy mode)"""
+        def generate():
+            try:
+                self.update_status("Generating Basic AI Analysis...")
+                self.show_progress()
+                
+                results = self.recommendation_engine.analyze_all_magnificent_seven(use_advanced=False)
+                report = self.recommendation_engine.generate_investment_report(results)
+                self.current_recommendations = results
+                
+                self.root.after(0, self.update_recommendations_display, report)
+                
+                # Update charts with real data if available
+                if CHARTS_AVAILABLE and hasattr(self, 'charts_frame'):
+                    self.root.after(0, self.charts_frame.update_with_real_data, results)
+                
+                self.root.after(0, self.update_status, "Basic analysis completed successfully")
+                self.root.after(0, self.hide_progress)
+                
+            except Exception as e:
+                self.root.after(0, self.show_error, f"Error generating basic recommendations: {str(e)}")
+                self.root.after(0, self.update_status, "Error generating basic analysis")
+                self.root.after(0, self.hide_progress)
+        
+        threading.Thread(target=generate, daemon=True).start()
+        
+    def generate_all_recommendations(self):
+        """Legacy method - redirect to advanced analysis"""
+        self.generate_advanced_recommendations()
         
     def update_recommendations_display(self, report):
         """Update the recommendations text display"""
         self.recommendations_text.delete(1.0, tk.END)
         self.recommendations_text.insert(1.0, report)
         
-    def analyze_individual_stock(self):
-        """Analyze individual stock"""
+    def analyze_individual_stock_advanced(self):
+        """Analyze individual stock with advanced multi-criteria analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
             messagebox.showwarning("Warning", "Please select a stock symbol")
@@ -463,17 +500,45 @@ Not financial advice. Always do your own research!"""
             
         def analyze():
             try:
-                self.update_status(f"Analyzing {symbol}...")
+                self.update_status(f"Performing Advanced Analysis on {symbol}...")
                 self.show_progress()
                 
-                analysis = self.recommendation_engine.analyze_single_stock(symbol)
+                analysis = self.recommendation_engine.analyze_single_stock(symbol, use_advanced=True)
                 
                 if 'error' in analysis:
                     self.root.after(0, self.show_error, analysis['error'])
                 else:
-                    self.root.after(0, self.update_individual_analysis_display, analysis)
+                    self.root.after(0, self.update_individual_analysis_display, analysis, True)
                 
-                self.root.after(0, self.update_status, f"{symbol} analysis completed")
+                self.root.after(0, self.update_status, f"{symbol} advanced analysis completed")
+                self.root.after(0, self.hide_progress)
+                
+            except Exception as e:
+                self.root.after(0, self.show_error, f"Error analyzing {symbol}: {str(e)}")
+                self.root.after(0, self.hide_progress)
+        
+        threading.Thread(target=analyze, daemon=True).start()
+    
+    def analyze_individual_stock_basic(self):
+        """Analyze individual stock with basic analysis"""
+        symbol = self.analysis_stock_var.get()
+        if not symbol:
+            messagebox.showwarning("Warning", "Please select a stock symbol")
+            return
+            
+        def analyze():
+            try:
+                self.update_status(f"Performing Basic Analysis on {symbol}...")
+                self.show_progress()
+                
+                analysis = self.recommendation_engine.analyze_single_stock(symbol, use_advanced=False)
+                
+                if 'error' in analysis:
+                    self.root.after(0, self.show_error, analysis['error'])
+                else:
+                    self.root.after(0, self.update_individual_analysis_display, analysis, False)
+                
+                self.root.after(0, self.update_status, f"{symbol} basic analysis completed")
                 self.root.after(0, self.hide_progress)
                 
             except Exception as e:
@@ -482,7 +547,11 @@ Not financial advice. Always do your own research!"""
         
         threading.Thread(target=analyze, daemon=True).start()
         
-    def update_individual_analysis_display(self, analysis):
+    def analyze_individual_stock(self):
+        """Legacy method - redirect to advanced analysis"""
+        self.analyze_individual_stock_advanced()
+        
+    def update_individual_analysis_display(self, analysis, is_advanced=True):
         """Update individual analysis display"""
         # Update score and recommendation
         self.score_label.config(text=f"{analysis['overall_score']}")
@@ -491,43 +560,127 @@ Not financial advice. Always do your own research!"""
         # Update detailed analysis
         self.analysis_text.delete(1.0, tk.END)
         
-        breakdown = analysis['analysis_breakdown']
-        detail_text = f"""Stock Analysis for {analysis['symbol']} - {analysis['company']}
+        if is_advanced and 'detailed_analysis' in analysis:
+            detail_text = self._format_advanced_analysis_display(analysis)
+        else:
+            detail_text = self._format_basic_analysis_display(analysis)
+        
+        self.analysis_text.insert(1.0, detail_text)
+        
+    def _format_advanced_analysis_display(self, analysis):
+        """Format advanced analysis for display"""
+        detailed = analysis['detailed_analysis']
+        investment_summary = analysis.get('investment_summary', {})
+        
+        text = f"""🧠 ADVANCED STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
+Analysis Type: Multi-Criteria Investment Analysis
 Overall Score: {analysis['overall_score']}
 Recommendation: {analysis['recommendation']}
 Confidence Level: {analysis['confidence']}
 
-DETAILED BREAKDOWN:
+📈 FUNDAMENTAL ANALYSIS:
 ═══════════════════════════════════════════════════════════════
+Financial Health: {detailed['fundamental_analysis']['financial_health']['rating']} (Score: {detailed['fundamental_analysis']['financial_health']['score']:.2f})
+Profitability: {detailed['fundamental_analysis']['profitability_metrics']['margin_rating']}
+   • {detailed['fundamental_analysis']['profitability_metrics']['analysis']}
+Debt Analysis: {detailed['fundamental_analysis']['debt_analysis']['rating']}
+   • D/E Ratio: {detailed['fundamental_analysis']['debt_analysis']['debt_to_equity']:.2f}
 
-💹 Price Momentum Analysis:
-   Score: {breakdown['momentum']['score']}
-   {breakdown['momentum']['analysis']}
+📊 GROWTH ANALYSIS:
+Growth Rating: {detailed['growth_analysis']['rating']}
+Historical Growth: {detailed['growth_analysis']['revenue_growth_5y']:.1%} (5-year CAGR)
+Industry: {detailed['growth_analysis']['industry']} (Growth Factor: {detailed['growth_analysis']['industry_factor']:.1f}x)
 
-📊 Volume Analysis:
-   Score: {breakdown['volume']['score']}
-   {breakdown['volume']['analysis']}
+🏆 COMPETITIVE POSITION: {detailed['competitive_analysis']['position_strength']}
+Key Advantages:"""
 
-🏢 Market Capitalization:
-   Score: {breakdown['market_cap']['score']}
-   {breakdown['market_cap']['analysis']}
+        for advantage in detailed['competitive_analysis']['advantages'][:3]:
+            text += f"\n   • {advantage}"
 
-⚖️ Volatility Assessment:
-   Score: {breakdown['volatility']['score']}
-   {breakdown['volatility']['analysis']}
+        text += f"""
 
-💎 Value Proposition:
-   Score: {breakdown['value']['score']}
-   {breakdown['value']['analysis']}
+⚠️  RISK ASSESSMENT: {detailed['risk_assessment']['risk_level']} Risk
+Safety Score: {detailed['risk_assessment']['safety_score']:.2f}
+Key Risk Factors:"""
+
+        for risk in detailed['risk_assessment']['risk_factors'][:2]:
+            text += f"\n   • {risk}"
+
+        if investment_summary:
+            text += f"""
+
+💡 INVESTMENT SUMMARY:
+Investment Thesis: {investment_summary.get('investment_thesis', 'N/A')}
+Price Target: {investment_summary.get('price_target_range', 'N/A')}
+Time Horizon: {investment_summary.get('time_horizon', 'N/A')}"""
+
+        text += f"""
 
 ═══════════════════════════════════════════════════════════════
 Analysis Timestamp: {analysis['timestamp']}
 
-⚠️  DISCLAIMER: This analysis is for educational purposes only.
+⚠️  COMPREHENSIVE DISCLAIMER: This advanced analysis is for educational 
+   and informational purposes only. Not financial advice. Always conduct 
+   your own research and consult qualified financial advisors!
+"""
+        return text
+    
+    def _format_basic_analysis_display(self, analysis):
+        """Format basic analysis for display"""
+        breakdown = analysis.get('analysis_breakdown', {})
+        
+        text = f"""📊 BASIC STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
+Analysis Type: Basic Technical Analysis
+Overall Score: {analysis['overall_score']}
+Recommendation: {analysis['recommendation']}
+Confidence Level: {analysis['confidence']}
+
+ANALYSIS BREAKDOWN:
+═══════════════════════════════════════════════════════════════"""
+
+        if 'momentum' in breakdown:
+            text += f"""
+💹 Price Momentum:
+   Score: {breakdown['momentum']['score']}
+   {breakdown['momentum']['analysis']}"""
+
+        if 'volume' in breakdown:
+            text += f"""
+
+📊 Volume Analysis:
+   Score: {breakdown['volume']['score']}
+   {breakdown['volume']['analysis']}"""
+
+        if 'market_cap' in breakdown:
+            text += f"""
+
+🏢 Market Capitalization:
+   Score: {breakdown['market_cap']['score']}
+   {breakdown['market_cap']['analysis']}"""
+
+        if 'volatility' in breakdown:
+            text += f"""
+
+⚖️ Volatility Assessment:
+   Score: {breakdown['volatility']['score']}
+   {breakdown['volatility']['analysis']}"""
+
+        if 'value' in breakdown:
+            text += f"""
+
+💎 Value Proposition:
+   Score: {breakdown['value']['score']}
+   {breakdown['value']['analysis']}"""
+
+        text += f"""
+
+═══════════════════════════════════════════════════════════════
+Analysis Timestamp: {analysis['timestamp']}
+
+⚠️  DISCLAIMER: This basic analysis is for educational purposes only.
    Not financial advice. Always do your own research!
 """
-        
-        self.analysis_text.insert(1.0, detail_text)
+        return text
         
     def export_report(self):
         """Export recommendations report"""
