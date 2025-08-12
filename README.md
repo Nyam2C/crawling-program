@@ -68,6 +68,24 @@ cd crawling-program
 pip install -r requirements.txt
 ```
 
+3. 🖥️ **Install tkinter (for GUI):**
+
+tkinter is required for the GUI version. It's usually included with Python, but if you get a "No module named 'tkinter'" error:
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt-get install python3-tk
+```
+
+**Linux (CentOS/Fedora):**
+```bash
+sudo dnf install python3-tkinter
+```
+
+**Windows/macOS:** tkinter should be included with Python.
+
+📋 See [INSTALL_TKINTER.md](INSTALL_TKINTER.md) for detailed installation instructions.
+
 ## 🎮 Usage
 
 ### 🖥️ **GUI Application (Recommended)**
