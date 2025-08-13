@@ -16,7 +16,7 @@ class RecommendationsTab:
     def setup_tab(self):
         """Create the recommendations tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="💡 Recommendations")
+        self.notebook.add(self.frame, text="٩(ˊᗜˋ*)و̵ Recommendations")
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -30,24 +30,24 @@ class RecommendationsTab:
         
     def create_control_panel(self):
         """Create control panel for recommendations"""
-        control_frame = ttk.LabelFrame(self.frame, text="🔮 Generate Recommendations", padding="15")
+        control_frame = ttk.LabelFrame(self.frame, text="( ˶ˆᗜˆ˵ ) Generate Recommendations", padding="15")
         control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        ttk.Button(control_frame, text="🌟 Advanced Analysis",
+        ttk.Button(control_frame, text="°ʚ(*´꒳`*)ɞ° Advanced Analysis",
                   command=self.generate_advanced_recommendations,
                   style='Kuromi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
         
-        ttk.Button(control_frame, text="⚡ Quick Analysis",
+        ttk.Button(control_frame, text="૮₍  ˶•⤙•˶ ₎ა Quick Analysis",
                   command=self.generate_basic_recommendations,
                   style='Kuromi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(control_frame, text="💾 Save Report",
+        ttk.Button(control_frame, text="ฅ^•ﻌ•^ฅ Save Report",
                   command=self.export_report,
                   style='Kuromi.Gold.TButton').grid(row=0, column=2)
         
     def create_recommendations_display(self):
         """Create display area for recommendations"""
-        display_frame = ttk.LabelFrame(self.frame, text="✨ Investment Advice", padding="15")
+        display_frame = ttk.LabelFrame(self.frame, text="₊‧°𐐪♡𐑂°‧₊ Investment Advice", padding="15")
         display_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         display_frame.grid_rowconfigure(0, weight=1)
         display_frame.grid_columnconfigure(0, weight=1)
@@ -66,14 +66,14 @@ class RecommendationsTab:
         self.recommendations_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Add cute initial message
-        initial_message = """💖 Welcome to Kuromi's Investment Recommendations! 💖
+        initial_message = """×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Welcome to Kuromi's Investment Recommendations! ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
 
-🌸 Click "Advanced Analysis" for comprehensive multi-criteria analysis
-⚡ Click "Quick Analysis" for basic technical analysis
-💾 Use "Save Report" to export your results
+( ˶ˆᗜˆ˵ ) Click "Advanced Analysis" for comprehensive multi-criteria analysis
+૮₍  ˶•⤙•˶ ₎ა Click "Quick Analysis" for basic technical analysis
+ฅ^•ﻌ•^ฅ Use "Save Report" to export your results
 
-Ready to make some magical investment decisions? ✨
-Choose your analysis type above to get started! 🎯
+Ready to make some magical investment decisions? ₊‧°𐐪♡𐑂°‧₊
+Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """

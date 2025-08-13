@@ -17,7 +17,7 @@ class IndividualAnalysisTab:
     def setup_tab(self):
         """Create the individual stock analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="🔍 Individual Analysis")
+        self.notebook.add(self.frame, text="(@_@) Individual Analysis")
         
         # Configure grid
         self.frame.grid_rowconfigure(2, weight=1)
@@ -34,7 +34,7 @@ class IndividualAnalysisTab:
         
     def create_stock_selection(self):
         """Create stock selection panel"""
-        select_frame = ttk.LabelFrame(self.frame, text="🎯 Choose Stock to Analyze", padding="15")
+        select_frame = ttk.LabelFrame(self.frame, text="(>_<) Choose Stock to Analyze", padding="15")
         select_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         ttk.Label(select_frame, text="Stock Symbol:").grid(row=0, column=0, padx=(0, 10))
@@ -46,17 +46,17 @@ class IndividualAnalysisTab:
                                     style='Kuromi.TCombobox')
         analysis_combo.grid(row=0, column=1, padx=(0, 15))
         
-        ttk.Button(select_frame, text="🌟 Deep Analysis",
+        ttk.Button(select_frame, text="(*o*) Deep Analysis",
                   command=self.analyze_individual_stock_advanced,
                   style='Kuromi.Gold.TButton').grid(row=0, column=2, padx=(0, 10))
                   
-        ttk.Button(select_frame, text="⚡ Quick Analysis",
+        ttk.Button(select_frame, text="(>_<) Quick Analysis",
                   command=self.analyze_individual_stock_basic,
                   style='Kuromi.Primary.TButton').grid(row=0, column=3)
         
     def create_results_summary(self):
         """Create analysis results summary"""
-        results_frame = ttk.LabelFrame(self.frame, text="📊 Analysis Summary", padding="15")
+        results_frame = ttk.LabelFrame(self.frame, text="(@_@) Analysis Summary", padding="15")
         results_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Score display
@@ -75,7 +75,7 @@ class IndividualAnalysisTab:
         
     def create_detailed_analysis(self):
         """Create detailed analysis display"""
-        detail_frame = ttk.LabelFrame(self.frame, text="🔍 Detailed Analysis", padding="15")
+        detail_frame = ttk.LabelFrame(self.frame, text="(@_@) Detailed Analysis", padding="15")
         detail_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         detail_frame.grid_rowconfigure(0, weight=1)
         detail_frame.grid_columnconfigure(0, weight=1)
@@ -93,14 +93,14 @@ class IndividualAnalysisTab:
         self.analysis_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Add cute initial message
-        initial_message = """💖 Individual Stock Analysis 💖
+        initial_message = """(>.<) Individual Stock Analysis (>.<)
 
-🎯 Select a stock symbol from the dropdown above
-🌟 Click "Deep Analysis" for comprehensive multi-criteria analysis
-⚡ Click "Quick Analysis" for basic technical analysis
+(>_<) Select a stock symbol from the dropdown above
+(*o*) Click "Deep Analysis" for comprehensive multi-criteria analysis
+(>_<) Click "Quick Analysis" for basic technical analysis
 
 Ready to dive deep into your favorite stock? 
-Choose a symbol and analysis type to get started! ✨
+Choose a symbol and analysis type to get started! (*_*)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
@@ -110,12 +110,12 @@ Choose a symbol and analysis type to get started! ✨
         """Analyze individual stock with advanced multi-criteria analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! 💝")
+            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! (>.<)")
             return
             
         def analyze():
             try:
-                self.main_app.update_status(f"🌟 Performing advanced analysis on {symbol}...")
+                self.main_app.update_status(f"(*o*) Performing advanced analysis on {symbol}...")
                 self.main_app.show_progress()
                 
                 analysis = self.main_app.recommendation_engine.analyze_single_stock(symbol, use_advanced=True)
@@ -125,11 +125,11 @@ Choose a symbol and analysis type to get started! ✨
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, True)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"✅ {symbol} advanced analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"(^_^) {symbol} advanced analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"❌ {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"(>_<) {symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -138,12 +138,12 @@ Choose a symbol and analysis type to get started! ✨
         """Analyze individual stock with basic analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! 💝")
+            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! (>.<)")
             return
             
         def analyze():
             try:
-                self.main_app.update_status(f"⚡ Performing basic analysis on {symbol}...")
+                self.main_app.update_status(f"(>_<) Performing basic analysis on {symbol}...")
                 self.main_app.show_progress()
                 
                 analysis = self.main_app.recommendation_engine.analyze_single_stock(symbol, use_advanced=False)
@@ -153,11 +153,11 @@ Choose a symbol and analysis type to get started! ✨
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, False)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"✅ {symbol} basic analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"(^_^) {symbol} basic analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"❌ {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"(>_<) {symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -186,9 +186,9 @@ Choose a symbol and analysis type to get started! ✨
         text = f"""✨ KUROMI'S ADVANCED STOCK ANALYSIS ✨
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📊 Stock: {analysis['symbol']} - {analysis['company']}
+(@_@) Stock: {analysis['symbol']} - {analysis['company']}
 📈 Analysis Type: Multi-Criteria Investment Analysis
-⭐ Overall Score: {analysis['overall_score']}
+(*o*) Overall Score: {analysis['overall_score']}
 🎯 Recommendation: {analysis['recommendation']}
 🔒 Confidence Level: {analysis['confidence']}
 
@@ -244,9 +244,9 @@ Time Horizon: {investment_summary.get('time_horizon', 'N/A')}"""
         text = f"""⚡ KUROMI'S QUICK STOCK ANALYSIS ⚡
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📊 Stock: {analysis['symbol']} - {analysis['company']}
+(@_@) Stock: {analysis['symbol']} - {analysis['company']}
 📈 Analysis Type: Basic Technical Analysis
-⭐ Overall Score: {analysis['overall_score']}
+(*o*) Overall Score: {analysis['overall_score']}
 🎯 Recommendation: {analysis['recommendation']}
 🔒 Confidence Level: {analysis['confidence']}
 

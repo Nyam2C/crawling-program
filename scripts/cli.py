@@ -23,14 +23,35 @@ class StockAnalysisCLI:
         
     def show_menu(self):
         """Display the main menu"""
-        print("🚀 Magnificent Seven Stock Analysis & Recommendation System")
-        print("=" * 60)
+        # Kuromi ASCII Art
+        kuromi_art = """
+⡤⠲⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡎⢑
+⠑⢲⠷⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠶⠚⡟⠉
+⠀⠸⡇⠀⠈⠙⠲⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⠉⠀⠀⠀⡇⠀
+⠀⠀⡇⠀⠀⠀⠀⠀⠈⠙⣲⣀⠄⠠⠄⠒⠢⠤⠠⢴⠋⠁⠀⠀⠀⠀⠀⢸⠇⠀
+⠀⠀⣧⠀⠀⠀⠀⠀⣀⠏⠀⠀⠀⠀⠀⠀⢀⠀⠀⠈⠉⢳⡀⠀⠀⠀⠀⢸⠀⠀
+⠀⠀⢸⠀⠀⠀⣠⣾⠀⠀⠀⣂⡠⠤⢤⣤⠬⠤⢄⣰⠀⠀⠈⣷⡀⠀⠀⡾⠀⠀
+⠀⠀⠸⢦⣀⣼⠋⢏⢀⡜⠊⠁⢠⣾⣿⣿⣿⣦⠀⠈⠑⠶⡀⣹⠹⡦⠖⠃⠀⠀
+⠀⠀⠀⠀⢸⠃⠀⠀⠉⠀⠀⠀⠸⣁⣼⣿⣇⡸⠀⠀⠀⠀⠈⠁⠀⢻⡀⠀⠀⠀
+⠀⠀⠀⠀⣾⠀⠀⠀⣠⡴⠒⠉⠓⠲⢼⣈⠯⠒⠋⠙⠲⣄⠀⠀⠀⢸⡇⠀⠀⠀
+⠀⠀⠀⠀⢹⠀⠀⣰⠋⢲⣤⡀⠀⠀⠀⠀⠀⠀⠀⣠⣴⠋⢳⠀⠀⢸⠃⠀⠀⠀
+⠀⠀⠀⠀⠈⣧⠀⣏⠀⢸⣿⠏⠀⠀⢀⣀⠀⠀⠀⢿⡿⠀⠈⡇⢠⠏⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⠳⣿⡀⠀⠀⠀⠀⠀⢌⣂⠅⠀⠀⠀⠀⢀⣼⡶⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⡀⣀⠽⠓⠲⠤⢤⣤⣤⣤⣤⣤⡤⠤⠶⢯⡁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠣⠸⠛⠒⠒⢲⡀⠀⣀⡤⠦⣄⠀⢠⠖⠒⠒⠻⣀⠇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢔⢑⠋⠁⠀⠀⠀⢹⠉⡂⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        """
+        
+        print(kuromi_art)
+        print()
+        print("×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis & Recommendation System ( ˶ˆᗜˆ˵ )")
+        print("=" * 80)
         print("Choose option:")
-        print("1. 📊 Get stock data (all Magnificent Seven)")
-        print("2. 🎯 Get stock data (specific stock)")
-        print("3. 💡 Get buy recommendations (all stocks)")
-        print("4. 🔍 Analyze specific stock")
-        print("5. 🌍 General web crawling")
+        print("1. ଘ(੭*ˊᵕˋ)੭* Get stock data (all Magnificent Seven)")
+        print("2. °ʚ(*´꒳`*)ɞ° Get stock data (specific stock)")
+        print("3. ٩(ˊᗜˋ*)و̵ Get buy recommendations (all stocks)")
+        print("4. ( ˶ˆ꒳ˆ˵ ) Analyze specific stock")
+        print("5. ฅ^•ﻌ•^ฅ General web crawling")
         
     def get_user_choice(self):
         """Get user menu choice"""
@@ -38,13 +59,13 @@ class StockAnalysisCLI:
         
     def crawl_all_stocks(self):
         """Handle crawling all stocks"""
-        print("\n📊 Crawling all Magnificent Seven stocks...")
+        print("\nଘ(੭*ˊᵕˋ)੭* Crawling all Magnificent Seven stocks...")
         results = self.crawler.get_all_stocks_data()
         print(json.dumps(results, indent=2))
         
     def crawl_specific_stock(self):
         """Handle crawling a specific stock"""
-        print(f"\n🎯 Available stocks: {', '.join(MAGNIFICENT_SEVEN.keys())}")
+        print(f"\n°ʚ(*´꒳`*)ɞ° Available stocks: {', '.join(MAGNIFICENT_SEVEN.keys())}")
         symbol = input("Enter stock symbol: ").upper().strip()
         
         if symbol in MAGNIFICENT_SEVEN:
@@ -52,14 +73,14 @@ class StockAnalysisCLI:
             if result:
                 print(json.dumps(result, indent=2))
             else:
-                print(f"❌ Failed to get data for {symbol}")
+                print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to get data for {symbol}")
         else:
-            print("❌ Invalid symbol. Please choose from the Magnificent Seven.")
+            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid symbol. Please choose from the Magnificent Seven.")
             
     def get_all_recommendations(self):
         """Handle getting recommendations for all stocks"""
-        print("\n💡 Generating buy recommendations for all Magnificent Seven stocks...")
-        print("⏰ This may take a moment as we analyze each stock...")
+        print("\n٩(ˊᗜˋ*)و̵ Generating buy recommendations for all Magnificent Seven stocks...")
+        print("₊‧°𐐪♡𐑂°‧₊ This may take a moment as we analyze each stock...")
         
         results = self.recommendation_engine.analyze_all_magnificent_seven()
         report = self.recommendation_engine.generate_investment_report(results)
@@ -67,24 +88,24 @@ class StockAnalysisCLI:
         
     def analyze_specific_stock(self):
         """Handle analyzing a specific stock"""
-        print(f"\n🔍 Available stocks: {', '.join(MAGNIFICENT_SEVEN.keys())}")
+        print(f"\n( ˶ˆ꒳ˆ˵ ) Available stocks: {', '.join(MAGNIFICENT_SEVEN.keys())}")
         symbol = input("Enter stock symbol to analyze: ").upper().strip()
         
         if symbol in MAGNIFICENT_SEVEN:
-            print(f"\n🧮 Analyzing {symbol}...")
+            print(f"\n"૮₍  ˶•⤙•˶ ₎ა" Analyzing {symbol}...")
             analysis = self.recommendation_engine.analyze_single_stock(symbol)
             
             if 'error' in analysis:
-                print(f"❌ {analysis['error']}")
+                print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ {analysis['error']}")
                 return
                 
-            print(f"\n📈 ANALYSIS RESULT FOR {symbol}")
+            print(f"\n˃̵ᴗ˂ ANALYSIS RESULT FOR {symbol}")
             print("-" * 50)
             print(f"Company: {analysis['company']}")
             print(f"Overall Score: {analysis['overall_score']}")
             print(f"Recommendation: {analysis['recommendation']}")
             print(f"Confidence: {analysis['confidence']}")
-            print("\n📋 Detailed Breakdown:")
+            print("\nଘ(੭*ˊᵕˋ)੭* Detailed Breakdown:")
             
             breakdown = analysis['analysis_breakdown']
             print(f"  • Momentum: {breakdown['momentum']['analysis']} (Score: {breakdown['momentum']['score']})")
@@ -94,7 +115,7 @@ class StockAnalysisCLI:
             print(f"  • Value: {breakdown['value']['analysis']} (Score: {breakdown['value']['score']})")
             
         else:
-            print("❌ Invalid symbol. Please choose from the Magnificent Seven.")
+            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid symbol. Please choose from the Magnificent Seven.")
             
     def crawl_general_url(self):
         """Handle general web crawling"""
@@ -104,7 +125,7 @@ class StockAnalysisCLI:
         if result:
             print(json.dumps(result, indent=2))
         else:
-            print("❌ Failed to crawl the URL")
+            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to crawl the URL")
             
     def run(self):
         """Run the CLI application"""
@@ -123,7 +144,7 @@ class StockAnalysisCLI:
             elif choice == "5":
                 self.crawl_general_url()
             else:
-                print("❌ Invalid choice.")
+                print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid choice.")
                 
         finally:
             self.crawler.close()

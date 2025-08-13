@@ -18,7 +18,7 @@ class StockDataTab:
         """Create the stock data tab"""
         # Stock Data Frame
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="📊 Stock Data")
+        self.notebook.add(self.frame, text="(@_@) Stock Data")
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -32,15 +32,15 @@ class StockDataTab:
         
     def create_control_panel(self):
         """Create control panel with cool buttons"""
-        control_frame = ttk.LabelFrame(self.frame, text="🖤💗 Control Panel", padding="15")
+        control_frame = ttk.LabelFrame(self.frame, text="(>.<) Control Panel", padding="15")
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Main action buttons
-        ttk.Button(control_frame, text="✨ Get All Stocks", 
+        ttk.Button(control_frame, text="(*_*) Get All Stocks", 
                   command=self.get_all_stocks_data,
                   style='Kuromi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="🔄 Refresh",
+        ttk.Button(control_frame, text="(^_^) Refresh",
                   command=self.refresh_stock_data,
                   style='Kuromi.Black.TButton').grid(row=0, column=1, padx=(0, 10))
         
@@ -55,13 +55,13 @@ class StockDataTab:
                                   style='Kuromi.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="🎯 Get Single Stock",
+        ttk.Button(control_frame, text="(>_<) Get Single Stock",
                   command=self.get_single_stock_data,
                   style='Kuromi.Primary.TButton').grid(row=0, column=4)
         
     def create_data_display(self):
         """Create data display area"""
-        data_frame = ttk.LabelFrame(self.frame, text="📈 Stock Information", padding="15")
+        data_frame = ttk.LabelFrame(self.frame, text="(@_@) Stock Information", padding="15")
         data_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         data_frame.grid_rowconfigure(0, weight=1)
         data_frame.grid_columnconfigure(0, weight=1)
@@ -92,7 +92,7 @@ class StockDataTab:
         """Get data for all stocks in a separate thread"""
         def fetch_data():
             try:
-                self.main_app.update_status("✨ Fetching all stock data with Kuromi's rebel magic...")
+                self.main_app.update_status("(*_*) Fetching all stock data with Kuromi's rebel magic...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_all_stocks_data()
@@ -100,12 +100,12 @@ class StockDataTab:
                 
                 # Update UI in main thread
                 self.main_app.root.after(0, self.update_stock_display, data)
-                self.main_app.root.after(0, self.main_app.update_status, "🎉 Stock data collection completed!")
+                self.main_app.root.after(0, self.main_app.update_status, "(^_^) Stock data collection completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error fetching stock data: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "❌ Error loading stock data")
+                self.main_app.root.after(0, self.main_app.update_status, "(>_<) Error loading stock data")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=fetch_data, daemon=True).start()
@@ -114,12 +114,12 @@ class StockDataTab:
         """Get data for a single selected stock"""
         symbol = self.stock_var.get()
         if not symbol:
-            messagebox.showwarning("Warning", "Please select a stock symbol first! 💝")
+            messagebox.showwarning("Warning", "Please select a stock symbol first! (>.<)")
             return
             
         def fetch_data():
             try:
-                self.main_app.update_status(f"💫 Fetching {symbol} data...")
+                self.main_app.update_status(f"(*_*) Fetching {symbol} data...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_stock_data(symbol)
@@ -130,7 +130,7 @@ class StockDataTab:
                 else:
                     self.main_app.root.after(0, self.main_app.show_error, f"Failed to fetch data for {symbol}")
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"✅ {symbol} data loaded")
+                self.main_app.root.after(0, self.main_app.update_status, f"(^_^) {symbol} data loaded")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
@@ -144,7 +144,7 @@ class StockDataTab:
         if self.main_app.current_stock_data:
             self.get_all_stocks_data()
         else:
-            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first! 🌸")
+            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first! (^_^)")
             
     def update_stock_display(self, data):
         """Update the stock data treeview"""

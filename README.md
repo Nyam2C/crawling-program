@@ -1,11 +1,42 @@
-# 🖤💗 Magnificent Seven Stock Analysis & Recommendation System - Cool Kuromi Edition
-## Kuromi's Rebellious Stock Analysis System 😈🖤💗
+# ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis & Recommendation System - Cool Kuromi Edition
+## Kuromi's Rebellious Stock Analysis System ( ˶ˆᗜˆ˵ )×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
 
-An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **cool Kuromi-themed GUI**! 🖥️📈🤖🖤💗
+```
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⣤⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⡿⢋⣾⣿⣿⡇⠀⠀
+⠀⠀⣾⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣏⣠⣿⣿⣿⣿⣿⠀⠀
+⠀⠀⠉⠉⢿⣯⡛⠻⠿⣿⣶⣶⣶⡄⠀⠀⢀⣀⣀⣤⣼⣿⣿⣿⣭⣿⣿⣿⣿⡇⠀
+⠀⠀⠀⠀⠸⣿⣿⣦⣤⣴⣿⣿⣿⣧⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀
+⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⢉⣉⢻⣿⣿⣿⣿⣿⣿⣷⡀⠀
+⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢖⣟⢈⣩⣾⣿⠟⠛⠿⢿⣿⣿⣧⠀
+⠀⠀⠀⠀⠀⠀⠈⠛⠛⣿⣿⣿⡿⠛⢉⣭⠽⠤⠿⢿⡿⠛⠁⠀⢀⣴⡆⠙⣿⣿⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣷⣾⠋⣀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⣹⡏⠀
+⠀⠀⠀⣀⠤⠠⡀⠀⠀⢿⣿⣿⣿⠇⠀⢻⣿⣿⡄⠀⢠⢤⡄⠀⠈⠉⠐⣤⡟⠁⠀
+⢠⢎⡉⠁⠀⠀⡗⠀⠀⠈⢿⣿⣿⣇⠀⠈⠿⠋⠀⠀⢰⣿⣆⣀⡀⣠⡼⠋⠀⠀⠀
+⠀⠓⠤⣀⣀⡜⠁⠀⡠⢄⠀⠙⢻⣿⣷⢿⡿⠒⠒⠉⢹⣿⣯⠀⠹⣧⡤⢤⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡠⠚⠀⠀⡇⠀⡇⠹⣿⣃⣾⡶⣺⣻⣼⣿⣿⣀⣰⣷⣝⠉⣴⣿⡄
+⠀⠀⠀⠀⠀⠀⠣⠤⠤⠴⠇⠀⠈⠒⠻⣍⣙⣛⢺⣾⣯⡿⣿⣿⣿⣿⣿⣯⣹⣿⠛
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠈⠙⠛⡟⠛⣉⠄⢠⠈⠉⠉⢸⠿⠟⠁⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⠀⢠⣧⡈⠀⢀⡄⠀⣀⡠⠋⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀
+```
 
-> *"Stocks are as rebellious as me... let's tame them together!"* - Kuromi 😈💗
+An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **cool Kuromi-themed GUI**! ଘ(੭*ˊᵕˋ)੭* ੈ♡‧₊˚°ʚ(*´꒳`*)ɞ°"૮₍  ˶•⤙•˶ ₎ა"₊‧°𐐪♡𐑂°‧₊
 
-## 🏆 The Magnificent Seven Stocks
+> *"Stocks are as rebellious as me... let's tame them together!"* - Kuromi ˃̵ᴗ˂₊‧°𐐪♡𐑂°‧₊
+
+## ( ˶ˆᗜˆ˵ ) NEW UPDATE: Kaomoji Edition!
+
+✨ **What's New in this Update:**
+- ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× **Kaomoji Integration**: All emojis replaced with adorable Kaomoji expressions!
+- ( ˶ˆ꒳ˆ˵ ) **ASCII Art**: Beautiful Kuromi ASCII art in CLI and GUI
+- ଘ(੭*ˊᵕˋ)੭* **Enhanced User Experience**: More kawaii and rebellious interface
+- ٩(ˊᗜˋ*)و̵ **Improved Aesthetics**: Even more adorable Kuromi-themed design
+- ₊‧°𐐪♡𐑂°‧₊ **Special Kuromi Signature**: `×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×` throughout the app!
+
+## ( ˶ˆᗜˆ˵ ) The Magnificent Seven Stocks
 
 This crawler targets the following legendary tech stocks:
 - 🍎 **AAPL** - Apple Inc.

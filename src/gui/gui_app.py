@@ -55,7 +55,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with cool Kuromi aesthetics 🖤💗"""
-        self.root.title("🖤💗 Kuromi's Magnificent Seven Stock Analysis 🖤💗")
+        self.root.title("×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×")
         self.root.geometry("1400x900")
         self.root.minsize(1200, 700)
         
@@ -215,16 +215,46 @@ class StockAnalysisGUI:
         
         # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="🖤💗 Kuromi's Magnificent Seven Analysis 🖤💗",
+                              text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Analysis ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×",
                               font=('Arial', 20, 'bold'),
                               foreground=self.colors['kuromi_primary'])
         title_label.grid(row=0, column=1)
         
+        # ASCII Art
+        kuromi_ascii = """
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⣤⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⡿⢋⣾⣿⣿⡇⠀⠀
+⠀⠀⣾⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣏⣠⣿⣿⣿⣿⣿⠀⠀
+⠀⠀⠉⠉⢿⣯⡛⠻⠿⣿⣶⣶⣶⡄⠀⠀⢀⣀⣀⣤⣼⣿⣿⣿⣭⣿⣿⣿⣿⡇⠀
+⠀⠀⠀⠀⠸⣿⣿⣦⣤⣴⣿⣿⣿⣧⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀
+⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⢉⣉⢻⣿⣿⣿⣿⣿⣿⣷⡀⠀
+⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢖⣟⢈⣩⣾⣿⠟⠛⠿⢿⣿⣿⣧⠀
+⠀⠀⠀⠀⠀⠀⠈⠛⠛⣿⣿⣿⡿⠛⢉⣭⠽⠤⠿⢿⡿⠛⠁⠀⢀⣴⡆⠙⣿⣿⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣷⣾⠋⣀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⣹⡏⠀
+⠀⠀⠀⣀⠤⠠⡀⠀⠀⢿⣿⣿⣿⠇⠀⢻⣿⣿⡄⠀⢠⢤⡄⠀⠈⠉⠐⣤⡟⠁⠀
+⢠⢎⡉⠁⠀⠀⡗⠀⠀⠈⢿⣿⣿⣇⠀⠈⠿⠋⠀⠀⢰⣿⣆⣀⡀⣠⡼⠋⠀⠀⠀
+⠀⠓⠤⣀⣀⡜⠁⠀⡠⢄⠀⠙⢻⣿⣷⢿⡿⠒⠒⠉⢹⣿⣯⠀⠹⣧⡤⢤⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡠⠚⠀⠀⡇⠀⡇⠹⣿⣃⣾⡶⣺⣻⣼⣿⣿⣀⣰⣷⣝⠉⣴⣿⡄
+⠀⠀⠀⠀⠀⠀⠣⠤⠤⠴⠇⠀⠈⠒⠻⣍⣙⣛⢺⣾⣯⡿⣿⣿⣿⣿⣿⣯⣹⣿⠛
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠈⠙⠛⡟⠛⣉⠄⢠⠈⠉⠉⢸⠿⠟⠁⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⠀⢠⣧⡈⠀⢀⡄⠀⣀⡠⠋⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀
+        """
+        
+        # ASCII Art Label
+        ascii_label = ttk.Label(title_frame,
+                               text=kuromi_ascii,
+                               font=('Consolas', 8),
+                               foreground=self.colors['kuromi_primary'])
+        ascii_label.grid(row=1, column=1, pady=(5, 0))
+        
         subtitle_label = ttk.Label(title_frame,
-                                 text="Stocks are as rebellious as me... let's tame them! 😈💗",
+                                 text="Stocks are as rebellious as me... let's tame them! ˃̵ᴗ˂",
                                  font=('Arial', 12, 'italic'),
                                  foreground=self.colors['kuromi_accent'])
-        subtitle_label.grid(row=1, column=1, pady=(5, 0))
+        subtitle_label.grid(row=2, column=1, pady=(5, 0))
         
         # Right Kuromi sticker
         right_sticker = self.add_kuromi_decoration(title_frame)
@@ -234,7 +264,7 @@ class StockAnalysisGUI:
     def create_status_bar(self, parent):
         """Create cool status bar 🖤💗"""
         self.status_var = tk.StringVar()
-        self.status_var.set("🖤💗 Ready to rock the market with Kuromi's style! Let's make some rebellious investments! 😈")
+        self.status_var.set("˚ǚ⁀˝ 𝑐𝑜�𝒊𝐼 𝐫̵ 𝑜 ˝⁀̵ Ready to rock the market with Kuromi's style! Let's make some rebellious investments! ∿ ₁ ᵗ⁷")
         
         status_frame = ttk.Frame(parent)
         status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(15, 0))
@@ -265,7 +295,7 @@ class StockAnalysisGUI:
         
     def show_error(self, message):
         """Show cool error message 😠"""
-        messagebox.showerror("😠 Hmph!", f"🖤 {message}")
+        messagebox.showerror("˃̵ᴗ˂ Hmph!", f"₅⃒⃑*ˊᵀ⁵ᵀˊ*⃒⃐ₔ {message}")
         
     def on_closing(self):
         """Handle application closing with cool goodbye 🖤💗"""
@@ -281,16 +311,16 @@ class StockAnalysisGUI:
         # Create cool animation variables
         self.animation_dots = 0
         self.cool_quotes = [
-            "🖤💗 Markets are just like me... unpredictable but totally worth it! 😈",
-            "💀 Don't underestimate me! I'll find the best stocks for you! 🎯",
-            "🌸 Even rebels need smart investments... let's be rebelliously rich! 💰",
-            "😈 Hmph! These market trends can't fool Kuromi's sharp eyes! 👁️",
-            "🖤 My Devil's tail knows which way the market will swing! 📈",
-            "💗 Being cute AND profitable? That's my specialty! 😎",
-            "🎀 Pink and black, just like profits and losses... I prefer pink! 💗",
-            "😤 Those boring analysts don't know real style! Let me show you! ✨",
-            "🌟 Kuromi's investment magic is way cooler than anyone else's! 🪄",
-            "😈💗 Rebellious stocks for a rebellious investor... perfect match! 🎯"
+            "( ˆᶤⁱ ˆ⁷ ) Markets are just like me... unpredictable but totally worth it! ˃̵ᴗ˂",
+            "“₉ₕ₈ₑ ˆ•␡•ˆ ₈ₑₕ₁ Don't underestimate me! I'll find the best stocks for you! ׳˚ﾊ(ˊ*ˊﾀ˓*ﾀ)˚׳",
+            "( ˆⁱ̵˓ˆ⁷ ) Even rebels need smart investments... let's be rebelliously rich! ₉(ˊᶤˋ*)و̵",
+            "׳˚(ˊˊᶤ̃אﾀᶤ̃ˊ)₁ₐ* ˈ♡‧₊˚ Hmph! These market trends can't fool Kuromi's sharp eyes!",
+            "׵²•✼•²׵ My Devil's tail knows which way the market will swing! °ǚ(ˊ*ˊ͐₃ﾀ*ﾀ)ɪ°",
+            "₈₁ₕ₈ₑ₇*ᵃˊᶤⁿˊˋ)₂ₙₗ* ‪₈♡‧₊˚ Being cute AND profitable? That's my specialty!",
+            "₊‧°𝐿♡♡𝑂°‧₊ Pink and black, just like profits and losses... I prefer pink!",
+            "₅⃒⃑*ˊᵀ⁵ᵀˊ*⃒⃐ₔ Those boring analysts don't know real style! Let me show you!",
+            "°ǚ(ˊ*ˊ͐₃ﾀ*ﾀ)ɪ° Kuromi's investment magic is way cooler than anyone else's!",
+            "˃̵ᴗ˂ Rebellious stocks for a rebellious investor... perfect match! ( ˆⁱ̵˓ˆ⁷ )"
         ]
         self.current_quote = 0
         
