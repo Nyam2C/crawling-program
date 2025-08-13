@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Main entry point for the Magnificent Seven Stock Analysis System
+くるみ様の優雅なる株式分析システム 🌹⏰
 """
 
 import sys

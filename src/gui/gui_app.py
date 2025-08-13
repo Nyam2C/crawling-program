@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Magnificent Seven Stock Analysis - Windows GUI Application
+Magnificent Seven Stock Analysis - くるみ様の時間操作GUI Application
+Powered by Kurumi Tokisaki's temporal elegance ✨
 """
 
 import tkinter as tk
@@ -44,7 +46,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with Kurumi-style aesthetics"""
-        self.root.title("Kurumi Stock Analysis System")
+        self.root.title("くるみ様の株式分析システム ～時と投資の優雅な舞踏～")
         self.root.geometry("1400x900")
         self.root.minsize(1200, 700)
         
@@ -174,14 +176,14 @@ class StockAnalysisGUI:
         title_frame.grid(row=0, column=0, pady=(0, 15), sticky=(tk.W, tk.E))
         
         title_label = ttk.Label(title_frame, 
-                              text="Kurumi Magnificent Seven Analysis",
-                              font=('Arial', 18, 'bold'),
+                              text="くるみ様のマグニフィセント・セブン分析",
+                              font=('Meiryo', 18, 'bold'),
                               foreground=self.colors['kurumi_gold'])
         title_label.grid(row=0, column=0)
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Time and stocks both are precious",
-                                 font=('Arial', 10, 'italic'),
+                                 text="時間も株式も...どちらも貴重なものですわ ♪",
+                                 font=('Meiryo', 10, 'italic'),
                                  foreground=self.colors['kurumi_accent'])
         subtitle_label.grid(row=1, column=0, pady=(5, 0))
         
@@ -207,26 +209,26 @@ class StockAnalysisGUI:
         """Create the stock data tab"""
         # Stock Data Frame
         stock_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(stock_frame, text="Stock Data")
+        self.notebook.add(stock_frame, text="📊 株式データ")
         
         # Configure grid
         stock_frame.grid_rowconfigure(1, weight=1)
         stock_frame.grid_columnconfigure(1, weight=1)
         
         # Control panel
-        control_frame = ttk.LabelFrame(stock_frame, text="Controls", padding="10")
+        control_frame = ttk.LabelFrame(stock_frame, text="操作パネル", padding="10")
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(control_frame, text="Gather All Stocks Data", 
+        ttk.Button(control_frame, text="全株式データを収集 🌹", 
                   command=self.get_all_stocks_data,
                   style='Kurumi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="Refresh Timeline",
+        ttk.Button(control_frame, text="時間軸を更新 🕐",
                   command=self.refresh_stock_data,
                   style='Kurumi.Gold.TButton').grid(row=0, column=1, padx=(0, 10))
         
         # Stock selection
-        ttk.Label(control_frame, text="Choose Your Target:",
+        ttk.Label(control_frame, text="標的をお選びください ✨:",
                  foreground=self.colors['kurumi_gold']).grid(row=0, column=2, padx=(20, 5))
         self.stock_var = tk.StringVar()
         stock_combo = ttk.Combobox(control_frame, textvariable=self.stock_var, 
@@ -235,12 +237,12 @@ class StockAnalysisGUI:
                                   style='Kurumi.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="Analyze Single Stock",
+        ttk.Button(control_frame, text="個別株式を分析 🎭",
                   command=self.get_single_stock_data,
                   style='Kurumi.Primary.TButton').grid(row=0, column=4)
         
         # Stock data display
-        data_frame = ttk.LabelFrame(stock_frame, text="Stock Information", padding="10")
+        data_frame = ttk.LabelFrame(stock_frame, text="株式情報 📈", padding="10")
         data_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         data_frame.grid_rowconfigure(0, weight=1)
         data_frame.grid_columnconfigure(0, weight=1)
@@ -270,30 +272,30 @@ class StockAnalysisGUI:
     def create_recommendations_tab(self):
         """Create the recommendations tab"""
         rec_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(rec_frame, text="Recommendations")
+        self.notebook.add(rec_frame, text="💡 投資提言")
         
         # Configure grid
         rec_frame.grid_rowconfigure(1, weight=1)
         rec_frame.grid_columnconfigure(0, weight=1)
         
         # Control panel
-        rec_control_frame = ttk.LabelFrame(rec_frame, text="Generate Recommendations", padding="10")
+        rec_control_frame = ttk.LabelFrame(rec_frame, text="投資提言を生成 🔮", padding="10")
         rec_control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(rec_control_frame, text="Advanced Analysis (Recommended)",
+        ttk.Button(rec_control_frame, text="高度な占い (おすすめ) 🌙",
                   command=self.generate_advanced_recommendations,
                   style='Kurumi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
         
-        ttk.Button(rec_control_frame, text="Quick Analysis",
+        ttk.Button(rec_control_frame, text="簡単な一瞥 🕐",
                   command=self.generate_basic_recommendations,
                   style='Kurumi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(rec_control_frame, text="Save Report",
+        ttk.Button(rec_control_frame, text="予言を保存 📜",
                   command=self.export_report,
                   style='Kurumi.Gold.TButton').grid(row=0, column=2)
         
         # Recommendations display
-        rec_display_frame = ttk.LabelFrame(rec_frame, text="Investment Recommendations", padding="10")
+        rec_display_frame = ttk.LabelFrame(rec_frame, text="投資の助言 ✨", padding="10")
         rec_display_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         rec_display_frame.grid_rowconfigure(0, weight=1)
         rec_display_frame.grid_columnconfigure(0, weight=1)
@@ -312,49 +314,49 @@ class StockAnalysisGUI:
     def create_individual_analysis_tab(self):
         """Create the individual stock analysis tab"""
         analysis_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(analysis_frame, text="Individual Analysis")
+        self.notebook.add(analysis_frame, text="🔍 個別分析")
         
         # Configure grid
         analysis_frame.grid_rowconfigure(2, weight=1)
         analysis_frame.grid_columnconfigure(1, weight=1)
         
         # Stock selection
-        select_frame = ttk.LabelFrame(analysis_frame, text="Select Stock for Analysis", padding="10")
+        select_frame = ttk.LabelFrame(analysis_frame, text="分析する株式を選択 🎯", padding="10")
         select_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Label(select_frame, text="Stock Symbol:").grid(row=0, column=0, padx=(0, 10))
+        ttk.Label(select_frame, text="株式シンボル:").grid(row=0, column=0, padx=(0, 10))
         self.analysis_stock_var = tk.StringVar()
         analysis_combo = ttk.Combobox(select_frame, textvariable=self.analysis_stock_var,
                                     values=list(MAGNIFICENT_SEVEN.keys()),
                                     state='readonly', width=15)
         analysis_combo.grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(select_frame, text="Deep Analysis",
+        ttk.Button(select_frame, text="深い分析 🌙",
                   command=self.analyze_individual_stock_advanced,
                   style='Kurumi.Gold.TButton').grid(row=0, column=2, padx=(0, 5))
                   
-        ttk.Button(select_frame, text="Quick Analysis",
+        ttk.Button(select_frame, text="簡易分析 🕐",
                   command=self.analyze_individual_stock_basic,
                   style='Kurumi.Primary.TButton').grid(row=0, column=3)
         
         # Analysis results
-        results_frame = ttk.LabelFrame(analysis_frame, text="Analysis Results", padding="10")
+        results_frame = ttk.LabelFrame(analysis_frame, text="分析結果 📉", padding="10")
         results_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
         # Score display
         score_frame = ttk.Frame(results_frame)
         score_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Label(score_frame, text="Overall Score:").grid(row=0, column=0, padx=(0, 10))
+        ttk.Label(score_frame, text="総合点数:").grid(row=0, column=0, padx=(0, 10))
         self.score_label = ttk.Label(score_frame, text="--", font=('Arial', 12, 'bold'))
         self.score_label.grid(row=0, column=1, padx=(0, 20))
         
-        ttk.Label(score_frame, text="Recommendation:").grid(row=0, column=2, padx=(0, 10))
+        ttk.Label(score_frame, text="推奨度:").grid(row=0, column=2, padx=(0, 10))
         self.recommendation_label = ttk.Label(score_frame, text="--", font=('Arial', 12, 'bold'))
         self.recommendation_label.grid(row=0, column=3)
         
         # Detailed analysis
-        detail_frame = ttk.LabelFrame(analysis_frame, text="Detailed Breakdown", padding="10")
+        detail_frame = ttk.LabelFrame(analysis_frame, text="詳細分析 🔍", padding="10")
         detail_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         detail_frame.grid_rowconfigure(0, weight=1)
         detail_frame.grid_columnconfigure(0, weight=1)
@@ -370,53 +372,53 @@ class StockAnalysisGUI:
     def create_settings_tab(self):
         """Create the settings tab"""
         settings_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(settings_frame, text="Settings")
+        self.notebook.add(settings_frame, text="⚙️ 設定")
         
         # App info
-        info_frame = ttk.LabelFrame(settings_frame, text="Application Information", padding="10")
+        info_frame = ttk.LabelFrame(settings_frame, text="アプリケーション情報 📜", padding="10")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        info_text = """Kurumi Magnificent Seven Analysis System
+        info_text = """🌹 くるみ様のマグニフィセント・セブン分析システム 🕐
         
-Version: 2.0.0 - Kurumi Edition
-Created with: Elegant Gothic Aesthetics
+バージョン: 2.0.0 - くるみエディション
+作成: エレガントゴシック美学
         
-This application provides advanced stock analysis and recommendations
-for the Seven Magnificent technology stocks:
+このアプリケーションは7つの偉大なテクノロジー株式に
+対して高度な分析と推奨を提供します:
         
-AAPL - Apple Inc.
-MSFT - Microsoft Corporation
-GOOGL - Alphabet Inc.
-AMZN - Amazon.com Inc.
-NVDA - NVIDIA Corporation
-TSLA - Tesla Inc.
-META - Meta Platforms Inc.
+AAPL - Apple Inc. (リンゴの帝国)
+MSFT - Microsoft Corporation (マイクロソフト王国)
+GOOGL - Alphabet Inc. (アルファベット領域)
+AMZN - Amazon.com Inc. (アマゾン帝国)
+NVDA - NVIDIA Corporation (エンビディア宇宙)
+TSLA - Tesla Inc. (テスラ電気王国)
+META - Meta Platforms Inc. (メタ社交次元)
 
-Time reveals all truths including market movements
+「時はすべての真実を明かす...市場の動きも含めて」
 
-DISCLAIMER: This tool is for educational purposes only.
-Not financial advice. Always do your own research!"""
+❗ 免責事項: このツールは教育目的のみです。
+   投資助言ではありません。必ず自分で調査してください！"""
         
         info_label = ttk.Label(info_frame, text=info_text, justify=tk.LEFT)
         info_label.grid(row=0, column=0)
         
         # Settings controls
-        controls_frame = ttk.LabelFrame(settings_frame, text="Settings", padding="10")
+        controls_frame = ttk.LabelFrame(settings_frame, text="設定 ⚙️", padding="10")
         controls_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Label(controls_frame, text="Request Delay (seconds):").grid(row=0, column=0, padx=(0, 10))
+        ttk.Label(controls_frame, text="リクエスト遅延 (秒):").grid(row=0, column=0, padx=(0, 10))
         self.delay_var = tk.StringVar(value="2")
         delay_spinbox = ttk.Spinbox(controls_frame, from_=1, to=10, textvariable=self.delay_var, width=10)
         delay_spinbox.grid(row=0, column=1)
         
-        ttk.Button(controls_frame, text="Save Preferences",
+        ttk.Button(controls_frame, text="設定を保存 🌹",
                   command=self.save_settings,
                   style='Kurumi.Gold.TButton').grid(row=1, column=0, pady=(10, 0))
         
     def create_status_bar(self, parent):
         """Create status bar"""
         self.status_var = tk.StringVar()
-        self.status_var.set("Ready")
+        self.status_var.set("準備完了ですわ... くるみの時間操作で素晴らしい投資をお見せいたします ✨🕰️")
         
         status_frame = ttk.Frame(parent)
         status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
@@ -449,7 +451,7 @@ Not financial advice. Always do your own research!"""
         """Get data for all stocks in a separate thread"""
         def fetch_data():
             try:
-                self.update_status("Fetching stock data...")
+                self.update_status("時の力で株式データを収集中ですわ... さあ、始まりましょう 📊🌙")
                 self.show_progress()
                 
                 data = self.stock_crawler.get_all_stocks_data()
@@ -457,16 +459,16 @@ Not financial advice. Always do your own research!"""
                 
                 # Update UI in main thread
                 self.root.after(0, self.update_stock_display, data)
-                self.root.after(0, self.update_status, "Stock data loaded successfully")
+                self.root.after(0, self.update_status, "株式データ収集完了！ 素晴らしいデータですわね～ ✨📊")
                 self.root.after(0, self.hide_progress)
                 
             except Exception as e:
                 self.root.after(0, self.show_error, f"Error fetching stock data: {str(e)}")
-                self.root.after(0, self.update_status, "Error loading stock data")
+                self.root.after(0, self.update_status, "株式データの読み込みエラー ⚠️")
                 self.root.after(0, self.hide_progress)
         
         threading.Thread(target=fetch_data, daemon=True).start()
-        self.animate_loading_text("Gathering stock data...")
+        self.animate_loading_text("時の魔法でデータ収集中...")
         
     def get_single_stock_data(self):
         """Get data for a single selected stock"""
@@ -609,7 +611,7 @@ Not financial advice. Always do your own research!"""
         """Analyze individual stock with advanced multi-criteria analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Warning", "Please select a stock symbol")
+            messagebox.showwarning("ご注意", "分析対象の株式をお選びくださいませ 💎")
             return
             
         def analyze():
@@ -628,7 +630,7 @@ Not financial advice. Always do your own research!"""
                 self.root.after(0, self.hide_progress)
                 
             except Exception as e:
-                self.root.after(0, self.show_error, f"Error analyzing {symbol}: {str(e)}")
+                self.root.after(0, self.show_error, f"{symbol} 分析エラー: {str(e)} 💔")
                 self.root.after(0, self.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -637,7 +639,7 @@ Not financial advice. Always do your own research!"""
         """Analyze individual stock with basic analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Warning", "Please select a stock symbol")
+            messagebox.showwarning("ご注意", "分析対象の株式をお選びくださいませ 💎")
             return
             
         def analyze():
@@ -656,7 +658,7 @@ Not financial advice. Always do your own research!"""
                 self.root.after(0, self.hide_progress)
                 
             except Exception as e:
-                self.root.after(0, self.show_error, f"Error analyzing {symbol}: {str(e)}")
+                self.root.after(0, self.show_error, f"{symbol} 分析エラー: {str(e)} 💔")
                 self.root.after(0, self.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -850,11 +852,16 @@ DISCLAIMER: This basic analysis is for educational purposes only.
         self.clock_angle = 0
         self.loading_dots = 0
         self.mystical_quotes = [
-            "Time reveals all market secrets...",
-            "In shadows, opportunities hide...",
-            "Elegant investments bloom with patience...",
-            "The market heartbeat echoes through time...",
-            "Even spirits need good portfolio advice"
+            "時はすべての市場の秘密を明かしますわ... 🕐",
+            "影の中にこそ、真の投資機会が隠れているのです 🌙",
+            "優雅な投資は忍耐と知恵で花開きますの 🌹",
+            "市場の鼓動が時を越えて響きます... 私の魂のように ✨",
+            "精霊でさえ良いポートフォリオ助言が必要ですわ ♪",
+            "最高の投資助言を差し上げましょう... あら、あら、あら 🌙🖤",
+            "時の精霊くるみが、あなたの財産をお守りいたします 🕰️✨",
+            "市場のダンスは美しい... でも私のダンスの方がもっと美しいですわ 💃",
+            "短期で利益を求めるのは愚かです... 時間こそが真の財宝 ⏳",
+            "くふふ... この結果を見て、私の力に驚くでしょう？ 😏🌹"
         ]
         self.current_quote = 0
         
@@ -866,14 +873,14 @@ DISCLAIMER: This basic analysis is for educational purposes only.
         self.animation_running = True
         
         def animate():
-            dots_cycle = ["", ".", "..", "..."]
+            dots_cycle = ["", "✦", "✦✦", "✦✦✦", "✨"]
             cycle_count = 0
             
             while self.progress['mode'] == 'indeterminate' and cycle_count < 20:
                 for dots in dots_cycle:
                     if not self.animation_running:
                         return
-                    self.status_var.set(f">> {base_text}{dots}")
+                    self.status_var.set(f"▶️ {base_text}{dots}")
                     self.root.update()
                     self.root.after(300)
                 cycle_count += 1
