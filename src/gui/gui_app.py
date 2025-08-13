@@ -14,7 +14,7 @@ try:
     PIL_AVAILABLE = True
 except ImportError:
     PIL_AVAILABLE = False
-    print("₍˄·͈༝·͈˄*₎◞ ̑̑ PIL not available. Stickers will be disabled.")
+    print("(˃̵ᴗ˂) PIL not available. Stickers will be disabled.")
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components.stock_data_tab import StockDataTab
@@ -345,7 +345,7 @@ class StockAnalysisGUI:
     def load_kuromi_stickers(self):
         """Load Kuromi sticker images for GUI decoration ( ˶ˆᗜˆ˵ )"""
         if not PIL_AVAILABLE:
-            print("૮₍  ˶•⤙•˶ ₎ა PIL not available, skipping sticker loading")
+            print("( ˶ˆᗜˆ˵ ) PIL not available, skipping sticker loading")
             return
             
         stickers_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'kuromi_stickers')
@@ -361,7 +361,7 @@ class StockAnalysisGUI:
                         photo = ImageTk.PhotoImage(img)
                         self.kuromi_stickers.append(photo)
                     except Exception as e:
-                        print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to load sticker {sticker_file}: {e}")
+                        print(f"(˃̵ᴗ˂) Failed to load sticker {sticker_file}: {e}")
         print(f"ଘ(੭*ˊᵕˋ)੭* Loaded {len(self.kuromi_stickers)} Kuromi stickers!")
         
     def get_random_kuromi_sticker(self):
@@ -371,7 +371,7 @@ class StockAnalysisGUI:
         return None
         
     def add_kuromi_decoration(self, parent):
-        """Add random Kuromi sticker decoration to a frame ₊‧°𐐪♡𐑂°‧₊"""
+        """Add random Kuromi sticker decoration to a frame ( ˶ˆᗜˆ˵ )"""
         sticker = self.get_random_kuromi_sticker()
         if sticker:
             decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])

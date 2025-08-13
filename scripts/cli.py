@@ -73,14 +73,14 @@ class StockAnalysisCLI:
             if result:
                 print(json.dumps(result, indent=2))
             else:
-                print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to get data for {symbol}")
+                print(f"(˃̵ᴗ˂) Failed to get data for {symbol}")
         else:
-            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid symbol. Please choose from the Magnificent Seven.")
+            print("(˃̵ᴗ˂) Invalid symbol. Please choose from the Magnificent Seven.")
             
     def get_all_recommendations(self):
         """Handle getting recommendations for all stocks"""
         print("\n٩(ˊᗜˋ*)و̵ Generating buy recommendations for all Magnificent Seven stocks...")
-        print("₊‧°𐐪♡𐑂°‧₊ This may take a moment as we analyze each stock...")
+        print("( ˶ˆᗜˆ˵ ) This may take a moment as we analyze each stock...")
         
         results = self.recommendation_engine.analyze_all_magnificent_seven()
         report = self.recommendation_engine.generate_investment_report(results)
@@ -92,11 +92,11 @@ class StockAnalysisCLI:
         symbol = input("Enter stock symbol to analyze: ").upper().strip()
         
         if symbol in MAGNIFICENT_SEVEN:
-            print(f"\n"૮₍  ˶•⤙•˶ ₎ა" Analyzing {symbol}...")
+            print(f"\n( ˶ˆᗜˆ˵ ) Analyzing {symbol}...")
             analysis = self.recommendation_engine.analyze_single_stock(symbol)
             
             if 'error' in analysis:
-                print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ {analysis['error']}")
+                print(f"(˃̵ᴗ˂) {analysis['error']}")
                 return
                 
             print(f"\n˃̵ᴗ˂ ANALYSIS RESULT FOR {symbol}")
@@ -115,7 +115,7 @@ class StockAnalysisCLI:
             print(f"  • Value: {breakdown['value']['analysis']} (Score: {breakdown['value']['score']})")
             
         else:
-            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid symbol. Please choose from the Magnificent Seven.")
+            print("(˃̵ᴗ˂) Invalid symbol. Please choose from the Magnificent Seven.")
             
     def crawl_general_url(self):
         """Handle general web crawling"""
@@ -125,7 +125,7 @@ class StockAnalysisCLI:
         if result:
             print(json.dumps(result, indent=2))
         else:
-            print("₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to crawl the URL")
+            print("(˃̵ᴗ˂) Failed to crawl the URL")
             
     def run(self):
         """Run the CLI application"""
@@ -144,7 +144,7 @@ class StockAnalysisCLI:
             elif choice == "5":
                 self.crawl_general_url()
             else:
-                print("₍˄·͈༝·͈˄*₎◞ ̑̑ Invalid choice.")
+                print("(˃̵ᴗ˂) Invalid choice.")
                 
         finally:
             self.crawler.close()
