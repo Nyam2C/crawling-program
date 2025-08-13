@@ -53,7 +53,7 @@ for the seven greatest technology stocks:
    Not investment advice. Always do your own research! (>.<)"""
         
         info_label = ttk.Label(info_frame, text=info_text, justify=tk.LEFT, 
-                              foreground=self.colors['kurumi_text'])
+                              foreground=self.colors['kuromi_text'])
         info_label.grid(row=0, column=0, sticky=(tk.W, tk.N))
         
     def create_settings_controls(self):
@@ -69,7 +69,7 @@ for the seven greatest technology stocks:
         delay_spinbox.grid(row=0, column=1, padx=(0, 15), sticky=tk.W)
         
         ttk.Label(controls_frame, text="(Higher values are more respectful to servers)",
-                 font=('Arial', 9), foreground=self.colors['kurumi_accent']).grid(row=0, column=2, sticky=tk.W)
+                 font=('Arial', 9), foreground=self.colors['kuromi_accent']).grid(row=0, column=2, sticky=tk.W)
         
         # Save button
         ttk.Button(controls_frame, text="(@_@) Save Settings",
@@ -94,7 +94,7 @@ This theme combines Kuromi's elegant gothic aesthetic
 with adorable cute elements for the perfect balance! (>.<)"""
         
         theme_label = ttk.Label(theme_frame, text=theme_text, justify=tk.LEFT,
-                               foreground=self.colors['kurumi_text'])
+                               foreground=self.colors['kuromi_text'])
         theme_label.grid(row=0, column=0, sticky=(tk.W, tk.N))
         
     def save_settings(self):

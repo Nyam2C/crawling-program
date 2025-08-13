@@ -9,7 +9,12 @@ from tkinter import ttk, messagebox
 import threading
 import os
 import random
-from PIL import Image, ImageTk
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
+    print("₍˄·͈༝·͈˄*₎◞ ̑̑ PIL not available. Stickers will be disabled.")
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components.stock_data_tab import StockDataTab
@@ -338,7 +343,11 @@ class StockAnalysisGUI:
         self.root.after(8000, self.show_cool_quote)
         
     def load_kuromi_stickers(self):
-        """Load Kuromi sticker images for GUI decoration 🖤💗"""
+        """Load Kuromi sticker images for GUI decoration ( ˶ˆᗜˆ˵ )"""
+        if not PIL_AVAILABLE:
+            print("૮₍  ˶•⤙•˶ ₎ა PIL not available, skipping sticker loading")
+            return
+            
         stickers_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'kuromi_stickers')
         if os.path.exists(stickers_path):
             for i in range(1, 26):  # 01.png to 25.png
@@ -352,20 +361,26 @@ class StockAnalysisGUI:
                         photo = ImageTk.PhotoImage(img)
                         self.kuromi_stickers.append(photo)
                     except Exception as e:
-                        print(f"Failed to load sticker {sticker_file}: {e}")
-        print(f"Loaded {len(self.kuromi_stickers)} Kuromi stickers! 🖤💗")
+                        print(f"₍˄·͈༝·͈˄*₎◞ ̑̑ Failed to load sticker {sticker_file}: {e}")
+        print(f"ଘ(੭*ˊᵕˋ)੭* Loaded {len(self.kuromi_stickers)} Kuromi stickers!")
         
     def get_random_kuromi_sticker(self):
-        """Get a random Kuromi sticker for decoration 🎲"""
+        """Get a random Kuromi sticker for decoration ( ˶ˆ꒳ˆ˵ )"""
         if self.kuromi_stickers:
             return random.choice(self.kuromi_stickers)
         return None
         
     def add_kuromi_decoration(self, parent):
-        """Add random Kuromi sticker decoration to a frame 😈💗"""
+        """Add random Kuromi sticker decoration to a frame ₊‧°𐐪♡𐑂°‧₊"""
         sticker = self.get_random_kuromi_sticker()
         if sticker:
             decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
+            return decoration_label
+        else:
+            # Fallback: Use text-based decoration if no stickers
+            decoration_label = ttk.Label(parent, text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×", 
+                                       foreground=self.colors['kuromi_primary'],
+                                       background=self.colors['kuromi_dark'])
             return decoration_label
         return None
         

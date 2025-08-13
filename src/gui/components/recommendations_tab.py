@@ -58,10 +58,10 @@ class RecommendationsTab:
             wrap=tk.WORD, 
             height=25,
             font=('Consolas', 11),
-            bg=self.colors['kurumi_light'],
-            fg=self.colors['kurumi_text'],
-            insertbackground=self.colors['kurumi_accent'],
-            selectbackground=self.colors['kurumi_primary']
+            bg=self.colors['kuromi_light'],
+            fg=self.colors['kuromi_text'],
+            insertbackground=self.colors['kuromi_accent'],
+            selectbackground=self.colors['kuromi_primary']
         )
         self.recommendations_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
