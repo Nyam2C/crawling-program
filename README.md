@@ -1,9 +1,9 @@
-# 🌹 Magnificent Seven Stock Analysis & Recommendation System - Kurumi Edition
-## くるみ様の株式分析システム ～時と投資の優雅な舞踏～ ⏰✨
+# 💖 Magnificent Seven Stock Analysis & Recommendation System - Cute Kurumi Edition
+## Kurumi's Adorable Stock Analysis System ✨💖
 
-An intelligent Python-based **Windows desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **Japanese Kurumi-themed GUI**! 🖥️📈🤖🌙
+An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **cute Kurumi-themed GUI**! 🖥️📈🤖💖
 
-> *"時はすべての市場の秘密を明かしますわ..."* - Kurumi Tokisaki 🕐
+> *"Time reveals all market secrets... let's analyze together!"* - Kurumi ✨
 
 ## 🏆 The Magnificent Seven Stocks
 
@@ -44,24 +44,24 @@ This crawler targets the following legendary tech stocks:
 - 📋 **Comprehensive Investment Reports**
 - 🌍 **General web crawling** functionality
 
-### 🖥️ GUI Features - Kurumi Edition 🌙
-- **Elegant Japanese Interface** with Kurumi Tokisaki theme
-- **Gothic Dark Design** with crimson and gold color scheme
-- **Temporal Animations** with mystical loading effects
-- **Japanese Localization** - All text in authentic Japanese
-- **Kurumi Voice Lines** - 10+ rotating mystical quotes
-- **Real-time Data Display** in sortable tables (Japanese labels)
+### 🖥️ GUI Features - Cute Kurumi Edition 💖
+- **Adorable English Interface** with cute Kurumi theme
+- **Gothic Dark Design** with crimson and gold color scheme  
+- **Cute Animations** with sparkly loading effects
+- **Component-Based Architecture** - Clean, modular code structure
+- **Kurumi Voice Lines** - 10+ rotating cute quotes
+- **Real-time Data Display** in sortable tables with cute styling
 - **Interactive Charts** with matplotlib integration
-- **Progress Indicators** with temporal sparkle animations ✨
+- **Progress Indicators** with cute sparkle animations ✨
 - **Export Functionality** for reports and analysis
 
-#### 🎭 Kurumi-Specific Features:
-- **Title**: "くるみ様の株式分析システム ～時と投資の優雅な舞踏～"
-- **Mystical Status Messages**: Rotating Kurumi quotes about time and markets
-- **Elegant Button Labels**: "全株式データを収集 🌹", "高度な占い 🌙", etc.
-- **Japanese Tab Names**: "📊 株式データ", "💡 投資提言", "🔍 個別分析"
-- **Kurumi Loading Animation**: "時の魔法でデータ収集中..." with sparkles
-- **Authentic Kurumi Personality**: Elegant, mystical, time-themed expressions
+#### 💖 Cute Kurumi Features:
+- **Title**: "💖 Kurumi's Magnificent Seven Analysis 💖"
+- **Cute Status Messages**: Rotating adorable Kurumi quotes about time and markets
+- **Adorable Button Labels**: "✨ Get All Stocks", "🌟 Advanced Analysis", etc.
+- **Cute Tab Names**: "📊 Stock Data", "💡 Recommendations", "🔍 Individual Analysis"
+- **Kawaii Loading Messages**: "✨ Fetching all stock data with Kurumi's magic..."
+- **Sweet Kurumi Personality**: Cute, friendly, time-themed expressions with lots of emojis!
 
 ### 🛡️ Technical Features
 - ⚡ **Rate limiting** to respect website resources
@@ -105,26 +105,26 @@ sudo dnf install python3-tkinter
 
 ### 🖥️ **GUI Application (Recommended)**
 
-Launch the elegant Kurumi-themed interface:
+Launch the cute Kurumi-themed interface:
 ```bash
 python main.py
 # OR
 python scripts/run_gui.py
 ```
 
-**GUI Features (Japanese Kurumi Edition):**
-- **📊 株式データ Tab**: View real-time data with Japanese labels and Kurumi flair
-- **💡 投資提言 Tab**: Generate AI-powered recommendations with mystical presentation
-- **🔍 個別分析 Tab**: Deep-dive analysis with temporal elegance
-- **📈 Charts Tab**: Interactive visualizations with Gothic aesthetics
-- **⚙️ 設定 Tab**: Configure application with Japanese interface
+**GUI Features (Cute Kurumi Edition):**
+- **📊 Stock Data Tab**: View real-time data with cute styling and Kurumi charm
+- **💡 Recommendations Tab**: Generate AI-powered recommendations with adorable presentation
+- **🔍 Individual Analysis Tab**: Deep-dive analysis with kawaii elegance
+- **📈 Charts Tab**: Interactive visualizations with cute Gothic aesthetics
+- **⚙️ Settings Tab**: Configure application with adorable interface
 
-### 🌙 Kurumi Experience Highlights:
-- **Mystical Quotes**: "最高の投資助言を差し上げましょう... あら、あら、あら 🌙🖤"
-- **Temporal Loading**: "時の力で株式データを収集中ですわ... さあ、始まりましょう 📊🌙"
-- **Elegant Notifications**: "株式データ収集完了！ 素晴らしいデータですわね～ ✨📊"
-- **Gothic Color Scheme**: Deep crimson (#8B0000) with elegant gold (#FFD700)
-- **Authentic Japanese**: Perfect UTF-8 encoding with proper Japanese fonts
+### 💖 Cute Kurumi Experience Highlights:
+- **Adorable Quotes**: "💖 Time reveals all market secrets... let's analyze together! ✨"
+- **Kawaii Loading**: "✨ Fetching all stock data with Kurumi's magic..."
+- **Sweet Notifications**: "🎉 Stock data collection completed!"
+- **Cute Color Scheme**: Deep crimson (#8B0000) with bright gold (#FFD700)
+- **Component Architecture**: Clean, modular design with separate tab components
 
 ### 🎪 **Command Line Interface**
 
@@ -163,8 +163,13 @@ The project is now **beautifully organized** into a clean, modular structure for
 │   │   ├── 🕷️ stock_crawler.py     # Stock data collection
 │   │   └── 🔍 data_extractors.py    # HTML parsing and data extraction
 │   ├── 🖥️ gui/                      # User interface components
-│   │   ├── 📱 gui_app.py            # Main GUI application
-│   │   └── 📈 gui_charts.py         # Chart visualizations
+│   │   ├── 📱 gui_app.py            # Main GUI application (refactored & cute!)
+│   │   ├── 📈 gui_charts.py         # Chart visualizations
+│   │   └── 🎨 components/           # Modular GUI components
+│   │       ├── 📊 stock_data_tab.py     # Stock data display tab
+│   │       ├── 💡 recommendations_tab.py # AI recommendations tab
+│   │       ├── 🔍 analysis_tab.py       # Individual stock analysis tab
+│   │       └── ⚙️ settings_tab.py        # Application settings tab
 │   └── ⚙️ core/                     # Core utilities
 │       ├── 🌐 http_client.py        # HTTP requests and session management
 │       └── 📊 config.py             # Configuration and constants
@@ -314,7 +319,7 @@ Stocks with Positive Momentum: 5/7
 - 📊 **matplotlib** - Chart visualizations
 - 🔢 **numpy** - Numerical computations
 - 🖥️ **tkinter** - GUI framework (included with Python)
-- 🌸 **Japanese Font Support** - For proper Japanese text rendering (Meiryo recommended)
+- 💖 **Cute Font Support** - For proper emoji and cute text rendering
 
 ## ⏱️ Rate Limiting
 
@@ -336,12 +341,13 @@ This tool is for educational and research purposes only. Please:
 4. 🧪 Add tests if applicable
 5. 🚀 Submit a pull request
 
-### 🌙 Kurumi Theme Guidelines:
-- Maintain Japanese authenticity in new features
-- Use elegant Gothic color scheme (#8B0000, #FFD700, #0D0B1F)
-- Include temporal/time-related metaphors in descriptions
-- Follow Kurumi's elegant speaking patterns: "ですわ", "～ですの", "あら、あら"
-- Add appropriate emojis: 🌹, 🕐, 🌙, ✨, 💎, 🎭
+### 💖 Cute Kurumi Theme Guidelines:
+- Maintain adorable and friendly tone in new features
+- Use cute Gothic color scheme (#8B0000, #FFD700, #0D0B1F)
+- Include time-related metaphors with cute expressions
+- Follow Kurumi's sweet speaking patterns with lots of emojis
+- Add appropriate cute emojis: 💖, ✨, 🌙, 🌹, 💎, 🎯, 📊
+- Keep code modular with separate component files
 
 ## 📄 License
 
