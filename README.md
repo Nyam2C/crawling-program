@@ -1,6 +1,9 @@
-# 🚀 Magnificent Seven Stock Analysis & Recommendation System
+# 🌹 Magnificent Seven Stock Analysis & Recommendation System - Kurumi Edition
+## くるみ様の株式分析システム ～時と投資の優雅な舞踏～ ⏰✨
 
-An intelligent Python-based **Windows desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, user-friendly GUI! 🖥️📈🤖✨
+An intelligent Python-based **Windows desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **Japanese Kurumi-themed GUI**! 🖥️📈🤖🌙
+
+> *"時はすべての市場の秘密を明かしますわ..."* - Kurumi Tokisaki 🕐
 
 ## 🏆 The Magnificent Seven Stocks
 
@@ -41,12 +44,24 @@ This crawler targets the following legendary tech stocks:
 - 📋 **Comprehensive Investment Reports**
 - 🌍 **General web crawling** functionality
 
-### 🖥️ GUI Features
-- **Modern Windows Desktop Interface** with tabbed navigation
-- **Real-time Data Display** in sortable tables
+### 🖥️ GUI Features - Kurumi Edition 🌙
+- **Elegant Japanese Interface** with Kurumi Tokisaki theme
+- **Gothic Dark Design** with crimson and gold color scheme
+- **Temporal Animations** with mystical loading effects
+- **Japanese Localization** - All text in authentic Japanese
+- **Kurumi Voice Lines** - 10+ rotating mystical quotes
+- **Real-time Data Display** in sortable tables (Japanese labels)
 - **Interactive Charts** with matplotlib integration
-- **Progress Indicators** and async data loading
+- **Progress Indicators** with temporal sparkle animations ✨
 - **Export Functionality** for reports and analysis
+
+#### 🎭 Kurumi-Specific Features:
+- **Title**: "くるみ様の株式分析システム ～時と投資の優雅な舞踏～"
+- **Mystical Status Messages**: Rotating Kurumi quotes about time and markets
+- **Elegant Button Labels**: "全株式データを収集 🌹", "高度な占い 🌙", etc.
+- **Japanese Tab Names**: "📊 株式データ", "💡 投資提言", "🔍 個別分析"
+- **Kurumi Loading Animation**: "時の魔法でデータ収集中..." with sparkles
+- **Authentic Kurumi Personality**: Elegant, mystical, time-themed expressions
 
 ### 🛡️ Technical Features
 - ⚡ **Rate limiting** to respect website resources
@@ -90,19 +105,26 @@ sudo dnf install python3-tkinter
 
 ### 🖥️ **GUI Application (Recommended)**
 
-Launch the modern desktop interface:
+Launch the elegant Kurumi-themed interface:
 ```bash
 python main.py
 # OR
 python scripts/run_gui.py
 ```
 
-**GUI Features:**
-- **📊 Stock Data Tab**: View real-time data for all stocks in a sortable table
-- **💡 Recommendations Tab**: Generate AI-powered buy/sell recommendations
-- **🔍 Individual Analysis Tab**: Deep-dive analysis for specific stocks
-- **📈 Charts Tab**: Interactive visualizations and charts
-- **⚙️ Settings Tab**: Configure application settings
+**GUI Features (Japanese Kurumi Edition):**
+- **📊 株式データ Tab**: View real-time data with Japanese labels and Kurumi flair
+- **💡 投資提言 Tab**: Generate AI-powered recommendations with mystical presentation
+- **🔍 個別分析 Tab**: Deep-dive analysis with temporal elegance
+- **📈 Charts Tab**: Interactive visualizations with Gothic aesthetics
+- **⚙️ 設定 Tab**: Configure application with Japanese interface
+
+### 🌙 Kurumi Experience Highlights:
+- **Mystical Quotes**: "最高の投資助言を差し上げましょう... あら、あら、あら 🌙🖤"
+- **Temporal Loading**: "時の力で株式データを収集中ですわ... さあ、始まりましょう 📊🌙"
+- **Elegant Notifications**: "株式データ収集完了！ 素晴らしいデータですわね～ ✨📊"
+- **Gothic Color Scheme**: Deep crimson (#8B0000) with elegant gold (#FFD700)
+- **Authentic Japanese**: Perfect UTF-8 encoding with proper Japanese fonts
 
 ### 🎪 **Command Line Interface**
 
@@ -292,6 +314,7 @@ Stocks with Positive Momentum: 5/7
 - 📊 **matplotlib** - Chart visualizations
 - 🔢 **numpy** - Numerical computations
 - 🖥️ **tkinter** - GUI framework (included with Python)
+- 🌸 **Japanese Font Support** - For proper Japanese text rendering (Meiryo recommended)
 
 ## ⏱️ Rate Limiting
 
@@ -309,9 +332,16 @@ This tool is for educational and research purposes only. Please:
 
 1. 🍴 Fork the repository
 2. 🌿 Create a feature branch
-3. ✨ Make your changes
+3. ✨ Make your changes (maintain Kurumi theme consistency!)
 4. 🧪 Add tests if applicable
 5. 🚀 Submit a pull request
+
+### 🌙 Kurumi Theme Guidelines:
+- Maintain Japanese authenticity in new features
+- Use elegant Gothic color scheme (#8B0000, #FFD700, #0D0B1F)
+- Include temporal/time-related metaphors in descriptions
+- Follow Kurumi's elegant speaking patterns: "ですわ", "～ですの", "あら、あら"
+- Add appropriate emojis: 🌹, 🕐, 🌙, ✨, 💎, 🎭
 
 ## 📄 License
 
