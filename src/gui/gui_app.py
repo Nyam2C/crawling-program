@@ -38,9 +38,8 @@ class StockAnalysisGUI:
         self.root = tk.Tk()
         self.setup_main_window()
         self.create_styles()
-        self.create_widgets()
         
-        # Initialize engines
+        # Initialize all attributes FIRST before creating widgets
         self.recommendation_engine = RecommendationEngine(delay=1)
         self.stock_crawler = StockCrawler(delay=1)
         
@@ -51,9 +50,12 @@ class StockAnalysisGUI:
         # Animation variables
         self.animation_running = False
         
-        # Kuromi stickers
+        # Kuromi stickers - initialize BEFORE create_widgets()
         self.kuromi_stickers = []
         self.load_kuromi_stickers()
+        
+        # NOW create widgets after all attributes are initialized
+        self.create_widgets()
         
         # Initialize cool effects
         self.setup_cool_effects()
@@ -366,23 +368,30 @@ class StockAnalysisGUI:
         
     def get_random_kuromi_sticker(self):
         """Get a random Kuromi sticker for decoration ( ˶ˆ꒳ˆ˵ )"""
-        if self.kuromi_stickers:
+        # Check if kuromi_stickers attribute exists and has items
+        if hasattr(self, 'kuromi_stickers') and self.kuromi_stickers:
             return random.choice(self.kuromi_stickers)
         return None
         
     def add_kuromi_decoration(self, parent):
         """Add random Kuromi sticker decoration to a frame ( ˶ˆᗜˆ˵ )"""
-        sticker = self.get_random_kuromi_sticker()
-        if sticker:
-            decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
-            return decoration_label
-        else:
-            # Fallback: Use text-based decoration if no stickers
+        try:
+            sticker = self.get_random_kuromi_sticker()
+            if sticker:
+                decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
+                return decoration_label
+        except Exception as e:
+            print(f"(˃̵ᴗ˂) Sticker decoration failed: {e}")
+        
+        # Fallback: Use text-based decoration
+        try:
             decoration_label = ttk.Label(parent, text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×", 
                                        foreground=self.colors['kuromi_primary'],
                                        background=self.colors['kuromi_dark'])
             return decoration_label
-        return None
+        except Exception as e:
+            print(f"(˃̵ᴗ˂) Text decoration failed: {e}")
+            return None
         
     def run(self):
         """Run the GUI application with cool Kuromi magic 🖤💗"""

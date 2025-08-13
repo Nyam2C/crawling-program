@@ -83,7 +83,7 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
         """Generate advanced multi-criteria recommendations"""
         def generate():
             try:
-                self.main_app.update_status("🌟 Generating advanced analysis with multiple investment criteria...")
+                self.main_app.update_status("( ˶ˆᗜˆ˵ ) Generating advanced analysis with multiple investment criteria...")
                 self.main_app.show_progress()
                 
                 results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=True)
@@ -96,12 +96,12 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
                 if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
                     self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
-                self.main_app.root.after(0, self.main_app.update_status, "✅ Advanced analysis completed successfully!")
+                self.main_app.root.after(0, self.main_app.update_status, "( ˶ˆ꒳ˆ˵ ) Advanced analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error generating advanced recommendations: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "❌ Error generating advanced analysis")
+                self.main_app.root.after(0, self.main_app.update_status, "(˃̵ᴗ˂) Error generating advanced analysis")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=generate, daemon=True).start()
@@ -110,7 +110,7 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
         """Generate basic recommendations (legacy mode)"""
         def generate():
             try:
-                self.main_app.update_status("⚡ Generating quick basic analysis...")
+                self.main_app.update_status("( ˶ˆᗜˆ˵ ) Generating quick basic analysis...")
                 self.main_app.show_progress()
                 
                 results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=False)
@@ -123,12 +123,12 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
                 if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
                     self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
-                self.main_app.root.after(0, self.main_app.update_status, "✅ Basic analysis completed successfully!")
+                self.main_app.root.after(0, self.main_app.update_status, "( ˶ˆ꒳ˆ˵ ) Basic analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error generating basic recommendations: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "❌ Error generating basic analysis")
+                self.main_app.root.after(0, self.main_app.update_status, "(˃̵ᴗ˂) Error generating basic analysis")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=generate, daemon=True).start()
@@ -167,6 +167,6 @@ Generated with love and magic! 🌸
 
 """
                     f.write(cute_header + report)
-                messagebox.showinfo("Success", f"✅ Report saved successfully to {filename}! 💝")
+                messagebox.showinfo("Success", f"( ˶ˆ꒳ˆ˵ ) Report saved successfully to {filename}! 💝")
             except Exception as e:
-                messagebox.showerror("Error", f"❌ Failed to save report: {str(e)}")
+                messagebox.showerror("Error", f"(˃̵ᴗ˂) Failed to save report: {str(e)}")
