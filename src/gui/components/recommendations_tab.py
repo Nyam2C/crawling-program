@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recommendations Tab Component - Cute Kurumi Style"""
+"""Recommendations Tab Component - Cool Kuromi Style"""
 
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox, filedialog
@@ -35,15 +35,15 @@ class RecommendationsTab:
         
         ttk.Button(control_frame, text="🌟 Advanced Analysis",
                   command=self.generate_advanced_recommendations,
-                  style='Kurumi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
+                  style='Kuromi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
         
         ttk.Button(control_frame, text="⚡ Quick Analysis",
                   command=self.generate_basic_recommendations,
-                  style='Kurumi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
+                  style='Kuromi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
         
         ttk.Button(control_frame, text="💾 Save Report",
                   command=self.export_report,
-                  style='Kurumi.Gold.TButton').grid(row=0, column=2)
+                  style='Kuromi.Gold.TButton').grid(row=0, column=2)
         
     def create_recommendations_display(self):
         """Create display area for recommendations"""
@@ -66,7 +66,7 @@ class RecommendationsTab:
         self.recommendations_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Add cute initial message
-        initial_message = """💖 Welcome to Kurumi's Investment Recommendations! 💖
+        initial_message = """💖 Welcome to Kuromi's Investment Recommendations! 💖
 
 🌸 Click "Advanced Analysis" for comprehensive multi-criteria analysis
 ⚡ Click "Quick Analysis" for basic technical analysis
@@ -138,7 +138,7 @@ Choose your analysis type above to get started! 🎯
         self.recommendations_text.delete(1.0, tk.END)
         
         # Add cute header
-        cute_header = """💖✨ KURUMI'S MAGICAL STOCK ANALYSIS RESULTS ✨💖
+        cute_header = """💖✨ KUROMI'S MAGICAL STOCK ANALYSIS RESULTS ✨💖
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 """
@@ -153,7 +153,7 @@ Choose your analysis type above to get started! 🎯
         filename = filedialog.asksaveasfilename(
             defaultextension=".txt",
             filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
-            title="Save Kurumi's Investment Report 💾"
+            title="Save Kuromi's Investment Report 💾"
         )
         
         if filename:
@@ -161,7 +161,7 @@ Choose your analysis type above to get started! 🎯
                 report = self.main_app.recommendation_engine.generate_investment_report(self.main_app.current_recommendations)
                 with open(filename, 'w', encoding='utf-8') as f:
                     # Add cute header to saved file
-                    cute_header = """💖✨ KURUMI'S MAGICAL STOCK ANALYSIS REPORT ✨💖
+                    cute_header = """💖✨ KUROMI'S MAGICAL STOCK ANALYSIS REPORT ✨💖
 Generated with love and magic! 🌸
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

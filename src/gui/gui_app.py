@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-Magnificent Seven Stock Analysis - Cute Kurumi GUI Application
-Powered by Kurumi's magical cuteness! 💖✨
+Magnificent Seven Stock Analysis - Cool Kuromi GUI Application
+Powered by Kuromi's rebellious cuteness! 🖤💗
 """
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
+import os
+import random
+from PIL import Image, ImageTk
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components.stock_data_tab import StockDataTab
@@ -24,7 +27,7 @@ except ImportError:
 
 
 class StockAnalysisGUI:
-    """Main GUI application for stock analysis and recommendations - Cute Kurumi Edition! 💖"""
+    """Main GUI application for stock analysis and recommendations - Cool Kuromi Edition! 🖤💗"""
     
     def __init__(self):
         self.root = tk.Tk()
@@ -43,17 +46,21 @@ class StockAnalysisGUI:
         # Animation variables
         self.animation_running = False
         
-        # Initialize cute effects
-        self.setup_cute_effects()
+        # Kuromi stickers
+        self.kuromi_stickers = []
+        self.load_kuromi_stickers()
+        
+        # Initialize cool effects
+        self.setup_cool_effects()
         
     def setup_main_window(self):
-        """Configure the main window with cute Kurumi aesthetics 💖"""
-        self.root.title("💖 Kurumi's Magnificent Seven Stock Analysis 💖")
+        """Configure the main window with cool Kuromi aesthetics 🖤💗"""
+        self.root.title("🖤💗 Kuromi's Magnificent Seven Stock Analysis 🖤💗")
         self.root.geometry("1400x900")
         self.root.minsize(1200, 700)
         
-        # Cute Kurumi dark theme background
-        self.root.configure(bg='#0D0B1F')  # Deep dark purple-black
+        # Cool Kuromi dark theme background
+        self.root.configure(bg='#1A1A1A')  # Deep black
         
         # Set window icon (if available)
         try:
@@ -66,114 +73,114 @@ class StockAnalysisGUI:
         self.root.grid_columnconfigure(0, weight=1)
         
     def create_styles(self):
-        """Create cute Kurumi-inspired custom styles 🎨"""
+        """Create cool Kuromi-inspired custom styles 🎨"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Cute Kurumi color palette 💖
+        # Cool Kuromi color palette 🖤💗
         self.colors = {
-            'kurumi_primary': '#8B0000',    # Deep crimson red
-            'kurumi_secondary': '#4B0000',  # Darker red  
-            'kurumi_accent': '#FF6B6B',     # Soft pink-red
-            'kurumi_gold': '#FFD700',       # Elegant gold
-            'kurumi_dark': '#0D0B1F',       # Deep dark purple-black
-            'kurumi_light': '#1A1A2E',      # Dark blue-purple
-            'kurumi_text': '#F8F8FF',       # Ghost white
-            'kurumi_shadow': '#2E0016'      # Dark shadow
+            'kuromi_primary': '#FF69B4',    # Hot pink
+            'kuromi_secondary': '#FF1493',  # Deep pink  
+            'kuromi_accent': '#FF91A4',     # Light pink
+            'kuromi_black': '#000000',      # Pure black
+            'kuromi_dark': '#1A1A1A',       # Dark grey-black
+            'kuromi_light': '#2D2D2D',      # Light grey-black
+            'kuromi_text': '#FFFFFF',       # White
+            'kuromi_purple': '#8B008B'      # Dark magenta
         }
         
-        # Configure cute root theme
-        self.style.configure('TFrame', background=self.colors['kurumi_dark'])
-        self.style.configure('TLabel', background=self.colors['kurumi_dark'], 
-                           foreground=self.colors['kurumi_text'])
-        self.style.configure('TLabelFrame', background=self.colors['kurumi_dark'],
-                           foreground=self.colors['kurumi_gold'])
-        self.style.configure('TLabelFrame.Label', background=self.colors['kurumi_dark'],
-                           foreground=self.colors['kurumi_gold'])
+        # Configure cool root theme
+        self.style.configure('TFrame', background=self.colors['kuromi_dark'])
+        self.style.configure('TLabel', background=self.colors['kuromi_dark'], 
+                           foreground=self.colors['kuromi_text'])
+        self.style.configure('TLabelFrame', background=self.colors['kuromi_dark'],
+                           foreground=self.colors['kuromi_primary'])
+        self.style.configure('TLabelFrame.Label', background=self.colors['kuromi_dark'],
+                           foreground=self.colors['kuromi_primary'])
         
-        # Cute Kurumi button styles 💖
-        self.style.configure('Kurumi.Primary.TButton',
-                           background=self.colors['kurumi_primary'],
-                           foreground=self.colors['kurumi_text'],
+        # Cool Kuromi button styles 🖤💗
+        self.style.configure('Kuromi.Primary.TButton',
+                           background=self.colors['kuromi_primary'],
+                           foreground=self.colors['kuromi_black'],
                            borderwidth=2,
                            relief='raised',
-                           focuscolor=self.colors['kurumi_accent'])
+                           focuscolor=self.colors['kuromi_accent'])
         
-        self.style.map('Kurumi.Primary.TButton',
-                      background=[('active', self.colors['kurumi_accent']),
-                                ('pressed', self.colors['kurumi_secondary'])])
+        self.style.map('Kuromi.Primary.TButton',
+                      background=[('active', self.colors['kuromi_accent']),
+                                ('pressed', self.colors['kuromi_secondary'])])
         
-        self.style.configure('Kurumi.Gold.TButton',
-                           background=self.colors['kurumi_gold'], 
-                           foreground=self.colors['kurumi_dark'],
+        self.style.configure('Kuromi.Black.TButton',
+                           background=self.colors['kuromi_black'], 
+                           foreground=self.colors['kuromi_primary'],
                            borderwidth=2,
                            relief='raised',
-                           focuscolor=self.colors['kurumi_accent'])
+                           focuscolor=self.colors['kuromi_accent'])
         
-        self.style.map('Kurumi.Gold.TButton',
-                      background=[('active', '#FFFF99'),
-                                ('pressed', '#B8860B')])
+        self.style.map('Kuromi.Black.TButton',
+                      background=[('active', self.colors['kuromi_light']),
+                                ('pressed', self.colors['kuromi_dark'])])
         
-        # Cute notebook (tabs) styling
-        self.style.configure('TNotebook', background=self.colors['kurumi_dark'],
+        # Cool notebook (tabs) styling
+        self.style.configure('TNotebook', background=self.colors['kuromi_dark'],
                            borderwidth=0)
         self.style.configure('TNotebook.Tab', 
-                           background=self.colors['kurumi_light'],
-                           foreground=self.colors['kurumi_text'],
+                           background=self.colors['kuromi_light'],
+                           foreground=self.colors['kuromi_text'],
                            padding=[20, 10],
                            borderwidth=1)
         self.style.map('TNotebook.Tab',
-                      background=[('selected', self.colors['kurumi_primary']),
-                                ('active', self.colors['kurumi_accent'])])
+                      background=[('selected', self.colors['kuromi_primary']),
+                                ('active', self.colors['kuromi_accent'])])
         
-        # Cute treeview styling
-        self.style.configure('Kurumi.Treeview',
-                           background=self.colors['kurumi_light'],
-                           foreground=self.colors['kurumi_text'],
-                           fieldbackground=self.colors['kurumi_light'],
+        # Cool treeview styling
+        self.style.configure('Kuromi.Treeview',
+                           background=self.colors['kuromi_light'],
+                           foreground=self.colors['kuromi_text'],
+                           fieldbackground=self.colors['kuromi_light'],
                            borderwidth=1,
                            relief='solid')
-        self.style.configure('Kurumi.Treeview.Heading',
-                           background=self.colors['kurumi_primary'],
-                           foreground=self.colors['kurumi_text'],
+        self.style.configure('Kuromi.Treeview.Heading',
+                           background=self.colors['kuromi_primary'],
+                           foreground=self.colors['kuromi_black'],
                            relief='raised',
                            borderwidth=1)
         
-        # Cute combobox styling  
-        self.style.configure('Kurumi.TCombobox',
-                           fieldbackground=self.colors['kurumi_light'],
-                           background=self.colors['kurumi_primary'],
-                           foreground=self.colors['kurumi_text'])
+        # Cool combobox styling  
+        self.style.configure('Kuromi.TCombobox',
+                           fieldbackground=self.colors['kuromi_light'],
+                           background=self.colors['kuromi_primary'],
+                           foreground=self.colors['kuromi_black'])
         
-        # Cute progress bar styling
-        self.style.configure('Kurumi.Horizontal.TProgressbar',
-                           background=self.colors['kurumi_primary'],
-                           troughcolor=self.colors['kurumi_light'],
+        # Cool progress bar styling
+        self.style.configure('Kuromi.Horizontal.TProgressbar',
+                           background=self.colors['kuromi_primary'],
+                           troughcolor=self.colors['kuromi_light'],
                            borderwidth=1,
-                           lightcolor=self.colors['kurumi_accent'],
-                           darkcolor=self.colors['kurumi_secondary'])
+                           lightcolor=self.colors['kuromi_accent'],
+                           darkcolor=self.colors['kuromi_secondary'])
         
-        # Cute scrollbar styling
-        self.style.configure('Kurumi.Vertical.TScrollbar',
-                           background=self.colors['kurumi_light'],
-                           troughcolor=self.colors['kurumi_dark'],
+        # Cool scrollbar styling
+        self.style.configure('Kuromi.Vertical.TScrollbar',
+                           background=self.colors['kuromi_light'],
+                           troughcolor=self.colors['kuromi_dark'],
                            borderwidth=1,
-                           arrowcolor=self.colors['kurumi_text'])
-        self.style.configure('Kurumi.Horizontal.TScrollbar',
-                           background=self.colors['kurumi_light'],
-                           troughcolor=self.colors['kurumi_dark'],
+                           arrowcolor=self.colors['kuromi_text'])
+        self.style.configure('Kuromi.Horizontal.TScrollbar',
+                           background=self.colors['kuromi_light'],
+                           troughcolor=self.colors['kuromi_dark'],
                            borderwidth=1,
-                           arrowcolor=self.colors['kurumi_text'])
+                           arrowcolor=self.colors['kuromi_text'])
         
     def create_widgets(self):
-        """Create all GUI widgets with cute styling 💖"""
-        # Create main frame with cute Kurumi styling
+        """Create all GUI widgets with cool styling 🖤💗"""
+        # Create main frame with cool Kuromi styling
         main_frame = ttk.Frame(self.root, padding="20")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         main_frame.grid_rowconfigure(1, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
         
-        # Cute Kurumi title with adorable styling
+        # Cool Kuromi title with rebellious styling
         self.create_title_section(main_frame)
         
         # Create notebook for tabs
@@ -192,30 +199,42 @@ class StockAnalysisGUI:
         
         self.settings_tab = SettingsTab(self.notebook, self)
         
-        # Cute status bar
+        # Cool status bar
         self.create_status_bar(main_frame)
         
     def create_title_section(self, parent):
-        """Create the cute title section"""
+        """Create the cool title section with Kuromi decorations 🖤💗"""
         title_frame = ttk.Frame(parent)
         title_frame.grid(row=0, column=0, pady=(0, 20), sticky=(tk.W, tk.E))
+        title_frame.grid_columnconfigure(1, weight=1)
         
+        # Left Kuromi sticker
+        left_sticker = self.add_kuromi_decoration(title_frame)
+        if left_sticker:
+            left_sticker.grid(row=0, column=0, rowspan=2, padx=(0, 15), pady=5)
+        
+        # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="💖 Kurumi's Magnificent Seven Analysis 💖",
+                              text="🖤💗 Kuromi's Magnificent Seven Analysis 🖤💗",
                               font=('Arial', 20, 'bold'),
-                              foreground=self.colors['kurumi_gold'])
-        title_label.grid(row=0, column=0)
+                              foreground=self.colors['kuromi_primary'])
+        title_label.grid(row=0, column=1)
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Time and stocks... both are precious! ✨",
+                                 text="Stocks are as rebellious as me... let's tame them! 😈💗",
                                  font=('Arial', 12, 'italic'),
-                                 foreground=self.colors['kurumi_accent'])
-        subtitle_label.grid(row=1, column=0, pady=(5, 0))
+                                 foreground=self.colors['kuromi_accent'])
+        subtitle_label.grid(row=1, column=1, pady=(5, 0))
+        
+        # Right Kuromi sticker
+        right_sticker = self.add_kuromi_decoration(title_frame)
+        if right_sticker:
+            right_sticker.grid(row=0, column=2, rowspan=2, padx=(15, 0), pady=5)
         
     def create_status_bar(self, parent):
-        """Create cute status bar 💖"""
+        """Create cool status bar 🖤💗"""
         self.status_var = tk.StringVar()
-        self.status_var.set("💖 Ready to analyze with Kurumi's magic! Let's make some great investments! ✨")
+        self.status_var.set("🖤💗 Ready to rock the market with Kuromi's style! Let's make some rebellious investments! 😈")
         
         status_frame = ttk.Frame(parent)
         status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(15, 0))
@@ -225,31 +244,31 @@ class StockAnalysisGUI:
                                relief=tk.SUNKEN, anchor=tk.W)
         status_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
-        # Cute progress indicator
+        # Cool progress indicator
         self.progress = ttk.Progressbar(status_frame, mode='indeterminate',
-                                       style='Kurumi.Horizontal.TProgressbar')
+                                       style='Kuromi.Horizontal.TProgressbar')
         self.progress.grid(row=0, column=1, padx=(10, 0))
         
     def update_status(self, message):
-        """Update status bar message with cute flair 💖"""
+        """Update status bar message with cool flair 🖤💗"""
         self.status_var.set(message)
         self.root.update()
         
     def show_progress(self):
-        """Show cute progress bar ✨"""
+        """Show cool progress bar 😈"""
         self.progress.start()
         
     def hide_progress(self):
-        """Hide progress bar and stop cute animations 💖"""
+        """Hide progress bar and stop cool animations 🖤💗"""
         self.progress.stop()
         self.animation_running = False
         
     def show_error(self, message):
-        """Show cute error message 😢"""
-        messagebox.showerror("😢 Oops!", f"💔 {message}")
+        """Show cool error message 😠"""
+        messagebox.showerror("😠 Hmph!", f"🖤 {message}")
         
     def on_closing(self):
-        """Handle application closing with cute goodbye 💖"""
+        """Handle application closing with cool goodbye 🖤💗"""
         try:
             self.recommendation_engine.close()
             self.stock_crawler.close()
@@ -257,45 +276,77 @@ class StockAnalysisGUI:
             pass
         self.root.destroy()
         
-    def setup_cute_effects(self):
-        """Setup cute Kurumi-style effects and animations 💖"""
-        # Create cute animation variables
+    def setup_cool_effects(self):
+        """Setup cool Kuromi-style effects and animations 🖤💗"""
+        # Create cool animation variables
         self.animation_dots = 0
-        self.cute_quotes = [
-            "💖 Time reveals all market secrets... let's analyze together! ✨",
-            "🌙 The best investment opportunities are found in careful analysis! 📊",
-            "🌹 Elegant investing blooms with patience and wisdom! 🌸",
-            "✨ Market rhythms echo through time... just like my heartbeat! 💖",
-            "💎 Even spirits need good portfolio advice sometimes! 😊",
-            "🌙 Let me give you the best investment advice... ara ara ara! 💖",
-            "🕰️ Time spirit Kurumi will protect your wealth! ✨",
-            "💃 Market dances are beautiful... but my dance is more beautiful! 🌹",
-            "⏳ Seeking short-term profits is foolish... time is the true treasure! 💰",
-            "😏 Fufu... seeing these results, you'll be amazed by my power! 🌹"
+        self.cool_quotes = [
+            "🖤💗 Markets are just like me... unpredictable but totally worth it! 😈",
+            "💀 Don't underestimate me! I'll find the best stocks for you! 🎯",
+            "🌸 Even rebels need smart investments... let's be rebelliously rich! 💰",
+            "😈 Hmph! These market trends can't fool Kuromi's sharp eyes! 👁️",
+            "🖤 My Devil's tail knows which way the market will swing! 📈",
+            "💗 Being cute AND profitable? That's my specialty! 😎",
+            "🎀 Pink and black, just like profits and losses... I prefer pink! 💗",
+            "😤 Those boring analysts don't know real style! Let me show you! ✨",
+            "🌟 Kuromi's investment magic is way cooler than anyone else's! 🪄",
+            "😈💗 Rebellious stocks for a rebellious investor... perfect match! 🎯"
         ]
         self.current_quote = 0
         
-        # Start cute quote rotation
-        self.root.after(5000, self.show_cute_quote)
+        # Start cool quote rotation
+        self.root.after(5000, self.show_cool_quote)
         
-    def show_cute_quote(self):
-        """Show a rotating cute quote in status bar 💖"""
+    def show_cool_quote(self):
+        """Show a rotating cool quote in status bar 🖤💗"""
         if not self.animation_running:  # Only show quotes when not processing
-            quote = self.cute_quotes[self.current_quote]
+            quote = self.cool_quotes[self.current_quote]
             self.status_var.set(quote)
-            self.current_quote = (self.current_quote + 1) % len(self.cute_quotes)
+            self.current_quote = (self.current_quote + 1) % len(self.cool_quotes)
         
         # Schedule next quote change
-        self.root.after(8000, self.show_cute_quote)
+        self.root.after(8000, self.show_cool_quote)
+        
+    def load_kuromi_stickers(self):
+        """Load Kuromi sticker images for GUI decoration 🖤💗"""
+        stickers_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'kuromi_stickers')
+        if os.path.exists(stickers_path):
+            for i in range(1, 26):  # 01.png to 25.png
+                sticker_file = f"{i:02d}.png"
+                sticker_path = os.path.join(stickers_path, sticker_file)
+                if os.path.exists(sticker_path):
+                    try:
+                        # Load and resize sticker
+                        img = Image.open(sticker_path)
+                        img = img.resize((50, 50), Image.Resampling.LANCZOS)
+                        photo = ImageTk.PhotoImage(img)
+                        self.kuromi_stickers.append(photo)
+                    except Exception as e:
+                        print(f"Failed to load sticker {sticker_file}: {e}")
+        print(f"Loaded {len(self.kuromi_stickers)} Kuromi stickers! 🖤💗")
+        
+    def get_random_kuromi_sticker(self):
+        """Get a random Kuromi sticker for decoration 🎲"""
+        if self.kuromi_stickers:
+            return random.choice(self.kuromi_stickers)
+        return None
+        
+    def add_kuromi_decoration(self, parent):
+        """Add random Kuromi sticker decoration to a frame 😈💗"""
+        sticker = self.get_random_kuromi_sticker()
+        if sticker:
+            decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
+            return decoration_label
+        return None
         
     def run(self):
-        """Run the GUI application with cute Kurumi magic 💖"""
+        """Run the GUI application with cool Kuromi magic 🖤💗"""
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
 
 
 def main():
-    """Main function to run the cute GUI application 💖"""
+    """Main function to run the cool GUI application 🖤💗"""
     app = StockAnalysisGUI()
     app.run()
 

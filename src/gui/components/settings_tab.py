@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Settings Tab Component - Cute Kurumi Style"""
+"""Settings Tab Component - Cute Kuromi Style"""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -30,9 +30,9 @@ class SettingsTab:
         info_frame = ttk.LabelFrame(self.frame, text="💝 About This App", padding="15")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        info_text = """🌸 Kurumi's Magnificent Seven Stock Analysis System 💖
+        info_text = """🌸 Kuromi's Magnificent Seven Stock Analysis System 💖
 
-✨ Version: 2.0.0 - Cute Kurumi Edition
+✨ Version: 2.0.0 - Cute Kuromi Edition
 🎨 Style: Adorable Gothic Aesthetic  
 💫 Magic Level: Maximum Cuteness!
 
@@ -65,7 +65,7 @@ for the seven greatest technology stocks:
         ttk.Label(controls_frame, text="Request Delay (seconds):").grid(row=0, column=0, padx=(0, 15), sticky=tk.W)
         self.delay_var = tk.StringVar(value="2")
         delay_spinbox = ttk.Spinbox(controls_frame, from_=1, to=10, textvariable=self.delay_var, 
-                                   width=10, style='Kurumi.TSpinbox')
+                                   width=10, style='Kuromi.TSpinbox')
         delay_spinbox.grid(row=0, column=1, padx=(0, 15), sticky=tk.W)
         
         ttk.Label(controls_frame, text="(Higher values are more respectful to servers)",
@@ -74,13 +74,13 @@ for the seven greatest technology stocks:
         # Save button
         ttk.Button(controls_frame, text="💾 Save Settings",
                   command=self.save_settings,
-                  style='Kurumi.Gold.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
+                  style='Kuromi.Gold.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
         
         # Theme info
         theme_frame = ttk.LabelFrame(self.frame, text="🎨 Theme Information", padding="15")
         theme_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        theme_text = """🌸 Current Theme: Cute Kurumi Gothic Style
+        theme_text = """🌸 Current Theme: Cute Kuromi Gothic Style
 
 Color Palette:
 💖 Primary: Deep Crimson (#8B0000)
@@ -90,7 +90,7 @@ Color Palette:
 💫 Light: Dark Blue-Purple (#1A1A2E)
 🤍 Text: Ghost White (#F8F8FF)
 
-This theme combines Kurumi's elegant gothic aesthetic 
+This theme combines Kuromi's elegant gothic aesthetic 
 with adorable cute elements for the perfect balance! 💝"""
         
         theme_label = ttk.Label(theme_frame, text=theme_text, justify=tk.LEFT,

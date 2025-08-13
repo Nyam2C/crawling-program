@@ -1,9 +1,9 @@
-# 💖 Magnificent Seven Stock Analysis & Recommendation System - Cute Kurumi Edition
-## Kurumi's Adorable Stock Analysis System ✨💖
+# 🖤💗 Magnificent Seven Stock Analysis & Recommendation System - Cool Kuromi Edition
+## Kuromi's Rebellious Stock Analysis System 😈🖤💗
 
-An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **cute Kurumi-themed GUI**! 🖥️📈🤖💖
+An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **cool Kuromi-themed GUI**! 🖥️📈🤖🖤💗
 
-> *"Time reveals all market secrets... let's analyze together!"* - Kurumi ✨
+> *"Stocks are as rebellious as me... let's tame them together!"* - Kuromi 😈💗
 
 ## 🏆 The Magnificent Seven Stocks
 
@@ -44,24 +44,24 @@ This crawler targets the following legendary tech stocks:
 - 📋 **Comprehensive Investment Reports**
 - 🌍 **General web crawling** functionality
 
-### 🖥️ GUI Features - Cute Kurumi Edition 💖
-- **Adorable English Interface** with cute Kurumi theme
-- **Gothic Dark Design** with crimson and gold color scheme  
-- **Cute Animations** with sparkly loading effects
+### 🖥️ GUI Features - Cool Kuromi Edition 🖤💗
+- **Cool English Interface** with rebellious Kuromi theme
+- **Gothic Dark Design** with hot pink and black color scheme  
+- **Cool Animations** with rebellious loading effects
 - **Component-Based Architecture** - Clean, modular code structure
-- **Kurumi Voice Lines** - 10+ rotating cute quotes
-- **Real-time Data Display** in sortable tables with cute styling
+- **Kuromi Voice Lines** - 10+ rotating cool quotes
+- **Real-time Data Display** in sortable tables with cool styling
 - **Interactive Charts** with matplotlib integration
-- **Progress Indicators** with cute sparkle animations ✨
+- **Progress Indicators** with cool rebel animations 😈
 - **Export Functionality** for reports and analysis
 
-#### 💖 Cute Kurumi Features:
-- **Title**: "💖 Kurumi's Magnificent Seven Analysis 💖"
-- **Cute Status Messages**: Rotating adorable Kurumi quotes about time and markets
-- **Adorable Button Labels**: "✨ Get All Stocks", "🌟 Advanced Analysis", etc.
-- **Cute Tab Names**: "📊 Stock Data", "💡 Recommendations", "🔍 Individual Analysis"
-- **Kawaii Loading Messages**: "✨ Fetching all stock data with Kurumi's magic..."
-- **Sweet Kurumi Personality**: Cute, friendly, time-themed expressions with lots of emojis!
+#### 🖤💗 Cool Kuromi Features:
+- **Title**: "🖤💗 Kuromi's Magnificent Seven Analysis 🖤💗"
+- **Cool Status Messages**: Rotating rebellious Kuromi quotes about markets and attitude
+- **Rebellious Button Labels**: "✨ Get All Stocks", "🌟 Advanced Analysis", etc.
+- **Cool Tab Names**: "📊 Stock Data", "💡 Recommendations", "🔍 Individual Analysis"
+- **Rebel Loading Messages**: "✨ Fetching all stock data with Kuromi's rebel magic..."
+- **Cool Kuromi Personality**: Rebellious, confident, attitude-filled expressions with lots of emojis!
 
 ### 🛡️ Technical Features
 - ⚡ **Rate limiting** to respect website resources
@@ -105,25 +105,25 @@ sudo dnf install python3-tkinter
 
 ### 🖥️ **GUI Application (Recommended)**
 
-Launch the cute Kurumi-themed interface:
+Launch the cute Kuromi-themed interface:
 ```bash
 python main.py
 # OR
 python scripts/run_gui.py
 ```
 
-**GUI Features (Cute Kurumi Edition):**
-- **📊 Stock Data Tab**: View real-time data with cute styling and Kurumi charm
+**GUI Features (Cute Kuromi Edition):**
+- **📊 Stock Data Tab**: View real-time data with cute styling and Kuromi charm
 - **💡 Recommendations Tab**: Generate AI-powered recommendations with adorable presentation
 - **🔍 Individual Analysis Tab**: Deep-dive analysis with kawaii elegance
 - **📈 Charts Tab**: Interactive visualizations with cute Gothic aesthetics
 - **⚙️ Settings Tab**: Configure application with adorable interface
 
-### 💖 Cute Kurumi Experience Highlights:
+### 💖 Cute Kuromi Experience Highlights:
 - **Adorable Quotes**: "💖 Time reveals all market secrets... let's analyze together! ✨"
-- **Kawaii Loading**: "✨ Fetching all stock data with Kurumi's magic..."
+- **Kawaii Loading**: "✨ Fetching all stock data with Kuromi's magic..."
 - **Sweet Notifications**: "🎉 Stock data collection completed!"
-- **Cute Color Scheme**: Deep crimson (#8B0000) with bright gold (#FFD700)
+- **Cool Color Scheme**: Hot pink (#FF69B4) with pure black (#000000)
 - **Component Architecture**: Clean, modular design with separate tab components
 
 ### 🎪 **Command Line Interface**
@@ -337,15 +337,15 @@ This tool is for educational and research purposes only. Please:
 
 1. 🍴 Fork the repository
 2. 🌿 Create a feature branch
-3. ✨ Make your changes (maintain Kurumi theme consistency!)
+3. ✨ Make your changes (maintain Kuromi theme consistency!)
 4. 🧪 Add tests if applicable
 5. 🚀 Submit a pull request
 
-### 💖 Cute Kurumi Theme Guidelines:
+### 💖 Cute Kuromi Theme Guidelines:
 - Maintain adorable and friendly tone in new features
 - Use cute Gothic color scheme (#8B0000, #FFD700, #0D0B1F)
 - Include time-related metaphors with cute expressions
-- Follow Kurumi's sweet speaking patterns with lots of emojis
+- Follow Kuromi's sweet speaking patterns with lots of emojis
 - Add appropriate cute emojis: 💖, ✨, 🌙, 🌹, 💎, 🎯, 📊
 - Keep code modular with separate component files
 

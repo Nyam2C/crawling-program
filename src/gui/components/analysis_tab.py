@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Individual Analysis Tab Component - Cute Kurumi Style"""
+"""Individual Analysis Tab Component - Cute Kuromi Style"""
 
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
@@ -43,16 +43,16 @@ class IndividualAnalysisTab:
         analysis_combo = ttk.Combobox(select_frame, textvariable=self.analysis_stock_var,
                                     values=list(MAGNIFICENT_SEVEN.keys()),
                                     state='readonly', width=15,
-                                    style='Kurumi.TCombobox')
+                                    style='Kuromi.TCombobox')
         analysis_combo.grid(row=0, column=1, padx=(0, 15))
         
         ttk.Button(select_frame, text="🌟 Deep Analysis",
                   command=self.analyze_individual_stock_advanced,
-                  style='Kurumi.Gold.TButton').grid(row=0, column=2, padx=(0, 10))
+                  style='Kuromi.Gold.TButton').grid(row=0, column=2, padx=(0, 10))
                   
         ttk.Button(select_frame, text="⚡ Quick Analysis",
                   command=self.analyze_individual_stock_basic,
-                  style='Kurumi.Primary.TButton').grid(row=0, column=3)
+                  style='Kuromi.Primary.TButton').grid(row=0, column=3)
         
     def create_results_summary(self):
         """Create analysis results summary"""
@@ -183,7 +183,7 @@ Choose a symbol and analysis type to get started! ✨
         detailed = analysis['detailed_analysis']
         investment_summary = analysis.get('investment_summary', {})
         
-        text = f"""✨ KURUMI'S ADVANCED STOCK ANALYSIS ✨
+        text = f"""✨ KUROMI'S ADVANCED STOCK ANALYSIS ✨
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📊 Stock: {analysis['symbol']} - {analysis['company']}
@@ -241,7 +241,7 @@ Time Horizon: {investment_summary.get('time_horizon', 'N/A')}"""
         """Format basic analysis for display"""
         breakdown = analysis.get('analysis_breakdown', {})
         
-        text = f"""⚡ KURUMI'S QUICK STOCK ANALYSIS ⚡
+        text = f"""⚡ KUROMI'S QUICK STOCK ANALYSIS ⚡
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📊 Stock: {analysis['symbol']} - {analysis['company']}
