@@ -34,7 +34,7 @@ class IndividualAnalysisTab:
         
     def create_stock_selection(self):
         """Create stock selection panel"""
-        select_frame = ttk.LabelFrame(self.frame, text="(˃̵ᴗ˂) Choose Stock to Analyze", padding="15")
+        select_frame = ttk.LabelFrame(self.frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Choose Stock to Analyze", padding="15")
         select_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         ttk.Label(select_frame, text="Stock Symbol:").grid(row=0, column=0, padx=(0, 10))
@@ -50,7 +50,7 @@ class IndividualAnalysisTab:
                   command=self.analyze_individual_stock_advanced,
                   style='Kuromi.Gold.TButton').grid(row=0, column=2, padx=(0, 10))
                   
-        ttk.Button(select_frame, text="(˃̵ᴗ˂) Quick Analysis",
+        ttk.Button(select_frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Quick Analysis",
                   command=self.analyze_individual_stock_basic,
                   style='Kuromi.Primary.TButton').grid(row=0, column=3)
         
@@ -95,12 +95,12 @@ class IndividualAnalysisTab:
         # Add cute initial message
         initial_message = """(>.<) Individual Stock Analysis (>.<)
 
-(˃̵ᴗ˂) Select a stock symbol from the dropdown above
+˚‧꒰ა 𓂋 ໒꒱ ‧˚ Select a stock symbol from the dropdown above
 (*o*) Click "Deep Analysis" for comprehensive multi-criteria analysis
-(˃̵ᴗ˂) Click "Quick Analysis" for basic technical analysis
+˚‧꒰ა 𓂋 ໒꒱ ‧˚ Click "Quick Analysis" for basic technical analysis
 
 Ready to dive deep into your favorite stock? 
-Choose a symbol and analysis type to get started! ( ˶ˆᗜˆ˵ )
+Choose a symbol and analysis type to get started! ⸜(｡˃ ᵕ ˂ )⸝♡
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
@@ -125,11 +125,11 @@ Choose a symbol and analysis type to get started! ( ˶ˆᗜˆ˵ )
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, True)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"( ˶ˆ꒳ˆ˵ ) {symbol} advanced analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} advanced analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"(˃̵ᴗ˂) {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ {symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -143,7 +143,7 @@ Choose a symbol and analysis type to get started! ( ˶ˆᗜˆ˵ )
             
         def analyze():
             try:
-                self.main_app.update_status(f"(˃̵ᴗ˂) Performing basic analysis on {symbol}...")
+                self.main_app.update_status(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Performing basic analysis on {symbol}...")
                 self.main_app.show_progress()
                 
                 analysis = self.main_app.recommendation_engine.analyze_single_stock(symbol, use_advanced=False)
@@ -153,11 +153,11 @@ Choose a symbol and analysis type to get started! ( ˶ˆᗜˆ˵ )
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, False)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"( ˶ˆ꒳ˆ˵ ) {symbol} basic analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} basic analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"(˃̵ᴗ˂) {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ {symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()

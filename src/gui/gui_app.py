@@ -14,7 +14,7 @@ try:
     PIL_AVAILABLE = True
 except ImportError:
     PIL_AVAILABLE = False
-    print("(˃̵ᴗ˂) PIL not available. Stickers will be disabled.")
+    print("˚‧꒰ა 𓂋 ໒꒱ ‧˚ PIL not available. Stickers will be disabled.")
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components.stock_data_tab import StockDataTab
@@ -63,11 +63,20 @@ class StockAnalysisGUI:
     def setup_main_window(self):
         """Configure the main window with cool Kuromi aesthetics 🖤💗"""
         self.root.title("×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×")
-        self.root.geometry("1400x900")
-        self.root.minsize(1200, 700)
+        self.root.geometry("1200x800")
+        self.root.minsize(1000, 600)
+        
+        # Center window on screen for better UX
+        self.center_window()
         
         # Cool Kuromi dark theme background
-        self.root.configure(bg='#1A1A1A')  # Deep black
+        self.root.configure(bg='#0F0A0F')  # Very dark purple
+        
+        # Add colorful window border
+        try:
+            self.root.configure(highlightbackground='#9966CC', highlightthickness=3)
+        except:
+            pass  # In case the option is not supported
         
         # Set window icon (if available)
         try:
@@ -78,22 +87,33 @@ class StockAnalysisGUI:
         # Configure grid weights
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
+    
+    def center_window(self):
+        """Center the window on screen for better UX ⸜(｡˃ ᵕ ˂ )⸝♡"""
+        self.root.update_idletasks()
+        width = self.root.winfo_width()
+        height = self.root.winfo_height()
+        x = (self.root.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.root.winfo_screenheight() // 2) - (height // 2)
+        self.root.geometry(f'{width}x{height}+{x}+{y}')
         
     def create_styles(self):
         """Create cool Kuromi-inspired custom styles 🎨"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Cool Kuromi color palette 🖤💗
+        # Cool Kuromi color palette ⸜(｡˃ ᵕ ˂ )⸝♡
         self.colors = {
-            'kuromi_primary': '#FF69B4',    # Hot pink
-            'kuromi_secondary': '#FF1493',  # Deep pink  
-            'kuromi_accent': '#FF91A4',     # Light pink
+            'kuromi_primary': '#9966CC',    # Main purple
+            'kuromi_secondary': '#663399',  # Deep purple  
+            'kuromi_accent': '#CC99FF',     # Light purple
+            'kuromi_pink': '#FF69B4',       # Hot pink (secondary)
+            'kuromi_pink_light': '#FF91A4', # Light pink
             'kuromi_black': '#000000',      # Pure black
-            'kuromi_dark': '#1A1A1A',       # Dark grey-black
-            'kuromi_light': '#2D2D2D',      # Light grey-black
+            'kuromi_dark': '#1A0D1A',       # Dark purple-black
+            'kuromi_light': '#2D1A2D',      # Light purple-grey
             'kuromi_text': '#FFFFFF',       # White
-            'kuromi_purple': '#8B008B'      # Dark magenta
+            'kuromi_bg': '#0F0A0F'          # Very dark purple
         }
         
         # Configure cool root theme
@@ -227,35 +247,25 @@ class StockAnalysisGUI:
                               foreground=self.colors['kuromi_primary'])
         title_label.grid(row=0, column=1)
         
-        # ASCII Art
+        # Smaller ASCII Art
         kuromi_ascii = """
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⣤⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠿⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⡀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⡿⢋⣾⣿⣿⡇⠀⠀
-⠀⠀⣾⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣏⣠⣿⣿⣿⣿⣿⠀⠀
-⠀⠀⠉⠉⢿⣯⡛⠻⠿⣿⣶⣶⣶⡄⠀⠀⢀⣀⣀⣤⣼⣿⣿⣿⣭⣿⣿⣿⣿⡇⠀
-⠀⠀⠀⠀⠸⣿⣿⣦⣤⣴⣿⣿⣿⣧⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀
-⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⢉⣉⢻⣿⣿⣿⣿⣿⣿⣷⡀⠀
-⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢖⣟⢈⣩⣾⣿⠟⠛⠿⢿⣿⣿⣧⠀
-⠀⠀⠀⠀⠀⠀⠈⠛⠛⣿⣿⣿⡿⠛⢉⣭⠽⠤⠿⢿⡿⠛⠁⠀⢀⣴⡆⠙⣿⣿⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣷⣾⠋⣀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⣹⡏⠀
-⠀⠀⠀⣀⠤⠠⡀⠀⠀⢿⣿⣿⣿⠇⠀⢻⣿⣿⡄⠀⢠⢤⡄⠀⠈⠉⠐⣤⡟⠁⠀
-⢠⢎⡉⠁⠀⠀⡗⠀⠀⠈⢿⣿⣿⣇⠀⠈⠿⠋⠀⠀⢰⣿⣆⣀⡀⣠⡼⠋⠀⠀⠀
-⠀⠓⠤⣀⣀⡜⠁⠀⡠⢄⠀⠙⢻⣿⣷⢿⡿⠒⠒⠉⢹⣿⣯⠀⠹⣧⡤⢤⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⡠⠚⠀⠀⡇⠀⡇⠹⣿⣃⣾⡶⣺⣻⣼⣿⣿⣀⣰⣷⣝⠉⣴⣿⡄
-⠀⠀⠀⠀⠀⠀⠣⠤⠤⠴⠇⠀⠈⠒⠻⣍⣙⣛⢺⣾⣯⡿⣿⣿⣿⣿⣿⣯⣹⣿⠛
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠈⠙⠛⡟⠛⣉⠄⢠⠈⠉⠉⢸⠿⠟⠁⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⠀⢠⣧⡈⠀⢀⡄⠀⣀⡠⠋⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⣿⠿⠀⠀    
+⣠⣾⣿⣿⡀⠀
+⢾⣿⣏⣠⣿⣿⠀
+⣤⣼⣿⣿⣿⣭⡇
+⣿⣿⡟⢉⣉⢻⣿⣷
+⡿⢖⣟⣩⣾⠟⢿⣧
+⠛⢉⣭⠽⠤⠿⢿⠀
+⣿⣷⣾⠋⣀⠀⣹⡏
+⣿⣿⠇⠀⢻⣿⡟⠁
         """
         
-        # ASCII Art Label
+        # ASCII Art Label (smaller font)
         ascii_label = ttk.Label(title_frame,
                                text=kuromi_ascii,
-                               font=('Consolas', 8),
+                               font=('Consolas', 6),
                                foreground=self.colors['kuromi_primary'])
-        ascii_label.grid(row=1, column=1, pady=(5, 0))
+        ascii_label.grid(row=1, column=1, pady=(2, 2))
         
         subtitle_label = ttk.Label(title_frame,
                                  text="Stocks are as rebellious as me... let's tame them! ˃̵ᴗ˂",
@@ -345,9 +355,9 @@ class StockAnalysisGUI:
         self.root.after(8000, self.show_cool_quote)
         
     def load_kuromi_stickers(self):
-        """Load Kuromi sticker images for GUI decoration ( ˶ˆᗜˆ˵ )"""
+        """Load Kuromi sticker images for GUI decoration ⸜(｡˃ ᵕ ˂ )⸝♡"""
         if not PIL_AVAILABLE:
-            print("( ˶ˆᗜˆ˵ ) PIL not available, skipping sticker loading")
+            print("⸜(｡˃ ᵕ ˂ )⸝♡ PIL not available, skipping sticker loading")
             return
             
         stickers_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'kuromi_stickers')
@@ -357,40 +367,61 @@ class StockAnalysisGUI:
                 sticker_path = os.path.join(stickers_path, sticker_file)
                 if os.path.exists(sticker_path):
                     try:
-                        # Load and resize sticker
+                        # Load and resize sticker (bigger size for better visibility)
                         img = Image.open(sticker_path)
-                        img = img.resize((50, 50), Image.Resampling.LANCZOS)
+                        img = img.resize((40, 40), Image.Resampling.LANCZOS)
                         photo = ImageTk.PhotoImage(img)
                         self.kuromi_stickers.append(photo)
+                        
+                        # Also create smaller versions for compact decorations
+                        small_img = img.resize((20, 20), Image.Resampling.LANCZOS)
+                        small_photo = ImageTk.PhotoImage(small_img)
+                        if not hasattr(self, 'kuromi_stickers_small'):
+                            self.kuromi_stickers_small = []
+                        self.kuromi_stickers_small.append(small_photo)
+                        
                     except Exception as e:
-                        print(f"(˃̵ᴗ˂) Failed to load sticker {sticker_file}: {e}")
+                        print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Failed to load sticker {sticker_file}: {e}")
         print(f"ଘ(੭*ˊᵕˋ)੭* Loaded {len(self.kuromi_stickers)} Kuromi stickers!")
         
     def get_random_kuromi_sticker(self):
-        """Get a random Kuromi sticker for decoration ( ˶ˆ꒳ˆ˵ )"""
+        """Get a random Kuromi sticker for decoration ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾"""
         # Check if kuromi_stickers attribute exists and has items
         if hasattr(self, 'kuromi_stickers') and self.kuromi_stickers:
             return random.choice(self.kuromi_stickers)
         return None
         
     def add_kuromi_decoration(self, parent):
-        """Add random Kuromi sticker decoration to a frame ( ˶ˆᗜˆ˵ )"""
+        """Add random Kuromi sticker decoration to a frame ⸜(｡˃ ᵕ ˂ )⸝♡"""
         try:
             sticker = self.get_random_kuromi_sticker()
             if sticker:
                 decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
+                # Store reference to prevent garbage collection
+                if not hasattr(self, 'decoration_refs'):
+                    self.decoration_refs = []
+                self.decoration_refs.append(sticker)
                 return decoration_label
         except Exception as e:
-            print(f"(˃̵ᴗ˂) Sticker decoration failed: {e}")
+            print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Sticker decoration failed: {e}")
         
-        # Fallback: Use text-based decoration
+        # Enhanced fallback: Use decorative text patterns
         try:
-            decoration_label = ttk.Label(parent, text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×", 
+            decorations = [
+                "── ୨୧ ────",
+                "⋆.˚✮🎧✮˚.⋆", 
+                "ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ",
+                "×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×"
+            ]
+            import random
+            decoration_text = random.choice(decorations)
+            decoration_label = ttk.Label(parent, text=decoration_text, 
                                        foreground=self.colors['kuromi_primary'],
-                                       background=self.colors['kuromi_dark'])
+                                       background=self.colors['kuromi_dark'],
+                                       font=('Arial', 8))
             return decoration_label
         except Exception as e:
-            print(f"(˃̵ᴗ˂) Text decoration failed: {e}")
+            print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Text decoration failed: {e}")
             return None
         
     def run(self):

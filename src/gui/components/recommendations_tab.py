@@ -16,7 +16,7 @@ class RecommendationsTab:
     def setup_tab(self):
         """Create the recommendations tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="٩(ˊᗜˋ*)و̵ Recommendations")
+        self.notebook.add(self.frame, text="⸜(｡˃ ᵕ ˂ )⸝♡ Recommendations")
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -30,24 +30,24 @@ class RecommendationsTab:
         
     def create_control_panel(self):
         """Create control panel for recommendations"""
-        control_frame = ttk.LabelFrame(self.frame, text="( ˶ˆᗜˆ˵ ) Generate Recommendations", padding="15")
+        control_frame = ttk.LabelFrame(self.frame, text="── ୨୧ ──── Generate Recommendations", padding="15")
         control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        ttk.Button(control_frame, text="°ʚ(*´꒳`*)ɞ° Advanced Analysis",
+        ttk.Button(control_frame, text="⋆.˚✮ Advanced Analysis ✮˚.⋆",
                   command=self.generate_advanced_recommendations,
                   style='Kuromi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
         
-        ttk.Button(control_frame, text="( ˶ˆᗜˆ˵ ) Quick Analysis",
+        ttk.Button(control_frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Quick Analysis",
                   command=self.generate_basic_recommendations,
                   style='Kuromi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(control_frame, text="ฅ^•ﻌ•^ฅ Save Report",
+        ttk.Button(control_frame, text="ﮩ٨ـﮩﮩ٨ـ♡ Save Report",
                   command=self.export_report,
                   style='Kuromi.Gold.TButton').grid(row=0, column=2)
         
     def create_recommendations_display(self):
         """Create display area for recommendations"""
-        display_frame = ttk.LabelFrame(self.frame, text="( ˶ˆᗜˆ˵ ) Investment Advice", padding="15")
+        display_frame = ttk.LabelFrame(self.frame, text="˚‧꒰ა ✨ Investment Advice ✨ ໒꒱ ‧˚", padding="15")
         display_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         display_frame.grid_rowconfigure(0, weight=1)
         display_frame.grid_columnconfigure(0, weight=1)

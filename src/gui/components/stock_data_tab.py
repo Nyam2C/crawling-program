@@ -36,11 +36,11 @@ class StockDataTab:
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Main action buttons
-        ttk.Button(control_frame, text="( ˶ˆᗜˆ˵ ) Get All Stocks", 
+        ttk.Button(control_frame, text="⸜(｡˃ ᵕ ˂ )⸝♡ Get All Stocks", 
                   command=self.get_all_stocks_data,
                   style='Kuromi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="( ˶ˆ꒳ˆ˵ ) Refresh",
+        ttk.Button(control_frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Refresh",
                   command=self.refresh_stock_data,
                   style='Kuromi.Black.TButton').grid(row=0, column=1, padx=(0, 10))
         
@@ -55,7 +55,7 @@ class StockDataTab:
                                   style='Kuromi.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="(˃̵ᴗ˂) Get Single Stock",
+        ttk.Button(control_frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Get Single Stock",
                   command=self.get_single_stock_data,
                   style='Kuromi.Primary.TButton').grid(row=0, column=4)
         
@@ -92,7 +92,7 @@ class StockDataTab:
         """Get data for all stocks in a separate thread"""
         def fetch_data():
             try:
-                self.main_app.update_status("( ˶ˆᗜˆ˵ ) Fetching all stock data with Kuromi's rebel magic...")
+                self.main_app.update_status("⸜(｡˃ ᵕ ˂ )⸝♡ Fetching all stock data with Kuromi's rebel magic...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_all_stocks_data()
@@ -100,12 +100,12 @@ class StockDataTab:
                 
                 # Update UI in main thread
                 self.main_app.root.after(0, self.update_stock_display, data)
-                self.main_app.root.after(0, self.main_app.update_status, "( ˶ˆ꒳ˆ˵ ) Stock data collection completed!")
+                self.main_app.root.after(0, self.main_app.update_status, "₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Stock data collection completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error fetching stock data: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "(˃̵ᴗ˂) Error loading stock data")
+                self.main_app.root.after(0, self.main_app.update_status, "˚‧꒰ა 𓂋 ໒꒱ ‧˚ Error loading stock data")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=fetch_data, daemon=True).start()
@@ -119,7 +119,7 @@ class StockDataTab:
             
         def fetch_data():
             try:
-                self.main_app.update_status(f"( ˶ˆᗜˆ˵ ) Fetching {symbol} data...")
+                self.main_app.update_status(f"⸜(｡˃ ᵕ ˂ )⸝♡ Fetching {symbol} data...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_stock_data(symbol)
@@ -130,7 +130,7 @@ class StockDataTab:
                 else:
                     self.main_app.root.after(0, self.main_app.show_error, f"Failed to fetch data for {symbol}")
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"( ˶ˆ꒳ˆ˵ ) {symbol} data loaded")
+                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} data loaded")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
@@ -144,7 +144,7 @@ class StockDataTab:
         if self.main_app.current_stock_data:
             self.get_all_stocks_data()
         else:
-            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first! ( ˶ˆ꒳ˆ˵ )")
+            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first! ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾")
             
     def update_stock_display(self, data):
         """Update the stock data treeview"""
