@@ -48,7 +48,7 @@ class StockAnalysisGUI:
         self.root.geometry("1400x900")
         self.root.minsize(1200, 700)
         
-        # Kurumi elegant dark theme background
+        # Kurumi's elegant dark theme background
         self.root.configure(bg='#0D0B1F')  # Deep dark purple-black
         
         # Set window icon (if available)
@@ -66,7 +66,7 @@ class StockAnalysisGUI:
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Kurumi elegant color palette
+        # Kurumi's elegant color palette
         self.colors = {
             'kurumi_primary': '#8B0000',    # Deep crimson red
             'kurumi_secondary': '#4B0000',  # Darker red
@@ -87,7 +87,7 @@ class StockAnalysisGUI:
         self.style.configure('TLabelFrame.Label', background=self.colors['kurumi_dark'],
                            foreground=self.colors['kurumi_gold'])
         
-        # Kurumi elegant button styles
+        # Kurumi's elegant button styles
         self.style.configure('Kurumi.Primary.TButton',
                            background=self.colors['kurumi_primary'],
                            foreground=self.colors['kurumi_text'],
@@ -169,7 +169,7 @@ class StockAnalysisGUI:
         main_frame.grid_rowconfigure(1, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
         
-        # Kurumi elegant title with special styling
+        # Kurumi's elegant title with special styling
         title_frame = ttk.Frame(main_frame)
         title_frame.grid(row=0, column=0, pady=(0, 15), sticky=(tk.W, tk.E))
         
@@ -180,7 +180,7 @@ class StockAnalysisGUI:
         title_label.grid(row=0, column=0)
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Time and stocks both are precious",
+                                 text="Time and stocks... both are precious, are they not?",
                                  font=('Arial', 10, 'italic'),
                                  foreground=self.colors['kurumi_accent'])
         subtitle_label.grid(row=1, column=0, pady=(5, 0))
@@ -245,7 +245,7 @@ class StockAnalysisGUI:
         data_frame.grid_rowconfigure(0, weight=1)
         data_frame.grid_columnconfigure(0, weight=1)
         
-        # Kurumi elegant treeview for stock data
+        # Kurumi's elegant treeview for stock data
         columns = ('Symbol', 'Company', 'Price', 'Change', 'Change %', 'Market Cap', 'Volume')
         self.stock_tree = ttk.Treeview(data_frame, columns=columns, show='headings', 
                                      height=15, style='Kurumi.Treeview')
@@ -254,7 +254,7 @@ class StockAnalysisGUI:
             self.stock_tree.heading(col, text=col)
             self.stock_tree.column(col, width=120)
         
-        # Kurumi elegant scrollbars for treeview
+        # Kurumi's elegant scrollbars for treeview
         stock_scrollbar_y = ttk.Scrollbar(data_frame, orient=tk.VERTICAL, 
                                         command=self.stock_tree.yview,
                                         style='Kurumi.Vertical.TScrollbar')
@@ -298,11 +298,11 @@ class StockAnalysisGUI:
         rec_display_frame.grid_rowconfigure(0, weight=1)
         rec_display_frame.grid_columnconfigure(0, weight=1)
         
-        # Kurumi mystical text widget for recommendations
+        # Kurumi's mystical text widget for recommendations
         self.recommendations_text = scrolledtext.ScrolledText(rec_display_frame, 
                                                              wrap=tk.WORD, 
                                                              height=25,
-                                                             font=('Consolas', 10),
+                                                             font=('Georgia', 11),
                                                              bg=self.colors['kurumi_light'],
                                                              fg=self.colors['kurumi_text'],
                                                              insertbackground=self.colors['kurumi_accent'],
@@ -360,7 +360,7 @@ class StockAnalysisGUI:
         detail_frame.grid_columnconfigure(0, weight=1)
         
         self.analysis_text = scrolledtext.ScrolledText(detail_frame, wrap=tk.WORD, height=15,
-                                                      font=('Consolas', 10),
+                                                      font=('Georgia', 11),
                                                       bg=self.colors['kurumi_light'],
                                                       fg=self.colors['kurumi_text'],
                                                       insertbackground=self.colors['kurumi_accent'],
@@ -392,7 +392,7 @@ NVDA - NVIDIA Corporation
 TSLA - Tesla Inc.
 META - Meta Platforms Inc.
 
-Time reveals all truths including market movements
+"Time reveals all truths including market movements"
 
 DISCLAIMER: This tool is for educational purposes only.
 Not financial advice. Always do your own research!"""
@@ -426,7 +426,7 @@ Not financial advice. Always do your own research!"""
                                relief=tk.SUNKEN, anchor=tk.W)
         status_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
-        # Kurumi mystical progress indicator
+        # Kurumi's mystical progress indicator
         self.progress = ttk.Progressbar(status_frame, mode='indeterminate',
                                        style='Kurumi.Horizontal.TProgressbar')
         self.progress.grid(row=0, column=1, padx=(10, 0))
@@ -686,52 +686,54 @@ Not financial advice. Always do your own research!"""
         detailed = analysis['detailed_analysis']
         investment_summary = analysis.get('investment_summary', {})
         
-        text = f"""ADVANCED STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
+        text = f"""🧠 ADVANCED STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
 Analysis Type: Multi-Criteria Investment Analysis
 Overall Score: {analysis['overall_score']}
 Recommendation: {analysis['recommendation']}
 Confidence Level: {analysis['confidence']}
 
-FUNDAMENTAL ANALYSIS:
+📈 FUNDAMENTAL ANALYSIS:
+═══════════════════════════════════════════════════════════════
 Financial Health: {detailed['fundamental_analysis']['financial_health']['rating']} (Score: {detailed['fundamental_analysis']['financial_health']['score']:.2f})
 Profitability: {detailed['fundamental_analysis']['profitability_metrics']['margin_rating']}
-   - {detailed['fundamental_analysis']['profitability_metrics']['analysis']}
+   • {detailed['fundamental_analysis']['profitability_metrics']['analysis']}
 Debt Analysis: {detailed['fundamental_analysis']['debt_analysis']['rating']}
-   - D/E Ratio: {detailed['fundamental_analysis']['debt_analysis']['debt_to_equity']:.2f}
+   • D/E Ratio: {detailed['fundamental_analysis']['debt_analysis']['debt_to_equity']:.2f}
 
-GROWTH ANALYSIS:
+📊 GROWTH ANALYSIS:
 Growth Rating: {detailed['growth_analysis']['rating']}
 Historical Growth: {detailed['growth_analysis']['revenue_growth_5y']:.1%} (5-year CAGR)
 Industry: {detailed['growth_analysis']['industry']} (Growth Factor: {detailed['growth_analysis']['industry_factor']:.1f}x)
 
-COMPETITIVE POSITION: {detailed['competitive_analysis']['position_strength']}
+🏆 COMPETITIVE POSITION: {detailed['competitive_analysis']['position_strength']}
 Key Advantages:"""
 
         for advantage in detailed['competitive_analysis']['advantages'][:3]:
-            text += f"\n   - {advantage}"
+            text += f"\n   • {advantage}"
 
         text += f"""
 
-RISK ASSESSMENT: {detailed['risk_assessment']['risk_level']} Risk
+⚠️  RISK ASSESSMENT: {detailed['risk_assessment']['risk_level']} Risk
 Safety Score: {detailed['risk_assessment']['safety_score']:.2f}
 Key Risk Factors:"""
 
         for risk in detailed['risk_assessment']['risk_factors'][:2]:
-            text += f"\n   - {risk}"
+            text += f"\n   • {risk}"
 
         if investment_summary:
             text += f"""
 
-INVESTMENT SUMMARY:
+💡 INVESTMENT SUMMARY:
 Investment Thesis: {investment_summary.get('investment_thesis', 'N/A')}
 Price Target: {investment_summary.get('price_target_range', 'N/A')}
 Time Horizon: {investment_summary.get('time_horizon', 'N/A')}"""
 
         text += f"""
 
+═══════════════════════════════════════════════════════════════
 Analysis Timestamp: {analysis['timestamp']}
 
-DISCLAIMER: This advanced analysis is for educational 
+⚠️  COMPREHENSIVE DISCLAIMER: This advanced analysis is for educational 
    and informational purposes only. Not financial advice. Always conduct 
    your own research and consult qualified financial advisors!
 """
@@ -741,54 +743,55 @@ DISCLAIMER: This advanced analysis is for educational
         """Format basic analysis for display"""
         breakdown = analysis.get('analysis_breakdown', {})
         
-        text = f"""BASIC STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
+        text = f"""📊 BASIC STOCK ANALYSIS: {analysis['symbol']} - {analysis['company']}
 Analysis Type: Basic Technical Analysis
 Overall Score: {analysis['overall_score']}
 Recommendation: {analysis['recommendation']}
 Confidence Level: {analysis['confidence']}
 
-ANALYSIS BREAKDOWN:"""
+ANALYSIS BREAKDOWN:
+═══════════════════════════════════════════════════════════════"""
 
         if 'momentum' in breakdown:
             text += f"""
-
-Price Momentum:
+💹 Price Momentum:
    Score: {breakdown['momentum']['score']}
    {breakdown['momentum']['analysis']}"""
 
         if 'volume' in breakdown:
             text += f"""
 
-Volume Analysis:
+📊 Volume Analysis:
    Score: {breakdown['volume']['score']}
    {breakdown['volume']['analysis']}"""
 
         if 'market_cap' in breakdown:
             text += f"""
 
-Market Capitalization:
+🏢 Market Capitalization:
    Score: {breakdown['market_cap']['score']}
    {breakdown['market_cap']['analysis']}"""
 
         if 'volatility' in breakdown:
             text += f"""
 
-Volatility Assessment:
+⚖️ Volatility Assessment:
    Score: {breakdown['volatility']['score']}
    {breakdown['volatility']['analysis']}"""
 
         if 'value' in breakdown:
             text += f"""
 
-Value Proposition:
+💎 Value Proposition:
    Score: {breakdown['value']['score']}
    {breakdown['value']['analysis']}"""
 
         text += f"""
 
+═══════════════════════════════════════════════════════════════
 Analysis Timestamp: {analysis['timestamp']}
 
-DISCLAIMER: This basic analysis is for educational purposes only.
+⚠️  DISCLAIMER: This basic analysis is for educational purposes only.
    Not financial advice. Always do your own research!
 """
         return text
@@ -853,7 +856,7 @@ DISCLAIMER: This basic analysis is for educational purposes only.
             "Time reveals all market secrets...",
             "In shadows, opportunities hide...",
             "Elegant investments bloom with patience...",
-            "The market heartbeat echoes through time...",
+            "The market's heartbeat echoes through time...",
             "Even spirits need good portfolio advice"
         ]
         self.current_quote = 0
