@@ -28,6 +28,7 @@ class StockAnalysisGUI:
         self.root = tk.Tk()
         self.setup_main_window()
         self.create_styles()
+        self.setup_kurumi_effects()
         self.create_widgets()
         
         # Initialize engines
@@ -38,11 +39,17 @@ class StockAnalysisGUI:
         self.current_stock_data = {}
         self.current_recommendations = {}
         
+        # Animation variables
+        self.animation_running = False
+        
     def setup_main_window(self):
-        """Configure the main window"""
-        self.root.title("🚀 Magnificent Seven Stock Analysis & Recommendation System")
-        self.root.geometry("1200x800")
-        self.root.minsize(1000, 600)
+        """Configure the main window with Kurumi-style aesthetics"""
+        self.root.title("🌙✨ Kurumi's Elegant Stock Analysis System ✨🌹")
+        self.root.geometry("1400x900")
+        self.root.minsize(1200, 700)
+        
+        # Kurumi's elegant dark theme background
+        self.root.configure(bg='#0D0B1F')  # Deep dark purple-black
         
         # Set window icon (if available)
         try:
@@ -55,47 +62,128 @@ class StockAnalysisGUI:
         self.root.grid_columnconfigure(0, weight=1)
         
     def create_styles(self):
-        """Create custom styles for the application"""
+        """Create Kurumi-inspired custom styles"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Configure custom colors
+        # Kurumi's elegant color palette
         self.colors = {
-            'primary': '#2E86AB',      # Blue
-            'success': '#A23B72',      # Green
-            'warning': '#F18F01',      # Orange  
-            'danger': '#C73E1D',       # Red
-            'dark': '#2D3748',         # Dark gray
-            'light': '#F7FAFC',        # Light gray
-            'white': '#FFFFFF'
+            'kurumi_primary': '#8B0000',    # Deep crimson red
+            'kurumi_secondary': '#4B0000',  # Darker red
+            'kurumi_accent': '#FF6B6B',     # Soft pink-red
+            'kurumi_gold': '#FFD700',       # Elegant gold
+            'kurumi_dark': '#0D0B1F',       # Deep dark purple-black
+            'kurumi_light': '#1A1A2E',      # Dark blue-purple
+            'kurumi_text': '#F8F8FF',       # Ghost white
+            'kurumi_shadow': '#2E0016'      # Dark shadow
         }
         
-        # Custom button styles
-        self.style.configure('Primary.TButton',
-                           background=self.colors['primary'],
-                           foreground='white',
-                           borderwidth=0,
-                           focuscolor='none')
+        # Configure root theme
+        self.style.configure('TFrame', background=self.colors['kurumi_dark'])
+        self.style.configure('TLabel', background=self.colors['kurumi_dark'], 
+                           foreground=self.colors['kurumi_text'])
+        self.style.configure('TLabelFrame', background=self.colors['kurumi_dark'],
+                           foreground=self.colors['kurumi_gold'])
+        self.style.configure('TLabelFrame.Label', background=self.colors['kurumi_dark'],
+                           foreground=self.colors['kurumi_gold'])
         
-        self.style.configure('Success.TButton',
-                           background=self.colors['success'], 
-                           foreground='white',
-                           borderwidth=0,
-                           focuscolor='none')
+        # Kurumi's elegant button styles
+        self.style.configure('Kurumi.Primary.TButton',
+                           background=self.colors['kurumi_primary'],
+                           foreground=self.colors['kurumi_text'],
+                           borderwidth=2,
+                           relief='raised',
+                           focuscolor=self.colors['kurumi_accent'])
+        
+        self.style.map('Kurumi.Primary.TButton',
+                      background=[('active', self.colors['kurumi_accent']),
+                                ('pressed', self.colors['kurumi_secondary'])])
+        
+        self.style.configure('Kurumi.Gold.TButton',
+                           background=self.colors['kurumi_gold'], 
+                           foreground=self.colors['kurumi_dark'],
+                           borderwidth=2,
+                           relief='raised',
+                           focuscolor=self.colors['kurumi_accent'])
+        
+        self.style.map('Kurumi.Gold.TButton',
+                      background=[('active', '#FFFF99'),
+                                ('pressed', '#B8860B')])
+        
+        # Notebook (tabs) styling
+        self.style.configure('TNotebook', background=self.colors['kurumi_dark'],
+                           borderwidth=0)
+        self.style.configure('TNotebook.Tab', 
+                           background=self.colors['kurumi_light'],
+                           foreground=self.colors['kurumi_text'],
+                           padding=[20, 8],
+                           borderwidth=1)
+        self.style.map('TNotebook.Tab',
+                      background=[('selected', self.colors['kurumi_primary']),
+                                ('active', self.colors['kurumi_accent'])])
+        
+        # Treeview styling
+        self.style.configure('Kurumi.Treeview',
+                           background=self.colors['kurumi_light'],
+                           foreground=self.colors['kurumi_text'],
+                           fieldbackground=self.colors['kurumi_light'],
+                           borderwidth=1,
+                           relief='solid')
+        self.style.configure('Kurumi.Treeview.Heading',
+                           background=self.colors['kurumi_primary'],
+                           foreground=self.colors['kurumi_text'],
+                           relief='raised',
+                           borderwidth=1)
+        
+        # Combobox styling  
+        self.style.configure('Kurumi.TCombobox',
+                           fieldbackground=self.colors['kurumi_light'],
+                           background=self.colors['kurumi_primary'],
+                           foreground=self.colors['kurumi_text'])
+        
+        # Progress bar styling
+        self.style.configure('Kurumi.Horizontal.TProgressbar',
+                           background=self.colors['kurumi_primary'],
+                           troughcolor=self.colors['kurumi_light'],
+                           borderwidth=1,
+                           lightcolor=self.colors['kurumi_accent'],
+                           darkcolor=self.colors['kurumi_secondary'])
+        
+        # Scrollbar styling
+        self.style.configure('Kurumi.Vertical.TScrollbar',
+                           background=self.colors['kurumi_light'],
+                           troughcolor=self.colors['kurumi_dark'],
+                           borderwidth=1,
+                           arrowcolor=self.colors['kurumi_text'])
+        self.style.configure('Kurumi.Horizontal.TScrollbar',
+                           background=self.colors['kurumi_light'],
+                           troughcolor=self.colors['kurumi_dark'],
+                           borderwidth=1,
+                           arrowcolor=self.colors['kurumi_text'])
         
     def create_widgets(self):
         """Create all GUI widgets"""
-        # Create main frame
-        main_frame = ttk.Frame(self.root, padding="10")
+        # Create main frame with Kurumi styling
+        main_frame = ttk.Frame(self.root, padding="15")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         main_frame.grid_rowconfigure(1, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
         
-        # Title
-        title_label = ttk.Label(main_frame, 
-                              text="🚀 Magnificent Seven Stock Analysis System",
-                              font=('Arial', 16, 'bold'))
-        title_label.grid(row=0, column=0, pady=(0, 10))
+        # Kurumi's elegant title with special styling
+        title_frame = ttk.Frame(main_frame)
+        title_frame.grid(row=0, column=0, pady=(0, 15), sticky=(tk.W, tk.E))
+        
+        title_label = ttk.Label(title_frame, 
+                              text="🌹✨ Kurumi's Magnificent Seven Analysis ✨🕐",
+                              font=('Georgia', 20, 'bold'),
+                              foreground=self.colors['kurumi_gold'])
+        title_label.grid(row=0, column=0)
+        
+        subtitle_label = ttk.Label(title_frame,
+                                 text="❝ Time and stocks... both are precious, aren't they? ❞",
+                                 font=('Georgia', 11, 'italic'),
+                                 foreground=self.colors['kurumi_accent'])
+        subtitle_label.grid(row=1, column=0, pady=(5, 0))
         
         # Create notebook for tabs
         self.notebook = ttk.Notebook(main_frame)
@@ -129,24 +217,27 @@ class StockAnalysisGUI:
         control_frame = ttk.LabelFrame(stock_frame, text="Controls", padding="10")
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(control_frame, text="📊 Get All Stock Data", 
+        ttk.Button(control_frame, text="🌹 Gather All Stocks Data", 
                   command=self.get_all_stocks_data,
-                  style='Primary.TButton').grid(row=0, column=0, padx=(0, 10))
+                  style='Kurumi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="🔄 Refresh Data",
+        ttk.Button(control_frame, text="🕐 Refresh Timeline",
                   command=self.refresh_stock_data,
-                  style='Success.TButton').grid(row=0, column=1, padx=(0, 10))
+                  style='Kurumi.Gold.TButton').grid(row=0, column=1, padx=(0, 10))
         
         # Stock selection
-        ttk.Label(control_frame, text="Select Stock:").grid(row=0, column=2, padx=(20, 5))
+        ttk.Label(control_frame, text="✨ Choose Your Target:",
+                 foreground=self.colors['kurumi_gold']).grid(row=0, column=2, padx=(20, 5))
         self.stock_var = tk.StringVar()
         stock_combo = ttk.Combobox(control_frame, textvariable=self.stock_var, 
                                   values=list(MAGNIFICENT_SEVEN.keys()), 
-                                  state='readonly', width=10)
+                                  state='readonly', width=12,
+                                  style='Kurumi.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="🎯 Get Single Stock",
-                  command=self.get_single_stock_data).grid(row=0, column=4)
+        ttk.Button(control_frame, text="🎭 Analyze Single Stock",
+                  command=self.get_single_stock_data,
+                  style='Kurumi.Primary.TButton').grid(row=0, column=4)
         
         # Stock data display
         data_frame = ttk.LabelFrame(stock_frame, text="Stock Information", padding="10")
@@ -154,17 +245,22 @@ class StockAnalysisGUI:
         data_frame.grid_rowconfigure(0, weight=1)
         data_frame.grid_columnconfigure(0, weight=1)
         
-        # Treeview for stock data
+        # Kurumi's elegant treeview for stock data
         columns = ('Symbol', 'Company', 'Price', 'Change', 'Change %', 'Market Cap', 'Volume')
-        self.stock_tree = ttk.Treeview(data_frame, columns=columns, show='headings', height=15)
+        self.stock_tree = ttk.Treeview(data_frame, columns=columns, show='headings', 
+                                     height=15, style='Kurumi.Treeview')
         
         for col in columns:
             self.stock_tree.heading(col, text=col)
             self.stock_tree.column(col, width=120)
         
-        # Scrollbars for treeview
-        stock_scrollbar_y = ttk.Scrollbar(data_frame, orient=tk.VERTICAL, command=self.stock_tree.yview)
-        stock_scrollbar_x = ttk.Scrollbar(data_frame, orient=tk.HORIZONTAL, command=self.stock_tree.xview)
+        # Kurumi's elegant scrollbars for treeview
+        stock_scrollbar_y = ttk.Scrollbar(data_frame, orient=tk.VERTICAL, 
+                                        command=self.stock_tree.yview,
+                                        style='Kurumi.Vertical.TScrollbar')
+        stock_scrollbar_x = ttk.Scrollbar(data_frame, orient=tk.HORIZONTAL, 
+                                        command=self.stock_tree.xview,
+                                        style='Kurumi.Horizontal.TScrollbar')
         self.stock_tree.configure(yscrollcommand=stock_scrollbar_y.set, xscrollcommand=stock_scrollbar_x.set)
         
         self.stock_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -184,15 +280,17 @@ class StockAnalysisGUI:
         rec_control_frame = ttk.LabelFrame(rec_frame, text="Generate Recommendations", padding="10")
         rec_control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(rec_control_frame, text="🧠 Advanced Analysis (Recommended)",
+        ttk.Button(rec_control_frame, text="🌙 Advanced Divination (Recommended)",
                   command=self.generate_advanced_recommendations,
-                  style='Success.TButton').grid(row=0, column=0, padx=(0, 10))
+                  style='Kurumi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
         
-        ttk.Button(rec_control_frame, text="📊 Basic Analysis",
-                  command=self.generate_basic_recommendations).grid(row=0, column=1, padx=(0, 10))
+        ttk.Button(rec_control_frame, text="🕐 Quick Glimpse",
+                  command=self.generate_basic_recommendations,
+                  style='Kurumi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(rec_control_frame, text="📋 Export Report",
-                  command=self.export_report).grid(row=0, column=2)
+        ttk.Button(rec_control_frame, text="📜 Save Prophecy",
+                  command=self.export_report,
+                  style='Kurumi.Gold.TButton').grid(row=0, column=2)
         
         # Recommendations display
         rec_display_frame = ttk.LabelFrame(rec_frame, text="Investment Recommendations", padding="10")
@@ -200,11 +298,15 @@ class StockAnalysisGUI:
         rec_display_frame.grid_rowconfigure(0, weight=1)
         rec_display_frame.grid_columnconfigure(0, weight=1)
         
-        # Text widget for recommendations report
+        # Kurumi's mystical text widget for recommendations
         self.recommendations_text = scrolledtext.ScrolledText(rec_display_frame, 
                                                              wrap=tk.WORD, 
                                                              height=25,
-                                                             font=('Consolas', 10))
+                                                             font=('Georgia', 11),
+                                                             bg=self.colors['kurumi_light'],
+                                                             fg=self.colors['kurumi_text'],
+                                                             insertbackground=self.colors['kurumi_accent'],
+                                                             selectbackground=self.colors['kurumi_primary'])
         self.recommendations_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
     def create_individual_analysis_tab(self):
@@ -227,12 +329,13 @@ class StockAnalysisGUI:
                                     state='readonly', width=15)
         analysis_combo.grid(row=0, column=1, padx=(0, 10))
         
-        ttk.Button(select_frame, text="🧠 Advanced Analysis",
+        ttk.Button(select_frame, text="🌙 Deep Analysis",
                   command=self.analyze_individual_stock_advanced,
-                  style='Primary.TButton').grid(row=0, column=2, padx=(0, 5))
+                  style='Kurumi.Gold.TButton').grid(row=0, column=2, padx=(0, 5))
                   
-        ttk.Button(select_frame, text="📊 Basic Analysis",
-                  command=self.analyze_individual_stock_basic).grid(row=0, column=3)
+        ttk.Button(select_frame, text="🕐 Quick Peek",
+                  command=self.analyze_individual_stock_basic,
+                  style='Kurumi.Primary.TButton').grid(row=0, column=3)
         
         # Analysis results
         results_frame = ttk.LabelFrame(analysis_frame, text="Analysis Results", padding="10")
@@ -256,7 +359,12 @@ class StockAnalysisGUI:
         detail_frame.grid_rowconfigure(0, weight=1)
         detail_frame.grid_columnconfigure(0, weight=1)
         
-        self.analysis_text = scrolledtext.ScrolledText(detail_frame, wrap=tk.WORD, height=15)
+        self.analysis_text = scrolledtext.ScrolledText(detail_frame, wrap=tk.WORD, height=15,
+                                                      font=('Georgia', 11),
+                                                      bg=self.colors['kurumi_light'],
+                                                      fg=self.colors['kurumi_text'],
+                                                      insertbackground=self.colors['kurumi_accent'],
+                                                      selectbackground=self.colors['kurumi_primary'])
         self.analysis_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
     def create_settings_tab(self):
@@ -268,24 +376,26 @@ class StockAnalysisGUI:
         info_frame = ttk.LabelFrame(settings_frame, text="Application Information", padding="10")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        info_text = """🚀 Magnificent Seven Stock Analysis & Recommendation System
+        info_text = """🌹✨ Kurumi's Magnificent Seven Analysis System ✨🕐
         
-Version: 2.0.0
-Author: Stock Analysis Team
+Version: 2.0.0 - Kurumi Edition
+Created with: Elegant Gothic Aesthetics
         
-This application provides AI-powered stock analysis and buy recommendations
-for the Magnificent Seven technology stocks:
+This enchanted application provides mystical stock analysis and prophecies
+for the Seven Magnificent technology kingdoms:
         
-🍎 AAPL - Apple Inc.
-🖥️ MSFT - Microsoft Corporation  
-🔍 GOOGL - Alphabet Inc.
-📦 AMZN - Amazon.com Inc.
-🎮 NVDA - NVIDIA Corporation
-⚡ TSLA - Tesla Inc.
-👥 META - Meta Platforms Inc.
+🍎 AAPL - The Apple Empire
+🖥️ MSFT - Microsoft's Domain  
+🔍 GOOGL - Alphabet's Realm
+📦 AMZN - Amazon's Territory
+🎮 NVDA - NVIDIA's Universe
+⚡ TSLA - Tesla's Electric Kingdom
+👥 META - Meta's Social Dimension
 
-⚠️ DISCLAIMER: This tool is for educational purposes only.
-Not financial advice. Always do your own research!"""
+❝ Time reveals all truths... including market movements ❞
+
+⚠️ DIVINE DISCLAIMER: This mystical tool is for educational and entertainment
+   purposes only. Not financial advice - even time spirits need research!"""
         
         info_label = ttk.Label(info_frame, text=info_text, justify=tk.LEFT)
         info_label.grid(row=0, column=0)
@@ -299,8 +409,9 @@ Not financial advice. Always do your own research!"""
         delay_spinbox = ttk.Spinbox(controls_frame, from_=1, to=10, textvariable=self.delay_var, width=10)
         delay_spinbox.grid(row=0, column=1)
         
-        ttk.Button(controls_frame, text="💾 Save Settings",
-                  command=self.save_settings).grid(row=1, column=0, pady=(10, 0))
+        ttk.Button(controls_frame, text="🌹 Save Preferences",
+                  command=self.save_settings,
+                  style='Kurumi.Gold.TButton').grid(row=1, column=0, pady=(10, 0))
         
     def create_status_bar(self, parent):
         """Create status bar"""
@@ -315,8 +426,9 @@ Not financial advice. Always do your own research!"""
                                relief=tk.SUNKEN, anchor=tk.W)
         status_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
-        # Progress bar
-        self.progress = ttk.Progressbar(status_frame, mode='indeterminate')
+        # Kurumi's mystical progress indicator
+        self.progress = ttk.Progressbar(status_frame, mode='indeterminate',
+                                       style='Kurumi.Horizontal.TProgressbar')
         self.progress.grid(row=0, column=1, padx=(10, 0))
         
     def update_status(self, message):
@@ -329,8 +441,9 @@ Not financial advice. Always do your own research!"""
         self.progress.start()
         
     def hide_progress(self):
-        """Hide progress bar"""
+        """Hide progress bar and stop animations"""
         self.progress.stop()
+        self.animation_running = False
         
     def get_all_stocks_data(self):
         """Get data for all stocks in a separate thread"""
@@ -353,6 +466,7 @@ Not financial advice. Always do your own research!"""
                 self.root.after(0, self.hide_progress)
         
         threading.Thread(target=fetch_data, daemon=True).start()
+        self.animate_loading_text("Gathering temporal stock data...")
         
     def get_single_stock_data(self):
         """Get data for a single selected stock"""
@@ -733,9 +847,77 @@ Analysis Timestamp: {analysis['timestamp']}
             pass
         self.root.destroy()
         
+    def setup_kurumi_effects(self):
+        """Setup Kurumi-style special effects and animations"""
+        # Create floating clock animation variables
+        self.clock_angle = 0
+        self.loading_dots = 0
+        self.mystical_quotes = [
+            "⏰ Time reveals all market secrets...",
+            "🌙 In shadows, opportunities hide...",
+            "🌹 Elegant investments bloom with patience...",
+            "⏰ The market's heartbeat echoes through time...",
+            "✨ Even spirits need good portfolio advice~"
+        ]
+        self.current_quote = 0
+        
+    def animate_loading_text(self, base_text):
+        """Animate loading text with Kurumi flair"""
+        if self.animation_running:
+            return
+            
+        self.animation_running = True
+        
+        def animate():
+            dots_cycle = ["", ".", "..", "..."]
+            cycle_count = 0
+            
+            while self.progress['mode'] == 'indeterminate' and cycle_count < 20:
+                for dots in dots_cycle:
+                    if not self.animation_running:
+                        return
+                    self.status_var.set(f"🌙 {base_text}{dots}")
+                    self.root.update()
+                    self.root.after(300)
+                cycle_count += 1
+                
+            self.animation_running = False
+            
+        threading.Thread(target=animate, daemon=True).start()
+        
+    def show_mystical_quote(self):
+        """Show a rotating mystical quote in status bar"""
+        quote = self.mystical_quotes[self.current_quote]
+        self.status_var.set(quote)
+        self.current_quote = (self.current_quote + 1) % len(self.mystical_quotes)
+        # Schedule next quote change
+        self.root.after(8000, self.show_mystical_quote)
+        
+    def add_kurumi_charm(self, widget, hover_color):
+        """Add hover effects to widgets"""
+        original_bg = widget.cget('background') if hasattr(widget, 'cget') else None
+        
+        def on_enter(event):
+            try:
+                widget.config(background=hover_color)
+            except:
+                pass
+                
+        def on_leave(event):
+            try:
+                if original_bg:
+                    widget.config(background=original_bg)
+            except:
+                pass
+                
+        widget.bind('<Enter>', on_enter)
+        widget.bind('<Leave>', on_leave)
+        
     def run(self):
-        """Run the GUI application"""
+        """Run the GUI application with Kurumi magic"""
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        # Start the mystical quote rotation
+        self.root.after(3000, self.show_mystical_quote)
         self.root.mainloop()
 
 
