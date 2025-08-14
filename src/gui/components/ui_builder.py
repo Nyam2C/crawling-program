@@ -136,3 +136,22 @@ class UIBuilder:
         else:
             # Fallback to regular button
             return ttk.Button(parent, text=text, command=command, style='Pastel.Primary.TButton')
+            
+    def place_background_stickers(self, parent, count=6):
+        """Place add_* icons as background stickers across the screen"""
+        # add_* loader fills pixel_icons 
+        if not self.icon_manager.pixel_icons:
+            return
+        
+        HINTS = [(0.02,0.05),(0.95,0.05),(0.03,0.25),(0.96,0.30),(0.05,0.85),(0.92,0.88)]
+        for i in range(min(count, len(HINTS))):
+            icon = random.choice(self.icon_manager.pixel_icons)
+            lbl = ttk.Label(parent, image=icon,
+                            background=self.theme_manager.colors['panel'])
+            # Keep reference
+            if not hasattr(self.main_app, 'decoration_refs'):
+                self.main_app.decoration_refs = []
+            self.main_app.decoration_refs.append(icon)
+            # Place based on screen ratios
+            x, y = HINTS[i]
+            lbl.place(relx=x, rely=y, anchor='center')

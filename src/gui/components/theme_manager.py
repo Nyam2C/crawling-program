@@ -58,6 +58,12 @@ class ThemeManager:
         
     def apply_styles(self):
         """Apply all theme styles"""
+        # Force theme to clam for consistency
+        try:
+            self.style.theme_use('clam')
+        except Exception:
+            pass
+            
         # Font (try Korean font first, fallback to Arial)
         try:
             default_font = ('맑은 고딕', 9)
@@ -68,8 +74,12 @@ class ThemeManager:
         # Common background styles (no white/gray)
         self.style.configure('TFrame', background=self.colors['panel'])
         self.style.configure('TLabel', background=self.colors['panel'], foreground=self.colors['text'])
-        self.style.configure('TLabelFrame', background=self.colors['panel'], foreground=self.colors['lavender'])
-        self.style.configure('TLabelFrame.Label', background=self.colors['panel'], foreground=self.colors['lavender'])
+        
+        # Labelframe completely pastel
+        self.style.configure('TLabelframe',
+            background=self.colors['panel'], bordercolor=self.colors['border'])
+        self.style.configure('TLabelframe.Label',
+            background=self.colors['panel'], foreground=self.colors['lavender'])
         
         # Entry and text widget styles
         self.style.configure('TEntry',
@@ -101,7 +111,8 @@ class ThemeManager:
             bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
             padding=[10,6], anchor='w')
         self.style.map('Pastel.Primary.TButton',
-            background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])])
+            background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])],
+            relief=[('pressed','sunken')], borderwidth=[('active',3),('pressed',3)])
 
         self.style.configure('Pastel.Secondary.TButton',
             background=self.colors['rose'], foreground='#1B1350',
@@ -130,11 +141,12 @@ class ThemeManager:
         
     def _apply_notebook_styles(self):
         """Apply notebook and tab styles"""
-        # Notebook tabs (retro window style)
-        self.style.configure('TNotebook', background=self.colors['panel'], borderwidth=0)
+        # Notebook tabs with stronger pastel background
+        self.style.configure('TNotebook',
+            background=self.colors['panel'], borderwidth=0, tabmargins=[6, 4, 6, 0])
         self.style.configure('TNotebook.Tab',
             background=self.colors['panel_alt'], foreground=self.colors['text'],
-            bordercolor=self.colors['border'], borderwidth=1, padding=[10,5])
+            bordercolor=self.colors['border'], borderwidth=1, padding=[12,5])
         self.style.map('TNotebook.Tab',
             background=[('selected', self.colors['lavender']), ('active', self.colors['periwinkle'])],
             foreground=[('selected', '#1B1350')])

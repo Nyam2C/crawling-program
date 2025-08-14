@@ -22,54 +22,48 @@ class IconManager:
         if not PIL_AVAILABLE:
             print("PIL not available, skipping icon loading")
             return
-            
-        # Icon mapping for different functions - Using add_ icons more actively
-        icon_mapping = {
-            'analyze_advanced': 'bow.png',
-            'analyze_quick':    'add_1.png',     # Changed to add_1 for sparkle-like effect
-            'save':             'add_2.png',     # Changed to add_2 for save functionality
-            'refresh':          'add_3.png',     # Changed to add_3 for refresh functionality
-            'get_all':          'folder.png',
-            'get_one':          'add_4.png',     # Changed to add_4 for single item retrieval
-            'export':           'add_5.png',     # New export functionality with add_5
-            'tab_data':         'sparkle.png',   # Swapped with analyze_quick
-            'tab_recommend':    'heart.png',     # Changed to heart for recommendations
-            'tab_analysis':     'glasses.png',   # Changed to glasses for analysis
-            'tab_settings':     'skull.png',     # Changed to skull for settings
-            'decoration':       'mail.png'       # Changed decoration to mail
-        }
-        
+
         icons_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'assets', 'pixel_icons')
-        if os.path.exists(icons_path):
-            for key, filename in icon_mapping.items():
-                icon_path = os.path.join(icons_path, filename)
-                if os.path.exists(icon_path):
-                    try:
-                        # Load and resize icon with nearest neighbor for pixel perfect scaling
-                        img = Image.open(icon_path)
-                        img = img.resize((24, 24), Image.Resampling.NEAREST)  # Pixel feel
-                        self.icons[key] = ImageTk.PhotoImage(img)
-                    except Exception as e:
-                        print(f"Failed to load icon {filename}: {e}")
-        
-        # Also load general pixel icons for decorations
-        if os.path.exists(icons_path):
-            for i, filename in enumerate(['sparkle.png', 'bow.png', 'heart.png']):
-                icon_path = os.path.join(icons_path, filename)
-                if os.path.exists(icon_path):
-                    try:
-                        img = Image.open(icon_path)
-                        img = img.resize((32, 32), Image.Resampling.NEAREST)
-                        photo = ImageTk.PhotoImage(img)
-                        self.pixel_icons.append(photo)
-                        # Store reference
-                        if not hasattr(self, 'icon_refs'):
-                            self.icon_refs = []
-                        self.icon_refs.append(photo)
-                    except Exception as e:
-                        print(f"Failed to load decoration icon {filename}: {e}")
-        
-        print(f"Loaded {len(self.icons)} functional icons and {len(self.pixel_icons)} decoration icons")
+        if not os.path.exists(icons_path):
+            return
+
+        # 1) Button/tab icons (named files only)
+        button_map = {
+            'analyze_advanced': 'bow.png',
+            'analyze_quick':    'sparkle.png',
+            'save':             'mail.png',
+            'refresh':          'glasses.png',
+            'get_all':          'folder.png',
+            'get_one':          'heart.png',
+            'export':           'skull.png',
+            'tab_data':         'sparkle.png',
+            'tab_recommend':    'heart.png',
+            'tab_analysis':     'glasses.png',
+            'tab_settings':     'skull.png',
+        }
+        for key, filename in button_map.items():
+            icon_path = os.path.join(icons_path, filename)
+            if os.path.exists(icon_path):
+                try:
+                    img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
+                    self.icons[key] = ImageTk.PhotoImage(img)
+                except Exception as e:
+                    print(f"Button icon load fail {filename}: {e}")
+
+        # 2) Decoration icons (add_* files only)
+        import os
+        for fname in os.listdir(icons_path):
+            if fname.startswith('add_') and fname.endswith('.png'):
+                icon_path = os.path.join(icons_path, fname)
+                try:
+                    img = Image.open(icon_path).resize((32, 32), Image.Resampling.NEAREST)
+                    ph = ImageTk.PhotoImage(img)
+                    self.pixel_icons.append(ph)
+                    self.icon_refs.append(ph)
+                except Exception as e:
+                    print(f"Decor load fail {fname}: {e}")
+
+        print(f"Loaded {len(self.icons)} button/tab icons and {len(self.pixel_icons)} decorations")
         
     def get_icon(self, key):
         """Get icon by key"""

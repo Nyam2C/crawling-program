@@ -18,9 +18,8 @@ class StockDataTab:
         """Create the stock data tab"""
         # Stock Data Frame
         self.frame = ttk.Frame(self.notebook, padding="15")
-        # Add tab with icon
-        tab_text = self.main_app.add_icon_to_tab(self.frame, 'tab_data', 'Stock Data')
-        self.notebook.add(self.frame, text=tab_text)
+        icon = self.main_app.icon_manager.get_icon('tab_data')
+        self.notebook.add(self.frame, text='Stock Data', image=icon, compound='left')
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -46,7 +45,7 @@ class StockDataTab:
         
         # Stock selection
         ttk.Label(control_frame, text="Choose Stock:",
-                 foreground=self.colors['rose']).grid(row=0, column=2, padx=(20, 5))
+                 foreground=self.colors['text']).grid(row=0, column=2, padx=(20, 5))
         
         self.stock_var = tk.StringVar()
         stock_combo = ttk.Combobox(control_frame, textvariable=self.stock_var, 
@@ -86,6 +85,10 @@ class StockDataTab:
         self.stock_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         scrollbar_y.grid(row=0, column=1, sticky=(tk.N, tk.S))
         scrollbar_x.grid(row=1, column=0, sticky=(tk.W, tk.E))
+        
+        # Configure alternating row colors for better readability
+        self.stock_tree.tag_configure('oddrow',  background=self.colors['panel_alt'])
+        self.stock_tree.tag_configure('evenrow', background=self.colors['panel_light'])
         
     def get_all_stocks_data(self):
         """Get data for all stocks in a separate thread"""
@@ -151,9 +154,10 @@ class StockDataTab:
         for item in self.stock_tree.get_children():
             self.stock_tree.delete(item)
             
-        # Add new data
-        for symbol, stock_data in data.items():
+        # Add new data with alternating row colors
+        for i, (symbol, stock_data) in enumerate(data.items()):
             if stock_data:
+                tag = 'evenrow' if i % 2 == 0 else 'oddrow'
                 self.stock_tree.insert('', 'end', values=(
                     stock_data.get('symbol', ''),
                     stock_data.get('company', ''),
@@ -162,7 +166,7 @@ class StockDataTab:
                     stock_data.get('change_percent', ''),
                     stock_data.get('market_cap', ''),
                     stock_data.get('volume', '')
-                ))
+                ), tags=(tag,))
                 
     def update_single_stock_display(self, symbol, data):
         """Update display with single stock data"""

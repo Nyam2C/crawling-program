@@ -98,6 +98,9 @@ class StockAnalysisGUI:
         # Retro title section
         self.ui_builder.create_title_section(main_frame)
         
+        # Place background stickers using add_* icons
+        self.ui_builder.place_background_stickers(main_frame, count=6)
+        
         # Create notebook for tabs
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
