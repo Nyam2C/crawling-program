@@ -17,7 +17,7 @@ class SettingsTab:
     def setup_tab(self):
         """Create the settings tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Settings")
+        self.notebook.add(self.frame, text="Settings")
         
         # App info
         self.create_app_info()
@@ -27,7 +27,7 @@ class SettingsTab:
         
     def create_app_info(self):
         """Create app information section"""
-        info_frame = ttk.LabelFrame(self.frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ About This App", padding="15")
+        info_frame = ttk.LabelFrame(self.frame, text="About This App", padding="15")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
         info_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Kuromi's Magnificent Seven Stock Analysis System ˚‧꒰ა 𓂋 ໒꒱ ‧˚
@@ -58,7 +58,7 @@ for the seven greatest technology stocks:
         
     def create_settings_controls(self):
         """Create settings control panel"""
-        controls_frame = ttk.LabelFrame(self.frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Configuration", padding="15")
+        controls_frame = ttk.LabelFrame(self.frame, text="Configuration", padding="15")
         controls_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Request delay setting
@@ -71,13 +71,13 @@ for the seven greatest technology stocks:
         ttk.Label(controls_frame, text="(Higher values are more respectful to servers)",
                  font=('Arial', 9), foreground=self.colors['pink']).grid(row=0, column=2, sticky=tk.W)
         
-        # Save button
-        ttk.Button(controls_frame, text="(@_@) Save Settings",
-                  command=self.save_settings,
-                  style='Pastel.Primary.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
+        # Save button with icon
+        self.main_app.icon_button(controls_frame, 'save', 'Save Settings',
+                                  self.save_settings,
+                                  style='Pastel.Secondary.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
         
         # Theme info
-        theme_frame = ttk.LabelFrame(self.frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Theme Information", padding="15")
+        theme_frame = ttk.LabelFrame(self.frame, text="Theme Information", padding="15")
         theme_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
         theme_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Current Theme: Kawaii Pastel Retro Style

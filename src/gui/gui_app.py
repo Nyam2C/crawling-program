@@ -103,27 +103,42 @@ class StockAnalysisGUI:
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Pastel purple/pink retro palette
+        # Enhanced pastel purple/pink retro palette
         self.colors = {
-            # base
-            'bg':           '#1F144A',  # Deep navy purple (background)
+            # base backgrounds
+            'bg':           '#1F144A',  # Deep navy purple (main background)
             'panel':        '#2B1E6B',  # Panel/tab background
             'panel_alt':    '#3A2A86',  # Alternate panel color
+            'panel_light':  '#4C3BAA',  # Lighter panel variant
 
-            # pastel
+            # purple pastels
             'lavender':     '#C4B5FD',  # Lavender
             'periwinkle':   '#A78BFA',  # Periwinkle purple
+            'lilac':        '#DDD6FE',  # Light lilac
+            'violet':       '#8B5CF6',  # Medium violet
+
+            # pink pastels
             'pink':         '#FBCFE8',  # Soft pink
             'hotpink':      '#FDA4AF',  # Hot pink accent
-            'mint':         '#A7F3D0',  # Mint accent
+            'rose':         '#F9A8D4',  # Rose pink
+            'magenta':      '#E879F9',  # Bright magenta
+            'blush':        '#FDF2F8',  # Very light blush
 
-            # text
-            'text':         '#F8F8FF',  # Almost white
-            'text_muted':   '#E9E4FF',  # Muted text
+            # accent colors
+            'mint':         '#A7F3D0',  # Mint accent
+            'coral':        '#FCA5A5',  # Coral accent
+            'peach':        '#FBBF24',  # Peach accent
+
+            # text colors (no pure white)
+            'text':         '#F3E8FF',  # Soft lavender white
+            'text_muted':   '#DDD6FE',  # Muted lavender text
+            'text_accent':  '#A78BFA',  # Accent text color
 
             # borders/shadows
-            'border':       '#6B5CD6',  # Border color
-            'shadow':       '#140E33'   # Shadow color
+            'border':       '#8B5CF6',  # Violet border
+            'border_light': '#C4B5FD',  # Light border
+            'shadow':       '#140E33',  # Shadow color
+            'highlight':    '#F9A8D4'   # Pink highlight
         }
         
         # Set root background
@@ -136,13 +151,17 @@ class StockAnalysisGUI:
             default_font = ('Arial', 9)
         self.style.configure('.', font=default_font, foreground=self.colors['text'])
         
-        # Common background styles
+        # Common background styles (no white/gray)
         self.style.configure('TFrame', background=self.colors['panel'])
         self.style.configure('TLabel', background=self.colors['panel'], foreground=self.colors['text'])
-        self.style.configure('TLabelFrame', background=self.colors['panel'], foreground=self.colors['lavender'])
-        self.style.configure('TLabelFrame.Label', background=self.colors['panel'], foreground=self.colors['lavender'])
+        self.style.configure('TLabelFrame', background=self.colors['panel'], foreground=self.colors['rose'])
+        self.style.configure('TLabelFrame.Label', background=self.colors['panel'], foreground=self.colors['rose'])
         
-        # Button styles (Primary / Ghost)
+        # Accent label styles
+        self.style.configure('Accent.TLabel', background=self.colors['panel'], foreground=self.colors['magenta'])
+        self.style.configure('Highlight.TLabel', background=self.colors['panel'], foreground=self.colors['hotpink'])
+        
+        # Button styles (Primary / Secondary / Ghost)
         self.style.configure('Pastel.Primary.TButton',
             background=self.colors['periwinkle'], foreground='#1B1350',
             bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
@@ -150,9 +169,16 @@ class StockAnalysisGUI:
         self.style.map('Pastel.Primary.TButton',
             background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])])
 
+        self.style.configure('Pastel.Secondary.TButton',
+            background=self.colors['rose'], foreground='#1B1350',
+            bordercolor=self.colors['highlight'], borderwidth=2, relief='ridge',
+            padding=[10,6])
+        self.style.map('Pastel.Secondary.TButton',
+            background=[('active', self.colors['hotpink']), ('pressed', self.colors['magenta'])])
+
         self.style.configure('Pastel.Ghost.TButton',
-            background=self.colors['panel_alt'], foreground=self.colors['text'],
-            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            background=self.colors['panel_light'], foreground=self.colors['text'],
+            bordercolor=self.colors['border_light'], borderwidth=2, relief='ridge',
             padding=[10,6])
         
         # Legacy button style mappings for backward compatibility
@@ -184,10 +210,13 @@ class StockAnalysisGUI:
         
         # Treeview (retro data grid style)
         self.style.configure('Pastel.Treeview',
-            background=self.colors['panel_alt'], fieldbackground=self.colors['panel_alt'],
+            background=self.colors['panel_light'], fieldbackground=self.colors['panel_light'],
             foreground=self.colors['text'], borderwidth=2, relief='ridge')
         self.style.configure('Pastel.Treeview.Heading',
-            background=self.colors['periwinkle'], foreground='#1B1350', borderwidth=2, relief='ridge')
+            background=self.colors['rose'], foreground='#1B1350', borderwidth=2, relief='ridge')
+        self.style.map('Pastel.Treeview',
+            background=[('selected', self.colors['magenta'])],
+            foreground=[('selected', self.colors['text'])])
         
         # Legacy Treeview mapping
         self.style.configure('Kuromi.Treeview',
@@ -198,8 +227,12 @@ class StockAnalysisGUI:
         
         # Combobox (retro dropdown style)
         self.style.configure('Pastel.TCombobox',
-            fieldbackground=self.colors['panel_alt'], background=self.colors['periwinkle'],
-            foreground='#1B1350', bordercolor=self.colors['border'], borderwidth=2)
+            fieldbackground=self.colors['panel_light'], background=self.colors['rose'],
+            foreground='#1B1350', bordercolor=self.colors['highlight'], borderwidth=2,
+            arrowcolor='#1B1350')
+        self.style.map('Pastel.TCombobox',
+            fieldbackground=[('readonly', self.colors['panel_light'])],
+            background=[('readonly', self.colors['hotpink'])])
         
         # Legacy Combobox mapping
         self.style.configure('Kuromi.TCombobox',
@@ -310,7 +343,9 @@ class StockAnalysisGUI:
         status_frame.grid_columnconfigure(0, weight=1)
         
         status_label = ttk.Label(status_frame, textvariable=self.status_var, 
-                               relief=tk.SUNKEN, anchor=tk.W)
+                               relief=tk.SUNKEN, anchor=tk.W,
+                               background=self.colors['panel_light'], 
+                               foreground=self.colors['text'])
         status_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
         # Progress indicator
@@ -390,7 +425,13 @@ class StockAnalysisGUI:
             'refresh':          'skull.png',
             'get_all':          'folder.png',
             'get_one':          'heart.png',
-            'charts':           'glasses.png'
+            'charts':           'glasses.png',
+            'tab_data':         'add_1.png',
+            'tab_recommend':    'add_2.png', 
+            'tab_analysis':     'add_3.png',
+            'tab_charts':       'add_4.png',
+            'tab_settings':     'add_5.png',
+            'decoration':       'heart.png'
         }
         
         icons_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'pixel_icons')
@@ -469,12 +510,19 @@ class StockAnalysisGUI:
             print(f"Text decoration failed: {e}")
             return None
     
-    def icon_button(self, parent, key, text, command):
+    def icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton'):
         """Create button with pixel icon"""
-        btn = ttk.Button(parent, text=text, command=command, style='Pastel.Primary.TButton')
+        btn = ttk.Button(parent, text=text, command=command, style=style)
         if hasattr(self, 'icons') and key in self.icons:
             btn.configure(image=self.icons[key], compound='left')
         return btn
+        
+    def add_icon_to_tab(self, tab_frame, icon_key, text):
+        """Add icon to tab text if available"""
+        if hasattr(self, 'icons') and icon_key in self.icons:
+            # For tabs, we'll use text with icon reference
+            return f"   {text}"  # Space for icon appearance
+        return text
         
     def add_kuromi_icon_button(self, parent, text, command, icon_index=None):
         """Legacy method for backward compatibility - creates pixel icon button"""

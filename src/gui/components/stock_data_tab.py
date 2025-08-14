@@ -35,18 +35,16 @@ class StockDataTab:
         control_frame = ttk.LabelFrame(self.frame, text="Control Panel", padding="15")
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        # Main action buttons
-        ttk.Button(control_frame, text="Get All Stocks", 
-                  command=self.get_all_stocks_data,
-                  style='Pastel.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
+        # Main action buttons with icons
+        self.main_app.icon_button(control_frame, 'get_all', 'Get All Stocks', 
+                                  self.get_all_stocks_data).grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="Refresh",
-                  command=self.refresh_stock_data,
-                  style='Pastel.Ghost.TButton').grid(row=0, column=1, padx=(0, 10))
+        self.main_app.icon_button(control_frame, 'refresh', 'Refresh',
+                                  self.refresh_stock_data, style='Pastel.Ghost.TButton').grid(row=0, column=1, padx=(0, 10))
         
         # Stock selection
         ttk.Label(control_frame, text="Choose Stock:",
-                 foreground=self.colors['lavender']).grid(row=0, column=2, padx=(20, 5))
+                 foreground=self.colors['rose']).grid(row=0, column=2, padx=(20, 5))
         
         self.stock_var = tk.StringVar()
         stock_combo = ttk.Combobox(control_frame, textvariable=self.stock_var, 
@@ -55,9 +53,8 @@ class StockDataTab:
                                   style='Pastel.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="Get Single Stock",
-                  command=self.get_single_stock_data,
-                  style='Pastel.Primary.TButton').grid(row=0, column=4)
+        self.main_app.icon_button(control_frame, 'get_one', 'Get Single Stock',
+                                  self.get_single_stock_data).grid(row=0, column=4)
         
     def create_data_display(self):
         """Create data display area"""

@@ -17,7 +17,7 @@ class IndividualAnalysisTab:
     def setup_tab(self):
         """Create the individual stock analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="(@_@) Individual Analysis")
+        self.notebook.add(self.frame, text="Individual Analysis")
         
         # Configure grid
         self.frame.grid_rowconfigure(2, weight=1)
@@ -34,7 +34,7 @@ class IndividualAnalysisTab:
         
     def create_stock_selection(self):
         """Create stock selection panel"""
-        select_frame = ttk.LabelFrame(self.frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Choose Stock to Analyze", padding="15")
+        select_frame = ttk.LabelFrame(self.frame, text="Choose Stock to Analyze", padding="15")
         select_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         ttk.Label(select_frame, text="Stock Symbol:").grid(row=0, column=0, padx=(0, 10))
@@ -46,17 +46,17 @@ class IndividualAnalysisTab:
                                     style='Pastel.TCombobox')
         analysis_combo.grid(row=0, column=1, padx=(0, 15))
         
-        ttk.Button(select_frame, text="(*o*) Deep Analysis",
-                  command=self.analyze_individual_stock_advanced,
-                  style='Pastel.Primary.TButton').grid(row=0, column=2, padx=(0, 10))
+        self.main_app.icon_button(select_frame, 'analyze_advanced', 'Deep Analysis',
+                                  self.analyze_individual_stock_advanced,
+                                  style='Pastel.Primary.TButton').grid(row=0, column=2, padx=(0, 10))
                   
-        ttk.Button(select_frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Quick Analysis",
-                  command=self.analyze_individual_stock_basic,
-                  style='Pastel.Primary.TButton').grid(row=0, column=3)
+        self.main_app.icon_button(select_frame, 'analyze_quick', 'Quick Analysis',
+                                  self.analyze_individual_stock_basic,
+                                  style='Pastel.Secondary.TButton').grid(row=0, column=3)
         
     def create_results_summary(self):
         """Create analysis results summary"""
-        results_frame = ttk.LabelFrame(self.frame, text="(@_@) Analysis Summary", padding="15")
+        results_frame = ttk.LabelFrame(self.frame, text="Analysis Summary", padding="15")
         results_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Score display
@@ -75,7 +75,7 @@ class IndividualAnalysisTab:
         
     def create_detailed_analysis(self):
         """Create detailed analysis display"""
-        detail_frame = ttk.LabelFrame(self.frame, text="(@_@) Detailed Analysis", padding="15")
+        detail_frame = ttk.LabelFrame(self.frame, text="Detailed Analysis", padding="15")
         detail_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         detail_frame.grid_rowconfigure(0, weight=1)
         detail_frame.grid_columnconfigure(0, weight=1)
@@ -85,22 +85,22 @@ class IndividualAnalysisTab:
             wrap=tk.WORD, 
             height=15,
             font=('Consolas', 11),
-            bg=self.colors['panel_alt'],
+            bg=self.colors['panel_light'],
             fg=self.colors['text'],
-            insertbackground=self.colors['pink'],
-            selectbackground=self.colors['periwinkle']
+            insertbackground=self.colors['hotpink'],
+            selectbackground=self.colors['magenta']
         )
         self.analysis_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Add cute initial message
-        initial_message = """(>.<) Individual Stock Analysis (>.<)
+        # Add kawaii initial message
+        initial_message = """Individual Stock Analysis
 
-˚‧꒰ა 𓂋 ໒꒱ ‧˚ Select a stock symbol from the dropdown above
-(*o*) Click "Deep Analysis" for comprehensive multi-criteria analysis
-˚‧꒰ა 𓂋 ໒꒱ ‧˚ Click "Quick Analysis" for basic technical analysis
+✧ Select a stock symbol from the dropdown above
+✧ Click "Deep Analysis" for comprehensive multi-criteria analysis  
+✧ Click "Quick Analysis" for basic technical analysis
 
 Ready to dive deep into your favorite stock? 
-Choose a symbol and analysis type to get started! ⸜(｡˃ ᵕ ˂ )⸝♡
+Choose a symbol and analysis type to get started!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
