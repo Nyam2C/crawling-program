@@ -18,19 +18,19 @@ class StockChartsFrame:
         self.parent = parent_notebook
         self.create_charts_tab()
         
-        # Color scheme
+        # Pastel color scheme
         self.colors = {
-            'strong_buy': '#22C55E',    # Green
-            'buy': '#3B82F6',          # Blue  
-            'hold': '#F59E0B',         # Yellow
-            'weak_hold': '#EF4444',    # Orange-Red
-            'avoid': '#DC2626'         # Red
+            'strong_buy': '#A7F3D0',  # Mint green
+            'buy': '#A78BFA',         # Periwinkle
+            'hold': '#FBCFE8',        # Soft pink
+            'weak_hold': '#FDE68A',   # Light yellow
+            'avoid': '#FCA5A5'        # Soft red
         }
         
     def create_charts_tab(self):
         """Create the charts tab"""
         self.charts_frame = ttk.Frame(self.parent, padding="10")
-        self.parent.add(self.charts_frame, text="📈 Charts")
+        self.parent.add(self.charts_frame, text="Charts")
         
         # Configure grid
         self.charts_frame.grid_rowconfigure(1, weight=1)
@@ -40,13 +40,13 @@ class StockChartsFrame:
         control_frame = ttk.LabelFrame(self.charts_frame, text="Chart Controls", padding="10")
         control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        ttk.Button(control_frame, text="📊 Stock Scores Chart",
+        ttk.Button(control_frame, text="Stock Scores Chart",
                   command=self.create_scores_chart).grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="🥧 Recommendation Pie Chart", 
+        ttk.Button(control_frame, text="Recommendation Pie Chart", 
                   command=self.create_recommendation_pie_chart).grid(row=0, column=1, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="📈 Market Cap Comparison",
+        ttk.Button(control_frame, text="Market Cap Comparison",
                   command=self.create_market_cap_chart).grid(row=0, column=2)
         
         # Chart display frame
@@ -64,7 +64,7 @@ class StockChartsFrame:
         fig = Figure(figsize=(12, 6), dpi=100)
         ax = fig.add_subplot(111)
         
-        ax.text(0.5, 0.5, '📊 Select a chart type from the controls above\nto visualize stock analysis data', 
+        ax.text(0.5, 0.5, 'Select a chart type from the controls above\nto visualize stock analysis data', 
                 horizontalalignment='center', verticalalignment='center',
                 transform=ax.transAxes, fontsize=14, alpha=0.7)
         ax.set_xlim(0, 1)
@@ -102,7 +102,7 @@ class StockChartsFrame:
             error_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
             
             error_label = ttk.Label(error_frame, 
-                                  text=f"❌ Chart display error: {str(e)}\n\nPlease try a different chart or restart the application.",
+                                  text=f"Chart display error: {str(e)}\n\nPlease try a different chart or restart the application.",
                                   font=('Arial', 12),
                                   foreground='red',
                                   justify='center')
@@ -135,7 +135,7 @@ class StockChartsFrame:
         bars = ax.bar(symbols, scores, color=colors, alpha=0.8, edgecolor='black', linewidth=0.5)
         
         # Customize chart
-        ax.set_title('📊 Magnificent Seven - Analysis Scores', fontsize=16, fontweight='bold', pad=20)
+        ax.set_title('Magnificent Seven - Analysis Scores', fontsize=16, fontweight='bold', pad=20)
         ax.set_xlabel('Stock Symbols', fontsize=12, fontweight='bold')
         ax.set_ylabel('Analysis Score', fontsize=12, fontweight='bold')
         ax.set_ylim(0, 1)
@@ -149,11 +149,11 @@ class StockChartsFrame:
         
         # Add legend
         legend_elements = [
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['strong_buy'], label='🟢 Strong Buy (≥0.8)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['buy'], label='🔵 Buy (≥0.65)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['hold'], label='🟡 Hold (≥0.5)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['weak_hold'], label='🟠 Weak Hold (≥0.35)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['avoid'], label='🔴 Avoid (<0.35)')
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['strong_buy'], label='Strong Buy (≥0.8)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['buy'], label='Buy (≥0.65)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['hold'], label='Hold (≥0.5)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['weak_hold'], label='Weak Hold (≥0.35)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['avoid'], label='Avoid (<0.35)')
         ]
         ax.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, 1))
         
@@ -176,7 +176,7 @@ class StockChartsFrame:
             # Show empty state
             fig = Figure(figsize=(12, 6), dpi=100)
             ax = fig.add_subplot(111)
-            ax.text(0.5, 0.5, '🥧 No recommendation data available\nGenerate recommendations first', 
+            ax.text(0.5, 0.5, 'No recommendation data available\nGenerate recommendations first', 
                    horizontalalignment='center', verticalalignment='center',
                    transform=ax.transAxes, fontsize=14, alpha=0.7)
             ax.axis('off')
@@ -200,7 +200,7 @@ class StockChartsFrame:
             autotext.set_fontweight('bold')
             autotext.set_fontsize(10)
         
-        ax.set_title('🥧 Recommendation Distribution - Magnificent Seven', 
+        ax.set_title('Recommendation Distribution - Magnificent Seven', 
                     fontsize=16, fontweight='bold', pad=20)
         
         plt.tight_layout()
@@ -218,7 +218,7 @@ class StockChartsFrame:
         # Create horizontal bar chart
         bars = ax.barh(symbols, market_caps, color='skyblue', alpha=0.8, edgecolor='navy')
         
-        ax.set_title('📈 Market Capitalization Comparison', fontsize=16, fontweight='bold', pad=20)
+        ax.set_title('Market Capitalization Comparison', fontsize=16, fontweight='bold', pad=20)
         ax.set_xlabel('Market Cap (Trillions USD)', fontsize=12, fontweight='bold')
         ax.set_ylabel('Stock Symbols', fontsize=12, fontweight='bold')
         ax.grid(True, alpha=0.3, axis='x')
@@ -286,7 +286,7 @@ class StockChartsFrame:
         bars = ax.bar(symbols, scores, color=colors, alpha=0.8, edgecolor='black', linewidth=0.5)
         
         # Customize chart
-        ax.set_title('📊 Magnificent Seven - Real-Time Analysis Scores', fontsize=16, fontweight='bold', pad=20)
+        ax.set_title('Magnificent Seven - Real-Time Analysis Scores', fontsize=16, fontweight='bold', pad=20)
         ax.set_xlabel('Stock Symbols', fontsize=12, fontweight='bold')
         ax.set_ylabel('Analysis Score', fontsize=12, fontweight='bold')
         ax.set_ylim(0, 1)
@@ -300,11 +300,11 @@ class StockChartsFrame:
         
         # Add legend
         legend_elements = [
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['strong_buy'], label='🟢 Strong Buy (≥0.8)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['buy'], label='🔵 Buy (≥0.65)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['hold'], label='🟡 Hold (≥0.5)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['weak_hold'], label='🟠 Weak Hold (≥0.35)'),
-            plt.Rectangle((0,0),1,1, facecolor=self.colors['avoid'], label='🔴 Avoid (<0.35)')
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['strong_buy'], label='Strong Buy (≥0.8)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['buy'], label='Buy (≥0.65)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['hold'], label='Hold (≥0.5)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['weak_hold'], label='Weak Hold (≥0.35)'),
+            plt.Rectangle((0,0),1,1, facecolor=self.colors['avoid'], label='Avoid (<0.35)')
         ]
         ax.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, 1))
         

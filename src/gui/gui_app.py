@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Magnificent Seven Stock Analysis - Cool Kuromi GUI Application
-Powered by Kuromi's rebellious cuteness! 🖤💗
+Magnificent Seven Stock Analysis - Retro Pastel GUI Application
+Modern stock analysis with retro 90s styling
 """
 
 import tkinter as tk
@@ -14,7 +14,7 @@ try:
     PIL_AVAILABLE = True
 except ImportError:
     PIL_AVAILABLE = False
-    print("˚‧꒰ა 𓂋 ໒꒱ ‧˚ PIL not available. Stickers will be disabled.")
+    print("PIL not available. Icons will be disabled.")
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components.stock_data_tab import StockDataTab
@@ -32,7 +32,7 @@ except ImportError:
 
 
 class StockAnalysisGUI:
-    """Main GUI application for stock analysis and recommendations - Cool Kuromi Edition! 🖤💗"""
+    """Main GUI application for stock analysis and recommendations - Retro Pastel Edition!"""
     
     def __init__(self):
         self.root = tk.Tk()
@@ -50,31 +50,32 @@ class StockAnalysisGUI:
         # Animation variables
         self.animation_running = False
         
-        # Kuromi stickers - initialize BEFORE create_widgets()
-        self.kuromi_stickers = []
-        self.load_kuromi_stickers()
+        # Pixel icons - initialize BEFORE create_widgets()
+        self.pixel_icons = []
+        self.icons = {}
+        self.load_pixel_icons()
         
         # NOW create widgets after all attributes are initialized
         self.create_widgets()
         
-        # Initialize cool effects
-        self.setup_cool_effects()
+        # Initialize effects
+        self.setup_effects()
         
     def setup_main_window(self):
-        """Configure the main window with cool Kuromi aesthetics 🖤💗"""
-        self.root.title("×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×")
+        """Configure the main window with retro pastel aesthetics"""
+        self.root.title("Magnificent Seven Stock Analysis")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
         # Center window on screen for better UX
         self.center_window()
         
-        # Cool Kuromi dark theme background
-        self.root.configure(bg='#0F0A0F')  # Very dark purple
+        # Set theme background
+        self.root.configure(bg='#1F144A')  # Deep navy purple
         
         # Add colorful window border
         try:
-            self.root.configure(highlightbackground='#9966CC', highlightthickness=3)
+            self.root.configure(highlightbackground='#6B5CD6', highlightthickness=3)
         except:
             pass  # In case the option is not supported
         
@@ -89,7 +90,7 @@ class StockAnalysisGUI:
         self.root.grid_columnconfigure(0, weight=1)
     
     def center_window(self):
-        """Center the window on screen for better UX ⸜(｡˃ ᵕ ˂ )⸝♡"""
+        """Center the window on screen for better UX"""
         self.root.update_idletasks()
         width = self.root.winfo_width()
         height = self.root.winfo_height()
@@ -98,116 +99,150 @@ class StockAnalysisGUI:
         self.root.geometry(f'{width}x{height}+{x}+{y}')
         
     def create_styles(self):
-        """Create cool Kuromi-inspired custom styles 🎨"""
+        """Create retro 90s-style pastel purple/pink theme"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Cool Kuromi color palette ⸜(｡˃ ᵕ ˂ )⸝♡
+        # Pastel purple/pink retro palette
         self.colors = {
-            'kuromi_primary': '#9966CC',    # Main purple
-            'kuromi_secondary': '#663399',  # Deep purple  
-            'kuromi_accent': '#CC99FF',     # Light purple
-            'kuromi_pink': '#FF69B4',       # Hot pink (secondary)
-            'kuromi_pink_light': '#FF91A4', # Light pink
-            'kuromi_black': '#000000',      # Pure black
-            'kuromi_dark': '#1A0D1A',       # Dark purple-black
-            'kuromi_light': '#2D1A2D',      # Light purple-grey
-            'kuromi_text': '#FFFFFF',       # White
-            'kuromi_bg': '#0F0A0F'          # Very dark purple
+            # base
+            'bg':           '#1F144A',  # Deep navy purple (background)
+            'panel':        '#2B1E6B',  # Panel/tab background
+            'panel_alt':    '#3A2A86',  # Alternate panel color
+
+            # pastel
+            'lavender':     '#C4B5FD',  # Lavender
+            'periwinkle':   '#A78BFA',  # Periwinkle purple
+            'pink':         '#FBCFE8',  # Soft pink
+            'hotpink':      '#FDA4AF',  # Hot pink accent
+            'mint':         '#A7F3D0',  # Mint accent
+
+            # text
+            'text':         '#F8F8FF',  # Almost white
+            'text_muted':   '#E9E4FF',  # Muted text
+
+            # borders/shadows
+            'border':       '#6B5CD6',  # Border color
+            'shadow':       '#140E33'   # Shadow color
         }
         
-        # Configure cool root theme
-        self.style.configure('TFrame', background=self.colors['kuromi_dark'])
-        self.style.configure('TLabel', background=self.colors['kuromi_dark'], 
-                           foreground=self.colors['kuromi_text'])
-        self.style.configure('TLabelFrame', background=self.colors['kuromi_dark'],
-                           foreground=self.colors['kuromi_primary'])
-        self.style.configure('TLabelFrame.Label', background=self.colors['kuromi_dark'],
-                           foreground=self.colors['kuromi_primary'])
+        # Set root background
+        self.root.configure(bg=self.colors['bg'])
         
-        # Cool Kuromi button styles 🖤💗
+        # Font (try Korean font first, fallback to Arial)
+        try:
+            default_font = ('맑은 고딕', 9)
+        except:
+            default_font = ('Arial', 9)
+        self.style.configure('.', font=default_font, foreground=self.colors['text'])
+        
+        # Common background styles
+        self.style.configure('TFrame', background=self.colors['panel'])
+        self.style.configure('TLabel', background=self.colors['panel'], foreground=self.colors['text'])
+        self.style.configure('TLabelFrame', background=self.colors['panel'], foreground=self.colors['lavender'])
+        self.style.configure('TLabelFrame.Label', background=self.colors['panel'], foreground=self.colors['lavender'])
+        
+        # Button styles (Primary / Ghost)
+        self.style.configure('Pastel.Primary.TButton',
+            background=self.colors['periwinkle'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6])
+        self.style.map('Pastel.Primary.TButton',
+            background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])])
+
+        self.style.configure('Pastel.Ghost.TButton',
+            background=self.colors['panel_alt'], foreground=self.colors['text'],
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6])
+        
+        # Legacy button style mappings for backward compatibility
         self.style.configure('Kuromi.Primary.TButton',
-                           background=self.colors['kuromi_primary'],
-                           foreground=self.colors['kuromi_black'],
-                           borderwidth=2,
-                           relief='raised',
-                           focuscolor=self.colors['kuromi_accent'])
-        
+            background=self.colors['periwinkle'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6])
         self.style.map('Kuromi.Primary.TButton',
-                      background=[('active', self.colors['kuromi_accent']),
-                                ('pressed', self.colors['kuromi_secondary'])])
+            background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])])
         
         self.style.configure('Kuromi.Black.TButton',
-                           background=self.colors['kuromi_black'], 
-                           foreground=self.colors['kuromi_primary'],
-                           borderwidth=2,
-                           relief='raised',
-                           focuscolor=self.colors['kuromi_accent'])
+            background=self.colors['panel_alt'], foreground=self.colors['text'],
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6])
         
-        self.style.map('Kuromi.Black.TButton',
-                      background=[('active', self.colors['kuromi_light']),
-                                ('pressed', self.colors['kuromi_dark'])])
-        
-        # Cool notebook (tabs) styling
-        self.style.configure('TNotebook', background=self.colors['kuromi_dark'],
-                           borderwidth=0)
-        self.style.configure('TNotebook.Tab', 
-                           background=self.colors['kuromi_light'],
-                           foreground=self.colors['kuromi_text'],
-                           padding=[20, 10],
-                           borderwidth=1)
+        # Notebook tabs (retro window style)
+        self.style.configure('TNotebook', background=self.colors['panel'], borderwidth=0)
+        self.style.configure('TNotebook.Tab',
+            background=self.colors['panel_alt'],
+            foreground=self.colors['text'],
+            padding=[14, 6],
+            bordercolor=self.colors['border'],
+            lightcolor=self.colors['periwinkle'],
+            darkcolor=self.colors['shadow'],
+            borderwidth=2, relief='ridge')
         self.style.map('TNotebook.Tab',
-                      background=[('selected', self.colors['kuromi_primary']),
-                                ('active', self.colors['kuromi_accent'])])
+            background=[('selected', self.colors['periwinkle']), ('active', self.colors['lavender'])],
+            foreground=[('selected', '#1B1350')])
         
-        # Cool treeview styling
+        # Treeview (retro data grid style)
+        self.style.configure('Pastel.Treeview',
+            background=self.colors['panel_alt'], fieldbackground=self.colors['panel_alt'],
+            foreground=self.colors['text'], borderwidth=2, relief='ridge')
+        self.style.configure('Pastel.Treeview.Heading',
+            background=self.colors['periwinkle'], foreground='#1B1350', borderwidth=2, relief='ridge')
+        
+        # Legacy Treeview mapping
         self.style.configure('Kuromi.Treeview',
-                           background=self.colors['kuromi_light'],
-                           foreground=self.colors['kuromi_text'],
-                           fieldbackground=self.colors['kuromi_light'],
-                           borderwidth=1,
-                           relief='solid')
+            background=self.colors['panel_alt'], fieldbackground=self.colors['panel_alt'],
+            foreground=self.colors['text'], borderwidth=2, relief='ridge')
         self.style.configure('Kuromi.Treeview.Heading',
-                           background=self.colors['kuromi_primary'],
-                           foreground=self.colors['kuromi_black'],
-                           relief='raised',
-                           borderwidth=1)
+            background=self.colors['periwinkle'], foreground='#1B1350', borderwidth=2, relief='ridge')
         
-        # Cool combobox styling  
+        # Combobox (retro dropdown style)
+        self.style.configure('Pastel.TCombobox',
+            fieldbackground=self.colors['panel_alt'], background=self.colors['periwinkle'],
+            foreground='#1B1350', bordercolor=self.colors['border'], borderwidth=2)
+        
+        # Legacy Combobox mapping
         self.style.configure('Kuromi.TCombobox',
-                           fieldbackground=self.colors['kuromi_light'],
-                           background=self.colors['kuromi_primary'],
-                           foreground=self.colors['kuromi_black'])
+            fieldbackground=self.colors['panel_alt'], background=self.colors['periwinkle'],
+            foreground='#1B1350', bordercolor=self.colors['border'], borderwidth=2)
         
-        # Cool progress bar styling
+        # Progress bar (retro style)
+        self.style.configure('Pastel.Horizontal.TProgressbar',
+            background=self.colors['periwinkle'], troughcolor=self.colors['panel_alt'],
+            bordercolor=self.colors['border'], lightcolor=self.colors['lavender'],
+            darkcolor=self.colors['shadow'], borderwidth=2)
+        
+        # Legacy progress bar mapping
         self.style.configure('Kuromi.Horizontal.TProgressbar',
-                           background=self.colors['kuromi_primary'],
-                           troughcolor=self.colors['kuromi_light'],
-                           borderwidth=1,
-                           lightcolor=self.colors['kuromi_accent'],
-                           darkcolor=self.colors['kuromi_secondary'])
+            background=self.colors['periwinkle'], troughcolor=self.colors['panel_alt'],
+            bordercolor=self.colors['border'], lightcolor=self.colors['lavender'],
+            darkcolor=self.colors['shadow'], borderwidth=2)
         
-        # Cool scrollbar styling
+        # Scrollbars (retro style)
+        self.style.configure('Pastel.Vertical.TScrollbar',
+            background=self.colors['panel_alt'], troughcolor=self.colors['panel'],
+            arrowcolor=self.colors['text'])
+        self.style.configure('Pastel.Horizontal.TScrollbar',
+            background=self.colors['panel_alt'], troughcolor=self.colors['panel'],
+            arrowcolor=self.colors['text'])
+        
+        # Legacy scrollbar mappings
         self.style.configure('Kuromi.Vertical.TScrollbar',
-                           background=self.colors['kuromi_light'],
-                           troughcolor=self.colors['kuromi_dark'],
-                           borderwidth=1,
-                           arrowcolor=self.colors['kuromi_text'])
+            background=self.colors['panel_alt'], troughcolor=self.colors['panel'],
+            arrowcolor=self.colors['text'])
         self.style.configure('Kuromi.Horizontal.TScrollbar',
-                           background=self.colors['kuromi_light'],
-                           troughcolor=self.colors['kuromi_dark'],
-                           borderwidth=1,
-                           arrowcolor=self.colors['kuromi_text'])
+            background=self.colors['panel_alt'], troughcolor=self.colors['panel'],
+            arrowcolor=self.colors['text'])
         
     def create_widgets(self):
-        """Create all GUI widgets with cool styling 🖤💗"""
-        # Create main frame with cool Kuromi styling
+        """Create all GUI widgets with retro styling"""
+        # Create main frame with retro styling
         main_frame = ttk.Frame(self.root, padding="20")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         main_frame.grid_rowconfigure(1, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
         
-        # Cool Kuromi title with rebellious styling
+        # Retro title section
         self.create_title_section(main_frame)
         
         # Create notebook for tabs
@@ -226,62 +261,49 @@ class StockAnalysisGUI:
         
         self.settings_tab = SettingsTab(self.notebook, self)
         
-        # Cool status bar
+        # Status bar
         self.create_status_bar(main_frame)
         
     def create_title_section(self, parent):
-        """Create the cool title section with Kuromi decorations 🖤💗"""
+        """Create the title section with pixel decorations"""
         title_frame = ttk.Frame(parent)
         title_frame.grid(row=0, column=0, pady=(0, 20), sticky=(tk.W, tk.E))
         title_frame.grid_columnconfigure(1, weight=1)
         
-        # Left Kuromi sticker
-        left_sticker = self.add_kuromi_decoration(title_frame)
-        if left_sticker:
-            left_sticker.grid(row=0, column=0, rowspan=2, padx=(0, 15), pady=5)
+        # Left pixel decoration
+        left_decoration = self.add_pixel_decoration(title_frame)
+        if left_decoration:
+            left_decoration.grid(row=0, column=0, rowspan=2, padx=(0, 15), pady=5)
         
         # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Analysis ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×",
+                              text="Magnificent Seven Stock Analysis",
                               font=('Arial', 20, 'bold'),
-                              foreground=self.colors['kuromi_primary'])
+                              foreground=self.colors['lavender'])
         title_label.grid(row=0, column=1)
         
-        # Smaller ASCII Art
-        kuromi_ascii = """
-⢸⣿⠿⠀⠀    
-⣠⣾⣿⣿⡀⠀
-⢾⣿⣏⣠⣿⣿⠀
-⣤⣼⣿⣿⣿⣭⡇
-⣿⣿⡟⢉⣉⢻⣿⣷
-⡿⢖⣟⣩⣾⠟⢿⣧
-⠛⢉⣭⠽⠤⠿⢿⠀
-⣿⣷⣾⠋⣀⠀⣹⡏
-⣿⣿⠇⠀⢻⣿⡟⠁
-        """
-        
-        # ASCII Art Label (smaller font)
-        ascii_label = ttk.Label(title_frame,
-                               text=kuromi_ascii,
-                               font=('Consolas', 6),
-                               foreground=self.colors['kuromi_primary'])
-        ascii_label.grid(row=1, column=1, pady=(2, 2))
+        # Pixel icon in title
+        if hasattr(self, 'pixel_icons') and self.pixel_icons:
+            title_icon = self.pixel_icons[0] if self.pixel_icons else None
+            if title_icon:
+                icon_label = ttk.Label(title_frame, image=title_icon, background=self.colors['panel'])
+                icon_label.grid(row=1, column=1, pady=(5, 5))
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Stocks are as rebellious as me... let's tame them! ˃̵ᴗ˂",
+                                 text="Advanced stock analysis and recommendations system",
                                  font=('Arial', 12, 'italic'),
-                                 foreground=self.colors['kuromi_accent'])
+                                 foreground=self.colors['periwinkle'])
         subtitle_label.grid(row=2, column=1, pady=(5, 0))
         
-        # Right Kuromi sticker
-        right_sticker = self.add_kuromi_decoration(title_frame)
-        if right_sticker:
-            right_sticker.grid(row=0, column=2, rowspan=2, padx=(15, 0), pady=5)
+        # Right pixel decoration
+        right_decoration = self.add_pixel_decoration(title_frame)
+        if right_decoration:
+            right_decoration.grid(row=0, column=2, rowspan=2, padx=(15, 0), pady=5)
         
     def create_status_bar(self, parent):
-        """Create cool status bar 🖤💗"""
+        """Create status bar"""
         self.status_var = tk.StringVar()
-        self.status_var.set("˚ǚ⁀˝ 𝑐𝑜�𝒊𝐼 𝐫̵ 𝑜 ˝⁀̵ Ready to rock the market with Kuromi's style! Let's make some rebellious investments! ∿ ₁ ᵗ⁷")
+        self.status_var.set("Ready to analyze the stock market. Let's find the best investment opportunities.")
         
         status_frame = ttk.Frame(parent)
         status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(15, 0))
@@ -291,31 +313,31 @@ class StockAnalysisGUI:
                                relief=tk.SUNKEN, anchor=tk.W)
         status_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
-        # Cool progress indicator
+        # Progress indicator
         self.progress = ttk.Progressbar(status_frame, mode='indeterminate',
                                        style='Kuromi.Horizontal.TProgressbar')
         self.progress.grid(row=0, column=1, padx=(10, 0))
         
     def update_status(self, message):
-        """Update status bar message with cool flair 🖤💗"""
+        """Update status bar message"""
         self.status_var.set(message)
         self.root.update()
         
     def show_progress(self):
-        """Show cool progress bar 😈"""
+        """Show progress bar"""
         self.progress.start()
         
     def hide_progress(self):
-        """Hide progress bar and stop cool animations 🖤💗"""
+        """Hide progress bar and stop animations"""
         self.progress.stop()
         self.animation_running = False
         
     def show_error(self, message):
-        """Show cool error message 😠"""
-        messagebox.showerror("˃̵ᴗ˂ Hmph!", f"₅⃒⃑*ˊᵀ⁵ᵀˊ*⃒⃐ₔ {message}")
+        """Show error message"""
+        messagebox.showerror("Error", message)
         
     def on_closing(self):
-        """Handle application closing with cool goodbye 🖤💗"""
+        """Handle application closing"""
         try:
             self.recommendation_engine.close()
             self.stock_crawler.close()
@@ -323,115 +345,161 @@ class StockAnalysisGUI:
             pass
         self.root.destroy()
         
-    def setup_cool_effects(self):
-        """Setup cool Kuromi-style effects and animations 🖤💗"""
-        # Create cool animation variables
+    def setup_effects(self):
+        """Setup GUI effects and animations"""
+        # Create animation variables
         self.animation_dots = 0
-        self.cool_quotes = [
-            "( ˆᶤⁱ ˆ⁷ ) Markets are just like me... unpredictable but totally worth it! ˃̵ᴗ˂",
-            "“₉ₕ₈ₑ ˆ•␡•ˆ ₈ₑₕ₁ Don't underestimate me! I'll find the best stocks for you! ׳˚ﾊ(ˊ*ˊﾀ˓*ﾀ)˚׳",
-            "( ˆⁱ̵˓ˆ⁷ ) Even rebels need smart investments... let's be rebelliously rich! ₉(ˊᶤˋ*)و̵",
-            "׳˚(ˊˊᶤ̃אﾀᶤ̃ˊ)₁ₐ* ˈ♡‧₊˚ Hmph! These market trends can't fool Kuromi's sharp eyes!",
-            "׵²•✼•²׵ My Devil's tail knows which way the market will swing! °ǚ(ˊ*ˊ͐₃ﾀ*ﾀ)ɪ°",
-            "₈₁ₕ₈ₑ₇*ᵃˊᶤⁿˊˋ)₂ₙₗ* ‪₈♡‧₊˚ Being cute AND profitable? That's my specialty!",
-            "₊‧°𝐿♡♡𝑂°‧₊ Pink and black, just like profits and losses... I prefer pink!",
-            "₅⃒⃑*ˊᵀ⁵ᵀˊ*⃒⃐ₔ Those boring analysts don't know real style! Let me show you!",
-            "°ǚ(ˊ*ˊ͐₃ﾀ*ﾀ)ɪ° Kuromi's investment magic is way cooler than anyone else's!",
-            "˃̵ᴗ˂ Rebellious stocks for a rebellious investor... perfect match! ( ˆⁱ̵˓ˆ⁷ )"
+        self.status_messages = [
+            "Analyzing market trends with advanced algorithms...",
+            "Searching for the best investment opportunities...",
+            "Processing stock data and performance metrics...",
+            "Evaluating risk factors and potential returns...",
+            "Generating personalized investment recommendations...",
+            "Monitoring market volatility and price movements...",
+            "Calculating optimal portfolio diversification...",
+            "Studying fundamental and technical indicators...",
+            "Ready to help you make informed investment decisions.",
+            "Professional stock analysis at your fingertips."
         ]
         self.current_quote = 0
         
-        # Start cool quote rotation
-        self.root.after(5000, self.show_cool_quote)
+        # Start status message rotation
+        self.root.after(5000, self.show_status_message)
         
-    def show_cool_quote(self):
-        """Show a rotating cool quote in status bar 🖤💗"""
-        if not self.animation_running:  # Only show quotes when not processing
-            quote = self.cool_quotes[self.current_quote]
-            self.status_var.set(quote)
-            self.current_quote = (self.current_quote + 1) % len(self.cool_quotes)
+    def show_status_message(self):
+        """Show a rotating status message in status bar"""
+        if not self.animation_running:  # Only show messages when not processing
+            message = self.status_messages[self.current_quote]
+            self.status_var.set(message)
+            self.current_quote = (self.current_quote + 1) % len(self.status_messages)
         
-        # Schedule next quote change
-        self.root.after(8000, self.show_cool_quote)
+        # Schedule next message change
+        self.root.after(8000, self.show_status_message)
         
-    def load_kuromi_stickers(self):
-        """Load Kuromi sticker images for GUI decoration ⸜(｡˃ ᵕ ˂ )⸝♡"""
+    def load_pixel_icons(self):
+        """Load pixel-style icons for GUI decoration"""
         if not PIL_AVAILABLE:
-            print("⸜(｡˃ ᵕ ˂ )⸝♡ PIL not available, skipping sticker loading")
+            print("PIL not available, skipping icon loading")
             return
             
-        stickers_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'kuromi_stickers')
-        if os.path.exists(stickers_path):
-            for i in range(1, 26):  # 01.png to 25.png
-                sticker_file = f"{i:02d}.png"
-                sticker_path = os.path.join(stickers_path, sticker_file)
-                if os.path.exists(sticker_path):
-                    try:
-                        # Load and resize sticker (bigger size for better visibility)
-                        img = Image.open(sticker_path)
-                        img = img.resize((40, 40), Image.Resampling.LANCZOS)
-                        photo = ImageTk.PhotoImage(img)
-                        self.kuromi_stickers.append(photo)
-                        
-                        # Also create smaller versions for compact decorations
-                        small_img = img.resize((20, 20), Image.Resampling.LANCZOS)
-                        small_photo = ImageTk.PhotoImage(small_img)
-                        if not hasattr(self, 'kuromi_stickers_small'):
-                            self.kuromi_stickers_small = []
-                        self.kuromi_stickers_small.append(small_photo)
-                        
-                    except Exception as e:
-                        print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Failed to load sticker {sticker_file}: {e}")
-        print(f"ଘ(੭*ˊᵕˋ)੭* Loaded {len(self.kuromi_stickers)} Kuromi stickers!")
+        # Icon mapping for different functions
+        icon_mapping = {
+            'analyze_advanced': 'bow.png',
+            'analyze_quick':    'sparkle.png',
+            'save':             'mail.png',
+            'refresh':          'skull.png',
+            'get_all':          'folder.png',
+            'get_one':          'heart.png',
+            'charts':           'glasses.png'
+        }
         
-    def get_random_kuromi_sticker(self):
-        """Get a random Kuromi sticker for decoration ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾"""
-        # Check if kuromi_stickers attribute exists and has items
-        if hasattr(self, 'kuromi_stickers') and self.kuromi_stickers:
-            return random.choice(self.kuromi_stickers)
+        icons_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'pixel_icons')
+        if os.path.exists(icons_path):
+            for key, filename in icon_mapping.items():
+                icon_path = os.path.join(icons_path, filename)
+                if os.path.exists(icon_path):
+                    try:
+                        # Load and resize icon with nearest neighbor for pixel perfect scaling
+                        img = Image.open(icon_path)
+                        img = img.resize((24, 24), Image.Resampling.NEAREST)  # Pixel feel
+                        self.icons[key] = ImageTk.PhotoImage(img)
+                    except Exception as e:
+                        print(f"Failed to load icon {filename}: {e}")
+        
+        # Also load general pixel icons for decorations
+        if os.path.exists(icons_path):
+            for i, filename in enumerate(['sparkle.png', 'bow.png', 'heart.png']):
+                icon_path = os.path.join(icons_path, filename)
+                if os.path.exists(icon_path):
+                    try:
+                        img = Image.open(icon_path)
+                        img = img.resize((32, 32), Image.Resampling.NEAREST)
+                        photo = ImageTk.PhotoImage(img)
+                        self.pixel_icons.append(photo)
+                    except Exception as e:
+                        print(f"Failed to load decoration icon {filename}: {e}")
+        
+        print(f"Loaded {len(self.icons)} functional icons and {len(self.pixel_icons)} decoration icons!")
+        
+    def get_random_pixel_icon(self):
+        """Get a random pixel icon for decoration"""
+        # Check if pixel_icons attribute exists and has items
+        if hasattr(self, 'pixel_icons') and self.pixel_icons:
+            import random
+            return random.choice(self.pixel_icons)
         return None
         
-    def add_kuromi_decoration(self, parent):
-        """Add random Kuromi sticker decoration to a frame ⸜(｡˃ ᵕ ˂ )⸝♡"""
+    def get_pixel_icon(self, icon_key):
+        """Get specific pixel icon by key"""
+        if hasattr(self, 'icons') and icon_key in self.icons:
+            return self.icons[icon_key]
+        return None
+    
+    def add_pixel_decoration(self, parent):
+        """Add random pixel icon decoration to a frame"""
         try:
-            sticker = self.get_random_kuromi_sticker()
-            if sticker:
-                decoration_label = ttk.Label(parent, image=sticker, background=self.colors['kuromi_dark'])
+            if hasattr(self, 'pixel_icons') and self.pixel_icons:
+                import random
+                icon = random.choice(self.pixel_icons)
+                decoration_label = ttk.Label(parent, image=icon, background=self.colors['panel'])
                 # Store reference to prevent garbage collection
                 if not hasattr(self, 'decoration_refs'):
                     self.decoration_refs = []
-                self.decoration_refs.append(sticker)
+                self.decoration_refs.append(icon)
                 return decoration_label
         except Exception as e:
-            print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Sticker decoration failed: {e}")
+            print(f"Pixel decoration failed: {e}")
         
-        # Enhanced fallback: Use decorative text patterns
+        # Simple fallback: Use decorative text patterns
         try:
             decorations = [
-                "── ୨୧ ────",
-                "⋆.˚✮🎧✮˚.⋆", 
-                "ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ",
-                "×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×"
+                "★",
+                "♦", 
+                "●",
+                "◆"
             ]
             import random
             decoration_text = random.choice(decorations)
             decoration_label = ttk.Label(parent, text=decoration_text, 
-                                       foreground=self.colors['kuromi_primary'],
-                                       background=self.colors['kuromi_dark'],
-                                       font=('Arial', 8))
+                                       foreground=self.colors['lavender'],
+                                       background=self.colors['panel'],
+                                       font=('Arial', 12))
             return decoration_label
         except Exception as e:
-            print(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Text decoration failed: {e}")
+            print(f"Text decoration failed: {e}")
             return None
+    
+    def icon_button(self, parent, key, text, command):
+        """Create button with pixel icon"""
+        btn = ttk.Button(parent, text=text, command=command, style='Pastel.Primary.TButton')
+        if hasattr(self, 'icons') and key in self.icons:
+            btn.configure(image=self.icons[key], compound='left')
+        return btn
+        
+    def add_kuromi_icon_button(self, parent, text, command, icon_index=None):
+        """Legacy method for backward compatibility - creates pixel icon button"""
+        # Map old functionality to new pixel icon system
+        if icon_index is not None and hasattr(self, 'pixel_icons') and icon_index < len(self.pixel_icons):
+            icon = self.pixel_icons[icon_index]
+            btn = ttk.Button(parent, text=text, command=command, 
+                           style='Pastel.Primary.TButton', image=icon, compound='left')
+            # Store reference to prevent garbage collection
+            if not hasattr(self, 'icon_refs'):
+                self.icon_refs = []
+            self.icon_refs.append(icon)
+            return btn
+        else:
+            # Fallback to regular button
+            return ttk.Button(parent, text=text, command=command, style='Pastel.Primary.TButton')
         
     def run(self):
-        """Run the GUI application with cool Kuromi magic 🖤💗"""
+        """Run the GUI application with retro magic"""
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
 
 
 def main():
-    """Main function to run the cool GUI application 🖤💗"""
+    """Main function to run the GUI application"""
     app = StockAnalysisGUI()
     app.run()
 

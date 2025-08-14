@@ -36,7 +36,7 @@ class StockDataTab:
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Main action buttons
-        ttk.Button(control_frame, text="⸜(｡˃ ᵕ ˂ )⸝♡ Get All Stocks", 
+        ttk.Button(control_frame, text=" Get All Stocks", 
                   command=self.get_all_stocks_data,
                   style='Kuromi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
@@ -92,7 +92,7 @@ class StockDataTab:
         """Get data for all stocks in a separate thread"""
         def fetch_data():
             try:
-                self.main_app.update_status("⸜(｡˃ ᵕ ˂ )⸝♡ Fetching all stock data with Kuromi's rebel magic...")
+                self.main_app.update_status(" Fetching all stock data with Kuromi's rebel magic...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_all_stocks_data()
@@ -119,7 +119,7 @@ class StockDataTab:
             
         def fetch_data():
             try:
-                self.main_app.update_status(f"⸜(｡˃ ᵕ ˂ )⸝♡ Fetching {symbol} data...")
+                self.main_app.update_status(f" Fetching {symbol} data...")
                 self.main_app.show_progress()
                 
                 data = self.main_app.stock_crawler.get_stock_data(symbol)

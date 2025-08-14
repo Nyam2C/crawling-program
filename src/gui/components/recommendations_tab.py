@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recommendations Tab Component - Cool Kuromi Style"""
+"""Recommendations Tab Component - Retro Pastel Style"""
 
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox, filedialog
@@ -16,7 +16,7 @@ class RecommendationsTab:
     def setup_tab(self):
         """Create the recommendations tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="⸜(｡˃ ᵕ ˂ )⸝♡ Recommendations")
+        self.notebook.add(self.frame, text="Recommendations")
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -30,50 +30,68 @@ class RecommendationsTab:
         
     def create_control_panel(self):
         """Create control panel for recommendations"""
-        control_frame = ttk.LabelFrame(self.frame, text="── ୨୧ ──── Generate Recommendations", padding="15")
+        control_frame = ttk.LabelFrame(self.frame, text="Generate Recommendations", padding="15")
         control_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        ttk.Button(control_frame, text="⋆.˚✮ Advanced Analysis ✮˚.⋆",
-                  command=self.generate_advanced_recommendations,
-                  style='Kuromi.Gold.TButton').grid(row=0, column=0, padx=(0, 10))
-        
-        ttk.Button(control_frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Quick Analysis",
-                  command=self.generate_basic_recommendations,
-                  style='Kuromi.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
-        
-        ttk.Button(control_frame, text="ﮩ٨ـﮩﮩ٨ـ♡ Save Report",
-                  command=self.export_report,
-                  style='Kuromi.Gold.TButton').grid(row=0, column=2)
+        # Use new icon button system
+        if hasattr(self.main_app, 'icon_button'):
+            advanced_btn = self.main_app.icon_button(
+                control_frame, 'analyze_advanced', 'Advanced Analysis', self.generate_advanced_recommendations
+            )
+            advanced_btn.grid(row=0, column=0, padx=(0, 10))
+            
+            quick_btn = self.main_app.icon_button(
+                control_frame, 'analyze_quick', 'Quick Analysis', self.generate_basic_recommendations
+            )
+            quick_btn.grid(row=0, column=1, padx=(0, 10))
+            
+            save_btn = self.main_app.icon_button(
+                control_frame, 'save', 'Save Report', self.export_report
+            )
+            save_btn.grid(row=0, column=2)
+        else:
+            # Fallback regular buttons
+            ttk.Button(control_frame, text="Advanced Analysis",
+                      command=self.generate_advanced_recommendations,
+                      style='Pastel.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
+            
+            ttk.Button(control_frame, text="Quick Analysis",
+                      command=self.generate_basic_recommendations,
+                      style='Pastel.Primary.TButton').grid(row=0, column=1, padx=(0, 10))
+            
+            ttk.Button(control_frame, text="Save Report",
+                      command=self.export_report,
+                      style='Pastel.Primary.TButton').grid(row=0, column=2)
         
     def create_recommendations_display(self):
         """Create display area for recommendations"""
-        display_frame = ttk.LabelFrame(self.frame, text="˚‧꒰ა ✨ Investment Advice ✨ ໒꒱ ‧˚", padding="15")
+        display_frame = ttk.LabelFrame(self.frame, text="Investment Advice", padding="15")
         display_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         display_frame.grid_rowconfigure(0, weight=1)
         display_frame.grid_columnconfigure(0, weight=1)
         
-        # Cute text widget for recommendations
+        # Text widget for recommendations
         self.recommendations_text = scrolledtext.ScrolledText(
             display_frame, 
             wrap=tk.WORD, 
             height=25,
             font=('Consolas', 11),
-            bg=self.colors['kuromi_light'],
-            fg=self.colors['kuromi_text'],
-            insertbackground=self.colors['kuromi_accent'],
-            selectbackground=self.colors['kuromi_primary']
+            bg=self.colors['panel_alt'],
+            fg=self.colors['text'],
+            insertbackground=self.colors['periwinkle'],
+            selectbackground=self.colors['lavender']
         )
         self.recommendations_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Add cute initial message
-        initial_message = """×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Welcome to Kuromi's Investment Recommendations! ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
+        # Add initial message
+        initial_message = """Welcome to Investment Recommendations!
 
-( ˶ˆᗜˆ˵ ) Click "Advanced Analysis" for comprehensive multi-criteria analysis
-( ˶ˆᗜˆ˵ ) Click "Quick Analysis" for basic technical analysis
-ฅ^•ﻌ•^ฅ Use "Save Report" to export your results
+• Click "Advanced Analysis" for comprehensive multi-criteria analysis
+• Click "Quick Analysis" for basic technical analysis  
+• Use "Save Report" to export your results
 
-Ready to make some magical investment decisions? ( ˶ˆᗜˆ˵ )
-Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
+Ready to make informed investment decisions?
+Choose your analysis type above to get started!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
@@ -83,7 +101,7 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
         """Generate advanced multi-criteria recommendations"""
         def generate():
             try:
-                self.main_app.update_status("( ˶ˆᗜˆ˵ ) Generating advanced analysis with multiple investment criteria...")
+                self.main_app.update_status("Generating advanced analysis with multiple investment criteria...")
                 self.main_app.show_progress()
                 
                 results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=True)
@@ -96,12 +114,12 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
                 if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
                     self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
-                self.main_app.root.after(0, self.main_app.update_status, "( ˶ˆ꒳ˆ˵ ) Advanced analysis completed successfully!")
+                self.main_app.root.after(0, self.main_app.update_status, "Advanced analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error generating advanced recommendations: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "(˃̵ᴗ˂) Error generating advanced analysis")
+                self.main_app.root.after(0, self.main_app.update_status, "Error generating advanced analysis")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=generate, daemon=True).start()
@@ -110,7 +128,7 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
         """Generate basic recommendations (legacy mode)"""
         def generate():
             try:
-                self.main_app.update_status("( ˶ˆᗜˆ˵ ) Generating quick basic analysis...")
+                self.main_app.update_status("Generating quick basic analysis...")
                 self.main_app.show_progress()
                 
                 results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=False)
@@ -123,50 +141,45 @@ Choose your analysis type above to get started! ( ˶ˆ꒳ˆ˵ )
                 if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
                     self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
-                self.main_app.root.after(0, self.main_app.update_status, "( ˶ˆ꒳ˆ˵ ) Basic analysis completed successfully!")
+                self.main_app.root.after(0, self.main_app.update_status, "Basic analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error generating basic recommendations: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "(˃̵ᴗ˂) Error generating basic analysis")
+                self.main_app.root.after(0, self.main_app.update_status, "Error generating basic analysis")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=generate, daemon=True).start()
-        
+    
     def update_recommendations_display(self, report):
-        """Update the recommendations text display"""
-        self.recommendations_text.delete(1.0, tk.END)
-        
-        # Add cute header
-        cute_header = """💖✨ KUROMI'S MAGICAL STOCK ANALYSIS RESULTS ✨💖
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"""
-        self.recommendations_text.insert(1.0, cute_header + report)
-        
+        """Update the recommendations display with new data"""
+        try:
+            self.recommendations_text.delete(1.0, tk.END)
+            self.recommendations_text.insert(1.0, report)
+            self.main_app.update_status("Recommendations updated successfully!")
+        except Exception as e:
+            self.main_app.show_error(f"Error updating display: {str(e)}")
+    
     def export_report(self):
-        """Export recommendations report"""
-        if not hasattr(self.main_app, 'current_recommendations') or not self.main_app.current_recommendations:
-            messagebox.showwarning("Warning", "No recommendations to export. Generate recommendations first! 💝")
-            return
+        """Export current recommendations to file"""
+        try:
+            if not hasattr(self.main_app, 'current_recommendations') or not self.main_app.current_recommendations:
+                messagebox.showwarning("No Data", "Please generate recommendations first before exporting.")
+                return
             
-        filename = filedialog.asksaveasfilename(
-            defaultextension=".txt",
-            filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
-            title="Save Kuromi's Investment Report 💾"
-        )
-        
-        if filename:
-            try:
-                report = self.main_app.recommendation_engine.generate_investment_report(self.main_app.current_recommendations)
+            filename = filedialog.asksaveasfilename(
+                defaultextension=".txt",
+                filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+                title="Save Recommendations Report"
+            )
+            
+            if filename:
+                content = self.recommendations_text.get(1.0, tk.END)
                 with open(filename, 'w', encoding='utf-8') as f:
-                    # Add cute header to saved file
-                    cute_header = """💖✨ KUROMI'S MAGICAL STOCK ANALYSIS REPORT ✨💖
-Generated with love and magic! 🌸
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"""
-                    f.write(cute_header + report)
-                messagebox.showinfo("Success", f"( ˶ˆ꒳ˆ˵ ) Report saved successfully to {filename}! 💝")
-            except Exception as e:
-                messagebox.showerror("Error", f"(˃̵ᴗ˂) Failed to save report: {str(e)}")
+                    f.write(content)
+                
+                self.main_app.update_status(f"Report saved to {filename}")
+                messagebox.showinfo("Export Successful", f"Recommendations report saved to:\n{filename}")
+                
+        except Exception as e:
+            self.main_app.show_error(f"Error exporting report: {str(e)}")
