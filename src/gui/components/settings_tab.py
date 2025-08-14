@@ -31,22 +31,21 @@ class SettingsTab:
         info_frame = ttk.LabelFrame(self.frame, text="About This App", padding="15")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        info_text = """Kuromi's Magnificent Seven Stock Analysis System
+        info_text = """Kawaii Stock Analysis Platform
 
-Version: 2.0.0 - Kawaii Pastel Edition
+Version: 2.5.0 - Universal Stock Analysis Edition
 Style: Adorable Pastel Purple/Pink with Retro Windows Aesthetics  
 Magic Level: Maximum Kawaii Cuteness!
 
 This application provides advanced analysis and recommendations 
-for the seven greatest technology stocks:
+for any stock symbol you want to analyze:
 
-AAPL - Apple Inc. (The Apple Empire)
-MSFT - Microsoft Corporation (The Microsoft Kingdom) 
-GOOGL - Alphabet Inc. (The Google Realm)
-AMZN - Amazon.com Inc. (The Amazon Empire)
-NVDA - NVIDIA Corporation (The NVIDIA Universe)
-TSLA - Tesla Inc. (The Tesla Electric Kingdom)
-META - Meta Platforms Inc. (The Meta Social Dimension)
+✧ Universal stock symbol support (not limited to M7)
+✧ Real-time data fetching with yfinance integration
+✧ Advanced multi-criteria investment analysis
+✧ Individual stock portfolio management
+✧ Comprehensive recommendation reports
+✧ Cute kawaii interface with pixel decorations
 
 "Time reveals all truths... including market movements!"
 

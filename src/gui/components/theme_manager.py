@@ -128,9 +128,12 @@ class ThemeManager:
             background=[('active', self.colors['hotpink']), ('pressed', self.colors['magenta'])])
 
         self.style.configure('Pastel.Ghost.TButton',
-            background=self.colors['panel_light'], foreground=self.colors['text'],
-            bordercolor=self.colors['border_light'], borderwidth=2, relief='ridge',
+            background=self.colors['rose'], foreground='#1B1350',
+            bordercolor=self.colors['magenta'], borderwidth=2, relief='ridge',
             padding=[10,6], anchor='w')
+        self.style.map('Pastel.Ghost.TButton',
+            background=[('active', self.colors['hotpink']), ('pressed', self.colors['pink'])],
+            relief=[('pressed','sunken')], borderwidth=[('active',3),('pressed',3)])
         
         # Legacy button style mappings for backward compatibility
         self.style.configure('Kuromi.Primary.TButton',

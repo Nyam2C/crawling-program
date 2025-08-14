@@ -77,7 +77,7 @@ class UIBuilder:
         
         # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="Kuromi's Magnificent Seven Stock Analysis",
+                              text="Kawaii Stock Analysis Platform",
                               font=('Arial', 18, 'bold'),
                               foreground=self.theme_manager.colors['lavender'])
         title_label.grid(row=0, column=1)

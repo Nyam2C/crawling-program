@@ -78,43 +78,154 @@ def check_other_dependencies():
     return missing_deps
 
 def show_welcome_message():
-    """Show welcome message with instructions"""
+    """Show welcome message with custom kawaii design"""
     try:
         import tkinter as tk
-        from tkinter import messagebox
+        from tkinter import ttk
         
-        welcome_text = """🚀 Welcome to Magnificent Seven Stock Analysis System!
-
-This application provides:
-• Real-time stock data for the Magnificent Seven
-• AI-powered buy/sell recommendations  
-• Interactive charts and visualizations
-• Comprehensive investment reports
-
-Getting Started:
-1. Click on different tabs to explore features
-2. Start by fetching stock data in the 'Stock Data' tab
-3. Generate AI recommendations in the 'Recommendations' tab
-4. View individual analysis in the 'Individual Analysis' tab
-5. Explore charts in the 'Charts' tab (if matplotlib is installed)
-
-⚠️  DISCLAIMER: This tool is for educational purposes only.
-   Not financial advice. Always do your own research!
-
-Click OK to continue..."""
-        
+        # Create custom welcome dialog
         root = tk.Tk()
         root.withdraw()  # Hide the root window
         
-        messagebox.showinfo("Welcome", welcome_text)
-        root.destroy()
+        welcome = tk.Toplevel()
+        welcome.title("Welcome to Kawaii Stock Analysis Platform")
+        welcome.configure(bg='#1F144A')  # Dark navy purple
+        welcome.resizable(False, False)
+        welcome.grab_set()  # Make modal
+        
+        # Center dialog
+        welcome.update_idletasks()
+        width = 600
+        height = 500
+        x = (welcome.winfo_screenwidth() // 2) - (width // 2)
+        y = (welcome.winfo_screenheight() // 2) - (height // 2)
+        welcome.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # Main frame
+        main_frame = tk.Frame(welcome, bg='#1F144A')
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=30, pady=20)
+        
+        # Title
+        title_label = tk.Label(main_frame, 
+                             text="✧･ﾟ: *✧･ﾟ:* Welcome *:･ﾟ✧*:･ﾟ✧",
+                             font=('Arial', 18, 'bold'),
+                             fg='#A78BFA',  # Periwinkle
+                             bg='#1F144A')
+        title_label.pack(pady=(0, 10))
+        
+        # Subtitle
+        subtitle_label = tk.Label(main_frame,
+                                text="Kawaii Stock Analysis Platform",
+                                font=('Arial', 14),
+                                fg='#C4B5FD',  # Lavender
+                                bg='#1F144A')
+        subtitle_label.pack(pady=(0, 20))
+        
+        # Features section
+        features_text = """This application provides:
+
+✧ Universal stock symbol support (not limited to M7)
+✧ Real-time data fetching with yfinance integration  
+✧ AI-powered buy/sell recommendations
+✧ Advanced multi-criteria investment analysis
+✧ Individual stock portfolio management
+✧ Comprehensive investment reports
+
+Getting Started:
+1. Add stocks in the 'Stock Data' tab
+2. Generate recommendations in the 'Recommendations' tab
+3. View detailed analysis in the 'Individual Analysis' tab
+4. Customize settings in the 'Settings' tab"""
+        
+        features_label = tk.Label(main_frame, text=features_text,
+                                font=('Arial', 11),
+                                fg='#F3E8FF',  # Soft lavender white
+                                bg='#1F144A',
+                                justify=tk.LEFT)
+        features_label.pack(pady=(0, 20))
+        
+        # Disclaimer
+        disclaimer_label = tk.Label(main_frame,
+                                  text="⚠️  DISCLAIMER: For educational purposes only.\nNot financial advice. Always do your own research!",
+                                  font=('Arial', 10, 'italic'),
+                                  fg='#F9A8D4',  # Rose pink
+                                  bg='#1F144A',
+                                  justify=tk.CENTER)
+        disclaimer_label.pack(pady=(0, 20))
+        
+        # OK button
+        def close_welcome():
+            welcome.destroy()
+            root.destroy()
+        
+        ok_button = tk.Button(main_frame, text="Let's Start! ♡",
+                            font=('Arial', 12, 'bold'),
+                            bg='#A78BFA',  # Periwinkle
+                            fg='#1B1350',  # Dark purple
+                            activebackground='#C4B5FD',  # Lavender
+                            activeforeground='#1B1350',
+                            relief='raised',
+                            borderwidth=2,
+                            padx=20, pady=8,
+                            command=close_welcome)
+        ok_button.pack()
+        
+        # Bind Enter key
+        welcome.bind('<Return>', lambda e: close_welcome())
+        ok_button.focus_set()
+        
+        welcome.wait_window()
         
     except ImportError:
-        print("📝 Welcome to Magnificent Seven Stock Analysis System!")
+        print("📝 Welcome to Kawaii Stock Analysis Platform!")
+
+def show_kawaii_ascii():
+    """Show kawaii ASCII art at startup"""
+    kawaii_art = """
+⠀⠀⠀⠀⠀⠀⠀⢀⣶⣾⣲⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣯⣳⡄
+⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣟⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣽⣾⣿⣿⠇
+⠀⠀⠀⠀⠀⠀⠀⠀⢈⡟⠉⢳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⠉⠀⢸⠉⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠞⠋⠁⠀⠀⢀⠀⣼⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢰⠇⠀⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣀⠀⠀⣀⣤⠶⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡟⠀⠀⠀⠀⠀⠀⠀⠈⢷⡄⠀⠀⠀⠀⠀⠀⠀⣠⠞⠡⡀⠉⠳⣞⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⢀⡼⠃⠈⠢⣌⠲⡄⠈⢧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡏⠀⠀⠀
+⠀⠀⠀⠀⠀⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡬⠿⠶⠶⢶⡾⠡⡉⠢⢄⡀⠑⢌⠢⡈⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀
+⠀⠀⠀⠀⢠⡏⠀⠀⠀⠀⠀⠀⣠⡴⠞⠫⠉⠀⠀⠀⠀⢀⡞⠡⣀⠈⠑⠢⢍⠒⣄⡳⡌⢸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀
+⠀⠀⠀⠀⢾⠀⠀⠀⠀⢀⣴⠞⠋⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠂⠤⣉⡒⠤⢄⣹⡟⠿⣾⠋⠉⠛⣶⠒⠛⠋⠉⠉⠙⠛⠲⠧⣤⡀⠀
+⠀⠀⠀⠀⠈⠳⣄⠀⣰⣿⠃⠀⢒⣠⠤⠤⠤⠤⣄⡀⠀⠸⠷⣤⣀⣀⠉⠁⠒⠢⠍⢰⡇⠀⠀⣠⣟⣀⡭⠭⠍⣁⡒⠒⠤⢄⣀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⣻⠿⠃⠀⡴⠋⠀⠀⠀⠀⠀⠀⠙⢦⠐⠀⠀⠉⠉⠙⠛⠛⠛⠻⠋⠛⢶⡶⠋⣐⠮⢟⡒⠤⣀⠈⠉⠒⠄⡾⠀⠀
+⠀⠀⠀⠀⠀⠀⣼⠃⠀⠀⣴⠃⢀⣤⡄⠀⠀⢠⣤⡀⠘⣇⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⡘⠮⡓⢄⡈⠑⠠⣍⠒⠤⣼⠃⠀⠀
+⠀⣄⡀⠀⠀⢰⠇⠀⠀⠀⠘⣇⢸⣿⠇⠀⠀⠸⣿⡗⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣄⠉⠢⣉⠢⢄⡀⠉⣾⠃⠀⠀⠀
+⠀⠈⠙⠀⠀⣾⠀⠈⢀⡴⠶⣿⣷⣦⠀⡄⢠⠀⣴⣾⡷⠖⠓⠲⢶⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢷⣄⠈⠑⠦⢉⡾⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⣾⡋⠀⠀⠀⠙⠿⣟⣿⣿⡿⠟⠉⠀⠀⠀⠀⠀⠉⠛⢦⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢶⠶⠋⢀⣀⡄⠀⠀⠀
+⠉⠉⠁⠀⠀⡇⣸⠃⣟⣦⣄⡀⠀⠀⠈⠙⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠀⠀⠉⠉⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢿⡿⠀⢸⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⣴⣶⠄⠀⠀⠈⢿⡄⠀⠀⠀⠀⠀⠀⣸⠃⠀⢀⣀⡀⠀⠀⠀⠀
+⠐⠚⠋⠀⠀⠘⣧⠀⠸⣿⣿⡿⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠋⠁⠀⠀⠁⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⢠⡾⠁⠀⠀⠀⠉⠙⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⢷⡀⠈⠉⠀⠀⠀⠻⠿⠇⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠇⠀⣠⡴⠋⠀⠀⠀⢤⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠙⢳⡤⠤⣴⠲⡽⣖⣚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣣⡴⠛⠁⠀⠀⠀⠀⠀⠀⠙⠃⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢰⠏⠀⠀⢨⣾⠁⣀⡉⠙⠓⢦⣀⣀⣀⣀⣀⣀⣤⣤⣴⣶⣿⣿⣿⣝⣷⠛⢳⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠙⣀⣀⣠⣾⣷⡿⣛⡻⣷⠄⣼⠭⡽⣿⣿⣅⡀⠀⣿⡟⠛⠻⣏⠉⠉⠙⠛⠋⠀⠀⣀⣴⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣏⠁⡞⣿⣟⠴⢜⣿⠷⠳⢾⣅⠀⠉⠛⣿⡷⣿⠿⣄⠀⠙⢦⡀⠀⠀⠀⠀⠸⢿⣿⣿⣿⡆⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠳⢬⣟⣯⢿⡃⠀⠀⠀⢩⣠⡴⠞⠁⠀⠻⣤⡽⠀⠀⠀⠙⢦⡀⠀⠀⢀⣼⣿⡿⠙⠃⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⢧⣀⠀⣀⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣬⣷⣤⣴⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢻⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠿⢿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+██╗░░██╗░█████╗░░██╗░░░░░░░██╗░█████╗░██╗██╗
+██║░██╔╝██╔══██╗░██║░░██╗░░██║██╔══██╗██║██║
+█████═╝░███████║░╚██╗████╗██╔╝███████║██║██║
+██╔═██╗░██╔══██║░░████╔═████║░██╔══██║██║██║
+██║░╚██╗██║░░██║░░╚██╔╝░╚██╔╝░██║░░██║██║██║
+╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝╚═╝
+
+    ✧･ﾟ: *✧･ﾟ:* Kawaii Stock Analysis Platform *:･ﾟ✧*:･ﾟ✧
+"""
+    print(kawaii_art)
 
 def main():
     """Main function to launch the GUI"""
-    print("🚀 Starting Magnificent Seven Stock Analysis GUI...")
+    show_kawaii_ascii()
+    print("🚀 Starting Kawaii Stock Analysis Platform...")
     
     # Check tkinter first
     tkinter_available, tkinter_error = check_tkinter()

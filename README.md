@@ -1,121 +1,94 @@
-# ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis & Recommendation System - Kawaii Pastel Edition ✨
-
-## Kuromi's Rebellious Stock Analysis System ( ˶ˆᗜˆ˵ )×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
+# ✧･ﾟ: *✧･ﾟ:* Kawaii Stock Analysis Platform *:･ﾟ✧*:･ﾟ✧
 
 ```
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⣤⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠿⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⡀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⡿⢋⣾⣿⣿⡇⠀⠀
-⠀⠀⣾⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣏⣠⣿⣿⣿⣿⣿⠀⠀
-⠀⠀⠉⠉⢿⣯⡛⠻⠿⣿⣶⣶⣶⡄⠀⠀⢀⣀⣀⣤⣼⣿⣿⣿⣭⣿⣿⣿⣿⡇⠀
-⠀⠀⠀⠀⠸⣿⣿⣦⣤⣴⣿⣿⣿⣧⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀
-⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⢉⣉⢻⣿⣿⣿⣿⣿⣿⣷⡀⠀
-⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢖⣟⢈⣩⣾⣿⠟⠛⠿⢿⣿⣿⣧⠀
-⠀⠀⠀⠀⠀⠀⠈⠛⠛⣿⣿⣿⡿⠛⢉⣭⠽⠤⠿⢿⡿⠛⠁⠀⢀⣴⡆⠙⣿⣿⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣷⣾⠋⣀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⣹⡏⠀
-⠀⠀⠀⣀⠤⠠⡀⠀⠀⢿⣿⣿⣿⠇⠀⢻⣿⣿⡄⠀⢠⢤⡄⠀⠈⠉⠐⣤⡟⠁⠀
-⢠⢎⡉⠁⠀⠀⡗⠀⠀⠈⢿⣿⣿⣇⠀⠈⠿⠋⠀⠀⢰⣿⣆⣀⡀⣠⡼⠋⠀⠀⠀
-⠀⠓⠤⣀⣀⡜⠁⠀⡠⢄⠀⠙⢻⣿⣷⢿⡿⠒⠒⠉⢹⣿⣯⠀⠹⣧⡤⢤⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⡠⠚⠀⠀⡇⠀⡇⠹⣿⣃⣾⡶⣺⣻⣼⣿⣿⣀⣰⣷⣝⠉⣴⣿⡄
-⠀⠀⠀⠀⠀⠀⠣⠤⠤⠴⠇⠀⠈⠒⠻⣍⣙⣛⢺⣾⣯⡿⣿⣿⣿⣿⣿⣯⣹⣿⠛
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠈⠙⠛⡟⠛⣉⠄⢠⠈⠉⠉⢸⠿⠟⠁⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⠀⢠⣧⡈⠀⢀⡄⠀⣀⡠⠋⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠛⠛⠛⠒⠒⠶⢤⣄⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⠤⠴⠶⠒⠒⠲⠶⠦⢤⣼⡃⠀⠀⠀⠀⠀⠀⠀⠈⠙⠳⣴⠛⠻⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⠀⠀⢀⣠⠶⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢶⣄⠀⠀⠀⠀⠀⠀⠀⣠⠿⢦⡴⠇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣠⡴⠟⠉⠈⠉⠻⣦⠟⠁⠀⠀⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣆⠀⠀⠀⢠⡾⠁⠀⠀⠀⠀⠀⠀
+⠀⢀⣀⠀⢀⣠⠶⠋⠁⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⠤⠴⠋⠀⠀⠀⠀⠀⠀⠀⠀
+⢰⡏⠈⢳⣟⠁⠀⠀⠀⠀⠀⠀⠀⢰⡇⠀⠀⠀⠀⠀⠀⢸⡟⠉⣿⣿⣧⣨⠇⢀⣀⣀⡀⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠛⠚⠋⠉⠳⢦⡀⠀⠀⠀⠀⠀⡾⠀⠀⠀⠀⠀⠀⠀⢀⠙⠿⢿⣿⣿⣯⠞⠋⠁⠈⠉⠳⢦⡄⠀⠀⢠⡇⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠙⢷⣄⠀⠀⢀⡇⠀⠀⠀⠀⠀⣤⠞⠉⠉⠙⠛⠛⠋⠀⠀⠀⠀⠀⠀⢠⡀⠙⣦⠀⣸⠃⠀⢰⠋⠉⠳⠋⠉⠙⡆⠀
+⠀⠀⠀⠀⢀⠤⠤⣄⡀⠈⠛⠚⠋⣷⠀⠀⠀⢀⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡶⢛⣿⣁⠀⢸⣦⡟⠀⠀⠸⣆⠀⠀⠀⠀⡼⠃⠀
+⠀⠀⠀⠀⡏⠀⠀⠀⠵⠒⠲⢤⠀⠹⡆⠀⠀⢸⠇⢀⣤⡤⠤⣄⠀⠀⢠⠄⣄⠀⠀⢰⣿⠿⣿⣀⣸⡟⠀⠀⠀⠀⠈⠓⢤⡴⠊⠀⠀⠀
+⠀⠀⠀⠀⢳⡀⠀⠀⠀⠀⠀⢨⠇⠀⠙⢦⡀⢸⡄⠀⣻⣴⣶⡶⠀⠀⣬⠭⠅⡆⠀⠈⣴⠟⠉⠉⢻⣦⡶⢲⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠳⡄⠀⣀⡤⠖⠉⠀⠀⠀⠀⠙⢦⣿⣤⣛⣿⠿⢧⣄⠀⠈⠒⣒⣡⡤⢾⡇⠀⢠⣴⣟⣯⡛⠛⠃⠀⠀⠀⢠⡏⠉⠳⠖⠲
+⠀⠀⠀⣀⣀⡀⠹⠋⠁⠀⠀⠀⠀⠀⠀⠀⢀⣀⣈⣽⠿⣇⠀⠀⠹⡗⠚⣋⡭⠤⠤⣤⣷⡀⠀⢻⢿⣄⡿⠀⠀⠀⠀⠀⠀⠳⡀⠀⢀⡠
+⡴⠚⠻⠇⠀⣹⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣅⣿⠋⢉⣛⣿⠀⠀⢹⠟⠉⠀⠀⠀⠀⠈⠳⣶⠟⠀⠀⠀⡰⠒⠓⢆⠀⠀⠀⠘⠒⠉⠀
+⠹⢄⣀⠀⡰⠃⠀⠀⠀⠀⠀⠀⠀⢸⡗⠒⠲⣶⠀⠀⠺⣥⣽⣦⡴⠟⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⢰⡇⠀⠀⢨⡧⣄⡀⠀⠀⠀⠀
+⠀⠀⠈⠉⠁⠀⠀⣀⣀⡞⠉⠙⡆⠀⣧⣴⣄⠹⣦⣀⣀⣸⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡾⠃⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠙⡆⠀⠀⠀
+⠀⠀⠀⠀⠀⢠⠏⠁⠈⠀⠀⠀⡀⠀⠈⠀⠙⠳⠦⣬⣭⣽⣿⣆⠀⠀⠀⠀⠀⣤⠀⠀⣹⡇⠀⠀⠀⠀⠀⣇⣀⣀⣀⣀⣀⡼⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⢧⣄⣀⣀⠀⢠⠇⠀⠀⠀⠀⠀⠀⠀⠀⡟⠀⠁⠀⠀⠀⠀⣰⠏⠀⠀⠻⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡄⠀⠀⠀⠀⠛⣉⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⢦⣀⣀⣤⠞⠛⠶⠤⠴⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+██╗░░██╗░█████╗░░██╗░░░░░░░██╗░█████╗░██╗██╗
+██║░██╔╝██╔══██╗░██║░░██╗░░██║██╔══██╗██║██║
+█████═╝░███████║░╚██╗████╗██╔╝███████║██║██║
+██╔═██╗░██╔══██║░░████╔═████║░██╔══██║██║██║
+██║░╚██╗██║░░██║░░╚██╔╝░╚██╔╝░██║░░██║██║██║
+╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝╚═╝
 ```
 
-An intelligent Python-based **desktop application** that crawls real-time stock information for the **"Magnificent Seven"** and provides **AI-powered buy recommendations** through a beautiful, **kawaii Kuromi-themed GUI with pastel purple/pink aesthetics**! ଘ(੭*ˊᵕˋ)੭* ੈ♡‧₊˚°ʚ(*´꒳`*)ɞ°"૮₍  ˶•⤙•˶ ₎ა"₊‧°𐐪♡𐑂°‧₊
+A comprehensive **Python-based stock analysis platform** with a beautiful **kawaii retro pastel GUI**! Analyze any stock symbol with AI-powered recommendations and professional English reports.
 
-> *"Stocks are as rebellious as me... let's tame them together with kawaii pastel colors!"* - Kuromi ˃̵ᴗ˂₊‧°𐐪♡𐑂°‧₊
+> *"Let's make stock analysis as cute as it is powerful! ♡"* - Kawaii Analytics
 
-## ( ˶ˆᗜˆ˵ ) NEW UPDATE: Kawaii Pastel Edition!
+## ✨ What's New
 
-✨ **What's New in this Update:**
-- ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× **Pastel Purple/Pink Theme**: Dreamy pastel colors with retro Windows 95/98 aesthetics!
-- ( ˶ˆ꒳ˆ˵ ) **Kawaii Elements**: All the adorable Kaomoji expressions and cute text preserved!
-- ଘ(੭*ˊᵕˋ)੭* **Pixel Perfect Icons**: 24x24px retro-style icons with nearest-neighbor scaling
-- ٩(ˊᗜˋ*)و̵ **Enhanced Aesthetics**: Ridge borders and 3D button effects for that authentic retro feel
-- ₊‧°𐐪♡𐑂°‧₊ **Deep Navy Purple**: Background (#1F144A) with lavender (#C4B5FD) and soft pink (#FBCFE8) accents
+**🎯 Universal Stock Analysis**: No longer limited to specific stocks - analyze ANY stock symbol!
+**🇬🇧 English Reports**: Professional analysis reports in English for global users
+**🎨 Kawaii Design**: Beautiful retro pastel purple/pink theme with Windows 95/98 aesthetics
+**📊 Comprehensive Analysis**: Deep financial analysis with industry comparisons and risk strategies
+**💾 Save Reports**: Export individual and recommendation reports to files
+**🌸 Enhanced UI**: Pink/purple refresh buttons and consistent kawaii styling
 
-## ( ˶ˆᗜˆ˵ ) The Magnificent Seven Stocks
+## 🚀 Features
 
-This kawaii crawler targets the following legendary tech stocks:
-- 🍎 **AAPL** - Apple Inc.
-- 🖥️ **MSFT** - Microsoft Corporation
-- 🔍 **GOOGL** - Alphabet Inc. (Google)
-- 📦 **AMZN** - Amazon.com Inc.
-- 🎮 **NVDA** - NVIDIA Corporation
-- ⚡ **TSLA** - Tesla Inc.
-- 👥 **META** - Meta Platforms Inc. (Facebook)
+### 📈 Stock Analysis Capabilities
+- **Universal Stock Support**: Analyze ANY stock symbol, not just pre-defined lists
+- **Real-time Data**: Fetch current stock prices and market data
+- **Dual Analysis Modes**:
+  - **Deep Analysis**: Comprehensive English reports with 9+ analysis sections
+  - **Quick Analysis**: Fast technical analysis for rapid insights
 
-## ✨ Features
+### 🤖 AI-Powered Intelligence
+- **Multi-criteria Analysis Engine**: Advanced scoring across multiple factors
+- **Professional English Reports**: Detailed analysis including:
+  - Company Overview & Stock Information
+  - Fundamental Analysis (ROE, ROA, Debt ratios)
+  - Valuation Analysis (P/E, P/B, EV/EBITDA, PEG)
+  - Industry Comparison Analysis
+  - Risk Factors & Mitigation Strategies
+  - Technical Analysis (RSI, MACD, Support/Resistance)
+  - Investment Recommendations with price targets
 
-### 🌐 Data Collection
-- **Real-time stock data extraction** from Yahoo Finance
-- **Comprehensive financial metrics**:
-  - 💰 Current stock price & changes
-  - 📈 Price momentum analysis
-  - 🏢 Market capitalization
-  - 📊 Trading volume analysis
-  - ⏰ Timestamp tracking
+### 🖥️ Beautiful Kawaii GUI
+- **Retro Pastel Theme**: Deep navy purple (#1F144A) with lavender (#C4B5FD) and pink (#F9A8D4) accents
+- **Tab-based Interface**: Organized into intuitive sections
+- **Consistent Styling**: All dialogs match the kawaii theme
+- **Save Functionality**: Export reports directly from the interface
 
-### 🤖 AI-Powered Analysis
-- **Smart recommendation engine** with weighted scoring
-- **Multi-factor analysis**:
-  - 📈 Price momentum (25% weight)
-  - 📊 Volume trends (15% weight) 
-  - 🏢 Market cap stability (20% weight)
-  - ⚖️ Volatility assessment (15% weight)
-  - 💎 Value proposition (25% weight)
-- **Recommendation levels**: Strong Buy 🟢, Buy 🔵, Hold 🟡, Weak Hold 🟠, Avoid 🔴
-
-### 🎯 Operation Modes
-- 📊 **Stock Data Collection** (all or individual)
-- 💡 **Buy Recommendations** with confidence scoring
-- 🔍 **Individual Stock Analysis** with detailed breakdowns
-- 📋 **Comprehensive Investment Reports**
-- 🌍 **General web crawling** functionality
-
-### 🖥️ GUI Features - Kawaii Pastel Edition 💜💗
-
-#### 🌸 Kawaii Design Features:
-- **Color Palette**: Deep navy purple (#1F144A) background with dreamy lavender (#C4B5FD) and soft pink (#FBCFE8) accents
-- **Retro Windows Style**: Ridge-style borders with authentic 3D effects reminiscent of Windows 95/98
-- **Pixel Perfect Icons**: 24x24px icons with nearest-neighbor scaling for that authentic pixel art feel
-- **Kawaii Typography**: Adorable Kaomoji expressions and cute decorative text throughout
-- **Professional Kawaii Layout**: Tab-based interface with consistent spacing and rebellious charm
-
-#### 💖 Kawaii Kuromi Features:
-- **Title**: "×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Analysis"
-- **Cute Status Messages**: Rotating kawaii Kuromi quotes about markets and attitude
-- **Adorable Button Labels**: "✨ Get All Stocks", "₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Refresh", etc.
-- **Kawaii Tab Names**: "(@_@) Stock Data", "💡 Recommendations", "🔍 Individual Analysis"
-- **Cute Loading Messages**: "✨ Fetching all stock data with Kuromi's rebel magic..."
-- **Kawaii Kuromi Personality**: Rebellious, confident, attitude-filled expressions with lots of adorable emojis!
-
-### 🛡️ Technical Features
-- ⚡ **Rate limiting** to respect website resources
-- 🛡️ **Error handling** and logging
-- 📄 **JSON output** for easy data processing
-- 🧪 **Comprehensive test suite**
-- 🎨 **Professional kawaii GUI** with pastel retro styling
+### 📊 GUI Tabs
+1. **Stock Data**: Add and manage stock symbols to analyze
+2. **Recommendations**: Generate AI-powered buy/sell recommendations
+3. **Individual Analysis**: Deep-dive analysis of specific stocks
+4. **Settings**: Configure application preferences
 
 ## 🛠️ Installation
 
-1. 📥 **Clone this repository:**
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/your-username/claude.git
 cd claude
 ```
 
-2. 📦 **Install required dependencies:**
+2. **Install dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. 🖥️ **Install tkinter (for GUI):**
-
-tkinter is required for the kawaii GUI version. It's usually included with Python, but if you get a "No module named 'tkinter'" error:
+3. **Install tkinter (for GUI):**
 
 **Linux (Ubuntu/Debian):**
 ```bash
@@ -127,254 +100,216 @@ sudo apt-get install python3-tk
 sudo dnf install python3-tkinter
 ```
 
-**Windows/macOS:** tkinter should be included with Python.
-
-📋 See [INSTALL_TKINTER.md](INSTALL_TKINTER.md) for detailed installation instructions.
+**Windows/macOS:** tkinter is usually included with Python.
 
 ## 🎮 Usage
 
-### 🖥️ **GUI Application (Recommended)**
+### 🖥️ GUI Application (Recommended)
 
-Launch the kawaii Kuromi-themed interface:
+Launch the kawaii interface:
 ```bash
 python main.py
 # OR
 python scripts/run_gui.py
 ```
 
-**GUI Features (Kawaii Pastel Edition):**
-- **(@_@) Stock Data Tab**: View real-time data with kawaii styling and Kuromi charm
-- **💡 Recommendations Tab**: Generate AI-powered recommendations with adorable presentation
-- **🔍 Individual Analysis Tab**: Deep-dive analysis with kawaii elegance
-- **📈 Charts Tab**: Interactive visualizations with cute pastel aesthetics
-- **⚙️ Settings Tab**: Configure application with adorable interface
+**How to Use:**
+1. **Stock Data Tab**: Add stock symbols you want to analyze
+2. **Recommendations Tab**: Generate comprehensive investment recommendations
+3. **Individual Analysis Tab**: Deep analysis of specific stocks with save functionality
+4. **Settings Tab**: View application information and settings
 
-### 💖 Kawaii Kuromi Experience Highlights:
-- **Adorable Quotes**: "💖 Time reveals all market secrets... let's analyze together! ✨"
-- **Kawaii Loading**: "✨ Fetching all stock data with Kuromi's rebel magic..."
-- **Sweet Notifications**: "₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Stock data collection completed!"
-- **Pastel Color Scheme**: Dreamy purple and pink tones with deep navy backgrounds
-- **Component Architecture**: Clean, modular design with separate kawaii tab components
+### 💻 Command Line Interface
 
-### 🎪 **Command Line Interface**
-
-For CLI usage (legacy support):
+For CLI usage:
 ```bash
 python scripts/cli.py
 ```
 
-**Available Options:**
-1. 📊 Get stock data (all Magnificent Seven)
-2. 🎯 Get stock data (specific stock)
-3. 💡 Get buy recommendations (all stocks)
-4. 🔍 Analyze specific stock
-5. 🌍 General web crawling
+### 🔬 Programmatic Usage
 
-## 🏗️ Project Structure
-
-The project is now **beautifully organized** into a clean, modular structure for better kawaii maintainability:
-
-```
-📁 project/
-├── 🚀 main.py                        # Main entry point (START HERE!)
-├── 📋 requirements.txt               # Dependencies
-├── 📖 README.md                     # Documentation
-├── 🛠️ scripts/                      # Entry point scripts
-│   ├── 🖥️ run_gui.py                # GUI launcher
-│   ├── 💬 cli.py                    # Command line interface
-│   ├── 🎯 main.py                   # Legacy CLI entry point
-│   └── 🧩 verify_modules.py         # Dependency checker
-├── 🧬 src/                          # Source code (organized!)
-│   ├── 🧠 analysis/                 # Financial analysis engines
-│   │   ├── 🤖 recommendation_engine.py    # AI recommendation system
-│   │   ├── 🧮 financial_analyzer.py       # Basic financial analysis
-│   │   └── ⚡ advanced_financial_analyzer.py # Advanced multi-criteria analysis
-│   ├── 💾 data/                     # Data collection & processing
-│   │   ├── 🕷️ stock_crawler.py     # Stock data collection
-│   │   └── 🔍 data_extractors.py    # HTML parsing and data extraction
-│   ├── 🖥️ gui/                      # User interface components
-│   │   ├── 📱 gui_app.py            # Main GUI application (kawaii & pastel!)
-│   │   ├── 📈 gui_charts.py         # Chart visualizations
-│   │   └── 🎨 components/           # Modular GUI components
-│   │       ├── 📊 stock_data_tab.py     # Stock data display tab
-│   │       ├── 💡 recommendations_tab.py # AI recommendations tab
-│   │       ├── 🔍 analysis_tab.py       # Individual stock analysis tab
-│   │       └── ⚙️ settings_tab.py        # Application settings tab
-│   └── ⚙️ core/                     # Core utilities
-│       ├── 🌐 http_client.py        # HTTP requests and session management
-│       └── 📊 config.py             # Configuration and constants
-├── 🎨 assets/                       # Kawaii application assets
-│   └── 💎 pixel_icons/             # 24x24px retro-style icons
-└── 🧪 tests/                        # Test suite
-    ├── 🕷️ test_crawler.py           # Crawler functionality tests
-    ├── 🤖 test_recommendation_system.py # Recommendation system tests
-    ├── 🔧 test_fixes.py             # Bug fix verification tests
-    └── 🖥️ test_tkinter.py           # GUI dependency tests
-```
-
-## 👨‍💻 Programmatic Usage
-
-#### 📊 Basic Stock Data Collection
 ```python
 from src.data.stock_crawler import StockCrawler
-
-# 🚀 Initialize crawler
-crawler = StockCrawler(delay=2)
-
-# 📈 Get data for a single stock
-stock_data = crawler.get_stock_data('AAPL')
-print(stock_data)
-
-# 🎯 Get data for all Magnificent Seven stocks
-all_stocks = crawler.get_all_stocks_data()
-print(all_stocks)
-
-# 🧹 Clean up resources
-crawler.close()
-```
-
-#### 🤖 AI-Powered Recommendations
-```python
 from src.analysis.recommendation_engine import RecommendationEngine
 
-# 🚀 Initialize recommendation engine
+# Initialize components
+crawler = StockCrawler(delay=2)
 engine = RecommendationEngine(delay=2)
 
-# 💡 Get recommendation for a single stock
-analysis = engine.analyze_single_stock('AAPL')
+# Get stock data
+stock_data = crawler.get_stock_data('AAPL')
+
+# Generate AI recommendation
+analysis = engine.analyze_single_stock('AAPL', use_advanced=True)
 print(f"Recommendation: {analysis['recommendation']}")
-print(f"Confidence: {analysis['confidence']}")
+print(f"Score: {analysis['overall_score']:.3f}")
 
-# 📊 Get comprehensive analysis for all stocks
-results = engine.analyze_all_magnificent_seven()
-report = engine.generate_investment_report(results)
-print(report)
-
-# 🧹 Clean up resources
+# Clean up
+crawler.close()
 engine.close()
 ```
 
-### 🧪 Testing
+## 📊 Sample Analysis Output
 
-Run the kawaii test suites:
-```bash
-# Test basic crawler functionality
-python tests/test_crawler.py
+### Deep Analysis Report (English)
+```
+COMPREHENSIVE STOCK ANALYSIS REPORT
+==========================================================================================
 
-# Test recommendation system
-python tests/test_recommendation_system.py
+COMPANY OVERVIEW
+──────────────────────────────────────────────────────────────────────────────────────
+Company Name: Apple Inc.
+Ticker Symbol: AAPL
+Listed Exchange: NASDAQ
+Industry Sector: Technology
+Market Capitalization: Large Cap
 
-# Test bug fixes
-python tests/test_fixes.py
+STOCK PRICE INFORMATION
+──────────────────────────────────────────────────────────────────────────────────────
+Current Price: $185.64
+52-Week Range: $150.00 - $200.00
+Beta (Volatility): 1.2
+Average Daily Volume: High volume trading
+Price Change (%): +1.19%
+
+FUNDAMENTAL ANALYSIS
+──────────────────────────────────────────────────────────────────────────────────────
+Revenue Growth Trend: Consistent growth trajectory
+Operating Margin Analysis: Above average
+Profitability Assessment: Strong profitability metrics
+Debt-to-Equity Ratio: 1.73
+Financial Health Rating: Excellent
+Return on Equity (ROE): 25.0%
+Return on Assets (ROA): 15.0%
+
+VALUATION ANALYSIS
+──────────────────────────────────────────────────────────────────────────────────────
+P/E Ratio (Price-to-Earnings): 25.0
+P/B Ratio (Price-to-Book): 4.5
+EV/EBITDA Multiple: 20.0
+PEG Ratio (Growth-adjusted): 1.5
+Valuation Assessment: Fair Value
+
+INDUSTRY COMPARISON ANALYSIS
+──────────────────────────────────────────────────────────────────────────────────────
+Sector Performance vs Market: Above average growth potential
+Competitive Position: Strong market position
+Industry Growth Rate: 12.0% annual growth expected
+Market Entry Barriers: High barriers to entry
+
+RISK FACTORS & MITIGATION STRATEGIES
+──────────────────────────────────────────────────────────────────────────────────────
+Economic Sensitivity: Medium
+→ Mitigation: Diversified revenue streams and strong cash position
+Regulatory/Policy Risk: Moderate
+→ Mitigation: Proactive compliance and government relations
+
+COMPREHENSIVE INVESTMENT OPINION
+──────────────────────────────────────────────────────────────────────────────────────
+Overall Score: 0.847/1.000
+Investment Recommendation: STRONG BUY
+Target Price: Based on DCF analysis
+Risk Management: Stop-loss recommended at -15% from entry
+Expected Investment Period: Medium-term (6-18 months)
 ```
 
-## 📊 Sample Output
+## 🏗️ Project Structure
 
-### 📈 Stock Data
-```json
-{
-  "AAPL": {
-    "symbol": "AAPL",
-    "company": "Apple Inc.",
-    "timestamp": "2024-01-15T10:30:00",
-    "source": "Yahoo Finance", 
-    "url": "https://finance.yahoo.com/quote/AAPL",
-    "current_price": "185.64",
-    "change": "+2.18",
-    "change_percent": "+1.19%",
-    "market_cap": "2.89T",
-    "volume": "45,678,901"
-  }
-}
 ```
-
-### 🤖 AI Recommendation Analysis
-```json
-{
-  "symbol": "AAPL",
-  "company": "Apple Inc.",
-  "overall_score": 0.847,
-  "recommendation": "🟢 STRONG BUY",
-  "confidence": "High",
-  "analysis_breakdown": {
-    "momentum": {"score": 0.70, "analysis": "📈 Positive momentum (+1.2%)"},
-    "volume": {"score": 0.65, "analysis": "📊 Good volume (46M)"},
-    "market_cap": {"score": 0.95, "analysis": "🏛️ Mega-cap leader ($2.9T)"},
-    "volatility": {"score": 0.75, "analysis": "⚖️ Moderate volatility - balanced risk"},
-    "value": {"score": 0.85, "analysis": "💎 Ecosystem dominance & innovation"}
-  }
-}
-```
-
-### 📋 Investment Report Sample
-```
-📊 KUROMI'S MAGNIFICENT SEVEN STOCK ANALYSIS REPORT ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
-================================================================================
-
-🌟 MARKET OVERVIEW
---------------------------------------------------
-Market Sentiment: 📈 Bullish
-Overall Strength: 72.4%
-Description: Good investment climate with selective opportunities
-Stocks with Positive Momentum: 5/7
-
-🏆 TOP 3 RECOMMENDATIONS
---------------------------------------------------
-1. NVDA - NVIDIA Corporation
-   Score: 0.892 | 🟢 STRONG BUY
-2. MSFT - Microsoft Corporation  
-   Score: 0.856 | 🟢 STRONG BUY
-3. AAPL - Apple Inc.
-   Score: 0.847 | 🟢 STRONG BUY
+📁 kawaii-stock-analysis/
+├── 🚀 main.py                          # Main entry point
+├── 📋 requirements.txt                 # Dependencies
+├── 📖 README.md                        # This file
+├── 🛠️ scripts/                        # Launcher scripts
+│   ├── 🖥️ run_gui.py                  # GUI launcher
+│   └── 💬 cli.py                      # CLI interface
+├── 🧬 src/                            # Source code
+│   ├── 🤖 analysis/                   # Analysis engines
+│   │   ├── recommendation_engine.py   # AI recommendations
+│   │   └── advanced_financial_analyzer.py # Financial analysis
+│   ├── 💾 data/                       # Data collection
+│   │   ├── stock_crawler.py          # Stock data fetching
+│   │   └── data_extractors.py         # HTML parsing
+│   ├── 🖥️ gui/                        # User interface
+│   │   ├── gui_app.py                 # Main GUI application
+│   │   └── components/                # GUI components
+│   │       ├── stock_data_tab.py      # Stock data management
+│   │       ├── recommendations_tab.py # AI recommendations
+│   │       ├── analysis_tab.py        # Individual analysis
+│   │       ├── settings_tab.py        # Settings
+│   │       ├── theme_manager.py       # Kawaii styling
+│   │       ├── icon_manager.py        # Icon management
+│   │       └── ui_builder.py          # UI components
+│   └── ⚙️ core/                       # Core utilities
+│       ├── http_client.py             # HTTP requests
+│       └── config.py                  # Configuration
+└── 🧪 tests/                          # Test suite
+    ├── test_crawler.py                # Crawler tests
+    └── test_recommendation_system.py  # Analysis tests
 ```
 
 ## 📋 Requirements
 
-- 🐍 **Python 3.6+** (Python 3.8+ recommended)
-- 🌐 **requests** - HTTP client library
-- 🥄 **beautifulsoup4** - HTML parsing
-- 🔍 **lxml** - XML/HTML parser
-- 📊 **matplotlib** - Chart visualizations
-- 🔢 **numpy** - Numerical computations
-- 🖥️ **tkinter** - GUI framework (included with Python)
-- 🖼️ **Pillow** - Image processing for kawaii pixel icons
-- 💖 **Kawaii Font Support** - For proper emoji and cute text rendering
+- **Python 3.7+** (Python 3.8+ recommended)
+- **requests** - HTTP client
+- **beautifulsoup4** - HTML parsing
+- **lxml** - XML/HTML parser
+- **tkinter** - GUI framework
+- **Pillow** - Image processing
 
-## ⏱️ Rate Limiting
+## 🎨 Kawaii Design Features
 
-The crawler includes a 2-second delay between requests by default to be respectful to the target websites. ⏰ You can adjust this in the `StockCrawler` initialization.
+- **Color Palette**: Retro pastel purple/pink with deep navy backgrounds
+- **Typography**: Clean fonts with kawaii ASCII art
+- **Interactions**: Smooth hover effects and 3D button styling
+- **Consistency**: All dialogs and components match the kawaii theme
+- **Accessibility**: High contrast and readable text
+
+## 🧪 Testing
+
+Run test suites:
+```bash
+# Test crawler functionality
+python tests/test_crawler.py
+
+# Test recommendation system
+python tests/test_recommendation_system.py
+```
 
 ## ⚖️ Legal Notice
 
-This kawaii tool is for educational and research purposes only. Please:
-- 📜 Respect the terms of service of the websites you crawl
-- ⏳ Use appropriate delays between requests
-- 🤖 Consider the website's robots.txt file
-- 📊 Use the data responsibly and in compliance with applicable laws
+This tool is for **educational and research purposes only**. Please:
+- Respect website terms of service
+- Use appropriate delays between requests
+- Consider robots.txt files
+- Use data responsibly
 
 ## 🤝 Contributing
 
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch
-3. ✨ Make your changes (maintain kawaii Kuromi theme consistency!)
-4. 🧪 Add tests if applicable
-5. 🚀 Submit a pull request
+1. Fork the repository
+2. Create a feature branch
+3. Make changes (maintain kawaii theme!)
+4. Add tests if applicable
+5. Submit a pull request
 
-### 💖 Kawaii Kuromi Theme Guidelines:
-- Maintain adorable and rebellious tone in new features
-- Use kawaii pastel purple/pink color scheme with retro Windows aesthetics
-- Include cute Kaomoji expressions and decorative text
-- Follow Kuromi's sweet speaking patterns with lots of emojis
-- Add appropriate kawaii emojis: 💖, ✨, 🌙, 🌹, 💎, 🎯, 📊, ( ˶ˆᗜˆ˵ ), ×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~×
-- Keep code modular with separate component files
-- Maintain retro Windows 95/98 styling with ridge borders and 3D effects
+**Kawaii Theme Guidelines:**
+- Maintain retro pastel purple/pink colors
+- Use consistent styling across components
+- Include appropriate kawaii ASCII art
+- Follow Windows 95/98 aesthetic principles
 
 ## 📄 License
 
-This kawaii project is open source. Please use responsibly. 💚
+This project is open source. Use responsibly.
 
 ## ⚠️ Disclaimer
 
-Stock prices and financial data are provided for informational purposes only. 📊 This kawaii tool does not provide investment advice. Always verify financial information from official sources before making investment decisions. 💼
+**This tool does not provide investment advice.** Stock analysis is for informational purposes only. Always:
+- Verify data from official sources
+- Consult qualified financial advisors
+- Do your own research before investing
+- Understand the risks of stock trading
 
-*×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Made with rebellious love and kawaii pastel aesthetics! ( ˶ˆᗜˆ˵ )*
+---
+
+*✧･ﾟ: *✧･ﾟ:* Made with kawaii love and retro aesthetics! *:･ﾟ✧*:･ﾟ✧*

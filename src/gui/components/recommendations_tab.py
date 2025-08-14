@@ -174,14 +174,10 @@ Choose your analysis type above to get started!
         """Export current recommendations to file"""
         try:
             if not hasattr(self.main_app, 'current_recommendations') or not self.main_app.current_recommendations:
-                messagebox.showwarning("No Data", "Please generate recommendations first before exporting.")
+                self._show_styled_warning("No Data", "Please generate recommendations first before exporting.")
                 return
             
-            filename = filedialog.asksaveasfilename(
-                defaultextension=".txt",
-                filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
-                title="Save Recommendations Report"
-            )
+            filename = self._show_styled_file_dialog()
             
             if filename:
                 content = self.recommendations_text.get(1.0, tk.END)
@@ -189,7 +185,159 @@ Choose your analysis type above to get started!
                     f.write(content)
                 
                 self.main_app.update_status(f"Report saved to {filename}")
-                messagebox.showinfo("Export Successful", f"Recommendations report saved to: (⊃｡•́‿•̀｡)⊃━☆ﾟ.*・｡ﾟ\n{filename}")
+                self._show_styled_info("Export Successful", f"Recommendations report saved to:\n{filename}")
                 
         except Exception as e:
             self.main_app.show_error(f"Error exporting report: {str(e)}")
+    
+    def _show_styled_warning(self, title, message):
+        """Show custom styled warning dialog"""
+        dialog = tk.Toplevel(self.main_app.root)
+        dialog.title(title)
+        dialog.configure(bg=self.colors['panel'])
+        dialog.resizable(False, False)
+        dialog.grab_set()
+        
+        dialog.geometry("380x150")
+        dialog.transient(self.main_app.root)
+        
+        # Center dialog
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (380 // 2)
+        y = (dialog.winfo_screenheight() // 2) - (150 // 2)
+        dialog.geometry(f"380x150+{x}+{y}")
+        
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        message_label = ttk.Label(main_frame, text=message,
+                                foreground=self.colors['text'],
+                                background=self.colors['panel'],
+                                font=('Arial', 11),
+                                justify=tk.CENTER)
+        message_label.pack(pady=(10, 20))
+        
+        ok_btn = ttk.Button(main_frame, text="OK",
+                          style='Pastel.Primary.TButton',
+                          command=dialog.destroy)
+        ok_btn.pack()
+        ok_btn.focus_set()
+        
+        dialog.bind('<Return>', lambda e: dialog.destroy())
+        dialog.bind('<Escape>', lambda e: dialog.destroy())
+        dialog.wait_window()
+    
+    def _show_styled_info(self, title, message):
+        """Show custom styled info dialog"""
+        dialog = tk.Toplevel(self.main_app.root)
+        dialog.title(title)
+        dialog.configure(bg=self.colors['panel'])
+        dialog.resizable(False, False)
+        dialog.grab_set()
+        
+        dialog.geometry("400x180")
+        dialog.transient(self.main_app.root)
+        
+        # Center dialog
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (400 // 2)
+        y = (dialog.winfo_screenheight() // 2) - (180 // 2)
+        dialog.geometry(f"400x180+{x}+{y}")
+        
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        message_label = ttk.Label(main_frame, text=message,
+                                foreground=self.colors['text'],
+                                background=self.colors['panel'],
+                                font=('Arial', 11),
+                                justify=tk.CENTER)
+        message_label.pack(pady=(10, 20))
+        
+        ok_btn = ttk.Button(main_frame, text="OK",
+                          style='Pastel.Primary.TButton',
+                          command=dialog.destroy)
+        ok_btn.pack()
+        ok_btn.focus_set()
+        
+        dialog.bind('<Return>', lambda e: dialog.destroy())
+        dialog.bind('<Escape>', lambda e: dialog.destroy())
+        dialog.wait_window()
+    
+    def _show_styled_file_dialog(self):
+        """Show custom styled file save dialog"""
+        # Create custom file dialog
+        dialog = tk.Toplevel(self.main_app.root)
+        dialog.title("Save Recommendations Report")
+        dialog.configure(bg=self.colors['panel'])
+        dialog.resizable(False, False)
+        dialog.grab_set()
+        
+        dialog.geometry("500x200")
+        dialog.transient(self.main_app.root)
+        
+        # Center dialog
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (500 // 2)
+        y = (dialog.winfo_screenheight() // 2) - (200 // 2)
+        dialog.geometry(f"500x200+{x}+{y}")
+        
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        title_label = ttk.Label(main_frame, text="Save Recommendations Report",
+                              foreground=self.colors['lavender'],
+                              background=self.colors['panel'],
+                              font=('Arial', 12, 'bold'))
+        title_label.pack(pady=(0, 15))
+        
+        # Filename entry
+        filename_frame = ttk.Frame(main_frame)
+        filename_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Label(filename_frame, text="Filename:",
+                 foreground=self.colors['text'],
+                 background=self.colors['panel']).pack(side=tk.LEFT)
+        
+        filename_var = tk.StringVar(value="recommendations_report.txt")
+        filename_entry = ttk.Entry(filename_frame, textvariable=filename_var,
+                                 style='Pastel.TEntry', width=30)
+        filename_entry.pack(side=tk.RIGHT, padx=(10, 0))
+        
+        # Buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(side=tk.BOTTOM)
+        
+        result = tk.StringVar()
+        
+        def save_file():
+            filename = filename_var.get().strip()
+            if filename:
+                if not filename.endswith('.txt'):
+                    filename += '.txt'
+                result.set(filename)
+                dialog.destroy()
+        
+        def cancel():
+            result.set("")
+            dialog.destroy()
+        
+        save_btn = ttk.Button(button_frame, text="Save",
+                            style='Pastel.Primary.TButton',
+                            command=save_file)
+        save_btn.pack(side=tk.RIGHT, padx=(5, 0))
+        
+        cancel_btn = ttk.Button(button_frame, text="Cancel",
+                              style='Pastel.Ghost.TButton',
+                              command=cancel)
+        cancel_btn.pack(side=tk.RIGHT, padx=(5, 5))
+        
+        filename_entry.focus_set()
+        filename_entry.select_range(0, tk.END)
+        
+        dialog.bind('<Return>', lambda e: save_file())
+        dialog.bind('<Escape>', lambda e: cancel())
+        
+        dialog.wait_window()
+        return result.get() if result.get() else None
