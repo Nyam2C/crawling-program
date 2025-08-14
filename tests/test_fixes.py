@@ -45,35 +45,33 @@ def test_data_extraction():
     return result is not None
 
 
-def test_chart_fixes():
-    """Test chart display fixes"""
-    print("\n🧪 Testing Chart Display Fix...")
+def test_gui_components():
+    """Test GUI components functionality"""
+    print("\n🧪 Testing GUI Components...")
     print("=" * 50)
     
     try:
-        # Test matplotlib imports
-        import matplotlib.pyplot as plt
-        from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-        from matplotlib.figure import Figure
-        print("✅ matplotlib imports successful")
+        # Test tkinter import
+        import tkinter as tk
+        from tkinter import ttk
+        print("✅ tkinter imports successful")
         
-        # Test figure creation
-        fig = Figure(figsize=(8, 6))
-        ax = fig.add_subplot(111)
-        ax.bar(['Test1', 'Test2', 'Test3'], [0.8, 0.6, 0.9])
-        ax.set_title('Test Chart')
-        print("✅ Figure creation successful")
+        # Test basic GUI creation (without actual display)
+        root = tk.Tk()
+        root.withdraw()  # Hide the window
+        frame = ttk.Frame(root)
+        print("✅ Basic GUI components creation successful")
         
-        # Test without actual GUI (can't test full widget destroy without tkinter)
-        print("✅ Chart creation logic verified")
+        root.destroy()
+        print("✅ GUI cleanup successful")
         
         return True
         
     except ImportError as e:
-        print(f"❌ matplotlib not available: {e}")
+        print(f"❌ tkinter not available: {e}")
         return False
     except Exception as e:
-        print(f"❌ Chart test failed: {e}")
+        print(f"❌ GUI test failed: {e}")
         return False
 
 
@@ -103,7 +101,7 @@ def main():
     
     tests = [
         ("Data Extraction Fix", test_data_extraction),
-        ("Chart Display Fix", test_chart_fixes),
+        ("GUI Components", test_gui_components),
         ("Error Handling", test_error_handling)
     ]
     
@@ -127,7 +125,7 @@ def main():
         print("🎉 ALL FIXES VERIFIED! Your issues should be resolved.")
         print("\n📋 What was fixed:")
         print("   1. Stock data now uses mock data when Yahoo Finance fails")
-        print("   2. Chart canvas destroy() error fixed")
+        print("   2. GUI components properly initialized and cleaned up")
         print("   3. Better error handling throughout")
         print("\n🚀 Try running: python run_gui.py")
     else:

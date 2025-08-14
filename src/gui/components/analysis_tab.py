@@ -17,7 +17,9 @@ class IndividualAnalysisTab:
     def setup_tab(self):
         """Create the individual stock analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="Individual Analysis")
+        # Add tab with icon
+        tab_text = self.main_app.add_icon_to_tab(self.frame, 'tab_analysis', 'Individual Analysis')
+        self.notebook.add(self.frame, text=tab_text)
         
         # Configure grid
         self.frame.grid_rowconfigure(2, weight=1)
@@ -110,12 +112,12 @@ Choose a symbol and analysis type to get started!
         """Analyze individual stock with advanced multi-criteria analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! (>.<)")
+            messagebox.showwarning("Notice", "Please select a stock symbol to analyze!")
             return
             
         def analyze():
             try:
-                self.main_app.update_status(f"(*o*) Performing advanced analysis on {symbol}...")
+                self.main_app.update_status(f"Performing advanced analysis on {symbol}...")
                 self.main_app.show_progress()
                 
                 analysis = self.main_app.recommendation_engine.analyze_single_stock(symbol, use_advanced=True)
@@ -125,11 +127,11 @@ Choose a symbol and analysis type to get started!
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, True)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} advanced analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"{symbol} advanced analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"{symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()
@@ -138,12 +140,12 @@ Choose a symbol and analysis type to get started!
         """Analyze individual stock with basic analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze! (>.<)")
+            messagebox.showwarning("Notice", "Please select a stock symbol to analyze!")
             return
             
         def analyze():
             try:
-                self.main_app.update_status(f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ Performing basic analysis on {symbol}...")
+                self.main_app.update_status(f"Performing basic analysis on {symbol}...")
                 self.main_app.show_progress()
                 
                 analysis = self.main_app.recommendation_engine.analyze_single_stock(symbol, use_advanced=False)
@@ -153,11 +155,11 @@ Choose a symbol and analysis type to get started!
                 else:
                     self.main_app.root.after(0, self.update_individual_analysis_display, analysis, False)
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} basic analysis completed!")
+                self.main_app.root.after(0, self.main_app.update_status, f"{symbol} basic analysis completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
-                self.main_app.root.after(0, self.main_app.show_error, f"˚‧꒰ა 𓂋 ໒꒱ ‧˚ {symbol} analysis error: {str(e)}")
+                self.main_app.root.after(0, self.main_app.show_error, f"{symbol} analysis error: {str(e)}")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=analyze, daemon=True).start()

@@ -17,7 +17,9 @@ class SettingsTab:
     def setup_tab(self):
         """Create the settings tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="Settings")
+        # Add tab with icon
+        tab_text = self.main_app.add_icon_to_tab(self.frame, 'tab_settings', 'Settings')
+        self.notebook.add(self.frame, text=tab_text)
         
         # App info
         self.create_app_info()
@@ -30,27 +32,27 @@ class SettingsTab:
         info_frame = ttk.LabelFrame(self.frame, text="About This App", padding="15")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        info_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Kuromi's Magnificent Seven Stock Analysis System ˚‧꒰ა 𓂋 ໒꒱ ‧˚
+        info_text = """Kuromi's Magnificent Seven Stock Analysis System
 
-⸜(｡˃ ᵕ ˂ )⸝♡ Version: 2.0.0 - Kawaii Pastel Edition
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Style: Adorable Pastel Purple/Pink with Retro Windows Aesthetics  
-⸜(｡˃ ᵕ ˂ )⸝♡ Magic Level: Maximum Kawaii Cuteness!
+Version: 2.0.0 - Kawaii Pastel Edition
+Style: Adorable Pastel Purple/Pink with Retro Windows Aesthetics  
+Magic Level: Maximum Kawaii Cuteness!
 
 This application provides advanced analysis and recommendations 
 for the seven greatest technology stocks:
 
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ AAPL - Apple Inc. (The Apple Empire)
-(@_@) MSFT - Microsoft Corporation (The Microsoft Kingdom) 
-(@_@) GOOGL - Alphabet Inc. (The Google Realm)
-(@_@) AMZN - Amazon.com Inc. (The Amazon Empire)
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ NVDA - NVIDIA Corporation (The NVIDIA Universe)
-(>_<) TSLA - Tesla Inc. (The Tesla Electric Kingdom)
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ META - Meta Platforms Inc. (The Meta Social Dimension)
+AAPL - Apple Inc. (The Apple Empire)
+MSFT - Microsoft Corporation (The Microsoft Kingdom) 
+GOOGL - Alphabet Inc. (The Google Realm)
+AMZN - Amazon.com Inc. (The Amazon Empire)
+NVDA - NVIDIA Corporation (The NVIDIA Universe)
+TSLA - Tesla Inc. (The Tesla Electric Kingdom)
+META - Meta Platforms Inc. (The Meta Social Dimension)
 
-"Time reveals all truths... including market movements!" (@_@)
+"Time reveals all truths... including market movements!"
 
-(>_<) DISCLAIMER: This tool is for educational purposes only.
-   Not investment advice. Always do your own research! ˚‧꒰ა 𓂋 ໒꒱ ‧˚"""
+DISCLAIMER: This tool is for educational purposes only.
+   Not investment advice. Always do your own research!"""
         
         info_label = ttk.Label(info_frame, text=info_text, justify=tk.LEFT, 
                               foreground=self.colors['text'])
@@ -80,18 +82,18 @@ for the seven greatest technology stocks:
         theme_frame = ttk.LabelFrame(self.frame, text="Theme Information", padding="15")
         theme_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        theme_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Current Theme: Kawaii Pastel Retro Style
+        theme_text = """Current Theme: Kawaii Pastel Retro Style
 
 Color Palette:
-˚‧꒰ა 𓂋 ໒꒱ ‧˚ Background: Deep Navy Purple (#1F144A)
-⸜(｡˃ ᵕ ˂ )⸝♡ Panel: Medium Purple (#2B1E6B)  
-(*o*) Lavender: Dreamy Lavender (#C4B5FD)
-(-_-) Periwinkle: Soft Purple (#A78BFA)
-⸜(｡˃ ᵕ ˂ )⸝♡ Pink: Kawaii Pink (#FBCFE8)
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Text: Ghost White (#F8F8FF)
+Background: Deep Navy Purple (#1F144A)
+Panel: Medium Purple (#2B1E6B)  
+Lavender: Dreamy Lavender (#C4B5FD)
+Periwinkle: Soft Purple (#A78BFA)
+Pink: Kawaii Pink (#FBCFE8)
+Text: Ghost White (#F8F8FF)
 
 This theme combines Kuromi's rebellious kawaii personality 
-with dreamy pastel colors and retro Windows 95/98 styling! ˚‧꒰ა 𓂋 ໒꒱ ‧˚"""
+with dreamy pastel colors and retro Windows 95/98 styling!"""
         
         theme_label = ttk.Label(theme_frame, text=theme_text, justify=tk.LEFT,
                                foreground=self.colors['text'])
@@ -109,8 +111,8 @@ with dreamy pastel colors and retro Windows 95/98 styling! ˚‧꒰ა 𓂋 ໒�
             self.main_app.recommendation_engine = RecommendationEngine(delay=delay)
             self.main_app.stock_crawler = StockCrawler(delay=delay)
             
-            messagebox.showinfo("Success", f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Settings saved successfully! ˚‧꒰ა 𓂋 ໒꒱ ‧˚\n\nNew request delay: {delay} seconds")
-            self.main_app.update_status(f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Settings updated - Request delay: {delay}s")
+            messagebox.showinfo("Success", f"Settings saved successfully!\n\nNew request delay: {delay} seconds")
+            self.main_app.update_status(f"Settings updated - Request delay: {delay}s")
             
         except ValueError:
-            messagebox.showerror("Error", "(>_<) Please enter a valid delay value (1-10 seconds)! (T_T)")
+            messagebox.showerror("Error", "Please enter a valid delay value (1-10 seconds)!")

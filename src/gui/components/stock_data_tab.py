@@ -18,7 +18,9 @@ class StockDataTab:
         """Create the stock data tab"""
         # Stock Data Frame
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="Stock Data")
+        # Add tab with icon
+        tab_text = self.main_app.add_icon_to_tab(self.frame, 'tab_data', 'Stock Data')
+        self.notebook.add(self.frame, text=tab_text)
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -97,12 +99,12 @@ class StockDataTab:
                 
                 # Update UI in main thread
                 self.main_app.root.after(0, self.update_stock_display, data)
-                self.main_app.root.after(0, self.main_app.update_status, "₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Stock data collection completed!")
+                self.main_app.root.after(0, self.main_app.update_status, "Stock data collection completed!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
                 self.main_app.root.after(0, self.main_app.show_error, f"Error fetching stock data: {str(e)}")
-                self.main_app.root.after(0, self.main_app.update_status, "˚‧꒰ა 𓂋 ໒꒱ ‧˚ Error loading stock data")
+                self.main_app.root.after(0, self.main_app.update_status, "Error loading stock data")
                 self.main_app.root.after(0, self.main_app.hide_progress)
         
         threading.Thread(target=fetch_data, daemon=True).start()
@@ -111,7 +113,7 @@ class StockDataTab:
         """Get data for a single selected stock"""
         symbol = self.stock_var.get()
         if not symbol:
-            messagebox.showwarning("Warning", "Please select a stock symbol first! (>.<)")
+            messagebox.showwarning("Warning", "Please select a stock symbol first!")
             return
             
         def fetch_data():
@@ -127,7 +129,7 @@ class StockDataTab:
                 else:
                     self.main_app.root.after(0, self.main_app.show_error, f"Failed to fetch data for {symbol}")
                 
-                self.main_app.root.after(0, self.main_app.update_status, f"₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ {symbol} data loaded")
+                self.main_app.root.after(0, self.main_app.update_status, f"{symbol} data loaded")
                 self.main_app.root.after(0, self.main_app.hide_progress)
                 
             except Exception as e:
@@ -141,7 +143,7 @@ class StockDataTab:
         if self.main_app.current_stock_data:
             self.get_all_stocks_data()
         else:
-            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first! ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾")
+            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first!")
             
     def update_stock_display(self, data):
         """Update the stock data treeview"""

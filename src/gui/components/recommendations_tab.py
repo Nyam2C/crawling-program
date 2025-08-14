@@ -16,7 +16,9 @@ class RecommendationsTab:
     def setup_tab(self):
         """Create the recommendations tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="Recommendations")
+        # Add tab with icon
+        tab_text = self.main_app.add_icon_to_tab(self.frame, 'tab_recommend', 'Recommendations')
+        self.notebook.add(self.frame, text=tab_text)
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -110,9 +112,6 @@ Choose your analysis type above to get started!
                 
                 self.main_app.root.after(0, self.update_recommendations_display, report)
                 
-                # Update charts with real data if available
-                if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
-                    self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
                 self.main_app.root.after(0, self.main_app.update_status, "Advanced analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
@@ -137,9 +136,6 @@ Choose your analysis type above to get started!
                 
                 self.main_app.root.after(0, self.update_recommendations_display, report)
                 
-                # Update charts with real data if available
-                if hasattr(self.main_app, 'charts_frame') and self.main_app.charts_frame:
-                    self.main_app.root.after(0, self.main_app.charts_frame.update_with_real_data, results)
                 
                 self.main_app.root.after(0, self.main_app.update_status, "Basic analysis completed successfully!")
                 self.main_app.root.after(0, self.main_app.hide_progress)
