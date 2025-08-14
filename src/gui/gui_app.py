@@ -63,7 +63,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with retro pastel aesthetics"""
-        self.root.title("Magnificent Seven Stock Analysis")
+        self.root.title("×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -277,8 +277,8 @@ class StockAnalysisGUI:
         
         # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="Magnificent Seven Stock Analysis",
-                              font=('Arial', 20, 'bold'),
+                              text="×~☆𝑲𝒖𝒓𝒐𝒎𝒊☆~× Magnificent Seven Stock Analysis",
+                              font=('Arial', 18, 'bold'),
                               foreground=self.colors['lavender'])
         title_label.grid(row=0, column=1)
         
@@ -290,7 +290,7 @@ class StockAnalysisGUI:
                 icon_label.grid(row=1, column=1, pady=(5, 5))
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Advanced stock analysis and recommendations system",
+                                 text="✨ Kawaii stock analysis with rebellious attitude! ( ˶ˆᗜˆ˵ )",
                                  font=('Arial', 12, 'italic'),
                                  foreground=self.colors['periwinkle'])
         subtitle_label.grid(row=2, column=1, pady=(5, 0))

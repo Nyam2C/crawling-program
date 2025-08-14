@@ -65,12 +65,12 @@ class IndividualAnalysisTab:
         
         ttk.Label(score_frame, text="Overall Score:").grid(row=0, column=0, padx=(0, 10))
         self.score_label = ttk.Label(score_frame, text="--", font=('Arial', 14, 'bold'),
-                                   foreground=self.colors['kuromi_primary'])
+                                   foreground=self.colors['periwinkle'])
         self.score_label.grid(row=0, column=1, padx=(0, 30))
         
         ttk.Label(score_frame, text="Recommendation:").grid(row=0, column=2, padx=(0, 10))
         self.recommendation_label = ttk.Label(score_frame, text="--", font=('Arial', 14, 'bold'),
-                                            foreground=self.colors['kuromi_accent'])
+                                            foreground=self.colors['pink'])
         self.recommendation_label.grid(row=0, column=3)
         
     def create_detailed_analysis(self):
@@ -85,10 +85,10 @@ class IndividualAnalysisTab:
             wrap=tk.WORD, 
             height=15,
             font=('Consolas', 11),
-            bg=self.colors['kuromi_light'],
-            fg=self.colors['kuromi_text'],
-            insertbackground=self.colors['kuromi_accent'],
-            selectbackground=self.colors['kuromi_primary']
+            bg=self.colors['panel_alt'],
+            fg=self.colors['text'],
+            insertbackground=self.colors['pink'],
+            selectbackground=self.colors['periwinkle']
         )
         self.analysis_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         

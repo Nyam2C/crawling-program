@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stock Data Tab Component - Cool Kuromi Style"""
+"""Stock Data Tab Component - Retro Pastel Style"""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -18,7 +18,7 @@ class StockDataTab:
         """Create the stock data tab"""
         # Stock Data Frame
         self.frame = ttk.Frame(self.notebook, padding="15")
-        self.notebook.add(self.frame, text="(@_@) Stock Data")
+        self.notebook.add(self.frame, text="Stock Data")
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)
@@ -32,36 +32,36 @@ class StockDataTab:
         
     def create_control_panel(self):
         """Create control panel with cool buttons"""
-        control_frame = ttk.LabelFrame(self.frame, text="(>.<) Control Panel", padding="15")
+        control_frame = ttk.LabelFrame(self.frame, text="Control Panel", padding="15")
         control_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Main action buttons
-        ttk.Button(control_frame, text=" Get All Stocks", 
+        ttk.Button(control_frame, text="Get All Stocks", 
                   command=self.get_all_stocks_data,
-                  style='Kuromi.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
+                  style='Pastel.Primary.TButton').grid(row=0, column=0, padx=(0, 10))
                   
-        ttk.Button(control_frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Refresh",
+        ttk.Button(control_frame, text="Refresh",
                   command=self.refresh_stock_data,
-                  style='Kuromi.Black.TButton').grid(row=0, column=1, padx=(0, 10))
+                  style='Pastel.Ghost.TButton').grid(row=0, column=1, padx=(0, 10))
         
         # Stock selection
         ttk.Label(control_frame, text="Choose Stock:",
-                 foreground=self.colors['kuromi_primary']).grid(row=0, column=2, padx=(20, 5))
+                 foreground=self.colors['lavender']).grid(row=0, column=2, padx=(20, 5))
         
         self.stock_var = tk.StringVar()
         stock_combo = ttk.Combobox(control_frame, textvariable=self.stock_var, 
                                   values=list(MAGNIFICENT_SEVEN.keys()), 
                                   state='readonly', width=12,
-                                  style='Kuromi.TCombobox')
+                                  style='Pastel.TCombobox')
         stock_combo.grid(row=0, column=3, padx=(0, 10))
         
-        ttk.Button(control_frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Get Single Stock",
+        ttk.Button(control_frame, text="Get Single Stock",
                   command=self.get_single_stock_data,
-                  style='Kuromi.Primary.TButton').grid(row=0, column=4)
+                  style='Pastel.Primary.TButton').grid(row=0, column=4)
         
     def create_data_display(self):
         """Create data display area"""
-        data_frame = ttk.LabelFrame(self.frame, text="(@_@) Stock Information", padding="15")
+        data_frame = ttk.LabelFrame(self.frame, text="Stock Information", padding="15")
         data_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         data_frame.grid_rowconfigure(0, weight=1)
         data_frame.grid_columnconfigure(0, weight=1)
@@ -69,7 +69,7 @@ class StockDataTab:
         # Create treeview for stock data
         columns = ('Symbol', 'Company', 'Price', 'Change', 'Change %', 'Market Cap', 'Volume')
         self.stock_tree = ttk.Treeview(data_frame, columns=columns, show='headings', 
-                                     height=15, style='Kuromi.Treeview')
+                                     height=15, style='Pastel.Treeview')
         
         for col in columns:
             self.stock_tree.heading(col, text=col)
@@ -78,10 +78,10 @@ class StockDataTab:
         # Scrollbars
         scrollbar_y = ttk.Scrollbar(data_frame, orient=tk.VERTICAL, 
                                    command=self.stock_tree.yview,
-                                   style='Kuromi.Vertical.TScrollbar')
+                                   style='Pastel.Vertical.TScrollbar')
         scrollbar_x = ttk.Scrollbar(data_frame, orient=tk.HORIZONTAL, 
                                    command=self.stock_tree.xview,
-                                   style='Kuromi.Horizontal.TScrollbar')
+                                   style='Pastel.Horizontal.TScrollbar')
         self.stock_tree.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
         
         self.stock_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
