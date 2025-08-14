@@ -143,7 +143,7 @@ class UIBuilder:
         if not self.icon_manager.pixel_icons:
             return
         
-        HINTS = [(0.02,0.05),(0.95,0.05),(0.03,0.25),(0.96,0.30),(0.05,0.85),(0.92,0.88)]
+        HINTS = [(0.10,0.05),(0.90,0.05),(0.10,0.25),(0.90,0.30),(0.10,0.85),(0.90,0.88)]
         for i in range(min(count, len(HINTS))):
             icon = random.choice(self.icon_manager.pixel_icons)
             lbl = ttk.Label(parent, image=icon,

@@ -1,11 +1,12 @@
 """
-Enhanced Stock recommendation engine for the Magnificent Seven with advanced analysis
+Universal Stock recommendation engine with advanced analysis for any stock
 """
 
 from typing import Dict, List
 from src.analysis.financial_analyzer import FinancialAnalyzer
 from src.analysis.advanced_financial_analyzer import AdvancedFinancialAnalyzer
 from src.data.stock_crawler import StockCrawler
+from src.core.config import STOCK_CATEGORIES
 import json
 
 
@@ -41,9 +42,79 @@ class RecommendationEngine:
         else:
             return self.analyzer.generate_comprehensive_analysis(stock_data)
         
+    def analyze_multiple_stocks(self, symbols: List[str], use_advanced=True) -> Dict:
+        """
+        Analyze multiple stocks and generate recommendations
+        
+        Args:
+            symbols (list): List of stock symbols to analyze
+            use_advanced (bool): Use advanced multi-criteria analysis
+        
+        Returns:
+            dict: Complete analysis for all stocks with rankings
+        """
+        analysis_type = "Advanced Multi-Criteria" if use_advanced else "Basic"
+        
+        if not symbols:
+            return {'error': 'No symbols provided'}
+            
+        print(f"Performing {analysis_type} Analysis on {len(symbols)} stocks...")
+        
+        all_analyses = {}
+        successful_analyses = []
+        
+        for symbol in symbols:
+            if symbol:
+                print(f"Analyzing {symbol} using {analysis_type.lower()} analysis...")
+                analysis = self.analyze_single_stock(symbol, use_advanced)
+                
+                if analysis and 'error' not in analysis:
+                    all_analyses[symbol] = analysis
+                    successful_analyses.append(analysis)
+                else:
+                    print(f"Failed to analyze {symbol}")
+                    if analysis:
+                        all_analyses[symbol] = analysis
+                
+        # Rank stocks by overall score
+        if successful_analyses:
+            successful_analyses.sort(key=lambda x: x.get('overall_score', 0), reverse=True)
+        
+        return {
+            'analysis_type': analysis_type,
+            'individual_analyses': all_analyses,
+            'ranked_recommendations': successful_analyses,
+            'summary': self._generate_portfolio_summary(successful_analyses, use_advanced),
+            'total_symbols': len(symbols),
+            'successful_analyses': len(successful_analyses)
+        }
+    
+    def analyze_category(self, category_key: str, use_advanced=True) -> Dict:
+        """
+        Analyze all stocks in a predefined category
+        
+        Args:
+            category_key (str): Key from STOCK_CATEGORIES
+            use_advanced (bool): Use advanced multi-criteria analysis
+            
+        Returns:
+            dict: Analysis results for the category
+        """
+        if category_key not in STOCK_CATEGORIES:
+            return {'error': f'Category {category_key} not found'}
+            
+        category = STOCK_CATEGORIES[category_key]
+        symbols = list(category['stocks'].keys())
+        
+        result = self.analyze_multiple_stocks(symbols, use_advanced)
+        result['category_name'] = category['name']
+        result['category_key'] = category_key
+        
+        return result
+    
     def analyze_all_magnificent_seven(self, use_advanced=True) -> Dict:
         """
-        Analyze all Magnificent Seven stocks and generate recommendations
+        Legacy method: Analyze Magnificent Seven stocks (for backward compatibility)
         
         Args:
             use_advanced (bool): Use advanced multi-criteria analysis
@@ -51,34 +122,7 @@ class RecommendationEngine:
         Returns:
             dict: Complete analysis for all stocks with rankings
         """
-        analysis_type = "Advanced Multi-Criteria" if use_advanced else "Basic"
-        print(f"🚀 Performing {analysis_type} Analysis on all Magnificent Seven stocks...")
-        
-        all_analyses = {}
-        successful_analyses = []
-        
-        from src.core.config import MAGNIFICENT_SEVEN
-        
-        for symbol in MAGNIFICENT_SEVEN.keys():
-            print(f"📊 Analyzing {symbol} using {analysis_type.lower()} analysis...")
-            analysis = self.analyze_single_stock(symbol, use_advanced)
-            
-            if 'error' not in analysis:
-                all_analyses[symbol] = analysis
-                successful_analyses.append(analysis)
-            else:
-                print(f"❌ Failed to analyze {symbol}")
-                all_analyses[symbol] = analysis
-                
-        # Rank stocks by overall score
-        successful_analyses.sort(key=lambda x: x['overall_score'], reverse=True)
-        
-        return {
-            'analysis_type': analysis_type,
-            'individual_analyses': all_analyses,
-            'ranked_recommendations': successful_analyses,
-            'summary': self._generate_portfolio_summary(successful_analyses, use_advanced)
-        }
+        return self.analyze_category('magnificent_seven', use_advanced)
         
     def _generate_portfolio_summary(self, analyses: List[Dict], use_advanced=True) -> Dict:
         """
@@ -142,23 +186,23 @@ class RecommendationEngine:
         """
         # Count positive momentum stocks
         positive_momentum = sum(1 for a in analyses 
-                              if a['analysis_breakdown']['momentum']['score'] > 0.6)
+                              if a.get('analysis_breakdown', {}).get('momentum', {}).get('score', 0) > 0.6)
         
         # Overall sentiment
         if avg_score >= 0.75:
-            sentiment = "🚀 Very Bullish"
+            sentiment = "Very Bullish"
             description = "Strong buying opportunities across the board"
         elif avg_score >= 0.6:
-            sentiment = "📈 Bullish"
+            sentiment = "Bullish"
             description = "Good investment climate with selective opportunities"
         elif avg_score >= 0.45:
-            sentiment = "➡️ Neutral"
+            sentiment = "Neutral"
             description = "Mixed signals - careful stock selection recommended"
         elif avg_score >= 0.3:
-            sentiment = "📉 Bearish"
+            sentiment = "Bearish"
             description = "Challenging market conditions - defensive approach advised"
         else:
-            sentiment = "⬇️ Very Bearish"
+            sentiment = "Very Bearish"
             description = "Poor investment climate - consider waiting"
             
         return {
@@ -179,7 +223,7 @@ class RecommendationEngine:
             str: Formatted report
         """
         if 'error' in analysis_results:
-            return f"❌ Error generating report: {analysis_results['error']}"
+            return f"Error generating report: {analysis_results['error']}"
             
         summary = analysis_results['summary']
         ranked = analysis_results['ranked_recommendations']
@@ -187,13 +231,22 @@ class RecommendationEngine:
         
         report = []
         report.append("=" * 90)
-        report.append("📊 MAGNIFICENT SEVEN COMPREHENSIVE INVESTMENT ANALYSIS")
-        report.append(f"📈 Analysis Type: {analysis_type}")
+        
+        # Dynamic title based on what's being analyzed
+        if 'category_name' in analysis_results:
+            report.append(f"{analysis_results['category_name'].upper()} COMPREHENSIVE INVESTMENT ANALYSIS")
+        elif analysis_results.get('total_symbols', 0) == 7:
+            report.append("MAGNIFICENT SEVEN COMPREHENSIVE INVESTMENT ANALYSIS")  
+        else:
+            symbol_count = analysis_results.get('total_symbols', len(ranked))
+            report.append(f"COMPREHENSIVE INVESTMENT ANALYSIS ({symbol_count} STOCKS)")
+        
+        report.append(f"Analysis Type: {analysis_type}")
         report.append("=" * 90)
         report.append("")
         
         # Market Overview
-        report.append("🌟 MARKET OVERVIEW")
+        report.append("MARKET OVERVIEW")
         report.append("-" * 50)
         sentiment = summary['market_sentiment']
         report.append(f"Market Sentiment: {sentiment['sentiment']}")
@@ -203,18 +256,18 @@ class RecommendationEngine:
         report.append("")
         
         # Recommendation Distribution
-        report.append("📈 RECOMMENDATION BREAKDOWN")
+        report.append("RECOMMENDATION BREAKDOWN")
         report.append("-" * 50)
         dist = summary['distribution']
-        report.append(f"🟢 Strong Buy: {dist['strong_buys']}")
-        report.append(f"🔵 Buy: {dist['buys']}")
-        report.append(f"🟡 Hold/Watch: {dist['holds']}")
-        report.append(f"🟠 Weak Hold: {dist['weak_holds']}")
-        report.append(f"🔴 Avoid: {dist['avoids']}")
+        report.append(f"Strong Buy: {dist['strong_buys']}")
+        report.append(f"Buy: {dist['buys']}")
+        report.append(f"Hold/Watch: {dist['holds']}")
+        report.append(f"Weak Hold: {dist['weak_holds']}")
+        report.append(f"Avoid: {dist['avoids']}")
         report.append("")
         
         # Top 3 Picks
-        report.append("🏆 TOP 3 RECOMMENDATIONS")
+        report.append("TOP 3 RECOMMENDATIONS")
         report.append("-" * 50)
         for pick in summary['top_3_picks']:
             report.append(f"{pick['rank']}. {pick['symbol']} - {pick['company']}")
@@ -222,7 +275,7 @@ class RecommendationEngine:
         report.append("")
         
         # Detailed Analysis
-        report.append("📋 DETAILED INVESTMENT ANALYSIS")
+        report.append("DETAILED INVESTMENT ANALYSIS")
         report.append("-" * 70)
         
         for analysis in ranked:
@@ -250,7 +303,7 @@ class RecommendationEngine:
             
         report.append("")
         report.append("=" * 90)
-        report.append("⚠️  COMPREHENSIVE DISCLAIMER:")
+        report.append("COMPREHENSIVE DISCLAIMER:")
         report.append("    This analysis is for educational and informational purposes only.")
         report.append("    Not financial advice. Always conduct your own research and")
         report.append("    consult with qualified financial advisors before investing!")
@@ -265,36 +318,36 @@ class RecommendationEngine:
         
         # Fundamental Analysis
         fundamental = detailed['fundamental_analysis']
-        report.append("📈 FUNDAMENTAL ANALYSIS:")
+        report.append("FUNDAMENTAL ANALYSIS:")
         report.append(f"   Financial Health: {fundamental['financial_health']['rating']} (Score: {fundamental['financial_health']['score']:.2f})")
         report.append(f"   Profitability: {fundamental['profitability_metrics']['margin_rating']} - {fundamental['profitability_metrics']['analysis']}")
         report.append(f"   Debt Level: {fundamental['debt_analysis']['rating']} (D/E: {fundamental['debt_analysis']['debt_to_equity']:.2f})")
         
         # Growth Analysis
         growth = detailed['growth_analysis']
-        report.append(f"📊 GROWTH PROSPECTS: {growth['rating']}")
+        report.append(f"GROWTH PROSPECTS: {growth['rating']}")
         report.append(f"   Historical Growth: {growth['revenue_growth_5y']:.1%} (5-year CAGR)")
         report.append(f"   Industry: {growth['industry']} (Growth Factor: {growth['industry_factor']:.1f}x)")
         
         # Competitive Position
         competitive = detailed['competitive_analysis']
-        report.append(f"🏆 COMPETITIVE POSITION: {competitive['position_strength']}")
+        report.append(f"COMPETITIVE POSITION: {competitive['position_strength']}")
         report.append(f"   Key Advantages ({len(competitive['advantages'])}):")
         for advantage in competitive['advantages'][:3]:  # Show top 3
             report.append(f"     • {advantage}")
         
         # Risk Assessment
         risk = detailed['risk_assessment']
-        report.append(f"⚠️  RISK ASSESSMENT: {risk['risk_level']} Risk (Safety Score: {risk['safety_score']:.2f})")
+        report.append(f"RISK ASSESSMENT: {risk['risk_level']} Risk (Safety Score: {risk['safety_score']:.2f})")
         report.append(f"   Key Risk Factors:")
         for risk_factor in risk['risk_factors'][:2]:  # Show top 2
             report.append(f"     • {risk_factor}")
         
         # Investment Summary
         if investment_summary:
-            report.append(f"💡 INVESTMENT THESIS: {investment_summary.get('investment_thesis', 'N/A')}")
-            report.append(f"🎯 PRICE TARGET: {investment_summary.get('price_target_range', 'N/A')}")
-            report.append(f"⏰ TIME HORIZON: {investment_summary.get('time_horizon', 'N/A')}")
+            report.append(f"INVESTMENT THESIS: {investment_summary.get('investment_thesis', 'N/A')}")
+            report.append(f"PRICE TARGET: {investment_summary.get('price_target_range', 'N/A')}")
+            report.append(f"TIME HORIZON: {investment_summary.get('time_horizon', 'N/A')}")
         
         report.append("")
         

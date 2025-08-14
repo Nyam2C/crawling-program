@@ -148,26 +148,26 @@ def main():
         # Import and run the main GUI
         from src.gui.gui_app import StockAnalysisGUI
         
-        print("✅ Dependencies verified")
-        print("🎉 Launching GUI application...")
+        print("Dependencies verified (⊃｡•́‿•̀｡)⊃━☆ﾟ.*・｡ﾟ")
+        print("Launching GUI application...")
         
         app = StockAnalysisGUI()
         app.run()
         
     except ImportError as e:
-        print(f"❌ Failed to import GUI components: {e}")
-        print("📝 Make sure all files are in the same directory")
-        print("\n🔄 Trying CLI fallback...")
+        print(f"Failed to import GUI components: {e}")
+        print("Make sure all files are in the same directory")
+        print("\nTrying CLI fallback...")
         try:
             from scripts.cli import StockAnalysisCLI
             cli = StockAnalysisCLI()
             cli.run()
         except:
-            print("❌ CLI fallback also failed")
+            print("CLI fallback also failed")
             sys.exit(1)
         
     except Exception as e:
-        print(f"❌ Error starting application: {e}")
+        print(f"Error starting application: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

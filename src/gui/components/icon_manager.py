@@ -51,7 +51,6 @@ class IconManager:
                     print(f"Button icon load fail {filename}: {e}")
 
         # 2) Decoration icons (add_* files only)
-        import os
         for fname in os.listdir(icons_path):
             if fname.startswith('add_') and fname.endswith('.png'):
                 icon_path = os.path.join(icons_path, fname)
@@ -63,7 +62,7 @@ class IconManager:
                 except Exception as e:
                     print(f"Decor load fail {fname}: {e}")
 
-        print(f"Loaded {len(self.icons)} button/tab icons and {len(self.pixel_icons)} decorations")
+        print(f"Loaded {len(self.icons)} button/tab icons and {len(self.pixel_icons)} decorations (⊃｡•́‿•̀｡)⊃━☆ﾟ.*・｡ﾟ")
         
     def get_icon(self, key):
         """Get icon by key"""

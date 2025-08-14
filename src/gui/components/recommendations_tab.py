@@ -91,6 +91,9 @@ class RecommendationsTab:
 • Click "Quick Analysis" for basic technical analysis  
 • Use "Save Report" to export your results
 
+NOTE: Analysis will be performed on your current Stock Data.
+Use the Stock Data tab to add stocks you want to analyze.
+
 Ready to make informed investment decisions?
 Choose your analysis type above to get started!
 
@@ -99,13 +102,19 @@ Choose your analysis type above to get started!
         self.recommendations_text.insert(1.0, initial_message)
         
     def generate_advanced_recommendations(self):
-        """Generate advanced multi-criteria recommendations"""
+        """Generate advanced multi-criteria recommendations for current stocks"""
+        # Check if we have stock data to analyze
+        if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
+            messagebox.showwarning("No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
+            return
+            
         def generate():
             try:
-                self.main_app.update_status("Generating advanced analysis with multiple investment criteria...")
+                current_symbols = list(self.main_app.current_stock_data.keys())
+                self.main_app.update_status(f"Generating advanced analysis for {len(current_symbols)} stocks...")
                 self.main_app.show_progress()
                 
-                results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=True)
+                results = self.main_app.recommendation_engine.analyze_multiple_stocks(current_symbols, use_advanced=True)
                 report = self.main_app.recommendation_engine.generate_investment_report(results)
                 self.main_app.current_recommendations = results
                 
@@ -123,13 +132,19 @@ Choose your analysis type above to get started!
         threading.Thread(target=generate, daemon=True).start()
     
     def generate_basic_recommendations(self):
-        """Generate basic recommendations (legacy mode)"""
+        """Generate basic recommendations for current stocks"""
+        # Check if we have stock data to analyze
+        if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
+            messagebox.showwarning("No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
+            return
+            
         def generate():
             try:
-                self.main_app.update_status("Generating quick basic analysis...")
+                current_symbols = list(self.main_app.current_stock_data.keys())
+                self.main_app.update_status(f"Generating quick basic analysis for {len(current_symbols)} stocks...")
                 self.main_app.show_progress()
                 
-                results = self.main_app.recommendation_engine.analyze_all_magnificent_seven(use_advanced=False)
+                results = self.main_app.recommendation_engine.analyze_multiple_stocks(current_symbols, use_advanced=False)
                 report = self.main_app.recommendation_engine.generate_investment_report(results)
                 self.main_app.current_recommendations = results
                 
@@ -174,7 +189,7 @@ Choose your analysis type above to get started!
                     f.write(content)
                 
                 self.main_app.update_status(f"Report saved to {filename}")
-                messagebox.showinfo("Export Successful", f"Recommendations report saved to:\n{filename}")
+                messagebox.showinfo("Export Successful", f"Recommendations report saved to: (⊃｡•́‿•̀｡)⊃━☆ﾟ.*・｡ﾟ\n{filename}")
                 
         except Exception as e:
             self.main_app.show_error(f"Error exporting report: {str(e)}")

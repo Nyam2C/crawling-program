@@ -560,22 +560,22 @@ class AdvancedFinancialAnalyzer:
         
         # Generate recommendation
         if overall_score >= 0.8:
-            recommendation = "🟢 STRONG BUY"
+            recommendation = "STRONG BUY"
             confidence = "Very High"
         elif overall_score >= 0.7:
-            recommendation = "🟢 BUY"
+            recommendation = "BUY"
             confidence = "High"
         elif overall_score >= 0.55:
-            recommendation = "🔵 MODERATE BUY"
+            recommendation = "MODERATE BUY"
             confidence = "Medium-High"
         elif overall_score >= 0.45:
-            recommendation = "🟡 HOLD"
+            recommendation = "HOLD"
             confidence = "Medium"
         elif overall_score >= 0.35:
-            recommendation = "🟠 WEAK HOLD"
+            recommendation = "WEAK HOLD"
             confidence = "Medium-Low"
         else:
-            recommendation = "🔴 SELL"
+            recommendation = "SELL"
             confidence = "Low"
         
         return {

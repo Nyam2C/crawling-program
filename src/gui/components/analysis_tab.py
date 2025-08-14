@@ -100,7 +100,7 @@ class IndividualAnalysisTab:
 ✧ Click "Deep Analysis" for comprehensive multi-criteria analysis  
 ✧ Click "Quick Analysis" for basic technical analysis
 
-Ready to dive deep into your favorite stock? 
+Ready to dive deep into your favorite stock? (,,>﹏<,,)
 Choose a symbol and analysis type to get started!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

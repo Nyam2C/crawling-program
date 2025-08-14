@@ -55,7 +55,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with retro pastel aesthetics"""
-        self.root.title("Kuromi's Magnificent Seven Stock Analysis")
+        self.root.title("×☆𝑲𝒖𝒓𝒐𝒎𝒊☆×'s Magnificent Seven Stock Analysis")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -113,7 +113,7 @@ class StockAnalysisGUI:
         
         # Status bar
         self.status_var = tk.StringVar()
-        self.status_var.set("Ready to analyze the stock market. Let's find the best investment opportunities.")
+        self.status_var.set("Ready to analyze the stock market (,,>﹏<,,) Let's find the best investment opportunities!")
         status_frame, self.progress = self.ui_builder.create_status_bar(main_frame, self.status_var)
         
     def setup_effects(self):

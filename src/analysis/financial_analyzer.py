@@ -70,15 +70,15 @@ class FinancialAnalyzer:
             percent_value = float(re.findall(r'[-+]?\d*\.?\d+', str(change_percent))[0])
             
             if percent_value > 3:
-                return 0.9, f"🚀 Strong upward momentum (+{abs(percent_value):.1f}%)"
+                return 0.9, f"Strong upward momentum (+{abs(percent_value):.1f}%)"
             elif percent_value > 1:
-                return 0.7, f"📈 Positive momentum (+{percent_value:.1f}%)"
+                return 0.7, f"Positive momentum (+{percent_value:.1f}%)"
             elif percent_value > -1:
-                return 0.5, f"➡️ Stable price action ({percent_value:.1f}%)"
+                return 0.5, f"Stable price action ({percent_value:.1f}%)"
             elif percent_value > -3:
-                return 0.3, f"📉 Minor decline ({percent_value:.1f}%)"
+                return 0.3, f"Minor decline ({percent_value:.1f}%)"
             else:
-                return 0.1, f"⬇️ Significant decline ({percent_value:.1f}%)"
+                return 0.1, f"Significant decline ({percent_value:.1f}%)"
                 
         except (ValueError, IndexError):
             return 0.5, "❓ Unable to assess momentum"
@@ -98,11 +98,11 @@ class FinancialAnalyzer:
         if volume > 100000000:  # > 100M
             return 0.9, f"💪 Very high volume ({volume/1000000:.0f}M)"
         elif volume > 50000000:  # > 50M
-            return 0.7, f"📊 High volume ({volume/1000000:.0f}M)"
+            return 0.7, f"High volume ({volume/1000000:.0f}M)"
         elif volume > 20000000:  # > 20M
-            return 0.6, f"📈 Good volume ({volume/1000000:.0f}M)"
+            return 0.6, f"Good volume ({volume/1000000:.0f}M)"
         elif volume > 5000000:   # > 5M
-            return 0.4, f"📉 Moderate volume ({volume/1000000:.0f}M)"
+            return 0.4, f"Moderate volume ({volume/1000000:.0f}M)"
         else:
             return 0.2, f"💤 Low volume ({volume/1000000:.1f}M)"
             
@@ -119,7 +119,7 @@ class FinancialAnalyzer:
         market_cap = self.parse_financial_value(stock_data.get('market_cap', '0'))
         
         if market_cap > 2000000000000:  # > $2T
-            return 0.95, f"🏛️ Mega-cap leader (${market_cap/1000000000000:.1f}T)"
+            return 0.95, f"Mega-cap leader (${market_cap/1000000000000:.1f}T)"
         elif market_cap > 1000000000000:  # > $1T
             return 0.9, f"🏢 Large-cap giant (${market_cap/1000000000000:.1f}T)"
         elif market_cap > 500000000000:   # > $500B
@@ -183,9 +183,9 @@ class FinancialAnalyzer:
         score = volatility_profiles.get(symbol, 0.50)
         
         if score > 0.8:
-            return score, "🛡️ Low volatility - stable investment"
+            return score, "Low volatility - stable investment"
         elif score > 0.6:
-            return score, "⚖️ Moderate volatility - balanced risk"
+            return score, "Moderate volatility - balanced risk"
         elif score > 0.4:
             return score, "⚡ High volatility - higher risk/reward"
         else:
@@ -222,19 +222,19 @@ class FinancialAnalyzer:
         
         # Generate recommendation
         if overall_score >= 0.8:
-            recommendation = "🟢 STRONG BUY"
+            recommendation = "STRONG BUY"
             confidence = "High"
         elif overall_score >= 0.65:
-            recommendation = "🔵 BUY"
+            recommendation = "BUY"
             confidence = "Medium-High"
         elif overall_score >= 0.5:
-            recommendation = "🟡 HOLD/WATCH"
+            recommendation = "HOLD/WATCH"
             confidence = "Medium"
         elif overall_score >= 0.35:
-            recommendation = "🟠 WEAK HOLD"
+            recommendation = "WEAK HOLD"
             confidence = "Medium-Low"
         else:
-            recommendation = "🔴 AVOID"
+            recommendation = "AVOID"
             confidence = "Low"
             
         return {

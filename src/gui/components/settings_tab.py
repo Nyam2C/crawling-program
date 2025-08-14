@@ -110,7 +110,7 @@ with dreamy pastel colors and retro Windows 95/98 styling!"""
             self.main_app.recommendation_engine = RecommendationEngine(delay=delay)
             self.main_app.stock_crawler = StockCrawler(delay=delay)
             
-            messagebox.showinfo("Success", f"Settings saved successfully!\n\nNew request delay: {delay} seconds")
+            messagebox.showinfo("Success", f"Settings saved successfully! (,,>﹏<,,)\n\nNew request delay: {delay} seconds")
             self.main_app.update_status(f"Settings updated - Request delay: {delay}s")
             
         except ValueError:

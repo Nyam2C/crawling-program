@@ -83,8 +83,14 @@ class ThemeManager:
         
         # Entry and text widget styles
         self.style.configure('TEntry',
-            background=self.colors['panel_light'], foreground=self.colors['text'],
+            background=self.colors['panel_light'], foreground='#1B1350',  # Dark purple/black
             bordercolor=self.colors['border'], insertcolor=self.colors['periwinkle'])
+        
+        # Pastel Entry for stock input
+        self.style.configure('Pastel.TEntry',
+            background=self.colors['panel_light'], foreground='#1B1350',  # Dark purple/black
+            bordercolor=self.colors['border'], insertcolor=self.colors['periwinkle'],
+            padding=[5, 3])
         
         # Combobox style (retro dropdown)
         self.style.configure('Pastel.TCombobox',
