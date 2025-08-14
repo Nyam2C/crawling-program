@@ -32,9 +32,9 @@ class SettingsTab:
         
         info_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Kuromi's Magnificent Seven Stock Analysis System ˚‧꒰ა 𓂋 ໒꒱ ‧˚
 
-⸜(｡˃ ᵕ ˂ )⸝♡ Version: 2.0.0 - Cute Kuromi Edition
-₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Style: Adorable Gothic Aesthetic  
-⸜(｡˃ ᵕ ˂ )⸝♡ Magic Level: Maximum Cuteness!
+⸜(｡˃ ᵕ ˂ )⸝♡ Version: 2.0.0 - Kawaii Pastel Edition
+₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Style: Adorable Pastel Purple/Pink with Retro Windows Aesthetics  
+⸜(｡˃ ᵕ ˂ )⸝♡ Magic Level: Maximum Kawaii Cuteness!
 
 This application provides advanced analysis and recommendations 
 for the seven greatest technology stocks:
@@ -53,7 +53,7 @@ for the seven greatest technology stocks:
    Not investment advice. Always do your own research! ˚‧꒰ა 𓂋 ໒꒱ ‧˚"""
         
         info_label = ttk.Label(info_frame, text=info_text, justify=tk.LEFT, 
-                              foreground=self.colors['kuromi_text'])
+                              foreground=self.colors['text'])
         info_label.grid(row=0, column=0, sticky=(tk.W, tk.N))
         
     def create_settings_controls(self):
@@ -65,36 +65,36 @@ for the seven greatest technology stocks:
         ttk.Label(controls_frame, text="Request Delay (seconds):").grid(row=0, column=0, padx=(0, 15), sticky=tk.W)
         self.delay_var = tk.StringVar(value="2")
         delay_spinbox = ttk.Spinbox(controls_frame, from_=1, to=10, textvariable=self.delay_var, 
-                                   width=10, style='Kuromi.TSpinbox')
+                                   width=10)
         delay_spinbox.grid(row=0, column=1, padx=(0, 15), sticky=tk.W)
         
         ttk.Label(controls_frame, text="(Higher values are more respectful to servers)",
-                 font=('Arial', 9), foreground=self.colors['kuromi_accent']).grid(row=0, column=2, sticky=tk.W)
+                 font=('Arial', 9), foreground=self.colors['pink']).grid(row=0, column=2, sticky=tk.W)
         
         # Save button
         ttk.Button(controls_frame, text="(@_@) Save Settings",
                   command=self.save_settings,
-                  style='Kuromi.Gold.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
+                  style='Pastel.Primary.TButton').grid(row=1, column=0, pady=(15, 0), sticky=tk.W)
         
         # Theme info
         theme_frame = ttk.LabelFrame(self.frame, text="₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Theme Information", padding="15")
         theme_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        theme_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Current Theme: Cute Kuromi Gothic Style
+        theme_text = """₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Current Theme: Kawaii Pastel Retro Style
 
 Color Palette:
-˚‧꒰ა 𓂋 ໒꒱ ‧˚ Primary: Deep Crimson (#8B0000)
-⸜(｡˃ ᵕ ˂ )⸝♡ Accent: Soft Pink-Red (#FF6B6B)  
-(*o*) Gold: Elegant Gold (#FFD700)
-(-_-) Dark: Deep Purple-Black (#0D0B1F)
-⸜(｡˃ ᵕ ˂ )⸝♡ Light: Dark Blue-Purple (#1A1A2E)
+˚‧꒰ა 𓂋 ໒꒱ ‧˚ Background: Deep Navy Purple (#1F144A)
+⸜(｡˃ ᵕ ˂ )⸝♡ Panel: Medium Purple (#2B1E6B)  
+(*o*) Lavender: Dreamy Lavender (#C4B5FD)
+(-_-) Periwinkle: Soft Purple (#A78BFA)
+⸜(｡˃ ᵕ ˂ )⸝♡ Pink: Kawaii Pink (#FBCFE8)
 ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾ Text: Ghost White (#F8F8FF)
 
-This theme combines Kuromi's elegant gothic aesthetic 
-with adorable cute elements for the perfect balance! ˚‧꒰ა 𓂋 ໒꒱ ‧˚"""
+This theme combines Kuromi's rebellious kawaii personality 
+with dreamy pastel colors and retro Windows 95/98 styling! ˚‧꒰ა 𓂋 ໒꒱ ‧˚"""
         
         theme_label = ttk.Label(theme_frame, text=theme_text, justify=tk.LEFT,
-                               foreground=self.colors['kuromi_text'])
+                               foreground=self.colors['text'])
         theme_label.grid(row=0, column=0, sticky=(tk.W, tk.N))
         
     def save_settings(self):

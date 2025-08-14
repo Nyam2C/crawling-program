@@ -43,16 +43,16 @@ class IndividualAnalysisTab:
         analysis_combo = ttk.Combobox(select_frame, textvariable=self.analysis_stock_var,
                                     values=list(MAGNIFICENT_SEVEN.keys()),
                                     state='readonly', width=15,
-                                    style='Kuromi.TCombobox')
+                                    style='Pastel.TCombobox')
         analysis_combo.grid(row=0, column=1, padx=(0, 15))
         
         ttk.Button(select_frame, text="(*o*) Deep Analysis",
                   command=self.analyze_individual_stock_advanced,
-                  style='Kuromi.Gold.TButton').grid(row=0, column=2, padx=(0, 10))
+                  style='Pastel.Primary.TButton').grid(row=0, column=2, padx=(0, 10))
                   
         ttk.Button(select_frame, text="˚‧꒰ა 𓂋 ໒꒱ ‧˚ Quick Analysis",
                   command=self.analyze_individual_stock_basic,
-                  style='Kuromi.Primary.TButton').grid(row=0, column=3)
+                  style='Pastel.Primary.TButton').grid(row=0, column=3)
         
     def create_results_summary(self):
         """Create analysis results summary"""
