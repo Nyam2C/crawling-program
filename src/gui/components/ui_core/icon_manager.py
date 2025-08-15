@@ -74,7 +74,7 @@ class IconManager:
             if fname.startswith('add_') and fname.endswith('.png'):
                 icon_path = os.path.join(icons_path, fname)
                 try:
-                    img = Image.open(icon_path).resize((32, 32), Image.Resampling.NEAREST)
+                    img = Image.open(icon_path).resize((64, 64), Image.Resampling.NEAREST)
                     ph = ImageTk.PhotoImage(img)
                     self.pixel_icons.append(ph)
                     self.icon_refs.append(ph)
