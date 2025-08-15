@@ -12,7 +12,7 @@ import random
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components import (
-    StockDataTab, RecommendationsTab, IndividualAnalysisTab, ScoreboardTab, SettingsTab,
+    StockDataTab, RecommendationsTab, IndividualAnalysisTab, ScoreboardTab, SettingsTab, InvestmentAnalysisTab,
     MockTradingTab, ThemeManager, IconManager, UIBuilder
 )
 
@@ -112,6 +112,7 @@ class StockAnalysisGUI:
         self.analysis_tab = IndividualAnalysisTab(self.notebook, self)
         self.mock_trading_tab = MockTradingTab(self.notebook, self)
         self.scoreboard_tab = ScoreboardTab(self.notebook, self)
+        self.investment_analysis_tab = InvestmentAnalysisTab(self.notebook, self)
         self.settings_tab = SettingsTab(self.notebook, self)
         
         # Status bar

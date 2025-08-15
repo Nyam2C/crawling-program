@@ -8,11 +8,13 @@ from .analysis_tab import IndividualAnalysisTab
 from .recommendations_tab import RecommendationsTab
 from .scoreboard_tab import ScoreboardTab
 from .settings_tab import SettingsTab
+from .investment_analysis_tab import InvestmentAnalysisTab
 
 __all__ = [
     'StockDataTab',
     'IndividualAnalysisTab', 
     'RecommendationsTab',
     'ScoreboardTab',
-    'SettingsTab'
+    'SettingsTab',
+    'InvestmentAnalysisTab'
 ]
