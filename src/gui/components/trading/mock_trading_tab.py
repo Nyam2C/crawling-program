@@ -19,9 +19,9 @@ class MockTradingTab:
         self.colors = main_app.colors
         
         # Initialize kawaii dialogs (lazy initialization)
-        self._get_kawaii_msg() = None
-        self._get_kawaii_input() = None
-        self._get_help_dialog() = None
+        self.kawaii_msg = None
+        self.kawaii_input = None
+        self.help_dialog = None
         
         # Trading data manager
         self.data_manager = TradingDataManager()
