@@ -115,7 +115,7 @@ class ThemeManager:
         self.style.configure('Pastel.Primary.TButton',
             background=self.colors['periwinkle'], foreground='#1B1350',
             bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
-            padding=[10,6], anchor='w')
+            padding=[10,6], anchor='center')
         self.style.map('Pastel.Primary.TButton',
             background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])],
             relief=[('pressed','sunken')], borderwidth=[('active',3),('pressed',3)])
@@ -123,14 +123,14 @@ class ThemeManager:
         self.style.configure('Pastel.Secondary.TButton',
             background=self.colors['rose'], foreground='#1B1350',
             bordercolor=self.colors['highlight'], borderwidth=2, relief='ridge',
-            padding=[10,6], anchor='w')
+            padding=[10,6], anchor='center')
         self.style.map('Pastel.Secondary.TButton',
             background=[('active', self.colors['hotpink']), ('pressed', self.colors['magenta'])])
 
         self.style.configure('Pastel.Ghost.TButton',
             background=self.colors['rose'], foreground='#1B1350',
             bordercolor=self.colors['magenta'], borderwidth=2, relief='ridge',
-            padding=[10,6], anchor='w')
+            padding=[10,6], anchor='center')
         self.style.map('Pastel.Ghost.TButton',
             background=[('active', self.colors['hotpink']), ('pressed', self.colors['pink'])],
             relief=[('pressed','sunken')], borderwidth=[('active',3),('pressed',3)])
@@ -193,14 +193,14 @@ class ThemeManager:
         self.style.configure('Kuromi.Primary.TButton',
             background=self.colors['periwinkle'], foreground='#1B1350',
             bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
-            padding=[10,6], anchor='w')
+            padding=[10,6], anchor='center')
         self.style.map('Kuromi.Primary.TButton',
             background=[('active', self.colors['lavender']), ('pressed', self.colors['pink'])])
         
         self.style.configure('Kuromi.Black.TButton',
             background=self.colors['panel_alt'], foreground=self.colors['text'],
             bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
-            padding=[10,6], anchor='w')
+            padding=[10,6], anchor='center')
         
     def _apply_notebook_styles(self):
         """Apply notebook and tab styles"""

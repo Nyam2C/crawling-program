@@ -133,24 +133,40 @@ class MockTradingTab:
         stats_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Add some quick stats display
-        stats_text = tk.Text(stats_frame, height=6, width=60, 
-                           bg=self.colors['panel'], fg=self.colors['text'],
-                           font=('Arial', 10), wrap=tk.WORD)
-        stats_text.pack(fill=tk.BOTH, expand=True)
+        self.stats_text = tk.Text(stats_frame, height=6, width=60, 
+                                bg=self.colors['panel'], fg=self.colors['text'],
+                                font=('Arial', 10), wrap=tk.WORD)
+        self.stats_text.pack(fill=tk.BOTH, expand=True)
         
-        # Insert some sample content
-        stats_content = """Portfolio Performance Summary:
+        # Insert initial content
+        self.update_stats_content()
+        self.stats_text.config(state=tk.DISABLED)
+    
+    def update_stats_content(self, show_update_warning=False):
+        """Update stats content with optional update warning"""
+        self.stats_text.config(state=tk.NORMAL)
+        self.stats_text.delete(1.0, tk.END)
+        
+        base_content = """Portfolio Performance Summary:
 
 • Trading sessions: View your complete trading history
 • Active positions: Check your current stock holdings  
-• Real-time updates: Prices refresh automatically every 5 seconds
+• Real-time updates: Prices refresh automatically every 20 seconds
 • Commission rate: 0.015% per transaction (minimum $100)
 • Tax rate: 0.25% on sell transactions
 
 Tip: Use the Trading tab to place orders and manage your watchlist!"""
         
-        stats_text.insert(tk.END, stats_content)
-        stats_text.config(state=tk.DISABLED)
+        if show_update_warning:
+            warning_content = "\n\n⚠️ Price update in 5 seconds..."
+            self.stats_text.insert(tk.END, base_content + warning_content)
+            # Make warning text stand out
+            self.stats_text.tag_add("warning", "end-2l", "end")
+            self.stats_text.tag_config("warning", foreground=self.colors['coral'], font=('Arial', 10, 'bold'))
+        else:
+            self.stats_text.insert(tk.END, base_content)
+        
+        self.stats_text.config(state=tk.DISABLED)
     
     def create_trading_tab(self):
         """Create trading interface tab with more vertical space"""
@@ -391,7 +407,7 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
                        fieldbackground=self.colors['panel'])
         style.configure("Treeview.Heading",
                        background=self.colors['lavender'],
-                       foreground=self.colors['text'])
+                       foreground='#1B1350')  # Dark purple/black for better visibility
         style.map("Treeview.Heading",
                  background=[('active', self.colors['mint'])])
         style.map("Treeview",
@@ -874,19 +890,49 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         self.help_dialog.show_help()
     
     def schedule_ui_refresh(self):
-        """Schedule periodic UI refresh"""
+        """Schedule periodic UI refresh every 20 seconds with 5-second warning"""
+        def show_warning():
+            """Show 5-second warning before update"""
+            try:
+                current_tab = self.notebook.tab(self.notebook.select(), "text")
+                if "Mock Trading" in current_tab:
+                    self.update_stats_content(show_update_warning=True)
+            except Exception as e:
+                print(f"Warning display error: {e}")
+        
         def refresh_ui():
             try:
-                self.update_portfolio_summary()
-                self.update_watched_stocks_display()
+                # Mock Trading 탭이 활성 상태일 때만 업데이트 수행
+                current_tab = self.notebook.tab(self.notebook.select(), "text")
+                if "Mock Trading" in current_tab:
+                    # 백그라운드에서 주가 데이터 새로고침
+                    self.data_manager.refresh_all_watched_stocks()
+                    
+                    # UI 업데이트
+                    self.update_portfolio_summary()
+                    self.update_watched_stocks_display()
+                    self.update_portfolio_display()  # Portfolio 탭도 업데이트
+                    
+                    # 데이터 저장
+                    self.data_manager.save_data()
+                    
+                    # 통계 내용을 일반 상태로 복원
+                    self.update_stats_content(show_update_warning=False)
+                    
+                    current_time = datetime.now().strftime('%H:%M:%S')
+                    print(f"[{current_time}] Mock Trading - Price update completed")
             except Exception as e:
                 print(f"UI refresh error: {e}")
             
-            # Schedule next refresh
-            self.main_app.root.after(10000, refresh_ui)  # Every 10 seconds
+            # 15초 후에 경고 메시지 표시 (20-5=15)
+            self.main_app.root.after(15000, show_warning)
+            # 20초 후에 다음 업데이트
+            self.main_app.root.after(20000, refresh_ui)
         
-        # Start the refresh cycle
-        self.main_app.root.after(5000, refresh_ui)  # First refresh after 5 seconds
+        # 첫 번째 새로고침 시작 (20초 후)
+        self.main_app.root.after(20000, refresh_ui)
+        # 첫 번째 경고 메시지 (15초 후)
+        self.main_app.root.after(15000, show_warning)
     
     def cleanup(self):
         """Cleanup resources when tab is destroyed"""

@@ -1,13 +1,25 @@
 {
   "portfolio": {
-    "cash_balance": 91782.4,
+    "cash_balance": 66819.04,
     "initial_balance": 100000.0,
     "positions": {
       "GOOGL": {
         "symbol": "GOOGL",
-        "quantity": 40,
-        "average_price": 202.94,
-        "total_invested": 8117.6
+        "quantity": 140,
+        "average_price": 203.5257142857143,
+        "total_invested": 28493.6
+      },
+      "NVDA": {
+        "symbol": "NVDA",
+        "quantity": 11,
+        "average_price": 179.06,
+        "total_invested": 1969.66
+      },
+      "AMZN": {
+        "symbol": "AMZN",
+        "quantity": 10,
+        "average_price": 231.77,
+        "total_invested": 2317.7000000000003
       }
     },
     "transactions": [
@@ -22,14 +34,50 @@
         "commission": 100,
         "tax": 0,
         "total_amount": 8217.6
+      },
+      {
+        "id": "1a577e43-c790-4b67-a856-a9c56f2c3083",
+        "timestamp": "2025-08-15T22:51:02.944689",
+        "symbol": "NVDA",
+        "transaction_type": "buy",
+        "order_type": "market",
+        "quantity": 11,
+        "price": 179.06,
+        "commission": 100,
+        "tax": 0,
+        "total_amount": 2069.66
+      },
+      {
+        "id": "8c0b2b82-ef88-4dba-8694-33396444b102",
+        "timestamp": "2025-08-15T22:51:22.535897",
+        "symbol": "GOOGL",
+        "transaction_type": "buy",
+        "order_type": "market",
+        "quantity": 100,
+        "price": 203.76,
+        "commission": 100,
+        "tax": 0,
+        "total_amount": 20476.0
+      },
+      {
+        "id": "7c28446d-23f0-4a75-b8a0-a92d7b4ff415",
+        "timestamp": "2025-08-15T22:51:35.708498",
+        "symbol": "AMZN",
+        "transaction_type": "buy",
+        "order_type": "market",
+        "quantity": 10,
+        "price": 231.77,
+        "commission": 100,
+        "tax": 0,
+        "total_amount": 2417.7000000000003
       }
     ]
   },
   "stock_prices": {
     "NKE": {
       "symbol": "NKE",
-      "current_price": 76.39,
-      "last_updated": "2025-08-15T22:22:19.989344",
+      "current_price": 77.06,
+      "last_updated": "2025-08-15T22:56:21.049879",
       "company_name": "NIKE, Inc."
     },
     "PLTR": {
@@ -40,19 +88,28 @@
     },
     "NVDA": {
       "symbol": "NVDA",
-      "current_price": 182.02,
-      "last_updated": "2025-08-15T13:42:11.536493",
+      "current_price": 178.83,
+      "last_updated": "2025-08-15T22:56:20.097049",
       "company_name": "NVIDIA Corporation"
     },
     "GOOGL": {
       "symbol": "GOOGL",
-      "current_price": 202.94,
-      "last_updated": "2025-08-15T22:00:23.509408",
+      "current_price": 204.05,
+      "last_updated": "2025-08-15T22:56:20.569399",
       "company_name": "Alphabet Inc."
+    },
+    "AMZN": {
+      "symbol": "AMZN",
+      "current_price": 232.07,
+      "last_updated": "2025-08-15T22:56:21.524539",
+      "company_name": "Amazon.com, Inc."
     }
   },
   "watched_stocks": [
-    "NKE"
+    "NVDA",
+    "GOOGL",
+    "NKE",
+    "AMZN"
   ],
-  "last_saved": "2025-08-15T22:22:21.930882"
+  "last_saved": "2025-08-15T22:56:21.526170"
 }

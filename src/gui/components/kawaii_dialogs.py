@@ -107,6 +107,11 @@ class KawaiiMessageBox:
             btn = ttk.Button(button_frame, text=button_text,
                            style=style, width=10,
                            command=lambda text=button_text: self._on_button_click(dialog, text))
+            # Ensure text is centered
+            try:
+                btn.configure(justify='center')
+            except:
+                pass  # Some tkinter versions may not support this
             if len(buttons) == 2:  # For Yes/No dialogs, center both buttons
                 btn.pack(side=tk.LEFT, padx=(8 if i > 0 else 8, 8))
             elif len(buttons) == 1:  # For single button dialogs (like OK), center the button
@@ -270,11 +275,19 @@ class KawaiiInputDialog:
         ok_btn = ttk.Button(button_frame, text="OK",
                           style='Pastel.Success.TButton', width=10,
                           command=validate_and_submit)
+        try:
+            ok_btn.configure(justify='center')
+        except:
+            pass
         ok_btn.pack(side=tk.LEFT, padx=(8, 8))
         
         cancel_btn = ttk.Button(button_frame, text="Cancel",
                               style='Pastel.Secondary.TButton', width=10,
                               command=lambda: [setattr(self, 'result', None), dialog.destroy()])
+        try:
+            cancel_btn.configure(justify='center')
+        except:
+            pass
         cancel_btn.pack(side=tk.LEFT, padx=(8, 8))
         
         # Bind Enter key
@@ -359,6 +372,10 @@ class TradingHelpDialog:
         close_btn = ttk.Button(center_frame, text="Got It!",
                              style='Pastel.Primary.TButton',
                              command=help_window.destroy)
+        try:
+            close_btn.configure(justify='center')
+        except:
+            pass
         close_btn.pack()
         
         # Configure button styling for bold text and compact size

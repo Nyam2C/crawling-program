@@ -28,7 +28,7 @@ class TradingDataManager:
         # 자동 갱신을 위한 스레드
         self.auto_refresh_enabled = False
         self.auto_refresh_thread = None
-        self.refresh_interval = 5  # 5초
+        self.refresh_interval = 20  # 20초
         
         # 추적할 주식 목록
         self.watched_stocks: Set[str] = set()
