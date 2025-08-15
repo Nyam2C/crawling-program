@@ -157,40 +157,94 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         trading_frame = ttk.Frame(self.sub_notebook, padding="10")
         self.sub_notebook.add(trading_frame, text='Trading')
         
-        # Better grid configuration for more space
+        # Better grid configuration for more space - adjusted for search area reduction
         trading_frame.grid_rowconfigure(1, weight=1)
-        trading_frame.grid_columnconfigure(0, weight=2)  # Order form gets more space
-        trading_frame.grid_columnconfigure(1, weight=3)  # Watched stocks gets even more space
+        trading_frame.grid_columnconfigure(0, weight=2)  # Order form same space
+        trading_frame.grid_columnconfigure(1, weight=4)  # Watched stocks gets more space
         
-        # Stock search and selection - make it more compact
+        # Left side: Stock search and Order form
         self.create_stock_search_section(trading_frame)
-        
-        # Order form - now has more vertical space
         self.create_order_form(trading_frame)
         
-        # Watched stocks list - now has more vertical space
-        self.create_watched_stocks_section(trading_frame)
+        # Right side: Complete Watchlist section with all elements
+        self.create_complete_watchlist_section(trading_frame)
+    
+    def create_complete_watchlist_section(self, parent):
+        """Create complete watchlist section with all elements"""
+        # Main watchlist frame that spans both rows
+        watchlist_frame = ttk.LabelFrame(parent, text="Stock Watchlist", padding="15")
+        watchlist_frame.grid(row=0, column=1, rowspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        watchlist_frame.grid_rowconfigure(2, weight=1)  # Stock list gets most space
+        watchlist_frame.grid_columnconfigure(0, weight=1)
+        
+        # Header info
+        header_label = ttk.Label(watchlist_frame, 
+                                text="Manage your watchlist and select stocks for trading",
+                                foreground=self.colors['text_muted'], font=('Arial', 9))
+        header_label.grid(row=0, column=0, pady=(0, 10), sticky=tk.W)
+        
+        # Control buttons row
+        control_frame = ttk.Frame(watchlist_frame)
+        control_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        self.main_app.icon_button(control_frame, 'refresh', 'Refresh All Prices', 
+                                 self.refresh_watched_stocks,
+                                 style='Pastel.Ghost.TButton').pack(side=tk.LEFT, padx=(0, 10))
+        
+        self.main_app.icon_button(control_frame, 'remove', 'Remove Selected', 
+                                 self.remove_watched_stock,
+                                 style='Pastel.Danger.TButton').pack(side=tk.LEFT)
+        
+        # Stock list section
+        list_frame = ttk.LabelFrame(watchlist_frame, text="Your Stocks", padding="10")
+        list_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        list_frame.grid_rowconfigure(0, weight=1)
+        list_frame.grid_columnconfigure(0, weight=1)
+        
+        self.watched_listbox = tk.Listbox(list_frame, 
+                                         bg=self.colors['panel'], 
+                                         fg=self.colors['text'],
+                                         font=('Arial', 12),  # Larger font for better readability
+                                         activestyle='dotbox')
+        self.watched_listbox.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.watched_listbox.bind('<Double-Button-1>', self.select_stock_for_trading)
+        
+        scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.watched_listbox.yview)
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        self.watched_listbox.configure(yscrollcommand=scrollbar.set)
+        
+        # Instructions at bottom
+        tip_frame = ttk.Frame(watchlist_frame)
+        tip_frame.grid(row=3, column=0, pady=(10, 0), sticky=(tk.W, tk.E))
+        
+        tip_label = ttk.Label(tip_frame, 
+                             text="Double-click any stock to select for trading",
+                             foreground=self.colors['magenta'], font=('Arial', 9, 'italic'))
+        tip_label.pack()
     
     def create_stock_search_section(self, parent):
-        """Create compact stock search section"""
+        """Create compact stock search section - only spans Order form area"""
         search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="8")
-        search_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 8))
+        search_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 8))  # Only column 0
         
-        # Search input - single row layout
+        # Search input - single row layout, more compact
         ttk.Label(search_frame, text="Symbol:", foreground=self.colors['text']).grid(row=0, column=0, padx=(0, 5))
         
         self.symbol_var = tk.StringVar()
-        self.symbol_entry = ttk.Entry(search_frame, textvariable=self.symbol_var, width=12)
-        self.symbol_entry.grid(row=0, column=1, padx=(0, 8))
+        self.symbol_entry = ttk.Entry(search_frame, textvariable=self.symbol_var, width=10)  # Smaller width
+        self.symbol_entry.grid(row=0, column=1, padx=(0, 6))
         self.symbol_entry.bind('<Return>', lambda e: self.search_and_add_stock())
         
-        self.main_app.icon_button(search_frame, 'search', 'Add', 
-                                 self.search_and_add_stock).grid(row=0, column=2, padx=(0, 8))
+        # Smaller ADD button
+        add_btn = self.main_app.icon_button(search_frame, 'search', 'Add', 
+                                           self.search_and_add_stock)
+        add_btn.grid(row=0, column=2, padx=(0, 6), ipadx=3)  # Further reduced padding
+        add_btn.configure(width=5)  # Even smaller width
         
-        # Current stock info - minimal height
+        # Current stock info - minimal height, moved to same row
         self.stock_info_label = ttk.Label(search_frame, text="", 
                                          foreground=self.colors['text_muted'], font=('Arial', 8))
-        self.stock_info_label.grid(row=0, column=3, sticky=tk.W, padx=(10, 0))
+        self.stock_info_label.grid(row=0, column=3, sticky=tk.W, padx=(8, 0))
     
     def create_order_form(self, parent):
         """Create expanded order form with more vertical space"""
@@ -288,48 +342,6 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         # Selected stock for trading
         self.selected_trading_stock = None
     
-    def create_watched_stocks_section(self, parent):
-        """Create expanded watched stocks section with more vertical space"""
-        watched_frame = ttk.LabelFrame(parent, text="Watched Stocks", padding="15")
-        watched_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
-        watched_frame.grid_rowconfigure(1, weight=1)
-        watched_frame.grid_columnconfigure(0, weight=1)
-        
-        # Button row with better spacing
-        button_row = ttk.Frame(watched_frame)
-        button_row.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        self.main_app.icon_button(button_row, 'refresh', 'Refresh Prices', 
-                                 self.refresh_watched_stocks,
-                                 style='Pastel.Ghost.TButton').pack(side=tk.LEFT, padx=(0, 10))
-        
-        self.main_app.icon_button(button_row, 'remove', 'Remove Selected', 
-                                 self.remove_watched_stock,
-                                 style='Pastel.Danger.TButton').pack(side=tk.LEFT)
-        
-        # Watched stocks listbox - now uses all available vertical space
-        list_frame = ttk.Frame(watched_frame)
-        list_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        list_frame.grid_rowconfigure(0, weight=1)
-        list_frame.grid_columnconfigure(0, weight=1)
-        
-        self.watched_listbox = tk.Listbox(list_frame, 
-                                         bg=self.colors['panel'], 
-                                         fg=self.colors['text'],
-                                         selectbackground=self.colors['lavender'],
-                                         selectforeground=self.colors['bg'],
-                                         font=('Arial', 10))  # No fixed height - uses all space
-        self.watched_listbox.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        self.watched_listbox.bind('<Double-Button-1>', self.select_stock_for_trading)
-        
-        scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.watched_listbox.yview)
-        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
-        self.watched_listbox.configure(yscrollcommand=scrollbar.set)
-        
-        # Instructions at bottom with better styling
-        tip_label = ttk.Label(watched_frame, text="Double-click any stock to select for trading", 
-                             foreground=self.colors['text_muted'], font=('Arial', 9))
-        tip_label.grid(row=2, column=0, pady=(10, 0))
     
     def create_portfolio_tab(self):
         """Create portfolio holdings tab with kawaii styling"""
@@ -356,11 +368,13 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         
         # Portfolio table with kawaii styling
         columns = ('Symbol', 'Quantity', 'Avg Price', 'Current Price', 'Market Value', 'P&L', 'P&L %')
+        
+        # Create style for the treeview
         self.portfolio_tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=12)
         
-        # Configure columns with better styling
+        # Configure columns with kawaii styling
         for col in columns:
-            self.portfolio_tree.heading(col, text=col)
+            self.portfolio_tree.heading(col, text=col, anchor='center')
             if col in ['Quantity']:
                 self.portfolio_tree.column(col, width=90, anchor='e')
             elif col in ['Avg Price', 'Current Price', 'Market Value', 'P&L']:
@@ -370,9 +384,10 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
             else:
                 self.portfolio_tree.column(col, width=110, anchor='center')
         
-        # Apply kawaii colors (using tag configuration for color styling)
-        self.portfolio_tree.tag_configure('profit', foreground=self.colors['mint'])
-        self.portfolio_tree.tag_configure('loss', foreground=self.colors['coral'])
+        # Apply kawaii colors and styling
+        self.portfolio_tree.tag_configure('profit', foreground=self.colors['mint'], font=('Arial', 10, 'bold'))
+        self.portfolio_tree.tag_configure('loss', foreground=self.colors['coral'], font=('Arial', 10, 'bold'))
+        self.portfolio_tree.tag_configure('normal', foreground=self.colors['text'], font=('Arial', 10))
         
         self.portfolio_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
@@ -408,9 +423,9 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         hist_columns = ('Date', 'Symbol', 'Type', 'Order', 'Quantity', 'Price', 'Commission', 'Tax', 'Total')
         self.history_tree = ttk.Treeview(table_frame, columns=hist_columns, show='headings', height=12)
         
-        # Configure columns with better styling
+        # Configure columns with kawaii styling
         for col in hist_columns:
-            self.history_tree.heading(col, text=col)
+            self.history_tree.heading(col, text=col, anchor='center')
             if col == 'Date':
                 self.history_tree.column(col, width=160, anchor='center')
             elif col in ['Symbol', 'Type', 'Order']:
@@ -420,9 +435,10 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
             else:
                 self.history_tree.column(col, width=130, anchor='e')
         
-        # Apply kawaii colors (using tag configuration for color styling)
-        self.history_tree.tag_configure('buy', foreground=self.colors['mint'])
-        self.history_tree.tag_configure('sell', foreground=self.colors['coral'])
+        # Apply kawaii colors and styling
+        self.history_tree.tag_configure('buy', foreground=self.colors['mint'], font=('Arial', 10, 'bold'))
+        self.history_tree.tag_configure('sell', foreground=self.colors['coral'], font=('Arial', 10, 'bold'))
+        self.history_tree.tag_configure('normal', foreground=self.colors['text'], font=('Arial', 10))
         
         self.history_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         

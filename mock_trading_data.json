@@ -1,9 +1,29 @@
 {
   "portfolio": {
-    "cash_balance": 100000.0,
+    "cash_balance": 95841.2,
     "initial_balance": 100000.0,
-    "positions": {},
-    "transactions": []
+    "positions": {
+      "GOOGL": {
+        "symbol": "GOOGL",
+        "quantity": 20,
+        "average_price": 202.94,
+        "total_invested": 4058.8
+      }
+    },
+    "transactions": [
+      {
+        "id": "16e04ba0-9f13-48b0-972f-3110a671eb8f",
+        "timestamp": "2025-08-15T15:11:07.951540",
+        "symbol": "GOOGL",
+        "transaction_type": "buy",
+        "order_type": "market",
+        "quantity": 20,
+        "price": 202.94,
+        "commission": 100,
+        "tax": 0,
+        "total_amount": 4158.8
+      }
+    ]
   },
   "stock_prices": {
     "NKE": {
@@ -27,12 +47,12 @@
     "GOOGL": {
       "symbol": "GOOGL",
       "current_price": 202.94,
-      "last_updated": "2025-08-15T15:07:38.472139",
+      "last_updated": "2025-08-15T15:21:16.255521",
       "company_name": "Alphabet Inc."
     }
   },
   "watched_stocks": [
     "GOOGL"
   ],
-  "last_saved": "2025-08-15T15:07:41.641099"
+  "last_saved": "2025-08-15T15:21:20.650451"
 }
