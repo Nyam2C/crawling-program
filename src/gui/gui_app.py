@@ -15,6 +15,7 @@ from src.gui.components.stock_data_tab import StockDataTab
 from src.gui.components.recommendations_tab import RecommendationsTab
 from src.gui.components.analysis_tab import IndividualAnalysisTab
 from src.gui.components.settings_tab import SettingsTab
+from src.gui.components.mock_trading_tab import MockTradingTab
 from src.gui.components.theme_manager import ThemeManager
 from src.gui.components.icon_manager import IconManager
 from src.gui.components.ui_builder import UIBuilder
@@ -113,6 +114,7 @@ class StockAnalysisGUI:
         self.stock_data_tab = StockDataTab(self.notebook, self)
         self.recommendations_tab = RecommendationsTab(self.notebook, self)
         self.analysis_tab = IndividualAnalysisTab(self.notebook, self)
+        self.mock_trading_tab = MockTradingTab(self.notebook, self)
         self.settings_tab = SettingsTab(self.notebook, self)
         
         # Status bar
@@ -282,6 +284,23 @@ class StockAnalysisGUI:
         
         splash.after(3000, close_splash)  # 3 seconds
         splash.update()
+
+    def on_closing(self):
+        """Handle application closing - cleanup resources"""
+        try:
+            # Cleanup mock trading tab resources
+            if hasattr(self, 'mock_trading_tab'):
+                self.mock_trading_tab.cleanup()
+            
+            # Cleanup other resources
+            if hasattr(self, 'recommendation_engine'):
+                self.recommendation_engine.close()
+            if hasattr(self, 'stock_crawler'):
+                self.stock_crawler.close()
+        except Exception as e:
+            print(f"Error during cleanup: {e}")
+        finally:
+            self.root.destroy()
 
     def run(self):
         """Run the GUI application with retro magic"""

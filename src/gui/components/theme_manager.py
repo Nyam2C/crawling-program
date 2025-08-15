@@ -134,6 +134,23 @@ class ThemeManager:
         self.style.map('Pastel.Ghost.TButton',
             background=[('active', self.colors['hotpink']), ('pressed', self.colors['pink'])],
             relief=[('pressed','sunken')], borderwidth=[('active',3),('pressed',3)])
+
+        # Trading specific button styles
+        self.style.configure('Pastel.Success.TButton',
+            background=self.colors['mint'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6], anchor='center')
+        self.style.map('Pastel.Success.TButton',
+            background=[('active', '#A7F3E0'), ('pressed', '#86EFAC')],
+            relief=[('pressed','sunken')])
+
+        self.style.configure('Pastel.Danger.TButton',
+            background=self.colors['coral'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[10,6], anchor='center')
+        self.style.map('Pastel.Danger.TButton',
+            background=[('active', '#F87171'), ('pressed', '#EF4444')],
+            relief=[('pressed','sunken')])
         
         # Legacy button style mappings for backward compatibility
         self.style.configure('Kuromi.Primary.TButton',
