@@ -9,6 +9,8 @@ from typing import Optional
 
 from src.trading.data_manager import TradingDataManager
 from src.trading.models import OrderRequest, TransactionType, OrderType
+from src.trading.scoreboard_manager import ScoreboardManager
+from src.trading.scoreboard_models import ScoreboardResult
 from src.gui.components.dialogs import KawaiiMessageBox, KawaiiInputDialog, TradingHelpDialog
 
 
@@ -26,6 +28,10 @@ class MockTradingTab:
         # Trading data manager
         self.data_manager = TradingDataManager()
         self.data_manager.start_auto_refresh()
+        
+        # Scoreboard manager for high score tracking
+        self.scoreboard_manager = ScoreboardManager()
+        self.session_start_time = datetime.now()  # Track session start time
         
         self.setup_tab()
         self.refresh_all_data()
@@ -837,6 +843,9 @@ Tip: Start with small positions to learn market behavior!"""
             self.refresh_all_data()
             # Save data
             self.data_manager.save_data()
+            
+            # Check for bankruptcy after each trade
+            self._check_for_bankruptcy()
         else:
             self._get_kawaii_msg().show_error("Order Failed", message, 'skull')
     
@@ -963,10 +972,17 @@ Tip: Start with small positions to learn market behavior!"""
             self.history_tree.insert('', tk.END, values=values, tags=(tag,))
     
     def reset_portfolio_dialog(self):
-        """Show reset portfolio dialog"""
+        """Show reset portfolio dialog with scoreboard registration"""
         if self._get_kawaii_msg().show_question("Reset Portfolio?", 
                                         "This will delete all trading history and positions, resetting your account.\n\nAre you sure you want to continue?\n\nThis action cannot be undone!",
                                         'bow'):
+            # Get current portfolio for scoreboard
+            current_portfolio = self.data_manager.get_trading_engine().portfolio
+            
+            # Register current session in scoreboard if it has significant activity
+            if len(current_portfolio.transactions) > 0 or current_portfolio.get_total_value() != current_portfolio.initial_balance:
+                self._register_scoreboard_entry(current_portfolio, ScoreboardResult.RESET)
+            
             # Ask for initial balance
             initial_balance = self._get_kawaii_input().ask_float(
                 "Set Initial Balance",
@@ -979,11 +995,101 @@ Tip: Start with small positions to learn market behavior!"""
             
             if initial_balance:
                 self.data_manager.reset_portfolio(initial_balance)
+                self.session_start_time = datetime.now()  # Reset session timer
                 self.refresh_all_data()
                 self._get_kawaii_msg().show_success("Portfolio Reset!", 
                                            f"Your portfolio has been reset successfully!\nNew starting balance: ${initial_balance:,.2f}\n\nGood luck with your trading!",
                                            'heart')
     
+    def _register_scoreboard_entry(self, portfolio, result_type: ScoreboardResult):
+        """Register current portfolio performance in scoreboard"""
+        try:
+            # Ask for nickname
+            nickname = self._get_kawaii_input().ask_string(
+                "Enter Your Nickname",
+                f"Enter your nickname for the scoreboard:\n\nYour Performance:\n"
+                f"• Starting Balance: ${portfolio.initial_balance:,.2f}\n"
+                f"• Current Balance: ${portfolio.get_total_value():,.2f}\n"
+                f"• Return: {((portfolio.get_total_value() - portfolio.initial_balance) / portfolio.initial_balance * 100):.2f}%\n"
+                f"• Total Trades: {len(portfolio.transactions)}",
+                initial_value="Player",
+                icon_key='bow'
+            )
+            
+            if nickname and nickname.strip():
+                # Register score
+                record = self.scoreboard_manager.register_portfolio_score(
+                    nickname.strip()[:20],  # Limit nickname length
+                    portfolio,
+                    result_type,
+                    self.session_start_time
+                )
+                
+                # Show registration success
+                self._get_kawaii_msg().show_success(
+                    "Score Registered!",
+                    f"Your score has been registered in the Hall of Fame!\n\n"
+                    f"🏆 Nickname: {record.nickname}\n"
+                    f"📊 Return Rate: {record.return_rate:.2f}%\n"
+                    f"🎯 Grade: {record.grade}\n"
+                    f"📈 Rank Score: {record.rank_score:.1f}\n\n"
+                    f"Check the Scoreboard tab to see your ranking!",
+                    'heart'
+                )
+            
+        except Exception as e:
+            print(f"Error registering scoreboard entry: {e}")
+    
+    def _check_for_bankruptcy(self):
+        """Check if portfolio has gone bankrupt (< $1000)"""
+        portfolio = self.data_manager.get_trading_engine().portfolio
+        total_value = portfolio.get_total_value()
+        
+        if total_value < 1000.0 and len(portfolio.transactions) > 0:
+            # Show bankruptcy message
+            self._get_kawaii_msg().show_warning(
+                "💸 Bankruptcy Alert!",
+                f"Your portfolio value has fallen below $1,000!\n\n"
+                f"Current Value: ${total_value:.2f}\n"
+                f"Total Loss: ${portfolio.initial_balance - total_value:.2f}\n\n"
+                f"Don't give up! This is a great learning experience.\n"
+                f"Your score will be registered and you can try again!",
+                'skull'
+            )
+            
+            # Register bankruptcy score
+            self._register_scoreboard_entry(portfolio, ScoreboardResult.BANKRUPTCY)
+            
+            # Auto reset with confirmation
+            if self._get_kawaii_msg().show_question(
+                "Auto Reset Portfolio?",
+                "Would you like to reset your portfolio and start over?\n\n"
+                "This will give you a fresh start with a new balance.",
+                'bow'
+            ):
+                # Ask for new balance
+                new_balance = self._get_kawaii_input().ask_float(
+                    "New Starting Balance",
+                    "Enter your new starting balance:",
+                    initial_value=100000.0,
+                    min_value=1000.0,
+                    max_value=10000000.0,
+                    icon_key='folder'
+                )
+                
+                if new_balance:
+                    self.data_manager.reset_portfolio(new_balance)
+                    self.session_start_time = datetime.now()
+                    self.refresh_all_data()
+                    
+                    self._get_kawaii_msg().show_success(
+                        "Fresh Start!",
+                        f"Welcome back! Your portfolio has been reset.\n"
+                        f"New starting balance: ${new_balance:,.2f}\n\n"
+                        f"Use your previous experience to do even better!",
+                        'heart'
+                    )
+
     def show_help(self):
         """Show trading help dialog"""
         self._get_help_dialog().show_help()

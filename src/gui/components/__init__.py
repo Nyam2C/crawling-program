@@ -5,7 +5,7 @@ Organized into logical groups: tabs, dialogs, ui_core, and trading
 """
 
 # Import from organized subpackages
-from .tabs import StockDataTab, IndividualAnalysisTab, RecommendationsTab, SettingsTab
+from .tabs import StockDataTab, IndividualAnalysisTab, RecommendationsTab, ScoreboardTab, SettingsTab
 from .dialogs import KawaiiMessageBox, KawaiiInputDialog, TradingHelpDialog
 from .ui_core import ThemeManager, IconManager, UIBuilder
 from .trading import MockTradingTab
@@ -15,6 +15,7 @@ __all__ = [
     'StockDataTab',
     'IndividualAnalysisTab', 
     'RecommendationsTab',
+    'ScoreboardTab',
     'SettingsTab',
     
     # Dialog components
