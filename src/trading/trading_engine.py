@@ -25,7 +25,7 @@ class TradingEngine:
         self.portfolio = Portfolio()
         self.stock_prices: Dict[str, Stock] = {}
     
-    def reset_portfolio(self, initial_balance: float = 1000000.0):
+    def reset_portfolio(self, initial_balance: float = 100000.0):
         """포트폴리오 초기화"""
         self.portfolio.reset(initial_balance)
     

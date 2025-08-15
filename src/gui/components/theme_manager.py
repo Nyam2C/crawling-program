@@ -151,6 +151,43 @@ class ThemeManager:
         self.style.map('Pastel.Danger.TButton',
             background=[('active', '#F87171'), ('pressed', '#EF4444')],
             relief=[('pressed','sunken')])
+
+        # Radio button styles that look like toggle buttons
+        self.style.configure('Pastel.Primary.TRadiobutton',
+            background=self.colors['periwinkle'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[8,4], anchor='center', focuscolor='none')
+        self.style.map('Pastel.Primary.TRadiobutton',
+            background=[('active', self.colors['lavender']), ('selected', self.colors['pink']),
+                       ('active', 'selected', self.colors['hotpink'])],
+            relief=[('pressed','sunken')])
+
+        self.style.configure('Pastel.Secondary.TRadiobutton',
+            background=self.colors['rose'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[8,4], anchor='center', focuscolor='none')
+        self.style.map('Pastel.Secondary.TRadiobutton',
+            background=[('active', self.colors['hotpink']), ('selected', self.colors['magenta']),
+                       ('active', 'selected', self.colors['periwinkle'])],
+            relief=[('pressed','sunken')])
+
+        self.style.configure('Pastel.Success.TRadiobutton',
+            background=self.colors['mint'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[8,4], anchor='center', focuscolor='none')
+        self.style.map('Pastel.Success.TRadiobutton',
+            background=[('active', '#A7F3E0'), ('selected', '#86EFAC'),
+                       ('active', 'selected', '#6EE7B7')],
+            relief=[('pressed','sunken')])
+
+        self.style.configure('Pastel.Danger.TRadiobutton',
+            background=self.colors['coral'], foreground='#1B1350',
+            bordercolor=self.colors['border'], borderwidth=2, relief='ridge',
+            padding=[8,4], anchor='center', focuscolor='none')
+        self.style.map('Pastel.Danger.TRadiobutton',
+            background=[('active', '#F87171'), ('selected', '#EF4444'),
+                       ('active', 'selected', '#DC2626')],
+            relief=[('pressed','sunken')])
         
         # Legacy button style mappings for backward compatibility
         self.style.configure('Kuromi.Primary.TButton',

@@ -103,10 +103,10 @@ class Transaction:
 @dataclass
 class Portfolio:
     """포트폴리오 (전체 계좌 정보)"""
-    cash_balance: float = 1000000.0  # 현금 잔고 (기본 100만원)
+    cash_balance: float = 100000.0  # 현금 잔고 (기본 $100,000)
     positions: Dict[str, Position] = field(default_factory=dict)  # 보유 주식들
     transactions: List[Transaction] = field(default_factory=list)  # 거래 내역
-    initial_balance: float = 1000000.0  # 초기 자금 (기본 100만원)
+    initial_balance: float = 100000.0  # 초기 자금 (기본 $100,000)
     
     def get_total_invested(self) -> float:
         """총 투자 금액"""
@@ -161,7 +161,7 @@ class Portfolio:
         
         return success
     
-    def reset(self, initial_balance: float = 1000000.0):
+    def reset(self, initial_balance: float = 100000.0):
         """계좌 초기화"""
         self.cash_balance = initial_balance
         self.initial_balance = initial_balance

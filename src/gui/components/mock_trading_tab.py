@@ -50,15 +50,15 @@ class MockTradingTab:
         summary_frame.grid_columnconfigure(1, weight=1)
         
         # Summary labels
-        self.cash_label = ttk.Label(summary_frame, text="현금: ₩0", 
+        self.cash_label = ttk.Label(summary_frame, text="Cash: $0", 
                                    foreground=self.colors['text'])
         self.cash_label.grid(row=0, column=0, sticky=tk.W, padx=(0, 20))
         
-        self.total_value_label = ttk.Label(summary_frame, text="총 자산: ₩0", 
+        self.total_value_label = ttk.Label(summary_frame, text="Total Value: $0", 
                                           foreground=self.colors['text'])
         self.total_value_label.grid(row=0, column=1, sticky=tk.W, padx=(0, 20))
         
-        self.pnl_label = ttk.Label(summary_frame, text="손익: ₩0 (0.00%)", 
+        self.pnl_label = ttk.Label(summary_frame, text="P&L: $0 (0.00%)", 
                                   foreground=self.colors['text'])
         self.pnl_label.grid(row=0, column=2, sticky=tk.W, padx=(0, 20))
         
@@ -143,27 +143,40 @@ class MockTradingTab:
                                              foreground=self.colors['text_muted'])
         self.selected_stock_label.grid(row=0, column=1, sticky=tk.W, pady=(0, 5))
         
-        # Order type
+        # Order type with styled toggle buttons
         ttk.Label(order_frame, text="Order Type:", foreground=self.colors['text']).grid(row=1, column=0, sticky=tk.W, pady=(0, 5))
         self.order_type_var = tk.StringVar(value="market")
         order_type_frame = ttk.Frame(order_frame)
         order_type_frame.grid(row=1, column=1, sticky=tk.W, pady=(0, 5))
         
-        ttk.Radiobutton(order_type_frame, text="Market", variable=self.order_type_var, 
-                       value="market", command=self.on_order_type_change).pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Radiobutton(order_type_frame, text="Limit", variable=self.order_type_var, 
-                       value="limit", command=self.on_order_type_change).pack(side=tk.LEFT)
+        # Create styled radio buttons that look like toggle buttons
+        self.market_btn = ttk.Radiobutton(order_type_frame, text="Market", 
+                                         variable=self.order_type_var, value="market",
+                                         command=self.on_order_type_change,
+                                         style='Pastel.Primary.TRadiobutton')
+        self.market_btn.pack(side=tk.LEFT, padx=(0, 5))
         
-        # Transaction type
+        self.limit_btn = ttk.Radiobutton(order_type_frame, text="Limit", 
+                                        variable=self.order_type_var, value="limit",
+                                        command=self.on_order_type_change,
+                                        style='Pastel.Secondary.TRadiobutton')
+        self.limit_btn.pack(side=tk.LEFT)
+        
+        # Transaction type with styled toggle buttons
         ttk.Label(order_frame, text="Action:", foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
         self.transaction_type_var = tk.StringVar(value="buy")
         trans_type_frame = ttk.Frame(order_frame)
         trans_type_frame.grid(row=2, column=1, sticky=tk.W, pady=(0, 5))
         
-        ttk.Radiobutton(trans_type_frame, text="Buy", variable=self.transaction_type_var, 
-                       value="buy").pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Radiobutton(trans_type_frame, text="Sell", variable=self.transaction_type_var, 
-                       value="sell").pack(side=tk.LEFT)
+        self.buy_btn = ttk.Radiobutton(trans_type_frame, text="Buy", 
+                                      variable=self.transaction_type_var, value="buy",
+                                      style='Pastel.Success.TRadiobutton')
+        self.buy_btn.pack(side=tk.LEFT, padx=(0, 5))
+        
+        self.sell_btn = ttk.Radiobutton(trans_type_frame, text="Sell", 
+                                       variable=self.transaction_type_var, value="sell",
+                                       style='Pastel.Danger.TRadiobutton')
+        self.sell_btn.pack(side=tk.LEFT)
         
         # Quantity
         ttk.Label(order_frame, text="Quantity:", foreground=self.colors['text']).grid(row=3, column=0, sticky=tk.W, pady=(0, 5))
@@ -324,6 +337,13 @@ class MockTradingTab:
         price = stock_info['current_price']
         company = stock_info.get('company_name', symbol)
         
+        # Ensure price is a number for formatting
+        if isinstance(price, str):
+            try:
+                price = float(price.replace('$', '').replace(',', ''))
+            except:
+                price = 0.0
+        
         self.stock_info_label.config(text=f"{symbol} - {company}: ${price:.2f}")
         self.symbol_var.set("")
         self.refresh_watched_stocks()
@@ -399,10 +419,10 @@ class MockTradingTab:
             )
             
             if self.transaction_type_var.get() == "buy":
-                self.cost_label.config(text=f"Estimated Cost: ₩{total_cost:,.0f} (Inc. ₩{commission:,.0f} commission)")
+                self.cost_label.config(text=f"Estimated Cost: ${total_cost:,.2f} (Inc. ${commission:,.2f} commission)")
             else:  # sell
                 proceeds = net_amount - commission - tax
-                self.cost_label.config(text=f"Estimated Proceeds: ₩{proceeds:,.0f} (After fees)")
+                self.cost_label.config(text=f"Estimated Proceeds: ${proceeds:,.2f} (After fees)")
                 
         except Exception as e:
             self.cost_label.config(text=f"Estimated Cost: Error - {str(e)}")
@@ -507,8 +527,8 @@ class MockTradingTab:
         trading_engine = self.data_manager.get_trading_engine()
         summary = trading_engine.get_portfolio_summary()
         
-        self.cash_label.config(text=f"현금: ₩{summary['cash_balance']:,.0f}")
-        self.total_value_label.config(text=f"총 자산: ₩{summary['total_value']:,.0f}")
+        self.cash_label.config(text=f"Cash: ${summary['cash_balance']:,.2f}")
+        self.total_value_label.config(text=f"Total Value: ${summary['total_value']:,.2f}")
         
         pnl = summary['total_pnl']
         pnl_pct = summary['total_pnl_percentage']
@@ -516,7 +536,7 @@ class MockTradingTab:
         pnl_sign = "+" if pnl >= 0 else ""
         
         self.pnl_label.config(
-            text=f"손익: {pnl_sign}₩{pnl:,.0f} ({pnl_sign}{pnl_pct:.2f}%)",
+            text=f"P&L: {pnl_sign}${pnl:,.2f} ({pnl_sign}{pnl_pct:.2f}%)",
             foreground=pnl_color
         )
     
@@ -538,15 +558,15 @@ class MockTradingTab:
                 f"{pos['quantity']:,}",
                 f"${pos['average_price']:.2f}",
                 f"${pos['current_price']:.2f}",
-                f"₩{pos['current_value']:,.0f}",
-                f"{pnl_sign}₩{pos['pnl']:,.0f}",
+                f"${pos['current_value']:,.2f}",
+                f"{pnl_sign}${pos['pnl']:,.2f}",
                 f"{pnl_sign}{pos['pnl_percentage']:.2f}%"
             )
             
             item = self.portfolio_tree.insert('', tk.END, values=values)
             # Color coding for P&L
             if pos['pnl'] >= 0:
-                self.portfolio_tree.set(item, 'P&L', f"+₩{pos['pnl']:,.0f}")
+                self.portfolio_tree.set(item, 'P&L', f"+${pos['pnl']:,.2f}")
                 self.portfolio_tree.set(item, 'P&L %', f"+{pos['pnl_percentage']:.2f}%")
     
     def update_history_display(self):
@@ -566,9 +586,9 @@ class MockTradingTab:
                 trans.order_type.value.title(),
                 f"{trans.quantity:,}",
                 f"${trans.price:.2f}",
-                f"₩{trans.commission:,.0f}",
-                f"₩{trans.tax:,.0f}",
-                f"₩{trans.total_amount:,.0f}"
+                f"${trans.commission:.2f}",
+                f"${trans.tax:.2f}",
+                f"${trans.total_amount:.2f}"
             )
             
             self.history_tree.insert('', tk.END, values=values)
@@ -577,7 +597,7 @@ class MockTradingTab:
         """Show reset portfolio dialog"""
         result = messagebox.askyesno(
             "Reset Portfolio", 
-            "이 작업은 모든 거래 내역과 포지션을 삭제하고 계좌를 초기화합니다.\n계속하시겠습니까?",
+            "This will delete all trading history and positions, resetting your account.\nDo you want to continue?",
             icon='warning'
         )
         
@@ -585,16 +605,16 @@ class MockTradingTab:
             # Ask for initial balance
             initial_balance = simpledialog.askfloat(
                 "Initial Balance",
-                "초기 자금을 입력하세요 (원):",
-                initialvalue=1000000.0,
+                "Enter initial balance (USD):",
+                initialvalue=100000.0,
                 minvalue=1000.0,
-                maxvalue=100000000.0
+                maxvalue=10000000.0
             )
             
             if initial_balance:
                 self.data_manager.reset_portfolio(initial_balance)
                 self.refresh_all_data()
-                messagebox.showinfo("Success", f"포트폴리오가 초기화되었습니다.\n초기 자금: ₩{initial_balance:,.0f}")
+                messagebox.showinfo("Success", f"Portfolio has been reset.\nInitial balance: ${initial_balance:,.2f}")
     
     def schedule_ui_refresh(self):
         """Schedule periodic UI refresh"""

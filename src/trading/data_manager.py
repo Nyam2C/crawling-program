@@ -50,12 +50,19 @@ class TradingDataManager:
         return list(self.watched_stocks)
     
     def refresh_stock_price(self, symbol: str) -> Optional[float]:
-        """특정 주식의 가격 갱신"""
+        """Refresh stock price for specific symbol"""
         try:
             stock_data = self.yfinance_source.get_stock_data(symbol)
             if stock_data and 'current_price' in stock_data:
-                price = float(stock_data['current_price'])
-                company_name = stock_data.get('company_name', symbol)
+                # Handle both string and float formats
+                price_str = stock_data['current_price']
+                if isinstance(price_str, str):
+                    # Remove $ and convert to float
+                    price = float(price_str.replace('$', '').replace(',', ''))
+                else:
+                    price = float(price_str)
+                
+                company_name = stock_data.get('company', stock_data.get('company_name', symbol))
                 
                 self.trading_engine.update_stock_price(symbol, price, company_name)
                 return price
@@ -96,17 +103,23 @@ class TradingDataManager:
                 time.sleep(self.refresh_interval)
     
     def search_stock(self, symbol: str) -> Optional[Dict]:
-        """주식 검색 및 정보 조회"""
+        """Search stock and retrieve information"""
         try:
             stock_data = self.yfinance_source.get_stock_data(symbol)
-            if stock_data:
-                # 기본 정보만 반환
+            if stock_data and stock_data.get('valid', False):
+                # Handle price format conversion
+                price_str = stock_data.get('current_price', '0')
+                if isinstance(price_str, str):
+                    price = float(price_str.replace('$', '').replace(',', ''))
+                else:
+                    price = float(price_str)
+                
                 return {
                     'symbol': symbol.upper(),
-                    'company_name': stock_data.get('company_name', symbol),
-                    'current_price': stock_data.get('current_price', 0),
-                    'currency': stock_data.get('currency', 'USD'),
-                    'market': stock_data.get('market', 'Unknown')
+                    'company_name': stock_data.get('company', symbol),
+                    'current_price': price,
+                    'currency': 'USD',
+                    'market': 'US'
                 }
         except Exception as e:
             print(f"Error searching stock {symbol}: {e}")
@@ -250,7 +263,7 @@ class TradingDataManager:
                 except:
                     pass
     
-    def reset_portfolio(self, initial_balance: float = 1000000.0):
+    def reset_portfolio(self, initial_balance: float = 100000.0):
         """포트폴리오 초기화"""
         self.trading_engine.reset_portfolio(initial_balance)
         self.save_data()
