@@ -19,7 +19,10 @@ class StockDataTab:
         # Stock Data Frame
         self.frame = ttk.Frame(self.notebook, padding="15")
         icon = self.main_app.icon_manager.get_icon('tab_data')
-        self.notebook.add(self.frame, text='Stock Data', image=icon, compound='left')
+        if icon:
+            self.notebook.add(self.frame, text='Stock Data', image=icon, compound='left')
+        else:
+            self.notebook.add(self.frame, text='Stock Data')
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)

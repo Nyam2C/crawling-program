@@ -37,7 +37,10 @@ class MockTradingTab:
         """Create the mock trading tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
         icon = self.main_app.icon_manager.get_icon('tab_trading')
-        self.notebook.add(self.frame, text='Mock Trading', image=icon, compound='left')
+        if icon:
+            self.notebook.add(self.frame, text='Mock Trading', image=icon, compound='left')
+        else:
+            self.notebook.add(self.frame, text='Mock Trading')
         
         # Configure grid - only main content now
         self.frame.grid_rowconfigure(0, weight=1)

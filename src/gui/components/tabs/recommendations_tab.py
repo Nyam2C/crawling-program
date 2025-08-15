@@ -17,7 +17,10 @@ class RecommendationsTab:
         """Create the recommendations tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
         icon = self.main_app.icon_manager.get_icon('tab_recommend')
-        self.notebook.add(self.frame, text='Recommendations', image=icon, compound='left')
+        if icon:
+            self.notebook.add(self.frame, text='Recommendations', image=icon, compound='left')
+        else:
+            self.notebook.add(self.frame, text='Recommendations')
         
         # Configure grid
         self.frame.grid_rowconfigure(1, weight=1)

@@ -18,7 +18,10 @@ class IndividualAnalysisTab:
         """Create the individual stock analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
         icon = self.main_app.icon_manager.get_icon('tab_analysis')
-        self.notebook.add(self.frame, text='Individual Analysis', image=icon, compound='left')
+        if icon:
+            self.notebook.add(self.frame, text='Individual Analysis', image=icon, compound='left')
+        else:
+            self.notebook.add(self.frame, text='Individual Analysis')
         
         # Configure grid
         self.frame.grid_rowconfigure(2, weight=1)

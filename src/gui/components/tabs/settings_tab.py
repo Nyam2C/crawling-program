@@ -18,7 +18,10 @@ class SettingsTab:
         """Create the settings tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
         icon = self.main_app.icon_manager.get_icon('tab_settings')
-        self.notebook.add(self.frame, text='Settings', image=icon, compound='left')
+        if icon:
+            self.notebook.add(self.frame, text='Settings', image=icon, compound='left')
+        else:
+            self.notebook.add(self.frame, text='Settings')
         
         # App info
         self.create_app_info()
