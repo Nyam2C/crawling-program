@@ -72,46 +72,49 @@ class MockTradingTab:
     
     def create_summary_tab(self):
         """Create portfolio summary tab"""
-        summary_frame = ttk.Frame(self.sub_notebook, padding="20")
+        summary_frame = ttk.Frame(self.sub_notebook, padding="15")
         self.sub_notebook.add(summary_frame, text='Summary')
         
-        summary_frame.grid_rowconfigure(1, weight=1)
+        # Configure grid layout for three sections
+        summary_frame.grid_rowconfigure(0, weight=0, minsize=120)  # Portfolio Overview - compact
+        summary_frame.grid_rowconfigure(1, weight=0, minsize=100)  # Update Timer - medium
+        summary_frame.grid_rowconfigure(2, weight=1)              # Trading Reference - expandable
         summary_frame.grid_columnconfigure(0, weight=1)
         
-        # Portfolio summary section with more space
-        portfolio_frame = ttk.LabelFrame(summary_frame, text="Portfolio Overview", padding="20")
-        portfolio_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        # Portfolio summary section - more compact
+        portfolio_frame = ttk.LabelFrame(summary_frame, text="Portfolio Overview", padding="10")
+        portfolio_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         portfolio_frame.grid_columnconfigure(1, weight=1)
         
-        # Portfolio values in a larger, more readable layout
+        # Portfolio values in a compact horizontal layout
         values_grid = ttk.Frame(portfolio_frame)
-        values_grid.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 20))
-        values_grid.grid_columnconfigure(1, weight=1)
+        values_grid.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        values_grid.grid_columnconfigure((1, 3, 5), weight=1)
         
         # Cash Balance
-        ttk.Label(values_grid, text="Cash Balance:", font=('Arial', 12, 'bold'),
-                 foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=5)
-        self.cash_label = ttk.Label(values_grid, text="$0", font=('Arial', 14),
+        ttk.Label(values_grid, text="Cash:", font=('Arial', 10, 'bold'),
+                 foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, padx=(0, 5))
+        self.cash_label = ttk.Label(values_grid, text="$0", font=('Arial', 11),
                                    foreground=self.colors['mint'])
-        self.cash_label.grid(row=0, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        self.cash_label.grid(row=0, column=1, sticky=tk.W, padx=(0, 15))
         
         # Total Value
-        ttk.Label(values_grid, text="Total Portfolio Value:", font=('Arial', 12, 'bold'),
-                 foreground=self.colors['text']).grid(row=1, column=0, sticky=tk.W, pady=5)
-        self.total_value_label = ttk.Label(values_grid, text="$0", font=('Arial', 14),
+        ttk.Label(values_grid, text="Total:", font=('Arial', 10, 'bold'),
+                 foreground=self.colors['text']).grid(row=0, column=2, sticky=tk.W, padx=(0, 5))
+        self.total_value_label = ttk.Label(values_grid, text="$0", font=('Arial', 11),
                                           foreground=self.colors['text'])
-        self.total_value_label.grid(row=1, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        self.total_value_label.grid(row=0, column=3, sticky=tk.W, padx=(0, 15))
         
         # P&L
-        ttk.Label(values_grid, text="Profit & Loss:", font=('Arial', 12, 'bold'),
-                 foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=5)
-        self.pnl_label = ttk.Label(values_grid, text="$0 (0.00%)", font=('Arial', 14),
+        ttk.Label(values_grid, text="P&L:", font=('Arial', 10, 'bold'),
+                 foreground=self.colors['text']).grid(row=0, column=4, sticky=tk.W, padx=(0, 5))
+        self.pnl_label = ttk.Label(values_grid, text="$0 (0.00%)", font=('Arial', 11),
                                   foreground=self.colors['text'])
-        self.pnl_label.grid(row=2, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        self.pnl_label.grid(row=0, column=5, sticky=tk.W)
         
         # Control buttons in a separate section
-        control_frame = ttk.LabelFrame(portfolio_frame, text="Actions", padding="15")
-        control_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        control_frame = ttk.LabelFrame(portfolio_frame, text="Actions", padding="10")
+        control_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(5, 0))
         
         button_row = ttk.Frame(control_frame)
         button_row.pack(fill=tk.X)
@@ -128,19 +131,11 @@ class MockTradingTab:
                                  self.reset_portfolio_dialog,
                                  style='Pastel.Danger.TButton').pack(side=tk.LEFT)
         
-        # Quick stats section
-        stats_frame = ttk.LabelFrame(summary_frame, text="Quick Statistics", padding="15")
-        stats_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Update Timer Section
+        self.create_update_timer_section(summary_frame)
         
-        # Add some quick stats display
-        self.stats_text = tk.Text(stats_frame, height=6, width=60, 
-                                bg=self.colors['panel'], fg=self.colors['text'],
-                                font=('Arial', 10), wrap=tk.WORD)
-        self.stats_text.pack(fill=tk.BOTH, expand=True)
-        
-        # Insert initial content
-        self.update_stats_content()
-        self.stats_text.config(state=tk.DISABLED)
+        # Trading Reference Section  
+        self.create_trading_reference_section(summary_frame)
     
     def update_stats_content(self, show_update_warning=False):
         """Update stats content with optional update warning"""
@@ -158,7 +153,7 @@ class MockTradingTab:
 Tip: Use the Trading tab to place orders and manage your watchlist!"""
         
         if show_update_warning:
-            warning_content = "\n\n⚠️ Price update in 5 seconds..."
+            warning_content = "\n\n✿ Price update in 5 seconds..."
             self.stats_text.insert(tk.END, base_content + warning_content)
             # Make warning text stand out
             self.stats_text.tag_add("warning", "end-2l", "end")
@@ -167,6 +162,90 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
             self.stats_text.insert(tk.END, base_content)
         
         self.stats_text.config(state=tk.DISABLED)
+    
+    def create_update_timer_section(self, parent):
+        """Create update countdown timer section"""
+        timer_frame = ttk.LabelFrame(parent, text="Price Update Timer", padding="15")
+        timer_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        timer_frame.grid_columnconfigure(0, weight=1)
+        
+        # Timer display
+        timer_container = ttk.Frame(timer_frame)
+        timer_container.pack(expand=True)
+        
+        self.timer_label = ttk.Label(timer_container, 
+                                    text="Next update in: 20s",
+                                    font=('Arial', 14, 'bold'),
+                                    foreground=self.colors['text'])
+        self.timer_label.pack()
+        
+        # Progress info
+        self.timer_info_label = ttk.Label(timer_container,
+                                         text="Automatic price refresh every 20 seconds",
+                                         font=('Arial', 9),
+                                         foreground=self.colors['text_muted'])
+        self.timer_info_label.pack(pady=(5, 0))
+        
+        # Initialize countdown
+        self.remaining_seconds = 20
+        self.start_countdown()
+    
+    def create_trading_reference_section(self, parent):
+        """Create trading reference information section"""
+        reference_frame = ttk.LabelFrame(parent, text="Trading Reference", padding="15")
+        reference_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        reference_frame.grid_columnconfigure(0, weight=1)
+        reference_frame.grid_rowconfigure(0, weight=1)
+        
+        # Reference content
+        reference_text = tk.Text(reference_frame, height=8, width=60,
+                               bg=self.colors['panel'], fg=self.colors['text'],
+                               font=('Arial', 10), wrap=tk.WORD)
+        reference_text.pack(fill=tk.BOTH, expand=True)
+        
+        reference_content = """Mock Trading Reference Guide:
+
+• Commission Rate: 0.015% per transaction (minimum $100)
+• Tax Rate: 0.25% on sell transactions only
+• Starting Balance: $100,000 virtual cash
+• Order Types: Market (instant) & Limit (set price)
+• Transaction Types: Buy (purchase) & Sell (liquidate)
+• Real-time Data: Live market prices with 20-second updates
+• Portfolio Tracking: Automatic P&L calculation
+• Risk-free Environment: Practice trading without real money
+
+Tip: Start with small positions to learn market behavior!"""
+        
+        reference_text.insert(tk.END, reference_content)
+        reference_text.config(state=tk.DISABLED)
+    
+    def start_countdown(self):
+        """Start countdown timer for next update"""
+        def update_timer():
+            if hasattr(self, 'timer_label'):
+                self.timer_label.config(text=f"Next update in: {self.remaining_seconds}s")
+                
+                if self.remaining_seconds == 5:
+                    # Change color when 5 seconds remaining
+                    self.timer_label.config(foreground=self.colors['coral'])
+                    self.timer_info_label.config(text="❀ Price update coming soon...")
+                elif self.remaining_seconds == 0:
+                    # Reset timer
+                    self.remaining_seconds = 20
+                    self.timer_label.config(foreground=self.colors['text'])
+                    self.timer_info_label.config(text="Automatic price refresh every 20 seconds")
+                else:
+                    self.timer_label.config(foreground=self.colors['text'])
+                    self.timer_info_label.config(text="Automatic price refresh every 20 seconds")
+                
+                self.remaining_seconds -= 1
+                if self.remaining_seconds < 0:
+                    self.remaining_seconds = 19
+                
+                # Schedule next update
+                self.main_app.root.after(1000, update_timer)
+        
+        update_timer()
     
     def create_trading_tab(self):
         """Create trading interface tab with more vertical space"""
@@ -895,8 +974,8 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
             """Show 5-second warning before update"""
             try:
                 current_tab = self.notebook.tab(self.notebook.select(), "text")
-                if "Mock Trading" in current_tab:
-                    self.update_stats_content(show_update_warning=True)
+                if "Mock Trading" in current_tab and hasattr(self, 'timer_info_label'):
+                    self.timer_info_label.config(text="❀ Price update in 5 seconds...")
             except Exception as e:
                 print(f"Warning display error: {e}")
         
@@ -916,8 +995,9 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
                     # 데이터 저장
                     self.data_manager.save_data()
                     
-                    # 통계 내용을 일반 상태로 복원
-                    self.update_stats_content(show_update_warning=False)
+                    # 타이머 리셋
+                    if hasattr(self, 'remaining_seconds'):
+                        self.remaining_seconds = 20
                     
                     current_time = datetime.now().strftime('%H:%M:%S')
                     print(f"[{current_time}] Mock Trading - Price update completed")
