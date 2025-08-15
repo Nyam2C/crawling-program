@@ -11,14 +11,10 @@ import random
 
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
-from src.gui.components.stock_data_tab import StockDataTab
-from src.gui.components.recommendations_tab import RecommendationsTab
-from src.gui.components.analysis_tab import IndividualAnalysisTab
-from src.gui.components.settings_tab import SettingsTab
-from src.gui.components.mock_trading_tab import MockTradingTab
-from src.gui.components.theme_manager import ThemeManager
-from src.gui.components.icon_manager import IconManager
-from src.gui.components.ui_builder import UIBuilder
+from src.gui.components import (
+    StockDataTab, RecommendationsTab, IndividualAnalysisTab, SettingsTab,
+    MockTradingTab, ThemeManager, IconManager, UIBuilder
+)
 
 
 class StockAnalysisGUI:

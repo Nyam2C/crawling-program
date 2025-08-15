@@ -9,7 +9,7 @@ from typing import Optional
 
 from src.trading.data_manager import TradingDataManager
 from src.trading.models import OrderRequest, TransactionType, OrderType
-from src.gui.components.kawaii_dialogs import KawaiiMessageBox, KawaiiInputDialog, TradingHelpDialog
+from src.gui.components.dialogs import KawaiiMessageBox, KawaiiInputDialog, TradingHelpDialog
 
 
 class MockTradingTab:
