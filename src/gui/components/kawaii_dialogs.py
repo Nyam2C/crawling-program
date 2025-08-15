@@ -291,7 +291,7 @@ class TradingHelpDialog:
         """Show the trading help dialog"""
         # Create help window
         help_window = tk.Toplevel(self.parent)
-        help_window.title("📚 Mock Trading Help Guide")
+        help_window.title("Mock Trading Help Guide")
         help_window.configure(bg=self.colors['bg'])
         help_window.resizable(True, True)
         help_window.transient(self.parent)
@@ -349,7 +349,7 @@ class TradingHelpDialog:
     def _create_getting_started_tab(self, notebook):
         """Create getting started help tab"""
         frame = ttk.Frame(notebook, padding="15")
-        notebook.add(frame, text="🚀 Getting Started")
+        notebook.add(frame, text="Getting Started")
         
         # Create scrollable text
         text_frame = ttk.Frame(frame)
@@ -366,32 +366,32 @@ class TradingHelpDialog:
         scrollbar.config(command=text_widget.yview)
         
         content = """
-🌟 Welcome to Mock Trading! 🌟
+Welcome to Mock Trading!
 
 Mock Trading is a safe environment where you can practice trading stocks without real money!
 
-📋 STEP 1: Add Stocks to Watch
+STEP 1: Add Stocks to Watch
 • Go to the "Trading" tab
 • In the "Stock Search" section, type a stock symbol (like AAPL, GOOGL, TSLA)
 • Click "Search & Add" - the stock will be added to your watchlist
 • You'll see the current price displayed
 
-📋 STEP 2: Select a Stock to Trade
+STEP 2: Select a Stock to Trade
 • In the "Watched Stocks" list, double-click any stock
 • The stock will be selected for trading (shown in the order form)
 
-📋 STEP 3: Your Virtual Money
+STEP 3: Your Virtual Money
 • You start with $100,000 virtual cash
 • This appears in the "Portfolio Summary" at the top
 • You can reset your account anytime with "Reset Portfolio"
 
-📋 STEP 4: Understanding the Interface
+STEP 4: Understanding the Interface
 • Portfolio Summary: Shows your cash, total value, and profit/loss
 • Trading Tab: Where you buy and sell stocks
 • Portfolio Tab: Shows all your stock holdings
 • History Tab: Shows all your past transactions
 
-🎯 Ready to make your first trade? Check the "How to Trade" tab! 🎯
+Ready to make your first trade? Check the "How to Trade" tab!
 """
         
         text_widget.insert(tk.END, content)
@@ -400,7 +400,7 @@ Mock Trading is a safe environment where you can practice trading stocks without
     def _create_trading_tab(self, notebook):
         """Create trading help tab"""
         frame = ttk.Frame(notebook, padding="15")
-        notebook.add(frame, text="💰 How to Trade")
+        notebook.add(frame, text="How to Trade")
         
         text_frame = ttk.Frame(frame)
         text_frame.pack(fill=tk.BOTH, expand=True)
@@ -416,38 +416,38 @@ Mock Trading is a safe environment where you can practice trading stocks without
         scrollbar.config(command=text_widget.yview)
         
         content = """
-💸 HOW TO BUY STOCKS 💸
+HOW TO BUY STOCKS
 
-1️⃣ SELECT A STOCK:
+SELECT A STOCK:
 • Double-click a stock from your "Watched Stocks" list
 • The stock symbol will appear in the order form
 
-2️⃣ CHOOSE ORDER TYPE:
+CHOOSE ORDER TYPE:
 • Market: Buy at current price immediately
 • Limit: Set your own price (good for waiting for better deals)
 
-3️⃣ CHOOSE ACTION:
+CHOOSE ACTION:
 • Buy: Purchase shares (you need enough cash)
 • Sell: Sell shares you own (you need to own them first)
 
-4️⃣ ENTER QUANTITY:
+ENTER QUANTITY:
 • Type how many shares you want to buy/sell
 • Example: "10" means 10 shares
 
-5️⃣ SET LIMIT PRICE (if using Limit orders):
+SET LIMIT PRICE (if using Limit orders):
 • Only for Limit orders
 • Set the maximum price you're willing to pay (buy)
 • Or minimum price you're willing to accept (sell)
 
-6️⃣ CHECK ESTIMATED COST:
+CHECK ESTIMATED COST:
 • The system shows you how much it will cost
 • Includes commissions and fees
 
-7️⃣ PLACE ORDER:
+PLACE ORDER:
 • Click "Place Order" button
 • If successful, you'll see a confirmation
 
-🚨 EXAMPLE TRADE 🚨
+EXAMPLE TRADE
 
 Let's buy 5 shares of AAPL:
 1. Add AAPL to watchlist
@@ -458,7 +458,7 @@ Let's buy 5 shares of AAPL:
 6. Click "Place Order"
 7. Success! You now own 5 AAPL shares
 
-💡 The estimated cost will show before you buy!
+The estimated cost will show before you buy!
 """
         
         text_widget.insert(tk.END, content)
@@ -467,7 +467,7 @@ Let's buy 5 shares of AAPL:
     def _create_portfolio_tab(self, notebook):
         """Create portfolio management help tab"""
         frame = ttk.Frame(notebook, padding="15")
-        notebook.add(frame, text="📊 Portfolio Management")
+        notebook.add(frame, text="Portfolio Management")
         
         text_frame = ttk.Frame(frame)
         text_frame.pack(fill=tk.BOTH, expand=True)
@@ -483,14 +483,14 @@ Let's buy 5 shares of AAPL:
         scrollbar.config(command=text_widget.yview)
         
         content = """
-📈 UNDERSTANDING YOUR PORTFOLIO 📈
+UNDERSTANDING YOUR PORTFOLIO
 
-💰 PORTFOLIO SUMMARY (Top of screen):
+PORTFOLIO SUMMARY (Top of screen):
 • Cash: Money available to buy stocks
 • Total Value: Cash + value of all your stocks
 • P&L: Profit & Loss (how much you've made/lost)
 
-📊 PORTFOLIO TAB - Your Holdings:
+PORTFOLIO TAB - Your Holdings:
 • Symbol: Stock ticker (AAPL, GOOGL, etc.)
 • Quantity: How many shares you own
 • Avg Price: Average price you paid per share
@@ -499,28 +499,28 @@ Let's buy 5 shares of AAPL:
 • P&L: Profit/Loss on this specific stock
 • P&L %: Percentage profit/loss
 
-📜 HISTORY TAB - Your Transactions:
+HISTORY TAB - Your Transactions:
 • Shows every buy/sell you've made
 • Date, stock, quantity, price, fees
 • Use this to track your trading activity
 
-🔄 AUTOMATIC UPDATES:
+AUTOMATIC UPDATES:
 • Stock prices update every 5 seconds automatically
 • You can also click "Refresh" for manual updates
 • Portfolio values update in real-time
 
-💡 READING YOUR PERFORMANCE:
+READING YOUR PERFORMANCE:
 • Green numbers = Profit (good!)
 • Red numbers = Loss (learning opportunity!)
 • P&L % shows your return rate
 
-🎯 PORTFOLIO TIPS:
+PORTFOLIO TIPS:
 • Diversify: Don't put all money in one stock
 • Watch your cash: Keep some for new opportunities  
 • Monitor P&L: Learn from both wins and losses
 • Use History tab to review your decisions
 
-🔄 RESET PORTFOLIO:
+RESET PORTFOLIO:
 • Click "Reset Portfolio" to start over
 • Choose new starting amount
 • All positions and history will be cleared
@@ -532,7 +532,7 @@ Let's buy 5 shares of AAPL:
     def _create_tips_tab(self, notebook):
         """Create tips and tricks tab"""
         frame = ttk.Frame(notebook, padding="15")
-        notebook.add(frame, text="💡 Tips & Tricks")
+        notebook.add(frame, text="Tips & Tricks")
         
         text_frame = ttk.Frame(frame)
         text_frame.pack(fill=tk.BOTH, expand=True)
@@ -548,20 +548,20 @@ Let's buy 5 shares of AAPL:
         scrollbar.config(command=text_widget.yview)
         
         content = """
-🎯 TRADING TIPS & TRICKS 🎯
+TRADING TIPS & TRICKS
 
-💭 BEGINNER STRATEGIES:
+BEGINNER STRATEGIES:
 • Start small: Buy just a few shares to learn
 • Paper trade first: Practice before using real money
 • Keep learning: Watch how your stocks perform
 • Don't panic: Stock prices go up and down
 
-🧠 UNDERSTANDING ORDERS:
+UNDERSTANDING ORDERS:
 • Market Orders: Instant but price may vary slightly
 • Limit Orders: Exact price but may not execute immediately
 • Use Limit orders when you want control over price
 
-📊 POPULAR STOCKS TO PRACTICE WITH:
+POPULAR STOCKS TO PRACTICE WITH:
 • AAPL (Apple) - Stable tech company
 • GOOGL (Google) - Search engine giant  
 • TSLA (Tesla) - Electric vehicle leader
@@ -569,37 +569,37 @@ Let's buy 5 shares of AAPL:
 • AMZN (Amazon) - E-commerce leader
 • NVDA (NVIDIA) - AI/Graphics chips
 
-💰 MONEY MANAGEMENT:
+MONEY MANAGEMENT:
 • Don't invest all your cash at once
 • Keep 20-30% in cash for opportunities
 • Set stop-losses: Sell if stock drops too much
 • Take profits: Don't be greedy
 
-🎮 PRACTICE SCENARIOS:
+PRACTICE SCENARIOS:
 1. Buy 10 AAPL shares, watch for a week
 2. Try a limit order below current price
 3. Practice selling when you're up 5%
 4. Experience buying the dip (when stock falls)
 
-⚠️ COMMON MISTAKES TO AVOID:
+COMMON MISTAKES TO AVOID:
 • Buying without research
 • Putting all money in one stock
 • Panic selling during small drops
 • FOMO (Fear of Missing Out) buying
 • Not setting stop-losses
 
-🔍 KEYBOARD SHORTCUTS:
+KEYBOARD SHORTCUTS:
 • Double-click stocks to select for trading
 • Enter key submits forms
 • Tab to move between fields
 
-🎨 INTERFACE TIPS:
+INTERFACE TIPS:
 • Colors: Green = profit, Red = loss
 • Refresh button updates all prices
 • Portfolio summary shows total performance
 • History tab is great for learning from trades
 
-Remember: This is practice! Make mistakes, learn, and have fun! (｡◕‿◕｡)
+Remember: This is practice! Make mistakes, learn, and have fun!
 """
         
         text_widget.insert(tk.END, content)

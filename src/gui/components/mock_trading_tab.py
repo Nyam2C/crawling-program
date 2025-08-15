@@ -39,61 +39,27 @@ class MockTradingTab:
         icon = self.main_app.icon_manager.get_icon('tab_trading')
         self.notebook.add(self.frame, text='Mock Trading', image=icon, compound='left')
         
-        # Configure grid
-        self.frame.grid_rowconfigure(1, weight=1)
+        # Configure grid - only main content now
+        self.frame.grid_rowconfigure(0, weight=1)
         self.frame.grid_columnconfigure(0, weight=1)
         
-        # Portfolio summary at top
-        self.create_portfolio_summary()
-        
-        # Main content area with notebook
+        # Main content area with notebook (Portfolio Summary moved to separate tab)
         self.create_main_content()
     
-    def create_portfolio_summary(self):
-        """Create portfolio summary section"""
-        summary_frame = ttk.LabelFrame(self.frame, text="Portfolio Summary", padding="15")
-        summary_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
-        summary_frame.grid_columnconfigure(1, weight=1)
-        
-        # Summary labels
-        self.cash_label = ttk.Label(summary_frame, text="Cash: $0", 
-                                   foreground=self.colors['text'])
-        self.cash_label.grid(row=0, column=0, sticky=tk.W, padx=(0, 20))
-        
-        self.total_value_label = ttk.Label(summary_frame, text="Total Value: $0", 
-                                          foreground=self.colors['text'])
-        self.total_value_label.grid(row=0, column=1, sticky=tk.W, padx=(0, 20))
-        
-        self.pnl_label = ttk.Label(summary_frame, text="P&L: $0 (0.00%)", 
-                                  foreground=self.colors['text'])
-        self.pnl_label.grid(row=0, column=2, sticky=tk.W, padx=(0, 20))
-        
-        # Control buttons
-        button_frame = ttk.Frame(summary_frame)
-        button_frame.grid(row=0, column=3, sticky=tk.E)
-        
-        self.main_app.icon_button(button_frame, 'glasses', 'Help', 
-                                 self.show_help,
-                                 style='Pastel.Primary.TButton').pack(side=tk.LEFT, padx=(0, 5))
-        
-        self.main_app.icon_button(button_frame, 'refresh', 'Refresh', 
-                                 self.refresh_all_data, 
-                                 style='Pastel.Ghost.TButton').pack(side=tk.LEFT, padx=(0, 5))
-        
-        self.main_app.icon_button(button_frame, 'reset', 'Reset Portfolio', 
-                                 self.reset_portfolio_dialog,
-                                 style='Pastel.Danger.TButton').pack(side=tk.LEFT)
     
     def create_main_content(self):
         """Create main content with tabbed interface"""
         content_frame = ttk.Frame(self.frame)
-        content_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        content_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         content_frame.grid_rowconfigure(0, weight=1)
         content_frame.grid_columnconfigure(0, weight=1)
         
         # Sub-notebook for trading sections
         self.sub_notebook = ttk.Notebook(content_frame)
         self.sub_notebook.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Summary tab (moved from top)
+        self.create_summary_tab()
         
         # Trading tab
         self.create_trading_tab()
@@ -104,21 +70,105 @@ class MockTradingTab:
         # History tab
         self.create_history_tab()
     
+    def create_summary_tab(self):
+        """Create portfolio summary tab"""
+        summary_frame = ttk.Frame(self.sub_notebook, padding="20")
+        self.sub_notebook.add(summary_frame, text='Summary')
+        
+        summary_frame.grid_rowconfigure(1, weight=1)
+        summary_frame.grid_columnconfigure(0, weight=1)
+        
+        # Portfolio summary section with more space
+        portfolio_frame = ttk.LabelFrame(summary_frame, text="Portfolio Overview", padding="20")
+        portfolio_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        portfolio_frame.grid_columnconfigure(1, weight=1)
+        
+        # Portfolio values in a larger, more readable layout
+        values_grid = ttk.Frame(portfolio_frame)
+        values_grid.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 20))
+        values_grid.grid_columnconfigure(1, weight=1)
+        
+        # Cash Balance
+        ttk.Label(values_grid, text="Cash Balance:", font=('Arial', 12, 'bold'),
+                 foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.cash_label = ttk.Label(values_grid, text="$0", font=('Arial', 14),
+                                   foreground=self.colors['mint'])
+        self.cash_label.grid(row=0, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        
+        # Total Value
+        ttk.Label(values_grid, text="Total Portfolio Value:", font=('Arial', 12, 'bold'),
+                 foreground=self.colors['text']).grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.total_value_label = ttk.Label(values_grid, text="$0", font=('Arial', 14),
+                                          foreground=self.colors['text'])
+        self.total_value_label.grid(row=1, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        
+        # P&L
+        ttk.Label(values_grid, text="Profit & Loss:", font=('Arial', 12, 'bold'),
+                 foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=5)
+        self.pnl_label = ttk.Label(values_grid, text="$0 (0.00%)", font=('Arial', 14),
+                                  foreground=self.colors['text'])
+        self.pnl_label.grid(row=2, column=1, sticky=tk.W, padx=(20, 0), pady=5)
+        
+        # Control buttons in a separate section
+        control_frame = ttk.LabelFrame(portfolio_frame, text="Actions", padding="15")
+        control_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        button_row = ttk.Frame(control_frame)
+        button_row.pack(fill=tk.X)
+        
+        self.main_app.icon_button(button_row, 'glasses', 'Help Guide', 
+                                 self.show_help,
+                                 style='Pastel.Primary.TButton').pack(side=tk.LEFT, padx=(0, 10))
+        
+        self.main_app.icon_button(button_row, 'refresh', 'Refresh All Data', 
+                                 self.refresh_all_data, 
+                                 style='Pastel.Ghost.TButton').pack(side=tk.LEFT, padx=(0, 10))
+        
+        self.main_app.icon_button(button_row, 'reset', 'Reset Portfolio', 
+                                 self.reset_portfolio_dialog,
+                                 style='Pastel.Danger.TButton').pack(side=tk.LEFT)
+        
+        # Quick stats section
+        stats_frame = ttk.LabelFrame(summary_frame, text="Quick Statistics", padding="15")
+        stats_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Add some quick stats display
+        stats_text = tk.Text(stats_frame, height=6, width=60, 
+                           bg=self.colors['panel'], fg=self.colors['text'],
+                           font=('Arial', 10), wrap=tk.WORD)
+        stats_text.pack(fill=tk.BOTH, expand=True)
+        
+        # Insert some sample content
+        stats_content = """Portfolio Performance Summary:
+
+• Trading sessions: View your complete trading history
+• Active positions: Check your current stock holdings  
+• Real-time updates: Prices refresh automatically every 5 seconds
+• Commission rate: 0.015% per transaction (minimum $100)
+• Tax rate: 0.25% on sell transactions
+
+Tip: Use the Trading tab to place orders and manage your watchlist!"""
+        
+        stats_text.insert(tk.END, stats_content)
+        stats_text.config(state=tk.DISABLED)
+    
     def create_trading_tab(self):
-        """Create trading interface tab"""
-        trading_frame = ttk.Frame(self.sub_notebook, padding="15")
+        """Create trading interface tab with more vertical space"""
+        trading_frame = ttk.Frame(self.sub_notebook, padding="10")
         self.sub_notebook.add(trading_frame, text='Trading')
         
+        # Better grid configuration for more space
         trading_frame.grid_rowconfigure(1, weight=1)
-        trading_frame.grid_columnconfigure(1, weight=1)
+        trading_frame.grid_columnconfigure(0, weight=2)  # Order form gets more space
+        trading_frame.grid_columnconfigure(1, weight=3)  # Watched stocks gets even more space
         
-        # Stock search and selection
+        # Stock search and selection - make it more compact
         self.create_stock_search_section(trading_frame)
         
-        # Order form
+        # Order form - now has more vertical space
         self.create_order_form(trading_frame)
         
-        # Watched stocks list
+        # Watched stocks list - now has more vertical space
         self.create_watched_stocks_section(trading_frame)
     
     def create_stock_search_section(self, parent):
@@ -137,39 +187,38 @@ class MockTradingTab:
         self.main_app.icon_button(search_frame, 'search', 'Search & Add', 
                                  self.search_and_add_stock).grid(row=0, column=2, padx=(0, 10))
         
-        # Current stock info
-        self.stock_info_label = ttk.Label(search_frame, text="Tip: Try searching AAPL, GOOGL, TSLA, or MSFT!", 
+        # Current stock info (removed tip text to save space)
+        self.stock_info_label = ttk.Label(search_frame, text="", 
                                          foreground=self.colors['text_muted'])
-        self.stock_info_label.grid(row=1, column=0, columnspan=3, pady=(10, 0))
+        self.stock_info_label.grid(row=1, column=0, columnspan=3, pady=(5, 0))
     
     def create_order_form(self, parent):
-        """Create order form"""
+        """Create expanded order form with more vertical space"""
         order_frame = ttk.LabelFrame(parent, text="Place Order", padding="15")
-        order_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 15))
+        order_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
         
-        # Configure order frame to have fixed layout
+        # Configure order frame with compact spacing
         order_frame.grid_columnconfigure(1, weight=1)
-        for i in range(7):  # Set minimum row heights
-            order_frame.grid_rowconfigure(i, minsize=35)
+        for i in range(8):  # Smaller row heights to save space
+            order_frame.grid_rowconfigure(i, minsize=30)
         
         # Selected stock
-        ttk.Label(order_frame, text="Stock:", foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
-        self.selected_stock_label = ttk.Label(order_frame, text="Double-click a stock from watchlist", 
+        ttk.Label(order_frame, text="Stock:", foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.selected_stock_label = ttk.Label(order_frame, text="Double-click from watchlist", 
                                              foreground=self.colors['text_muted'])
-        self.selected_stock_label.grid(row=0, column=1, sticky=tk.W, pady=(0, 5))
+        self.selected_stock_label.grid(row=0, column=1, sticky=tk.W, pady=2)
         
         # Order type with styled toggle buttons
-        ttk.Label(order_frame, text="Order Type:", foreground=self.colors['text']).grid(row=1, column=0, sticky=tk.W, pady=(0, 5))
+        ttk.Label(order_frame, text="Order Type:", foreground=self.colors['text']).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.order_type_var = tk.StringVar(value="market")
         order_type_frame = ttk.Frame(order_frame)
-        order_type_frame.grid(row=1, column=1, sticky=tk.W, pady=(0, 5))
+        order_type_frame.grid(row=1, column=1, sticky=tk.W, pady=2)
         
-        # Create styled radio buttons that look like toggle buttons
         self.market_btn = ttk.Radiobutton(order_type_frame, text="Market", 
                                          variable=self.order_type_var, value="market",
                                          command=self.on_order_type_change,
                                          style='Pastel.Primary.TRadiobutton')
-        self.market_btn.pack(side=tk.LEFT, padx=(0, 5))
+        self.market_btn.pack(side=tk.LEFT, padx=(0, 10))
         
         self.limit_btn = ttk.Radiobutton(order_type_frame, text="Limit", 
                                         variable=self.order_type_var, value="limit",
@@ -178,50 +227,59 @@ class MockTradingTab:
         self.limit_btn.pack(side=tk.LEFT)
         
         # Transaction type with styled toggle buttons
-        ttk.Label(order_frame, text="Action:", foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
+        ttk.Label(order_frame, text="Action:", foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=2)
         self.transaction_type_var = tk.StringVar(value="buy")
         trans_type_frame = ttk.Frame(order_frame)
-        trans_type_frame.grid(row=2, column=1, sticky=tk.W, pady=(0, 5))
+        trans_type_frame.grid(row=2, column=1, sticky=tk.W, pady=2)
         
         self.buy_btn = ttk.Radiobutton(trans_type_frame, text="Buy", 
                                       variable=self.transaction_type_var, value="buy",
                                       style='Pastel.Success.TRadiobutton')
-        self.buy_btn.pack(side=tk.LEFT, padx=(0, 5))
+        self.buy_btn.pack(side=tk.LEFT, padx=(0, 10))
         
         self.sell_btn = ttk.Radiobutton(trans_type_frame, text="Sell", 
                                        variable=self.transaction_type_var, value="sell",
                                        style='Pastel.Danger.TRadiobutton')
         self.sell_btn.pack(side=tk.LEFT)
         
-        # Quantity
-        ttk.Label(order_frame, text="Quantity:", foreground=self.colors['text']).grid(row=3, column=0, sticky=tk.W, pady=(0, 5))
+        # Quantity - fixed width container
+        ttk.Label(order_frame, text="Quantity:", foreground=self.colors['text']).grid(row=3, column=0, sticky=tk.W, pady=2)
+        qty_container = ttk.Frame(order_frame)
+        qty_container.grid(row=3, column=1, sticky=tk.W, pady=2)
+        qty_container.grid_columnconfigure(0, minsize=150)  # Wider for better visibility
+        
         self.quantity_var = tk.StringVar()
-        self.quantity_entry = ttk.Entry(order_frame, textvariable=self.quantity_var, width=15)
-        self.quantity_entry.grid(row=3, column=1, sticky=tk.W, pady=(0, 5))
+        self.quantity_entry = ttk.Entry(qty_container, textvariable=self.quantity_var, width=15)
+        self.quantity_entry.grid(row=0, column=0, sticky=tk.W)
         
-        # Limit price (only for limit orders)
-        ttk.Label(order_frame, text="Limit Price:", foreground=self.colors['text']).grid(row=4, column=0, sticky=tk.W, pady=(0, 5))
+        # Limit price - fixed width container
+        ttk.Label(order_frame, text="Limit Price:", foreground=self.colors['text']).grid(row=4, column=0, sticky=tk.W, pady=2)
+        price_container = ttk.Frame(order_frame)
+        price_container.grid(row=4, column=1, sticky=tk.W, pady=2)
+        price_container.grid_columnconfigure(0, minsize=150)  # Wider for better visibility
+        
         self.limit_price_var = tk.StringVar()
-        self.limit_price_entry = ttk.Entry(order_frame, textvariable=self.limit_price_var, width=15, state='disabled')
-        self.limit_price_entry.grid(row=4, column=1, sticky=tk.W, pady=(0, 5))
+        self.limit_price_entry = ttk.Entry(price_container, textvariable=self.limit_price_var, width=15, state='disabled')
+        self.limit_price_entry.grid(row=0, column=0, sticky=tk.W)
         
-        # Estimated cost - fixed height to prevent layout changes
-        cost_frame = ttk.Frame(order_frame)
-        cost_frame.grid(row=5, column=0, columnspan=2, pady=(10, 0), sticky=(tk.W, tk.E))
-        cost_frame.grid_rowconfigure(0, minsize=40)  # Fixed minimum height
+        # Estimated cost - compact container
+        cost_container = ttk.Frame(order_frame)
+        cost_container.grid(row=5, column=0, columnspan=2, pady=(5, 5), sticky=(tk.W, tk.E))
+        cost_container.grid_rowconfigure(0, minsize=25)  # Smaller height
         
-        self.cost_label = ttk.Label(cost_frame, text="Estimated Cost: -", 
-                                   foreground=self.colors['text_accent'])
+        self.cost_label = ttk.Label(cost_container, text="Estimated Cost: -", 
+                                   foreground=self.colors['text_accent'], font=('Arial', 9))
         self.cost_label.grid(row=0, column=0, sticky=tk.W)
         
-        # Place order button - fixed position
-        button_frame = ttk.Frame(order_frame)
-        button_frame.grid(row=6, column=0, columnspan=2, pady=(15, 0), sticky=(tk.W, tk.E))
+        # Place order button - compact but visible
+        button_container = ttk.Frame(order_frame)
+        button_container.grid(row=6, column=0, columnspan=2, pady=(5, 0), sticky=(tk.W, tk.E))
+        button_container.grid_rowconfigure(0, minsize=35)  # Reasonable button height
         
-        self.place_order_button = self.main_app.icon_button(button_frame, 'trade', 'Place Order', 
+        self.place_order_button = self.main_app.icon_button(button_container, 'trade', 'Place Order', 
                                                           self.place_order,
                                                           style='Pastel.Success.TButton')
-        self.place_order_button.pack(expand=True)
+        self.place_order_button.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
         # Bind events for cost calculation
         self.quantity_var.trace('w', self.update_estimated_cost)
@@ -231,18 +289,25 @@ class MockTradingTab:
         self.selected_trading_stock = None
     
     def create_watched_stocks_section(self, parent):
-        """Create watched stocks section"""
+        """Create expanded watched stocks section with more vertical space"""
         watched_frame = ttk.LabelFrame(parent, text="Watched Stocks", padding="15")
         watched_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
         watched_frame.grid_rowconfigure(1, weight=1)
         watched_frame.grid_columnconfigure(0, weight=1)
         
-        # Refresh button
-        self.main_app.icon_button(watched_frame, 'refresh', 'Refresh Prices', 
-                                 self.refresh_watched_stocks,
-                                 style='Pastel.Ghost.TButton').grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
+        # Button row with better spacing
+        button_row = ttk.Frame(watched_frame)
+        button_row.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        # Watched stocks listbox
+        self.main_app.icon_button(button_row, 'refresh', 'Refresh Prices', 
+                                 self.refresh_watched_stocks,
+                                 style='Pastel.Ghost.TButton').pack(side=tk.LEFT, padx=(0, 10))
+        
+        self.main_app.icon_button(button_row, 'remove', 'Remove Selected', 
+                                 self.remove_watched_stock,
+                                 style='Pastel.Danger.TButton').pack(side=tk.LEFT)
+        
+        # Watched stocks listbox - now uses all available vertical space
         list_frame = ttk.Frame(watched_frame)
         list_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         list_frame.grid_rowconfigure(0, weight=1)
@@ -252,7 +317,8 @@ class MockTradingTab:
                                          bg=self.colors['panel'], 
                                          fg=self.colors['text'],
                                          selectbackground=self.colors['lavender'],
-                                         selectforeground=self.colors['bg'])
+                                         selectforeground=self.colors['bg'],
+                                         font=('Arial', 10))  # No fixed height - uses all space
         self.watched_listbox.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.watched_listbox.bind('<Double-Button-1>', self.select_stock_for_trading)
         
@@ -260,10 +326,10 @@ class MockTradingTab:
         scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         self.watched_listbox.configure(yscrollcommand=scrollbar.set)
         
-        # Remove stock button
-        self.main_app.icon_button(watched_frame, 'remove', 'Remove Stock', 
-                                 self.remove_watched_stock,
-                                 style='Pastel.Danger.TButton').grid(row=2, column=0, pady=(10, 0))
+        # Instructions at bottom with better styling
+        tip_label = ttk.Label(watched_frame, text="Double-click any stock to select for trading", 
+                             foreground=self.colors['text_muted'], font=('Arial', 9))
+        tip_label.grid(row=2, column=0, pady=(10, 0))
     
     def create_portfolio_tab(self):
         """Create portfolio holdings tab"""
@@ -402,7 +468,7 @@ class MockTradingTab:
         symbol = stock_text.split(' - ')[0]
         
         self.selected_trading_stock = symbol
-        self.selected_stock_label.config(text=f"{symbol} (Ready to trade!)", 
+        self.selected_stock_label.config(text=f"{symbol}", 
                                         foreground=self.colors['mint'])
         self.update_estimated_cost()
     
@@ -579,12 +645,13 @@ class MockTradingTab:
         self.update_watched_stocks_display()
     
     def update_portfolio_summary(self):
-        """Update portfolio summary labels"""
+        """Update portfolio summary labels in Summary tab"""
         trading_engine = self.data_manager.get_trading_engine()
         summary = trading_engine.get_portfolio_summary()
         
-        self.cash_label.config(text=f"Cash: ${summary['cash_balance']:,.2f}")
-        self.total_value_label.config(text=f"Total Value: ${summary['total_value']:,.2f}")
+        # Update the labels in the Summary tab (new format without prefixes)
+        self.cash_label.config(text=f"${summary['cash_balance']:,.2f}")
+        self.total_value_label.config(text=f"${summary['total_value']:,.2f}")
         
         pnl = summary['total_pnl']
         pnl_pct = summary['total_pnl_percentage']
@@ -592,7 +659,7 @@ class MockTradingTab:
         pnl_sign = "+" if pnl >= 0 else ""
         
         self.pnl_label.config(
-            text=f"P&L: {pnl_sign}${pnl:,.2f} ({pnl_sign}{pnl_pct:.2f}%)",
+            text=f"{pnl_sign}${pnl:,.2f} ({pnl_sign}{pnl_pct:.2f}%)",
             foreground=pnl_color
         )
     

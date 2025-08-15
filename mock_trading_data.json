@@ -15,7 +15,7 @@
     "PLTR": {
       "symbol": "PLTR",
       "current_price": 181.02,
-      "last_updated": "2025-08-15T13:58:14.336364",
+      "last_updated": "2025-08-15T14:07:36.389988",
       "company_name": "Palantir Technologies Inc."
     },
     "NVDA": {
@@ -23,10 +23,16 @@
       "current_price": 182.02,
       "last_updated": "2025-08-15T13:42:11.536493",
       "company_name": "NVIDIA Corporation"
+    },
+    "GOOGL": {
+      "symbol": "GOOGL",
+      "current_price": 202.94,
+      "last_updated": "2025-08-15T14:21:01.784535",
+      "company_name": "Alphabet Inc."
     }
   },
   "watched_stocks": [
-    "PLTR"
+    "GOOGL"
   ],
-  "last_saved": "2025-08-15T13:58:15.800662"
+  "last_saved": "2025-08-15T14:21:06.791389"
 }
