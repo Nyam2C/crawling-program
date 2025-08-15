@@ -172,25 +172,25 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         self.create_watched_stocks_section(trading_frame)
     
     def create_stock_search_section(self, parent):
-        """Create stock search section"""
-        search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="15")
-        search_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
+        """Create compact stock search section"""
+        search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="8")
+        search_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 8))
         
-        # Search input
+        # Search input - single row layout
         ttk.Label(search_frame, text="Symbol:", foreground=self.colors['text']).grid(row=0, column=0, padx=(0, 5))
         
         self.symbol_var = tk.StringVar()
-        self.symbol_entry = ttk.Entry(search_frame, textvariable=self.symbol_var, width=15)
-        self.symbol_entry.grid(row=0, column=1, padx=(0, 10))
+        self.symbol_entry = ttk.Entry(search_frame, textvariable=self.symbol_var, width=12)
+        self.symbol_entry.grid(row=0, column=1, padx=(0, 8))
         self.symbol_entry.bind('<Return>', lambda e: self.search_and_add_stock())
         
-        self.main_app.icon_button(search_frame, 'search', 'Search & Add', 
-                                 self.search_and_add_stock).grid(row=0, column=2, padx=(0, 10))
+        self.main_app.icon_button(search_frame, 'search', 'Add', 
+                                 self.search_and_add_stock).grid(row=0, column=2, padx=(0, 8))
         
-        # Current stock info (removed tip text to save space)
+        # Current stock info - minimal height
         self.stock_info_label = ttk.Label(search_frame, text="", 
-                                         foreground=self.colors['text_muted'])
-        self.stock_info_label.grid(row=1, column=0, columnspan=3, pady=(5, 0))
+                                         foreground=self.colors['text_muted'], font=('Arial', 8))
+        self.stock_info_label.grid(row=0, column=3, sticky=tk.W, padx=(10, 0))
     
     def create_order_form(self, parent):
         """Create expanded order form with more vertical space"""
@@ -332,64 +332,102 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         tip_label.grid(row=2, column=0, pady=(10, 0))
     
     def create_portfolio_tab(self):
-        """Create portfolio holdings tab"""
-        portfolio_frame = ttk.Frame(self.sub_notebook, padding="15")
+        """Create portfolio holdings tab with kawaii styling"""
+        portfolio_frame = ttk.Frame(self.sub_notebook, padding="20")
         self.sub_notebook.add(portfolio_frame, text='Portfolio')
         
-        portfolio_frame.grid_rowconfigure(0, weight=1)
+        portfolio_frame.grid_rowconfigure(1, weight=1)
         portfolio_frame.grid_columnconfigure(0, weight=1)
         
-        # Portfolio table
-        columns = ('Symbol', 'Quantity', 'Avg Price', 'Current Price', 'Market Value', 'P&L', 'P&L %')
-        self.portfolio_tree = ttk.Treeview(portfolio_frame, columns=columns, show='headings', height=15)
+        # Header section
+        header_frame = ttk.LabelFrame(portfolio_frame, text="Your Stock Holdings", padding="10")
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        # Configure columns
+        info_label = ttk.Label(header_frame, 
+                              text="Track your portfolio performance and current positions",
+                              foreground=self.colors['text_muted'], font=('Arial', 9))
+        info_label.pack()
+        
+        # Table container with styling
+        table_frame = ttk.LabelFrame(portfolio_frame, text="Portfolio Details", padding="10")
+        table_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        table_frame.grid_rowconfigure(0, weight=1)
+        table_frame.grid_columnconfigure(0, weight=1)
+        
+        # Portfolio table with kawaii styling
+        columns = ('Symbol', 'Quantity', 'Avg Price', 'Current Price', 'Market Value', 'P&L', 'P&L %')
+        self.portfolio_tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=12)
+        
+        # Configure columns with better styling
         for col in columns:
             self.portfolio_tree.heading(col, text=col)
             if col in ['Quantity']:
-                self.portfolio_tree.column(col, width=80, anchor='e')
+                self.portfolio_tree.column(col, width=90, anchor='e')
             elif col in ['Avg Price', 'Current Price', 'Market Value', 'P&L']:
-                self.portfolio_tree.column(col, width=120, anchor='e')
+                self.portfolio_tree.column(col, width=130, anchor='e')
             elif col == 'P&L %':
-                self.portfolio_tree.column(col, width=100, anchor='e')
+                self.portfolio_tree.column(col, width=110, anchor='e')
             else:
-                self.portfolio_tree.column(col, width=100, anchor='center')
+                self.portfolio_tree.column(col, width=110, anchor='center')
+        
+        # Apply kawaii colors (using tag configuration for color styling)
+        self.portfolio_tree.tag_configure('profit', foreground=self.colors['mint'])
+        self.portfolio_tree.tag_configure('loss', foreground=self.colors['coral'])
         
         self.portfolio_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Portfolio scrollbar
-        port_scrollbar = ttk.Scrollbar(portfolio_frame, orient=tk.VERTICAL, command=self.portfolio_tree.yview)
+        port_scrollbar = ttk.Scrollbar(table_frame, orient=tk.VERTICAL, command=self.portfolio_tree.yview)
         port_scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         self.portfolio_tree.configure(yscrollcommand=port_scrollbar.set)
     
     def create_history_tab(self):
-        """Create transaction history tab"""
-        history_frame = ttk.Frame(self.sub_notebook, padding="15")
+        """Create transaction history tab with kawaii styling"""
+        history_frame = ttk.Frame(self.sub_notebook, padding="20")
         self.sub_notebook.add(history_frame, text='History')
         
-        history_frame.grid_rowconfigure(0, weight=1)
+        history_frame.grid_rowconfigure(1, weight=1)
         history_frame.grid_columnconfigure(0, weight=1)
         
-        # History table
-        hist_columns = ('Date', 'Symbol', 'Type', 'Order', 'Quantity', 'Price', 'Commission', 'Tax', 'Total')
-        self.history_tree = ttk.Treeview(history_frame, columns=hist_columns, show='headings', height=15)
+        # Header section
+        header_frame = ttk.LabelFrame(history_frame, text="Transaction History", padding="10")
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        # Configure columns
+        info_label = ttk.Label(header_frame, 
+                              text="Complete record of all your buy and sell transactions",
+                              foreground=self.colors['text_muted'], font=('Arial', 9))
+        info_label.pack()
+        
+        # Table container with styling
+        table_frame = ttk.LabelFrame(history_frame, text="Transaction Details", padding="10")
+        table_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        table_frame.grid_rowconfigure(0, weight=1)
+        table_frame.grid_columnconfigure(0, weight=1)
+        
+        # History table with kawaii styling
+        hist_columns = ('Date', 'Symbol', 'Type', 'Order', 'Quantity', 'Price', 'Commission', 'Tax', 'Total')
+        self.history_tree = ttk.Treeview(table_frame, columns=hist_columns, show='headings', height=12)
+        
+        # Configure columns with better styling
         for col in hist_columns:
             self.history_tree.heading(col, text=col)
             if col == 'Date':
-                self.history_tree.column(col, width=150, anchor='center')
+                self.history_tree.column(col, width=160, anchor='center')
             elif col in ['Symbol', 'Type', 'Order']:
-                self.history_tree.column(col, width=80, anchor='center')
+                self.history_tree.column(col, width=90, anchor='center')
             elif col == 'Quantity':
-                self.history_tree.column(col, width=80, anchor='e')
+                self.history_tree.column(col, width=90, anchor='e')
             else:
-                self.history_tree.column(col, width=120, anchor='e')
+                self.history_tree.column(col, width=130, anchor='e')
+        
+        # Apply kawaii colors (using tag configuration for color styling)
+        self.history_tree.tag_configure('buy', foreground=self.colors['mint'])
+        self.history_tree.tag_configure('sell', foreground=self.colors['coral'])
         
         self.history_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # History scrollbar
-        hist_scrollbar = ttk.Scrollbar(history_frame, orient=tk.VERTICAL, command=self.history_tree.yview)
+        hist_scrollbar = ttk.Scrollbar(table_frame, orient=tk.VERTICAL, command=self.history_tree.yview)
         hist_scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         self.history_tree.configure(yscrollcommand=hist_scrollbar.set)
     
@@ -468,8 +506,35 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         symbol = stock_text.split(' - ')[0]
         
         self.selected_trading_stock = symbol
-        self.selected_stock_label.config(text=f"{symbol}", 
-                                        foreground=self.colors['mint'])
+        
+        # Calculate and display available quantity for purchase
+        trading_engine = self.data_manager.get_trading_engine()
+        current_price = trading_engine.get_stock_price(symbol)
+        cash_balance = trading_engine.portfolio.cash_balance
+        
+        if current_price and current_price > 0:
+            # Calculate max shares we can buy (including commission)
+            commission_rate = 0.00015
+            min_commission = 100
+            max_shares = 0
+            
+            # Use binary search approach to find max affordable shares
+            for shares in range(1, int(cash_balance / current_price) + 100):
+                net_amount = shares * current_price
+                commission = max(net_amount * commission_rate, min_commission)
+                total_cost = net_amount + commission
+                
+                if total_cost <= cash_balance:
+                    max_shares = shares
+                else:
+                    break
+            
+            self.selected_stock_label.config(text=f"{symbol} (Max: {max_shares:,} shares)", 
+                                            foreground=self.colors['mint'])
+        else:
+            self.selected_stock_label.config(text=f"{symbol}", 
+                                            foreground=self.colors['mint'])
+        
         self.update_estimated_cost()
     
     def on_order_type_change(self):
@@ -673,7 +738,6 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         positions = trading_engine.get_positions_summary()
         
         for pos in positions:
-            pnl_color = 'green' if pos['pnl'] >= 0 else 'red'
             pnl_sign = "+" if pos['pnl'] >= 0 else ""
             
             values = (
@@ -686,11 +750,9 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
                 f"{pnl_sign}{pos['pnl_percentage']:.2f}%"
             )
             
-            item = self.portfolio_tree.insert('', tk.END, values=values)
-            # Color coding for P&L
-            if pos['pnl'] >= 0:
-                self.portfolio_tree.set(item, 'P&L', f"+${pos['pnl']:,.2f}")
-                self.portfolio_tree.set(item, 'P&L %', f"+{pos['pnl_percentage']:.2f}%")
+            # Use tag for color styling
+            tag = 'profit' if pos['pnl'] >= 0 else 'loss'
+            item = self.portfolio_tree.insert('', tk.END, values=values, tags=(tag,))
     
     def update_history_display(self):
         """Update transaction history table"""
@@ -714,7 +776,9 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
                 f"${trans.total_amount:.2f}"
             )
             
-            self.history_tree.insert('', tk.END, values=values)
+            # Use tag for color styling based on transaction type
+            tag = 'buy' if trans.transaction_type.value == 'buy' else 'sell'
+            self.history_tree.insert('', tk.END, values=values, tags=(tag,))
     
     def reset_portfolio_dialog(self):
         """Show reset portfolio dialog"""
