@@ -28,10 +28,7 @@ class IconManager:
         # Navigate up from src/gui/components/ui_core/icon_manager.py to project root
         project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_file)))))
         icons_path = os.path.join(project_root, 'assets', 'pixel_icons')
-        print(f"🔍 Icon path: {icons_path}")
-        print(f"🔍 Path exists: {os.path.exists(icons_path)}")
         if not os.path.exists(icons_path):
-            print(f"❌ Icons path not found: {icons_path}")
             return
 
         # 1) Button/tab icons (named files only)
@@ -61,13 +58,8 @@ class IconManager:
                 try:
                     img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
                     self.icons[key] = ImageTk.PhotoImage(img)
-                    print(f"✅ Loaded icon: {key} -> {filename}")
                 except Exception as e:
                     print(f"❌ Button icon load fail {filename}: {e}")
-            else:
-                print(f"❌ Icon file not found: {icon_path}")
-
-        print(f"✅ Loaded {len(self.icons)} button/tab icons")
         
         # 2) Decoration icons (add_* files only)
         for fname in os.listdir(icons_path):
@@ -81,7 +73,7 @@ class IconManager:
                 except Exception as e:
                     print(f"Decor load fail {fname}: {e}")
 
-        print(f"Loaded {len(self.icons)} button/tab icons and {len(self.pixel_icons)} decorations (⊃｡•́‿•̀｡)⊃━☆ﾟ.*・｡ﾟ")
+        # Icons loaded successfully (silent loading)
         
     def get_icon(self, key):
         """Get icon by key"""
