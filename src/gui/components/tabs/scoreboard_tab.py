@@ -8,6 +8,7 @@ from typing import Optional
 
 from src.trading.scoreboard_manager import ScoreboardManager
 from src.trading.scoreboard_models import ScoreRecord
+from src.gui.components.dialogs import KawaiiMessageBox
 
 
 class ScoreboardTab:
@@ -18,6 +19,9 @@ class ScoreboardTab:
         
         # 스코어보드 매니저 초기화
         self.scoreboard_manager = ScoreboardManager()
+        
+        # Initialize kawaii message box
+        self.kawaii_msg = KawaiiMessageBox(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
         
         self.setup_tab()
         self.refresh_scoreboard()
@@ -55,7 +59,7 @@ class ScoreboardTab:
         
         # Arcade style title
         title_label = ttk.Label(header_frame, 
-                               text="🏆 KAWAII STOCK TRADING SCOREBOARD 🏆",
+                               text="KAWAII STOCK TRADING SCOREBOARD",
                                font=('Arial', 16, 'bold'),
                                foreground=self.colors['magenta'])
         title_label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
@@ -150,7 +154,7 @@ class ScoreboardTab:
     
     def create_statistics_panel(self, parent):
         """Create statistics panel"""
-        stats_frame = ttk.LabelFrame(parent, text="📊 Statistics", padding="10")
+        stats_frame = ttk.LabelFrame(parent, text="Statistics", padding="10")
         stats_frame.grid(row=0, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Statistics content will be created dynamically
@@ -177,6 +181,9 @@ class ScoreboardTab:
     
     def refresh_scoreboard(self):
         """Refresh the scoreboard display"""
+        # Reload data from file first
+        self.scoreboard_manager.load_data()
+        
         # Clear current items
         for item in self.scoreboard_tree.get_children():
             self.scoreboard_tree.delete(item)
@@ -312,7 +319,7 @@ class ScoreboardTab:
         
         # Title
         title_label = ttk.Label(main_frame, 
-                               text=f"🏆 #{rank} - {record.nickname}",
+                               text=f"#{rank} - {record.nickname}",
                                font=('Arial', 16, 'bold'),
                                foreground=self.colors['magenta'])
         title_label.pack(pady=(0, 20))
@@ -320,7 +327,7 @@ class ScoreboardTab:
         # Details
         details = [
             ("Date Recorded", record.date.strftime('%Y-%m-%d %H:%M')),
-            ("Grade", f"{record.grade} ⭐"),
+            ("Grade", f"{record.grade}"),
             ("", ""),  # Separator
             ("Initial Balance", f"${record.initial_balance:,.2f}"),
             ("Final Balance", f"${record.final_balance:,.2f}"),
@@ -382,18 +389,18 @@ class ScoreboardTab:
     
     def clear_scoreboard(self):
         """Clear all scoreboard records (with confirmation)"""
-        result = messagebox.askyesno(
+        result = self.kawaii_msg.show_question(
             "Clear Scoreboard",
             "Are you sure you want to clear ALL scoreboard records?\n\n"
             "This action cannot be undone!",
-            icon='warning'
+            'skull'
         )
         
         if result:
             self.scoreboard_manager.clear_all_records()
             self.refresh_scoreboard()
-            messagebox.showinfo("Scoreboard Cleared", 
-                               "All scoreboard records have been cleared.")
+            self.kawaii_msg.show_success("Scoreboard Cleared", 
+                               "All scoreboard records have been cleared.", 'sparkle')
     
     def schedule_refresh(self):
         """Schedule automatic refresh"""

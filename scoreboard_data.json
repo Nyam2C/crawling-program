@@ -1,0 +1,17 @@
+{
+  "records": [
+    {
+      "nickname": "Player",
+      "date": "2025-08-16T04:57:21.342830",
+      "initial_balance": 100000.0,
+      "final_balance": 99903.68999999999,
+      "return_rate": -0.09631000000001222,
+      "holding_period_days": 1,
+      "best_stock": "NVDA",
+      "best_stock_return": 0.0,
+      "total_trades": 1,
+      "result_type": "RESET"
+    }
+  ],
+  "last_saved": "2025-08-16T04:57:21.342891"
+}

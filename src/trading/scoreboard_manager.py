@@ -7,7 +7,7 @@ Scoreboard Manager for Mock Trading - Handles score persistence and management
 import json
 import os
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict
 from .scoreboard_models import Scoreboard, ScoreRecord, ScoreboardResult
 from .models import Portfolio
 
@@ -25,6 +25,7 @@ class ScoreboardManager:
                                    nickname: str, 
                                    portfolio: Portfolio,
                                    result_type: ScoreboardResult,
+                                   stock_prices: Dict[str, float],
                                    session_start_time: Optional[datetime] = None) -> ScoreRecord:
         """포트폴리오에서 스코어 기록 생성"""
         
@@ -70,7 +71,7 @@ class ScoreboardManager:
             nickname=nickname,
             date=datetime.now(),
             initial_balance=portfolio.initial_balance,
-            final_balance=portfolio.get_total_value(),
+            final_balance=portfolio.get_total_value(stock_prices),
             return_rate=0.0,  # __post_init__에서 계산됨
             holding_period_days=holding_period,
             best_stock=best_stock,
@@ -90,10 +91,11 @@ class ScoreboardManager:
                                 nickname: str,
                                 portfolio: Portfolio,
                                 result_type: ScoreboardResult,
+                                stock_prices: Dict[str, float],
                                 session_start_time: Optional[datetime] = None):
         """포트폴리오 점수 등록"""
         record = self.create_record_from_portfolio(
-            nickname, portfolio, result_type, session_start_time
+            nickname, portfolio, result_type, stock_prices, session_start_time
         )
         self.add_score_record(record)
         return record

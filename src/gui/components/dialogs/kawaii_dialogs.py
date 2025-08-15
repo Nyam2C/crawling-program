@@ -58,9 +58,22 @@ class KawaiiMessageBox:
         except tk.TclError:
             pass  # Ignore grab errors
         width = 320
-        height = 260  # Increased height for better text readability
-        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
-        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        height = 340  # Increased height for better text readability
+        
+        # Center on main window
+        try:
+            parent_x = self.parent.winfo_rootx()
+            parent_y = self.parent.winfo_rooty()
+            parent_width = self.parent.winfo_width()
+            parent_height = self.parent.winfo_height()
+            
+            x = parent_x + (parent_width // 2) - (width // 2)
+            y = parent_y + (parent_height // 2) - (height // 2)
+        except:
+            # Fallback to screen center if parent info unavailable
+            x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+            y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        
         dialog.geometry(f"{width}x{height}+{x}+{y}")
         
         # Main frame - reduced padding
@@ -205,9 +218,22 @@ class KawaiiInputDialog:
         except tk.TclError:
             pass  # Ignore grab errors
         width = 400
-        height = 250
-        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
-        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        height = 320
+        
+        # Center on main window
+        try:
+            parent_x = self.parent.winfo_rootx()
+            parent_y = self.parent.winfo_rooty()
+            parent_width = self.parent.winfo_width()
+            parent_height = self.parent.winfo_height()
+            
+            x = parent_x + (parent_width // 2) - (width // 2)
+            y = parent_y + (parent_height // 2) - (height // 2)
+        except:
+            # Fallback to screen center if parent info unavailable
+            x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+            y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        
         dialog.geometry(f"{width}x{height}+{x}+{y}")
         
         # Main frame - reduced padding

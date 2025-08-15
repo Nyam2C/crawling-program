@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 import threading
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 
 from src.trading.data_manager import TradingDataManager
 from src.trading.models import OrderRequest, TransactionType, OrderType
@@ -980,7 +980,8 @@ Tip: Start with small positions to learn market behavior!"""
             current_portfolio = self.data_manager.get_trading_engine().portfolio
             
             # Register current session in scoreboard if it has significant activity
-            if len(current_portfolio.transactions) > 0 or current_portfolio.get_total_value() != current_portfolio.initial_balance:
+            stock_prices = self._get_current_stock_prices()
+            if len(current_portfolio.transactions) > 0 or current_portfolio.get_total_value(stock_prices) != current_portfolio.initial_balance:
                 self._register_scoreboard_entry(current_portfolio, ScoreboardResult.RESET)
             
             # Ask for initial balance
@@ -1004,17 +1005,26 @@ Tip: Start with small positions to learn market behavior!"""
     def _register_scoreboard_entry(self, portfolio, result_type: ScoreboardResult):
         """Register current portfolio performance in scoreboard"""
         try:
+            # Get current stock prices for portfolio value calculation
+            stock_prices = self._get_current_stock_prices()
+            current_value = portfolio.get_total_value(stock_prices)
+            return_rate = ((current_value - portfolio.initial_balance) / portfolio.initial_balance * 100) if portfolio.initial_balance > 0 else 0
+            
             # Ask for nickname
             nickname = self._get_kawaii_input().ask_string(
                 "Enter Your Nickname",
                 f"Enter your nickname for the scoreboard:\n\nYour Performance:\n"
                 f"• Starting Balance: ${portfolio.initial_balance:,.2f}\n"
-                f"• Current Balance: ${portfolio.get_total_value():,.2f}\n"
-                f"• Return: {((portfolio.get_total_value() - portfolio.initial_balance) / portfolio.initial_balance * 100):.2f}%\n"
+                f"• Current Balance: ${current_value:,.2f}\n"
+                f"• Return: {return_rate:.2f}%\n"
                 f"• Total Trades: {len(portfolio.transactions)}",
                 initial_value="Player",
                 icon_key='bow'
             )
+            
+            # Convert to string in case it returns a float
+            if nickname is not None:
+                nickname = str(nickname)
             
             if nickname and nickname.strip():
                 # Register score
@@ -1022,6 +1032,7 @@ Tip: Start with small positions to learn market behavior!"""
                     nickname.strip()[:20],  # Limit nickname length
                     portfolio,
                     result_type,
+                    stock_prices,
                     self.session_start_time
                 )
                 
@@ -1029,10 +1040,10 @@ Tip: Start with small positions to learn market behavior!"""
                 self._get_kawaii_msg().show_success(
                     "Score Registered!",
                     f"Your score has been registered in the Hall of Fame!\n\n"
-                    f"🏆 Nickname: {record.nickname}\n"
-                    f"📊 Return Rate: {record.return_rate:.2f}%\n"
-                    f"🎯 Grade: {record.grade}\n"
-                    f"📈 Rank Score: {record.rank_score:.1f}\n\n"
+                    f"Nickname: {record.nickname}\n"
+                    f"Return Rate: {record.return_rate:.2f}%\n"
+                    f"Grade: {record.grade}\n"
+                    f"Rank Score: {record.rank_score:.1f}\n\n"
                     f"Check the Scoreboard tab to see your ranking!",
                     'heart'
                 )
@@ -1040,10 +1051,19 @@ Tip: Start with small positions to learn market behavior!"""
         except Exception as e:
             print(f"Error registering scoreboard entry: {e}")
     
+    def _get_current_stock_prices(self) -> Dict[str, float]:
+        """Get current stock prices from trading engine"""
+        trading_engine = self.data_manager.get_trading_engine()
+        stock_prices = {}
+        for symbol, stock in trading_engine.stock_prices.items():
+            stock_prices[symbol] = stock.current_price
+        return stock_prices
+    
     def _check_for_bankruptcy(self):
         """Check if portfolio has gone bankrupt (< $1000)"""
         portfolio = self.data_manager.get_trading_engine().portfolio
-        total_value = portfolio.get_total_value()
+        stock_prices = self._get_current_stock_prices()
+        total_value = portfolio.get_total_value(stock_prices)
         
         if total_value < 1000.0 and len(portfolio.transactions) > 0:
             # Show bankruptcy message

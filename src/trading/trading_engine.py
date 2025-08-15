@@ -69,11 +69,11 @@ class TradingEngine:
         if order_type == OrderType.MARKET:
             price = self.get_stock_price(symbol)
             if price is None:
-                raise ValueError(f"주식 {symbol}의 가격 정보가 없습니다")
+                raise ValueError(f"No price information available for {symbol}")
         else:  # LIMIT
             price = limit_price
             if price is None:
-                raise ValueError("지정가 주문시 가격을 입력해야 합니다")
+                raise ValueError("Price must be specified for limit orders")
         
         # 순 거래금액
         net_amount = quantity * price
@@ -92,12 +92,12 @@ class TradingEngine:
     def can_execute_order(self, order: OrderRequest) -> Tuple[bool, str]:
         """주문 실행 가능 여부 확인"""
         if not order.validate():
-            return False, "잘못된 주문 정보입니다"
+            return False, "Invalid order information"
         
         # 현재가 확인
         current_price = self.get_stock_price(order.symbol)
         if current_price is None:
-            return False, f"주식 {order.symbol}의 가격 정보가 없습니다"
+            return False, f"No price information available for {order.symbol}"
         
         try:
             if order.transaction_type == TransactionType.BUY:
@@ -114,20 +114,20 @@ class TradingEngine:
         )
         
         if self.portfolio.cash_balance < total_cost:
-            return False, f"잔고 부족 (필요: {total_cost:,.0f}원, 보유: {self.portfolio.cash_balance:,.0f}원)"
+            return False, f"Insufficient balance (Required: ${total_cost:,.2f}, Available: ${self.portfolio.cash_balance:,.2f})"
         
-        return True, "매수 가능"
+        return True, "Purchase available"
     
     def _can_sell(self, order: OrderRequest) -> Tuple[bool, str]:
         """매도 가능 여부 확인"""
         if order.symbol not in self.portfolio.positions:
-            return False, f"{order.symbol} 주식을 보유하지 않습니다"
+            return False, f"You don't own {order.symbol} stock"
         
         position = self.portfolio.positions[order.symbol]
         if position.quantity < order.quantity:
-            return False, f"보유 수량 부족 (보유: {position.quantity}주, 주문: {order.quantity}주)"
+            return False, f"Insufficient shares (Owned: {position.quantity}, Order: {order.quantity})"
         
-        return True, "매도 가능"
+        return True, "Sale available"
     
     def execute_order(self, order: OrderRequest) -> Tuple[bool, str, Optional[Transaction]]:
         """주문 실행"""
