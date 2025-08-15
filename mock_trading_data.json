@@ -1,13 +1,32 @@
 {
   "portfolio": {
-    "cash_balance": 1000000.0,
-    "initial_balance": 1000000.0,
+    "cash_balance": 50000.0,
+    "initial_balance": 50000.0,
     "positions": {},
     "transactions": []
   },
-  "stock_prices": {},
+  "stock_prices": {
+    "NKE": {
+      "symbol": "NKE",
+      "current_price": 76.39,
+      "last_updated": "2025-08-15T13:42:13.473360",
+      "company_name": "NIKE, Inc."
+    },
+    "PLTR": {
+      "symbol": "PLTR",
+      "current_price": 181.02,
+      "last_updated": "2025-08-15T13:45:24.026400",
+      "company_name": "Palantir Technologies Inc."
+    },
+    "NVDA": {
+      "symbol": "NVDA",
+      "current_price": 182.02,
+      "last_updated": "2025-08-15T13:42:11.536493",
+      "company_name": "NVIDIA Corporation"
+    }
+  },
   "watched_stocks": [
-    "NKE"
+    "PLTR"
   ],
-  "last_saved": "2025-08-15T13:33:51.142399"
+  "last_saved": "2025-08-15T13:45:26.678155"
 }

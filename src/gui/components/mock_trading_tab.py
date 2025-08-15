@@ -9,6 +9,7 @@ from typing import Optional
 
 from src.trading.data_manager import TradingDataManager
 from src.trading.models import OrderRequest, TransactionType, OrderType
+from src.gui.components.kawaii_dialogs import KawaiiMessageBox, KawaiiInputDialog, TradingHelpDialog
 
 
 class MockTradingTab:
@@ -16,6 +17,11 @@ class MockTradingTab:
         self.notebook = notebook
         self.main_app = main_app
         self.colors = main_app.colors
+        
+        # Initialize kawaii dialogs
+        self.kawaii_msg = KawaiiMessageBox(main_app.root, main_app.theme_manager, main_app.icon_manager)
+        self.kawaii_input = KawaiiInputDialog(main_app.root, main_app.theme_manager, main_app.icon_manager)
+        self.help_dialog = TradingHelpDialog(main_app.root, main_app.theme_manager, main_app.icon_manager)
         
         # Trading data manager
         self.data_manager = TradingDataManager()
@@ -65,6 +71,10 @@ class MockTradingTab:
         # Control buttons
         button_frame = ttk.Frame(summary_frame)
         button_frame.grid(row=0, column=3, sticky=tk.E)
+        
+        self.main_app.icon_button(button_frame, 'glasses', 'Help', 
+                                 self.show_help,
+                                 style='Pastel.Primary.TButton').pack(side=tk.LEFT, padx=(0, 5))
         
         self.main_app.icon_button(button_frame, 'refresh', 'Refresh', 
                                  self.refresh_all_data, 
@@ -128,7 +138,7 @@ class MockTradingTab:
                                  self.search_and_add_stock).grid(row=0, column=2, padx=(0, 10))
         
         # Current stock info
-        self.stock_info_label = ttk.Label(search_frame, text="Select a stock to trade", 
+        self.stock_info_label = ttk.Label(search_frame, text="💡 Tip: Try searching AAPL, GOOGL, TSLA, or MSFT!", 
                                          foreground=self.colors['text_muted'])
         self.stock_info_label.grid(row=1, column=0, columnspan=3, pady=(10, 0))
     
@@ -139,7 +149,7 @@ class MockTradingTab:
         
         # Selected stock
         ttk.Label(order_frame, text="Stock:", foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
-        self.selected_stock_label = ttk.Label(order_frame, text="None selected", 
+        self.selected_stock_label = ttk.Label(order_frame, text="📌 Double-click a stock from watchlist", 
                                              foreground=self.colors['text_muted'])
         self.selected_stock_label.grid(row=0, column=1, sticky=tk.W, pady=(0, 5))
         
@@ -308,7 +318,9 @@ class MockTradingTab:
         """Search for stock and add to watched list"""
         symbol = self.symbol_var.get().strip().upper()
         if not symbol:
-            messagebox.showwarning("Input Error", "Please enter a stock symbol")
+            self.kawaii_msg.show_warning("No Symbol Entered (´･ω･`)", 
+                                        "Please enter a stock symbol first!\n\nExample: AAPL, GOOGL, TSLA, MSFT",
+                                        'bow')
             return
         
         # Show loading
@@ -348,17 +360,23 @@ class MockTradingTab:
         self.symbol_var.set("")
         self.refresh_watched_stocks()
         
-        messagebox.showinfo("Success", f"Added {symbol} to watched stocks")
+        self.kawaii_msg.show_success("Stock Added Successfully! ✨", 
+                                   f"Added {symbol} ({company}) to your watchlist\nCurrent price: ${price:.2f}",
+                                   'sparkle')
     
     def on_stock_not_found(self, symbol):
         """Handle stock not found"""
         self.stock_info_label.config(text="Stock not found")
-        messagebox.showerror("Error", f"Stock '{symbol}' not found")
+        self.kawaii_msg.show_error("Stock Not Found (╥﹏╥)", 
+                                 f"Could not find stock '{symbol}'\nPlease check the symbol and try again",
+                                 'skull')
     
     def on_search_error(self, error_msg):
         """Handle search error"""
         self.stock_info_label.config(text="Search failed")
-        messagebox.showerror("Error", f"Search failed: {error_msg}")
+        self.kawaii_msg.show_error("Search Failed (´;ω;`)", 
+                                 f"Search failed: {error_msg}\nPlease try again later",
+                                 'skull')
     
     def select_stock_for_trading(self, event=None):
         """Select stock for trading from watched list"""
@@ -371,7 +389,8 @@ class MockTradingTab:
         symbol = stock_text.split(' - ')[0]
         
         self.selected_trading_stock = symbol
-        self.selected_stock_label.config(text=symbol)
+        self.selected_stock_label.config(text=f"✓ {symbol} (Ready to trade!)", 
+                                        foreground=self.colors['mint'])
         self.update_estimated_cost()
     
     def on_order_type_change(self):
@@ -430,7 +449,9 @@ class MockTradingTab:
     def place_order(self):
         """Place trading order"""
         if not self.selected_trading_stock:
-            messagebox.showerror("Error", "Please select a stock to trade")
+            self.kawaii_msg.show_warning("No Stock Selected (・・;)", 
+                                       "Please select a stock to trade first!\n\nTip: Double-click a stock from your watchlist",
+                                       'bow')
             return
         
         try:
@@ -438,7 +459,9 @@ class MockTradingTab:
             if quantity <= 0:
                 raise ValueError("Quantity must be positive")
         except ValueError:
-            messagebox.showerror("Error", "Please enter a valid quantity")
+            self.kawaii_msg.show_error("Invalid Quantity (´･ω･`)", 
+                                     "Please enter a valid quantity (positive number)\nExample: 10, 5, 100",
+                                     'skull')
             return
         
         order_type = OrderType.MARKET if self.order_type_var.get() == "market" else OrderType.LIMIT
@@ -451,7 +474,9 @@ class MockTradingTab:
                 if limit_price <= 0:
                     raise ValueError("Limit price must be positive")
             except ValueError:
-                messagebox.showerror("Error", "Please enter a valid limit price")
+                self.kawaii_msg.show_error("Invalid Limit Price (；´Д｀)", 
+                                         "Please enter a valid limit price (positive number)\nExample: 150.50, 25.00",
+                                         'skull')
                 return
         
         # Create order request
@@ -468,7 +493,17 @@ class MockTradingTab:
         success, message, transaction = trading_engine.execute_order(order_request)
         
         if success:
-            messagebox.showinfo("Success", message)
+            # Create success message with transaction details
+            action = "Bought" if transaction_type == TransactionType.BUY else "Sold"
+            order_desc = "Market" if order_type == OrderType.MARKET else f"Limit at ${limit_price:.2f}"
+            
+            success_msg = (f"{action} {quantity} shares of {self.selected_trading_stock}\n"
+                          f"Order type: {order_desc}\n"
+                          f"Price: ${transaction.price:.2f} per share\n"
+                          f"Total: ${transaction.total_amount:.2f}")
+            
+            self.kawaii_msg.show_success("Order Executed! (｡◕‿◕｡)", success_msg, 'heart')
+            
             # Clear form
             self.quantity_var.set("")
             self.limit_price_var.set("")
@@ -477,21 +512,29 @@ class MockTradingTab:
             # Save data
             self.data_manager.save_data()
         else:
-            messagebox.showerror("Order Failed", message)
+            self.kawaii_msg.show_error("Order Failed (╥﹏╥)", message, 'skull')
     
     def remove_watched_stock(self):
         """Remove selected stock from watched list"""
         selection = self.watched_listbox.curselection()
         if not selection:
-            messagebox.showwarning("Selection Error", "Please select a stock to remove")
+            self.kawaii_msg.show_warning("No Stock Selected (´･ω･`)", 
+                                       "Please select a stock from the watchlist to remove\n\nTip: Click on a stock first, then click Remove",
+                                       'bow')
             return
         
         stock_text = self.watched_listbox.get(selection[0])
         symbol = stock_text.split(' - ')[0]
         
-        self.data_manager.remove_watched_stock(symbol)
-        self.refresh_watched_stocks()
-        messagebox.showinfo("Success", f"Removed {symbol} from watched stocks")
+        # Ask for confirmation
+        if self.kawaii_msg.show_question("Remove Stock? (・_・?)", 
+                                       f"Are you sure you want to remove {symbol} from your watchlist?\n\nYou can always add it back later!",
+                                       'glasses'):
+            self.data_manager.remove_watched_stock(symbol)
+            self.refresh_watched_stocks()
+            self.kawaii_msg.show_success("Stock Removed! ✧･ﾟ", 
+                                       f"Removed {symbol} from your watchlist",
+                                       'sparkle')
     
     def refresh_watched_stocks(self):
         """Refresh watched stocks display"""
@@ -595,26 +638,29 @@ class MockTradingTab:
     
     def reset_portfolio_dialog(self):
         """Show reset portfolio dialog"""
-        result = messagebox.askyesno(
-            "Reset Portfolio", 
-            "This will delete all trading history and positions, resetting your account.\nDo you want to continue?",
-            icon='warning'
-        )
-        
-        if result:
+        if self.kawaii_msg.show_question("Reset Portfolio? (；´Д｀)", 
+                                        "This will delete all trading history and positions, resetting your account.\n\nAre you sure you want to continue?\n\n⚠️ This action cannot be undone!",
+                                        'bow'):
             # Ask for initial balance
-            initial_balance = simpledialog.askfloat(
-                "Initial Balance",
-                "Enter initial balance (USD):",
-                initialvalue=100000.0,
-                minvalue=1000.0,
-                maxvalue=10000000.0
+            initial_balance = self.kawaii_input.ask_float(
+                "Set Initial Balance 💰",
+                "Enter your starting balance (USD):",
+                initial_value=100000.0,
+                min_value=1000.0,
+                max_value=10000000.0,
+                icon_key='folder'
             )
             
             if initial_balance:
                 self.data_manager.reset_portfolio(initial_balance)
                 self.refresh_all_data()
-                messagebox.showinfo("Success", f"Portfolio has been reset.\nInitial balance: ${initial_balance:,.2f}")
+                self.kawaii_msg.show_success("Portfolio Reset! (｡◕‿◕｡)", 
+                                           f"Your portfolio has been reset successfully!\nNew starting balance: ${initial_balance:,.2f}\n\nGood luck with your trading! ✨",
+                                           'heart')
+    
+    def show_help(self):
+        """Show trading help dialog"""
+        self.help_dialog.show_help()
     
     def schedule_ui_refresh(self):
         """Schedule periodic UI refresh"""
