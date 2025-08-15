@@ -51,21 +51,21 @@ class MockTradingTab:
     
     def _get_kawaii_msg(self):
         """Lazy initialization of kawaii message dialog"""
-        if self._get_kawaii_msg() is None:
-            self._get_kawaii_msg() = KawaiiMessageBox(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
-        return self._get_kawaii_msg()
+        if self.kawaii_msg is None:
+            self.kawaii_msg = KawaiiMessageBox(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self.kawaii_msg
     
     def _get_kawaii_input(self):
         """Lazy initialization of kawaii input dialog"""
-        if self._get_kawaii_input() is None:
-            self._get_kawaii_input() = KawaiiInputDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
-        return self._get_kawaii_input()
+        if self.kawaii_input is None:
+            self.kawaii_input = KawaiiInputDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self.kawaii_input
     
     def _get_help_dialog(self):
         """Lazy initialization of help dialog"""
-        if self._get_help_dialog() is None:
-            self._get_help_dialog() = TradingHelpDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
-        return self._get_help_dialog()
+        if self.help_dialog is None:
+            self.help_dialog = TradingHelpDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self.help_dialog
     
     def create_main_content(self):
         """Create main content with tabbed interface"""
