@@ -60,7 +60,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with retro pastel aesthetics"""
-        self.root.title("×☆𝑲𝒂𝒘𝒂𝒊𝒊☆× Stock Analysis Platform")
+        self.root.title("×✿𝑲𝒂𝒘𝒂𝒊𝒊✿× Stock Analysis Platform")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -257,7 +257,7 @@ class StockAnalysisGUI:
         
         # Title
         title_label = tk.Label(main_frame, 
-                             text="✧･ﾟ: *✧･ﾟ:* Kawaii Stock Analysis Platform *:･ﾟ✧*:･ﾟ✧",
+                             text="✧✿: *✧✿:* Kawaii Stock Analysis Platform *:✿✧*:✿✧",
                              font=('Arial', 14, 'bold'),
                              fg='#A78BFA',  # Periwinkle
                              bg='#1F144A')

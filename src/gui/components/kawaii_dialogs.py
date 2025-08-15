@@ -50,10 +50,10 @@ class KawaiiMessageBox:
         dialog.transient(self.parent)
         dialog.grab_set()
         
-        # Center dialog - smaller size
+        # Center dialog - optimized size
         dialog.update_idletasks()
         width = 320
-        height = 220
+        height = 260  # Increased height for better text readability
         x = (dialog.winfo_screenwidth() // 2) - (width // 2)
         y = (dialog.winfo_screenheight() // 2) - (height // 2)
         dialog.geometry(f"{width}x{height}+{x}+{y}")

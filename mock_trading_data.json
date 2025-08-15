@@ -1,83 +1,15 @@
 {
   "portfolio": {
-    "cash_balance": 66819.04,
+    "cash_balance": 100000.0,
     "initial_balance": 100000.0,
-    "positions": {
-      "GOOGL": {
-        "symbol": "GOOGL",
-        "quantity": 140,
-        "average_price": 203.5257142857143,
-        "total_invested": 28493.6
-      },
-      "NVDA": {
-        "symbol": "NVDA",
-        "quantity": 11,
-        "average_price": 179.06,
-        "total_invested": 1969.66
-      },
-      "AMZN": {
-        "symbol": "AMZN",
-        "quantity": 10,
-        "average_price": 231.77,
-        "total_invested": 2317.7000000000003
-      }
-    },
-    "transactions": [
-      {
-        "id": "9e4c1618-3e95-4c3d-9071-77341d473776",
-        "timestamp": "2025-08-15T21:48:18.485397",
-        "symbol": "GOOGL",
-        "transaction_type": "buy",
-        "order_type": "market",
-        "quantity": 40,
-        "price": 202.94,
-        "commission": 100,
-        "tax": 0,
-        "total_amount": 8217.6
-      },
-      {
-        "id": "1a577e43-c790-4b67-a856-a9c56f2c3083",
-        "timestamp": "2025-08-15T22:51:02.944689",
-        "symbol": "NVDA",
-        "transaction_type": "buy",
-        "order_type": "market",
-        "quantity": 11,
-        "price": 179.06,
-        "commission": 100,
-        "tax": 0,
-        "total_amount": 2069.66
-      },
-      {
-        "id": "8c0b2b82-ef88-4dba-8694-33396444b102",
-        "timestamp": "2025-08-15T22:51:22.535897",
-        "symbol": "GOOGL",
-        "transaction_type": "buy",
-        "order_type": "market",
-        "quantity": 100,
-        "price": 203.76,
-        "commission": 100,
-        "tax": 0,
-        "total_amount": 20476.0
-      },
-      {
-        "id": "7c28446d-23f0-4a75-b8a0-a92d7b4ff415",
-        "timestamp": "2025-08-15T22:51:35.708498",
-        "symbol": "AMZN",
-        "transaction_type": "buy",
-        "order_type": "market",
-        "quantity": 10,
-        "price": 231.77,
-        "commission": 100,
-        "tax": 0,
-        "total_amount": 2417.7000000000003
-      }
-    ]
+    "positions": {},
+    "transactions": []
   },
   "stock_prices": {
     "NKE": {
       "symbol": "NKE",
-      "current_price": 76.86,
-      "last_updated": "2025-08-15T23:10:01.592603",
+      "current_price": 76.47,
+      "last_updated": "2025-08-15T23:39:08.750743",
       "company_name": "NIKE, Inc."
     },
     "PLTR": {
@@ -88,28 +20,35 @@
     },
     "NVDA": {
       "symbol": "NVDA",
-      "current_price": 180.13,
-      "last_updated": "2025-08-15T23:10:01.122029",
+      "current_price": 179.44,
+      "last_updated": "2025-08-15T23:39:09.811809",
       "company_name": "NVIDIA Corporation"
     },
     "GOOGL": {
       "symbol": "GOOGL",
-      "current_price": 205.37,
-      "last_updated": "2025-08-15T23:10:00.193892",
+      "current_price": 206.15,
+      "last_updated": "2025-08-15T23:39:09.280771",
       "company_name": "Alphabet Inc."
     },
     "AMZN": {
       "symbol": "AMZN",
-      "current_price": 232.53,
-      "last_updated": "2025-08-15T23:10:00.661470",
+      "current_price": 232.17,
+      "last_updated": "2025-08-15T23:39:08.225779",
       "company_name": "Amazon.com, Inc."
+    },
+    "TSLL": {
+      "symbol": "TSLL",
+      "current_price": 12.37,
+      "last_updated": "2025-08-15T23:39:07.742656",
+      "company_name": "Direxion Daily TSLA Bull 2X Shares"
     }
   },
   "watched_stocks": [
     "GOOGL",
     "AMZN",
-    "NVDA",
-    "NKE"
+    "TSLL",
+    "NKE",
+    "NVDA"
   ],
-  "last_saved": "2025-08-15T23:10:01.594155"
+  "last_saved": "2025-08-15T23:39:11.507267"
 }

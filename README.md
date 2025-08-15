@@ -1,11 +1,14 @@
-# ✧･ﾟ: *✧･ﾟ:* Kawaii Stock Analysis Platform *:･ﾟ✧*:･ﾟ✧
+# ✧✿: *✧✿:* Kawaii Stock Analysis Platform *:✿✧*:✿✧
 
-A comprehensive **Python-based stock analysis platform** with a beautiful **kawaii retro pastel GUI**! Analyze any stock symbol with AI-powered recommendations and professional English reports.
+A comprehensive **Python-based stock analysis platform** with a beautiful **kawaii retro pastel GUI**! Analyze any stock symbol with AI-powered recommendations, professional English reports, and now featuring **mock trading functionality**!
 
 > *"Let's make stock analysis as cute as it is powerful! ♡"* - Kawaii Analytics
 
 ## ✨ What's New
 
+**📈 Mock Trading Platform**: Complete virtual trading system with portfolio management!
+**💰 Virtual Portfolio**: Start with $100,000 virtual cash for risk-free trading practice
+**📊 Real-time Updates**: Live stock prices with 20-second auto-refresh intervals
 **🎯 Universal Stock Analysis**: No longer limited to specific stocks - analyze ANY stock symbol!
 **🇬🇧 English Reports**: Professional analysis reports in English for global users
 **🎨 Kawaii Design**: Beautiful retro pastel purple/pink theme with Windows 95/98 aesthetics
@@ -15,7 +18,17 @@ A comprehensive **Python-based stock analysis platform** with a beautiful **kawa
 
 ## 🚀 Features
 
-### 📈 Stock Analysis Capabilities
+### 📈 Mock Trading System
+- **Virtual Portfolio Management**: Start with $100,000 virtual cash
+- **Real-time Stock Trading**: Buy and sell stocks with live market prices
+- **Order Types**: Market orders (instant) and Limit orders (price-specific)
+- **Portfolio Tracking**: Monitor positions, P&L, and total portfolio value
+- **Transaction History**: Complete record of all trades with timestamps
+- **Auto-refresh System**: Stock prices update every 20 seconds with countdown timer
+- **Commission & Tax Simulation**: Realistic 0.015% commission + 0.25% tax on sells
+- **Watchlist Management**: Add and track multiple stocks for trading
+
+### 📊 Stock Analysis Capabilities
 - **Universal Stock Support**: Analyze ANY stock symbol, not just pre-defined lists
 - **Real-time Data**: Fetch current stock prices and market data
 - **Dual Analysis Modes**:
@@ -43,7 +56,8 @@ A comprehensive **Python-based stock analysis platform** with a beautiful **kawa
 1. **Stock Data**: Add and manage stock symbols to analyze
 2. **Recommendations**: Generate AI-powered buy/sell recommendations
 3. **Individual Analysis**: Deep-dive analysis of specific stocks
-4. **Settings**: Configure application preferences
+4. **Mock Trading**: Virtual trading platform with portfolio management
+5. **Settings**: Configure application preferences
 
 ## 🛠️ Installation
 
@@ -87,7 +101,12 @@ python scripts/run_gui.py
 1. **Stock Data Tab**: Add stock symbols you want to analyze
 2. **Recommendations Tab**: Generate comprehensive investment recommendations
 3. **Individual Analysis Tab**: Deep analysis of specific stocks with save functionality
-4. **Settings Tab**: View application information and settings
+4. **Mock Trading Tab**: Practice trading with virtual money - includes:
+   - Portfolio management with real-time P&L tracking
+   - Stock watchlist with live price updates
+   - Buy/sell orders with realistic commission and tax
+   - Complete transaction history and performance analytics
+5. **Settings Tab**: View application information and settings
 
 ### 💻 Command Line Interface
 
@@ -206,10 +225,16 @@ Expected Investment Period: Medium-term (6-18 months)
 │   │       ├── stock_data_tab.py      # Stock data management
 │   │       ├── recommendations_tab.py # AI recommendations
 │   │       ├── analysis_tab.py        # Individual analysis
+│   │       ├── mock_trading_tab.py    # Mock trading platform
+│   │       ├── kawaii_dialogs.py      # Custom themed dialogs
 │   │       ├── settings_tab.py        # Settings
 │   │       ├── theme_manager.py       # Kawaii styling
 │   │       ├── icon_manager.py        # Icon management
 │   │       └── ui_builder.py          # UI components
+│   ├── 📈 trading/                    # Trading system
+│   │   ├── models.py                  # Data models (Portfolio, Transaction)
+│   │   ├── trading_engine.py          # Trading logic and calculations
+│   │   └── data_manager.py            # Data persistence and stock updates
 │   └── ⚙️ core/                       # Core utilities
 │       ├── http_client.py             # HTTP requests
 │       └── config.py                  # Configuration
@@ -226,6 +251,8 @@ Expected Investment Period: Medium-term (6-18 months)
 - **lxml** - XML/HTML parser
 - **tkinter** - GUI framework
 - **Pillow** - Image processing
+- **yfinance** - Yahoo Finance API for real-time stock data
+- **json** - Data persistence for mock trading
 
 ## 🎨 Kawaii Design Features
 
@@ -282,4 +309,4 @@ This project is open source. Use responsibly.
 
 ---
 
-*✧･ﾟ: *✧･ﾟ:* Made with kawaii love and retro aesthetics! *:･ﾟ✧*:･ﾟ✧*
+*✧✿: *✧✿:* Made with kawaii love and retro aesthetics! *:✿✧*:✿✧*
