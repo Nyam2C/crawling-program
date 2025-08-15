@@ -48,10 +48,15 @@ class KawaiiMessageBox:
         dialog.configure(bg=self.colors['bg'])
         dialog.resizable(False, False)
         dialog.transient(self.parent)
-        dialog.grab_set()
         
         # Center dialog - optimized size
         dialog.update_idletasks()
+        
+        # Safe grab_set after dialog is ready
+        try:
+            dialog.grab_set()
+        except tk.TclError:
+            pass  # Ignore grab errors
         width = 320
         height = 260  # Increased height for better text readability
         x = (dialog.winfo_screenwidth() // 2) - (width // 2)
@@ -190,10 +195,15 @@ class KawaiiInputDialog:
         dialog.configure(bg=self.colors['bg'])
         dialog.resizable(False, False)
         dialog.transient(self.parent)
-        dialog.grab_set()
         
         # Center dialog
         dialog.update_idletasks()
+        
+        # Safe grab_set after dialog is ready
+        try:
+            dialog.grab_set()
+        except tk.TclError:
+            pass  # Ignore grab errors
         width = 400
         height = 250
         x = (dialog.winfo_screenwidth() // 2) - (width // 2)
@@ -316,7 +326,6 @@ class TradingHelpDialog:
         help_window.configure(bg=self.colors['bg'])
         help_window.resizable(True, True)
         help_window.transient(self.parent)
-        help_window.grab_set()
         
         # Set window size and center
         width = 700
@@ -324,6 +333,13 @@ class TradingHelpDialog:
         x = (help_window.winfo_screenwidth() // 2) - (width // 2)
         y = (help_window.winfo_screenheight() // 2) - (height // 2)
         help_window.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # Safe grab_set after window is ready
+        help_window.update_idletasks()
+        try:
+            help_window.grab_set()
+        except tk.TclError:
+            pass  # Ignore grab errors
         
         # Main frame with padding
         main_frame = ttk.Frame(help_window, padding="20")

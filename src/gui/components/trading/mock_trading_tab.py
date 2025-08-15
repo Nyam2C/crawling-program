@@ -18,10 +18,10 @@ class MockTradingTab:
         self.main_app = main_app
         self.colors = main_app.colors
         
-        # Initialize kawaii dialogs
-        self.kawaii_msg = KawaiiMessageBox(main_app.root, main_app.theme_manager, main_app.icon_manager)
-        self.kawaii_input = KawaiiInputDialog(main_app.root, main_app.theme_manager, main_app.icon_manager)
-        self.help_dialog = TradingHelpDialog(main_app.root, main_app.theme_manager, main_app.icon_manager)
+        # Initialize kawaii dialogs (lazy initialization)
+        self._get_kawaii_msg() = None
+        self._get_kawaii_input() = None
+        self._get_help_dialog() = None
         
         # Trading data manager
         self.data_manager = TradingDataManager()
@@ -49,6 +49,23 @@ class MockTradingTab:
         # Main content area with notebook (Portfolio Summary moved to separate tab)
         self.create_main_content()
     
+    def _get_kawaii_msg(self):
+        """Lazy initialization of kawaii message dialog"""
+        if self._get_kawaii_msg() is None:
+            self._get_kawaii_msg() = KawaiiMessageBox(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self._get_kawaii_msg()
+    
+    def _get_kawaii_input(self):
+        """Lazy initialization of kawaii input dialog"""
+        if self._get_kawaii_input() is None:
+            self._get_kawaii_input() = KawaiiInputDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self._get_kawaii_input()
+    
+    def _get_help_dialog(self):
+        """Lazy initialization of help dialog"""
+        if self._get_help_dialog() is None:
+            self._get_help_dialog() = TradingHelpDialog(self.main_app.root, self.main_app.theme_manager, self.main_app.icon_manager)
+        return self._get_help_dialog()
     
     def create_main_content(self):
         """Create main content with tabbed interface"""
@@ -577,7 +594,7 @@ Tip: Start with small positions to learn market behavior!"""
         """Search for stock and add to watched list"""
         symbol = self.symbol_var.get().strip().upper()
         if not symbol:
-            self.kawaii_msg.show_warning("No Symbol Entered", 
+            self._get_kawaii_msg().show_warning("No Symbol Entered", 
                                         "Please enter a stock symbol first!\n\nExample: AAPL, GOOGL, TSLA, MSFT",
                                         'bow')
             return
@@ -619,21 +636,21 @@ Tip: Start with small positions to learn market behavior!"""
         self.symbol_var.set("")
         self.refresh_watched_stocks()
         
-        self.kawaii_msg.show_success("Stock Added Successfully!", 
+        self._get_kawaii_msg().show_success("Stock Added Successfully!", 
                                    f"Added {symbol} ({company}) to your watchlist\nCurrent price: ${price:.2f}",
                                    'sparkle')
     
     def on_stock_not_found(self, symbol):
         """Handle stock not found"""
         self.stock_info_label.config(text="Stock not found")
-        self.kawaii_msg.show_error("Stock Not Found", 
+        self._get_kawaii_msg().show_error("Stock Not Found", 
                                  f"Could not find stock '{symbol}'\nPlease check the symbol and try again",
                                  'skull')
     
     def on_search_error(self, error_msg):
         """Handle search error"""
         self.stock_info_label.config(text="Search failed")
-        self.kawaii_msg.show_error("Search Failed", 
+        self._get_kawaii_msg().show_error("Search Failed", 
                                  f"Search failed: {error_msg}\nPlease try again later",
                                  'skull')
     
@@ -758,7 +775,7 @@ Tip: Start with small positions to learn market behavior!"""
     def place_order(self):
         """Place trading order"""
         if not self.selected_trading_stock:
-            self.kawaii_msg.show_warning("No Stock Selected", 
+            self._get_kawaii_msg().show_warning("No Stock Selected", 
                                        "Please select a stock to trade first!\n\nTip: Double-click a stock from your watchlist",
                                        'bow')
             return
@@ -768,7 +785,7 @@ Tip: Start with small positions to learn market behavior!"""
             if quantity <= 0:
                 raise ValueError("Quantity must be positive")
         except ValueError:
-            self.kawaii_msg.show_error("Invalid Quantity", 
+            self._get_kawaii_msg().show_error("Invalid Quantity", 
                                      "Please enter a valid quantity (positive number)\nExample: 10, 5, 100",
                                      'skull')
             return
@@ -783,7 +800,7 @@ Tip: Start with small positions to learn market behavior!"""
                 if limit_price <= 0:
                     raise ValueError("Limit price must be positive")
             except ValueError:
-                self.kawaii_msg.show_error("Invalid Limit Price", 
+                self._get_kawaii_msg().show_error("Invalid Limit Price", 
                                          "Please enter a valid limit price (positive number)\nExample: 150.50, 25.00",
                                          'skull')
                 return
@@ -811,7 +828,7 @@ Tip: Start with small positions to learn market behavior!"""
                           f"Price: ${transaction.price:.2f} per share\n"
                           f"Total: ${transaction.total_amount:.2f}")
             
-            self.kawaii_msg.show_success("Order Executed!", success_msg, 'heart')
+            self._get_kawaii_msg().show_success("Order Executed!", success_msg, 'heart')
             
             # Clear form
             self.quantity_var.set("")
@@ -821,13 +838,13 @@ Tip: Start with small positions to learn market behavior!"""
             # Save data
             self.data_manager.save_data()
         else:
-            self.kawaii_msg.show_error("Order Failed", message, 'skull')
+            self._get_kawaii_msg().show_error("Order Failed", message, 'skull')
     
     def remove_watched_stock(self):
         """Remove selected stock from watched list"""
         selection = self.watched_listbox.curselection()
         if not selection:
-            self.kawaii_msg.show_warning("No Stock Selected", 
+            self._get_kawaii_msg().show_warning("No Stock Selected", 
                                        "Please select a stock from the watchlist to remove\n\nTip: Click on a stock first, then click Remove",
                                        'bow')
             return
@@ -836,12 +853,12 @@ Tip: Start with small positions to learn market behavior!"""
         symbol = stock_text.split(' - ')[0]
         
         # Ask for confirmation
-        if self.kawaii_msg.show_question("Remove Stock?", 
+        if self._get_kawaii_msg().show_question("Remove Stock?", 
                                        f"Are you sure you want to remove {symbol} from your watchlist?\n\nYou can always add it back later!",
                                        'glasses'):
             self.data_manager.remove_watched_stock(symbol)
             self.refresh_watched_stocks()
-            self.kawaii_msg.show_success("Stock Removed!", 
+            self._get_kawaii_msg().show_success("Stock Removed!", 
                                        f"Removed {symbol} from your watchlist",
                                        'sparkle')
     
@@ -947,11 +964,11 @@ Tip: Start with small positions to learn market behavior!"""
     
     def reset_portfolio_dialog(self):
         """Show reset portfolio dialog"""
-        if self.kawaii_msg.show_question("Reset Portfolio?", 
+        if self._get_kawaii_msg().show_question("Reset Portfolio?", 
                                         "This will delete all trading history and positions, resetting your account.\n\nAre you sure you want to continue?\n\nThis action cannot be undone!",
                                         'bow'):
             # Ask for initial balance
-            initial_balance = self.kawaii_input.ask_float(
+            initial_balance = self._get_kawaii_input().ask_float(
                 "Set Initial Balance",
                 "Enter your starting balance (USD):",
                 initial_value=100000.0,
@@ -963,13 +980,13 @@ Tip: Start with small positions to learn market behavior!"""
             if initial_balance:
                 self.data_manager.reset_portfolio(initial_balance)
                 self.refresh_all_data()
-                self.kawaii_msg.show_success("Portfolio Reset!", 
+                self._get_kawaii_msg().show_success("Portfolio Reset!", 
                                            f"Your portfolio has been reset successfully!\nNew starting balance: ${initial_balance:,.2f}\n\nGood luck with your trading!",
                                            'heart')
     
     def show_help(self):
         """Show trading help dialog"""
-        self.help_dialog.show_help()
+        self._get_help_dialog().show_help()
     
     def schedule_ui_refresh(self):
         """Schedule periodic UI refresh every 20 seconds with 5-second warning"""

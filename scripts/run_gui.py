@@ -91,10 +91,15 @@ def show_welcome_message():
         welcome.title("Welcome to Kawaii Stock Analysis Platform")
         welcome.configure(bg='#1F144A')  # Dark navy purple
         welcome.resizable(False, False)
-        welcome.grab_set()  # Make modal
         
         # Center dialog
         welcome.update_idletasks()
+        
+        # Safe grab_set after dialog is ready
+        try:
+            welcome.grab_set()  # Make modal
+        except tk.TclError:
+            pass  # Ignore grab errors
         width = 600
         height = 500
         x = (welcome.winfo_screenwidth() // 2) - (width // 2)
