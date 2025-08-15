@@ -150,9 +150,9 @@ class StockAnalysisGUI:
             cycle_colors()
         
     # Delegation methods for backward compatibility
-    def icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton'):
+    def icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton', spacing=None):
         """Create button with pixel icon - delegates to ui_builder"""
-        return self.ui_builder.create_icon_button(parent, key, text, command, style)
+        return self.ui_builder.create_icon_button(parent, key, text, command, style, spacing)
         
     def add_icon_to_tab(self, tab_frame, icon_key, text):
         """Add icon to tab text - delegates to ui_builder"""

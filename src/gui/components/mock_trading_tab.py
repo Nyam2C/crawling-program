@@ -116,7 +116,7 @@ class MockTradingTab:
         button_row = ttk.Frame(control_frame)
         button_row.pack(fill=tk.X)
         
-        self.main_app.icon_button(button_row, 'glasses', 'Help Guide', 
+        self.main_app.icon_button(button_row, 'help', 'Help Guide', 
                                  self.show_help,
                                  style='Pastel.Primary.TButton').pack(side=tk.LEFT, padx=(0, 10))
         
@@ -157,10 +157,10 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         trading_frame = ttk.Frame(self.sub_notebook, padding="10")
         self.sub_notebook.add(trading_frame, text='Trading')
         
-        # Better grid configuration for more space - adjusted for search area reduction
+        # Better grid configuration - Stock Search matches Place Order width
         trading_frame.grid_rowconfigure(1, weight=1)
-        trading_frame.grid_columnconfigure(0, weight=2)  # Order form same space
-        trading_frame.grid_columnconfigure(1, weight=4)  # Watched stocks gets more space
+        trading_frame.grid_columnconfigure(0, weight=1)  # Left side (Search + Order)
+        trading_frame.grid_columnconfigure(1, weight=2)  # Right side (Watchlist) gets more space
         
         # Left side: Stock search and Order form
         self.create_stock_search_section(trading_frame)
@@ -223,23 +223,26 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         tip_label.pack()
     
     def create_stock_search_section(self, parent):
-        """Create compact stock search section - only spans Order form area"""
-        search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="8")
-        search_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 8))  # Only column 0
+        """Create compact stock search section - reverted to previous design, width matches Place Order"""
+        search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="15")  # Match Place Order padding
+        search_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 8), padx=(0, 10))  # Match Place Order padx
+        
+        # Set the search frame to have consistent internal layout
+        search_frame.grid_columnconfigure(3, weight=1)  # Info label column expands
         
         # Search input - single row layout, more compact
         ttk.Label(search_frame, text="Symbol:", foreground=self.colors['text']).grid(row=0, column=0, padx=(0, 5))
         
         self.symbol_var = tk.StringVar()
         self.symbol_entry = ttk.Entry(search_frame, textvariable=self.symbol_var, width=10)  # Smaller width
-        self.symbol_entry.grid(row=0, column=1, padx=(0, 6))
+        self.symbol_entry.grid(row=0, column=1, padx=(0, 10))  # Increased spacing to button
         self.symbol_entry.bind('<Return>', lambda e: self.search_and_add_stock())
         
-        # Smaller ADD button
-        add_btn = self.main_app.icon_button(search_frame, 'search', 'Add', 
-                                           self.search_and_add_stock)
-        add_btn.grid(row=0, column=2, padx=(0, 6), ipadx=3)  # Further reduced padding
-        add_btn.configure(width=5)  # Even smaller width
+        # Search&Add button with improved spacing
+        add_btn = self.main_app.icon_button(search_frame, 'search', 'Search&Add', 
+                                           self.search_and_add_stock, spacing=True)
+        add_btn.grid(row=0, column=2, padx=(0, 6), ipadx=5)  # Increased internal padding
+        add_btn.configure(width=10)  # Increased width for better appearance
         
         # Current stock info - minimal height, moved to same row
         self.stock_info_label = ttk.Label(search_frame, text="", 
@@ -251,8 +254,9 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         order_frame = ttk.LabelFrame(parent, text="Place Order", padding="15")
         order_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
         
-        # Configure order frame with compact spacing
-        order_frame.grid_columnconfigure(1, weight=1)
+        # Configure order frame with compact spacing and center alignment - matches Stock Search
+        order_frame.grid_columnconfigure(0, weight=1)  # Label column
+        order_frame.grid_columnconfigure(1, weight=1)  # Input column
         for i in range(8):  # Smaller row heights to save space
             order_frame.grid_rowconfigure(i, minsize=30)
         
@@ -280,19 +284,26 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
                                         style='Pastel.Secondary.TRadiobutton')
         self.limit_btn.pack(side=tk.LEFT)
         
-        # Transaction type with styled toggle buttons
+        # Transaction type with styled toggle buttons - fixed width container
         ttk.Label(order_frame, text="Action:", foreground=self.colors['text']).grid(row=2, column=0, sticky=tk.W, pady=2)
         self.transaction_type_var = tk.StringVar(value="buy")
         trans_type_frame = ttk.Frame(order_frame)
         trans_type_frame.grid(row=2, column=1, sticky=tk.W, pady=2)
+        trans_type_frame.grid_columnconfigure(0, minsize=150)  # Fixed width to prevent layout shifting
         
-        self.buy_btn = ttk.Radiobutton(trans_type_frame, text="Buy", 
+        # Container for buttons to maintain fixed width
+        button_container = ttk.Frame(trans_type_frame)
+        button_container.grid(row=0, column=0, sticky=tk.W)
+        
+        self.buy_btn = ttk.Radiobutton(button_container, text="Buy", 
                                       variable=self.transaction_type_var, value="buy",
+                                      command=self.on_transaction_type_change,
                                       style='Pastel.Success.TRadiobutton')
         self.buy_btn.pack(side=tk.LEFT, padx=(0, 10))
         
-        self.sell_btn = ttk.Radiobutton(trans_type_frame, text="Sell", 
+        self.sell_btn = ttk.Radiobutton(button_container, text="Sell", 
                                        variable=self.transaction_type_var, value="sell",
+                                       command=self.on_transaction_type_change,
                                        style='Pastel.Danger.TRadiobutton')
         self.sell_btn.pack(side=tk.LEFT)
         
@@ -372,6 +383,21 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         # Create style for the treeview
         self.portfolio_tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=12)
         
+        # Configure treeview colors to match kawaii theme
+        style = ttk.Style()
+        style.configure("Treeview", 
+                       background=self.colors['panel'],
+                       foreground=self.colors['text'],
+                       fieldbackground=self.colors['panel'])
+        style.configure("Treeview.Heading",
+                       background=self.colors['lavender'],
+                       foreground=self.colors['text'])
+        style.map("Treeview.Heading",
+                 background=[('active', self.colors['mint'])])
+        style.map("Treeview",
+                 background=[('selected', self.colors['lavender'])],
+                 foreground=[('selected', self.colors['bg'])])
+        
         # Configure columns with kawaii styling
         for col in columns:
             self.portfolio_tree.heading(col, text=col, anchor='center')
@@ -422,6 +448,8 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         # History table with kawaii styling
         hist_columns = ('Date', 'Symbol', 'Type', 'Order', 'Quantity', 'Price', 'Commission', 'Tax', 'Total')
         self.history_tree = ttk.Treeview(table_frame, columns=hist_columns, show='headings', height=12)
+        
+        # Apply same kawaii styling to history tree (style already configured above)
         
         # Configure columns with kawaii styling
         for col in hist_columns:
@@ -523,35 +551,58 @@ Tip: Use the Trading tab to place orders and manage your watchlist!"""
         
         self.selected_trading_stock = symbol
         
-        # Calculate and display available quantity for purchase
-        trading_engine = self.data_manager.get_trading_engine()
-        current_price = trading_engine.get_stock_price(symbol)
-        cash_balance = trading_engine.portfolio.cash_balance
-        
-        if current_price and current_price > 0:
-            # Calculate max shares we can buy (including commission)
-            commission_rate = 0.00015
-            min_commission = 100
-            max_shares = 0
-            
-            # Use binary search approach to find max affordable shares
-            for shares in range(1, int(cash_balance / current_price) + 100):
-                net_amount = shares * current_price
-                commission = max(net_amount * commission_rate, min_commission)
-                total_cost = net_amount + commission
-                
-                if total_cost <= cash_balance:
-                    max_shares = shares
-                else:
-                    break
-            
-            self.selected_stock_label.config(text=f"{symbol} (Max: {max_shares:,} shares)", 
-                                            foreground=self.colors['mint'])
-        else:
-            self.selected_stock_label.config(text=f"{symbol}", 
-                                            foreground=self.colors['mint'])
-        
+        # Update display based on current transaction type (buy/sell)
+        self.update_stock_selection_display()
         self.update_estimated_cost()
+    
+    def on_transaction_type_change(self):
+        """Handle transaction type change (Buy/Sell)"""
+        if self.selected_trading_stock:
+            self.update_stock_selection_display()
+        self.update_estimated_cost()
+    
+    def update_stock_selection_display(self):
+        """Update stock selection display based on transaction type"""
+        if not self.selected_trading_stock:
+            return
+        
+        symbol = self.selected_trading_stock
+        trading_engine = self.data_manager.get_trading_engine()
+        
+        if self.transaction_type_var.get() == "buy":
+            # Show max buyable shares
+            current_price = trading_engine.get_stock_price(symbol)
+            cash_balance = trading_engine.portfolio.cash_balance
+            
+            if current_price and current_price > 0:
+                commission_rate = 0.00015
+                min_commission = 100
+                max_shares = 0
+                
+                for shares in range(1, int(cash_balance / current_price) + 100):
+                    net_amount = shares * current_price
+                    commission = max(net_amount * commission_rate, min_commission)
+                    total_cost = net_amount + commission
+                    
+                    if total_cost <= cash_balance:
+                        max_shares = shares
+                    else:
+                        break
+                
+                self.selected_stock_label.config(text=f"{symbol} (Max: {max_shares:,} shares)", 
+                                                foreground=self.colors['mint'])
+            else:
+                self.selected_stock_label.config(text=f"{symbol}", 
+                                                foreground=self.colors['mint'])
+        else:  # sell
+            # Show max sellable shares
+            if symbol in trading_engine.portfolio.positions:
+                available_shares = trading_engine.portfolio.positions[symbol].quantity
+                self.selected_stock_label.config(text=f"{symbol} (Available: {available_shares:,} shares)", 
+                                                foreground=self.colors['coral'])
+            else:
+                self.selected_stock_label.config(text=f"{symbol} (No shares owned)", 
+                                                foreground=self.colors['coral'])
     
     def on_order_type_change(self):
         """Handle order type change"""

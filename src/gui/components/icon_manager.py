@@ -46,6 +46,7 @@ class IconManager:
             'trade':            'heart.png',
             'remove':           'skull.png',
             'reset':            'bow.png',
+            'help':             'glasses.png',  # Help guide icon
         }
         for key, filename in button_map.items():
             icon_path = os.path.join(icons_path, filename)

@@ -50,16 +50,16 @@ class KawaiiMessageBox:
         dialog.transient(self.parent)
         dialog.grab_set()
         
-        # Center dialog
+        # Center dialog - smaller size
         dialog.update_idletasks()
-        width = 400
-        height = 300
+        width = 320
+        height = 220
         x = (dialog.winfo_screenwidth() // 2) - (width // 2)
         y = (dialog.winfo_screenheight() // 2) - (height // 2)
         dialog.geometry(f"{width}x{height}+{x}+{y}")
         
-        # Main frame
-        main_frame = ttk.Frame(dialog, padding="20")
+        # Main frame - reduced padding
+        main_frame = ttk.Frame(dialog, padding="15")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Icon section
@@ -88,23 +88,31 @@ class KawaiiMessageBox:
         
         # Message
         message_label = ttk.Label(main_frame, text=message,
-                                 font=('Arial', 10),
+                                 font=('Arial', 9),
                                  foreground=self.colors['text_muted'],
-                                 wraplength=350,
+                                 wraplength=280,
                                  justify=tk.CENTER)
-        message_label.pack(pady=(0, 20))
+        message_label.pack(pady=(0, 15))
         
-        # Buttons frame
+        # Buttons frame - centered
         button_frame = ttk.Frame(main_frame)
-        button_frame.pack()
+        if len(buttons) == 1:  # For single button, ensure perfect centering
+            button_frame.pack(anchor=tk.CENTER, expand=True, fill=tk.X)
+        else:
+            button_frame.pack(anchor=tk.CENTER)
         
-        # Create buttons
+        # Create buttons - smaller and centered with proper spacing
         for i, button_text in enumerate(buttons):
             style = self._get_button_style(button_text, dialog_type)
             btn = ttk.Button(button_frame, text=button_text,
-                           style=style,
+                           style=style, width=10,
                            command=lambda text=button_text: self._on_button_click(dialog, text))
-            btn.pack(side=tk.LEFT, padx=(5 if i > 0 else 0, 0))
+            if len(buttons) == 2:  # For Yes/No dialogs, center both buttons
+                btn.pack(side=tk.LEFT, padx=(8 if i > 0 else 8, 8))
+            elif len(buttons) == 1:  # For single button dialogs (like OK), center the button
+                btn.pack(padx=8, pady=4)
+            else:
+                btn.pack(side=tk.LEFT, padx=(8 if i > 0 else 0, 0))
         
         # Focus first button
         if buttons:
@@ -187,8 +195,8 @@ class KawaiiInputDialog:
         y = (dialog.winfo_screenheight() // 2) - (height // 2)
         dialog.geometry(f"{width}x{height}+{x}+{y}")
         
-        # Main frame
-        main_frame = ttk.Frame(dialog, padding="20")
+        # Main frame - reduced padding
+        main_frame = ttk.Frame(dialog, padding="15")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Icon section
@@ -255,19 +263,19 @@ class KawaiiInputDialog:
                 error_dlg = KawaiiMessageBox(dialog, self.theme, self.icon_manager)
                 error_dlg.show_error("Invalid Input", "Please enter a valid number")
         
-        # Buttons frame
+        # Buttons frame - centered like other dialogs
         button_frame = ttk.Frame(main_frame)
-        button_frame.pack()
+        button_frame.pack(anchor=tk.CENTER)
         
         ok_btn = ttk.Button(button_frame, text="OK",
-                          style='Pastel.Success.TButton',
+                          style='Pastel.Success.TButton', width=10,
                           command=validate_and_submit)
-        ok_btn.pack(side=tk.LEFT, padx=(0, 10))
+        ok_btn.pack(side=tk.LEFT, padx=(8, 8))
         
         cancel_btn = ttk.Button(button_frame, text="Cancel",
-                              style='Pastel.Secondary.TButton',
+                              style='Pastel.Secondary.TButton', width=10,
                               command=lambda: [setattr(self, 'result', None), dialog.destroy()])
-        cancel_btn.pack(side=tk.LEFT)
+        cancel_btn.pack(side=tk.LEFT, padx=(8, 8))
         
         # Bind Enter key
         input_entry.bind('<Return>', lambda e: validate_and_submit())
@@ -340,11 +348,21 @@ class TradingHelpDialog:
         # Tips & Tricks tab
         self._create_tips_tab(help_notebook)
         
-        # Close button
-        close_btn = ttk.Button(main_frame, text="Got It!",
+        # Close button - perfectly centered, bold, and compact
+        button_container = ttk.Frame(main_frame)
+        button_container.pack(pady=15, fill=tk.X)
+        
+        # Create centering frame to ensure perfect alignment
+        center_frame = ttk.Frame(button_container)
+        center_frame.pack(expand=True)
+        
+        close_btn = ttk.Button(center_frame, text="Got It!",
                              style='Pastel.Primary.TButton',
                              command=help_window.destroy)
         close_btn.pack()
+        
+        # Configure button styling for bold text and compact size
+        close_btn.configure(width=12)  # Reduced width
     
     def _create_getting_started_tab(self, notebook):
         """Create getting started help tab"""

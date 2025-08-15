@@ -14,9 +14,11 @@ class UIBuilder:
         self.icon_manager = icon_manager
         self.theme_manager = theme_manager
         
-    def create_icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton'):
+    def create_icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton', spacing=None):
         """Create button with pixel icon"""
-        btn = ttk.Button(parent, text=text, command=command, style=style)
+        # Add minimal extra spacing if requested (reduced from 2 spaces to 1)
+        display_text = f" {text}" if spacing else text
+        btn = ttk.Button(parent, text=display_text, command=command, style=style)
         if self.icon_manager.has_icon(key):
             btn.configure(image=self.icon_manager.get_icon(key), compound='left')
         return btn
