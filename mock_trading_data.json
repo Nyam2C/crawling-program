@@ -1,7 +1,7 @@
 {
   "portfolio": {
-    "cash_balance": 50000.0,
-    "initial_balance": 50000.0,
+    "cash_balance": 100000.0,
+    "initial_balance": 100000.0,
     "positions": {},
     "transactions": []
   },
@@ -15,7 +15,7 @@
     "PLTR": {
       "symbol": "PLTR",
       "current_price": 181.02,
-      "last_updated": "2025-08-15T13:45:24.026400",
+      "last_updated": "2025-08-15T13:58:14.336364",
       "company_name": "Palantir Technologies Inc."
     },
     "NVDA": {
@@ -28,5 +28,5 @@
   "watched_stocks": [
     "PLTR"
   ],
-  "last_saved": "2025-08-15T13:45:26.678155"
+  "last_saved": "2025-08-15T13:58:15.800662"
 }

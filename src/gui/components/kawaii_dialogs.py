@@ -116,13 +116,13 @@ class KawaiiMessageBox:
     def _get_kawaii_decoration(self, dialog_type: str) -> str:
         """Get kawaii decoration text based on dialog type"""
         decorations = {
-            'success': ['(｡◕‿◕｡)', '✧･ﾟ: *✧･ﾟ:*', '(´∀｀)♡', '☆(ゝω・)vキャピ'],
-            'info': ['(｡•̀ᴗ-)✧', '(*´ω｀*)', '(◡ ‿ ◡)', '✧･ﾟ: *✧･ﾟ:*'],
-            'warning': ['(・・;)', '(´･ω･`)', '(；´Д｀)', '( ´･ω･)'],
-            'error': ['(╥﹏╥)', '(´;ω;`)', '(;′⌒`)', '(T_T)'],
-            'question': ['(￣▽￣)', '(・_・?))', '(´-ω-`)', '(｡´･ω･)']
+            'success': ['Success!', 'Done!', 'Complete!', 'Great!'],
+            'info': ['Info', 'Notice', 'FYI', 'Note'],
+            'warning': ['Warning', 'Caution', 'Alert', 'Notice'],
+            'error': ['Error', 'Failed', 'Problem', 'Issue'],
+            'question': ['Question', 'Confirm', 'Please Choose', 'Decision']
         }
-        return random.choice(decorations.get(dialog_type, ['✧･ﾟ: *✧･ﾟ:*']))
+        return random.choice(decorations.get(dialog_type, ['Notice']))
     
     def _get_button_style(self, button_text: str, dialog_type: str) -> str:
         """Get appropriate button style"""
@@ -201,7 +201,7 @@ class KawaiiInputDialog:
             icon_label.pack()
         
         # Kawaii decoration
-        kawaii_label = ttk.Label(icon_frame, text='✧･ﾟ: *✧･ﾟ:* Input Required *:･ﾟ✧*:･ﾟ✧',
+        kawaii_label = ttk.Label(icon_frame, text='Input Required',
                                foreground=self.colors['magenta'],
                                font=('Arial', 10))
         kawaii_label.pack(pady=(5, 0))
@@ -319,7 +319,7 @@ class TradingHelpDialog:
             icon_label.pack(side=tk.LEFT, padx=(0, 10))
         
         title_label = ttk.Label(title_frame, 
-                               text="✧･ﾟ: *✧･ﾟ:* Mock Trading Guide *:･ﾟ✧*:･ﾟ✧",
+                               text="Mock Trading Guide",
                                font=('Arial', 16, 'bold'),
                                foreground=self.colors['magenta'])
         title_label.pack(side=tk.LEFT)
@@ -341,7 +341,7 @@ class TradingHelpDialog:
         self._create_tips_tab(help_notebook)
         
         # Close button
-        close_btn = ttk.Button(main_frame, text="Got It! (｡◕‿◕｡)",
+        close_btn = ttk.Button(main_frame, text="Got It!",
                              style='Pastel.Primary.TButton',
                              command=help_window.destroy)
         close_btn.pack()

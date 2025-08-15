@@ -51,7 +51,7 @@ class MockTradingTab:
     
     def create_portfolio_summary(self):
         """Create portfolio summary section"""
-        summary_frame = ttk.LabelFrame(self.frame, text="💰 Portfolio Summary", padding="15")
+        summary_frame = ttk.LabelFrame(self.frame, text="Portfolio Summary", padding="15")
         summary_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         summary_frame.grid_columnconfigure(1, weight=1)
         
@@ -107,7 +107,7 @@ class MockTradingTab:
     def create_trading_tab(self):
         """Create trading interface tab"""
         trading_frame = ttk.Frame(self.sub_notebook, padding="15")
-        self.sub_notebook.add(trading_frame, text='📈 Trading')
+        self.sub_notebook.add(trading_frame, text='Trading')
         
         trading_frame.grid_rowconfigure(1, weight=1)
         trading_frame.grid_columnconfigure(1, weight=1)
@@ -123,7 +123,7 @@ class MockTradingTab:
     
     def create_stock_search_section(self, parent):
         """Create stock search section"""
-        search_frame = ttk.LabelFrame(parent, text="🔍 Stock Search", padding="15")
+        search_frame = ttk.LabelFrame(parent, text="Stock Search", padding="15")
         search_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
         
         # Search input
@@ -138,18 +138,23 @@ class MockTradingTab:
                                  self.search_and_add_stock).grid(row=0, column=2, padx=(0, 10))
         
         # Current stock info
-        self.stock_info_label = ttk.Label(search_frame, text="💡 Tip: Try searching AAPL, GOOGL, TSLA, or MSFT!", 
+        self.stock_info_label = ttk.Label(search_frame, text="Tip: Try searching AAPL, GOOGL, TSLA, or MSFT!", 
                                          foreground=self.colors['text_muted'])
         self.stock_info_label.grid(row=1, column=0, columnspan=3, pady=(10, 0))
     
     def create_order_form(self, parent):
         """Create order form"""
-        order_frame = ttk.LabelFrame(parent, text="📋 Place Order", padding="15")
+        order_frame = ttk.LabelFrame(parent, text="Place Order", padding="15")
         order_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 15))
+        
+        # Configure order frame to have fixed layout
+        order_frame.grid_columnconfigure(1, weight=1)
+        for i in range(7):  # Set minimum row heights
+            order_frame.grid_rowconfigure(i, minsize=35)
         
         # Selected stock
         ttk.Label(order_frame, text="Stock:", foreground=self.colors['text']).grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
-        self.selected_stock_label = ttk.Label(order_frame, text="📌 Double-click a stock from watchlist", 
+        self.selected_stock_label = ttk.Label(order_frame, text="Double-click a stock from watchlist", 
                                              foreground=self.colors['text_muted'])
         self.selected_stock_label.grid(row=0, column=1, sticky=tk.W, pady=(0, 5))
         
@@ -200,15 +205,23 @@ class MockTradingTab:
         self.limit_price_entry = ttk.Entry(order_frame, textvariable=self.limit_price_var, width=15, state='disabled')
         self.limit_price_entry.grid(row=4, column=1, sticky=tk.W, pady=(0, 5))
         
-        # Estimated cost
-        self.cost_label = ttk.Label(order_frame, text="Estimated Cost: -", 
-                                   foreground=self.colors['text_accent'])
-        self.cost_label.grid(row=5, column=0, columnspan=2, pady=(10, 0))
+        # Estimated cost - fixed height to prevent layout changes
+        cost_frame = ttk.Frame(order_frame)
+        cost_frame.grid(row=5, column=0, columnspan=2, pady=(10, 0), sticky=(tk.W, tk.E))
+        cost_frame.grid_rowconfigure(0, minsize=40)  # Fixed minimum height
         
-        # Place order button
-        self.main_app.icon_button(order_frame, 'trade', 'Place Order', 
-                                 self.place_order,
-                                 style='Pastel.Success.TButton').grid(row=6, column=0, columnspan=2, pady=(15, 0))
+        self.cost_label = ttk.Label(cost_frame, text="Estimated Cost: -", 
+                                   foreground=self.colors['text_accent'])
+        self.cost_label.grid(row=0, column=0, sticky=tk.W)
+        
+        # Place order button - fixed position
+        button_frame = ttk.Frame(order_frame)
+        button_frame.grid(row=6, column=0, columnspan=2, pady=(15, 0), sticky=(tk.W, tk.E))
+        
+        self.place_order_button = self.main_app.icon_button(button_frame, 'trade', 'Place Order', 
+                                                          self.place_order,
+                                                          style='Pastel.Success.TButton')
+        self.place_order_button.pack(expand=True)
         
         # Bind events for cost calculation
         self.quantity_var.trace('w', self.update_estimated_cost)
@@ -219,7 +232,7 @@ class MockTradingTab:
     
     def create_watched_stocks_section(self, parent):
         """Create watched stocks section"""
-        watched_frame = ttk.LabelFrame(parent, text="👀 Watched Stocks", padding="15")
+        watched_frame = ttk.LabelFrame(parent, text="Watched Stocks", padding="15")
         watched_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
         watched_frame.grid_rowconfigure(1, weight=1)
         watched_frame.grid_columnconfigure(0, weight=1)
@@ -255,7 +268,7 @@ class MockTradingTab:
     def create_portfolio_tab(self):
         """Create portfolio holdings tab"""
         portfolio_frame = ttk.Frame(self.sub_notebook, padding="15")
-        self.sub_notebook.add(portfolio_frame, text='💼 Portfolio')
+        self.sub_notebook.add(portfolio_frame, text='Portfolio')
         
         portfolio_frame.grid_rowconfigure(0, weight=1)
         portfolio_frame.grid_columnconfigure(0, weight=1)
@@ -286,7 +299,7 @@ class MockTradingTab:
     def create_history_tab(self):
         """Create transaction history tab"""
         history_frame = ttk.Frame(self.sub_notebook, padding="15")
-        self.sub_notebook.add(history_frame, text='📊 History')
+        self.sub_notebook.add(history_frame, text='History')
         
         history_frame.grid_rowconfigure(0, weight=1)
         history_frame.grid_columnconfigure(0, weight=1)
@@ -318,7 +331,7 @@ class MockTradingTab:
         """Search for stock and add to watched list"""
         symbol = self.symbol_var.get().strip().upper()
         if not symbol:
-            self.kawaii_msg.show_warning("No Symbol Entered (´･ω･`)", 
+            self.kawaii_msg.show_warning("No Symbol Entered", 
                                         "Please enter a stock symbol first!\n\nExample: AAPL, GOOGL, TSLA, MSFT",
                                         'bow')
             return
@@ -360,21 +373,21 @@ class MockTradingTab:
         self.symbol_var.set("")
         self.refresh_watched_stocks()
         
-        self.kawaii_msg.show_success("Stock Added Successfully! ✨", 
+        self.kawaii_msg.show_success("Stock Added Successfully!", 
                                    f"Added {symbol} ({company}) to your watchlist\nCurrent price: ${price:.2f}",
                                    'sparkle')
     
     def on_stock_not_found(self, symbol):
         """Handle stock not found"""
         self.stock_info_label.config(text="Stock not found")
-        self.kawaii_msg.show_error("Stock Not Found (╥﹏╥)", 
+        self.kawaii_msg.show_error("Stock Not Found", 
                                  f"Could not find stock '{symbol}'\nPlease check the symbol and try again",
                                  'skull')
     
     def on_search_error(self, error_msg):
         """Handle search error"""
         self.stock_info_label.config(text="Search failed")
-        self.kawaii_msg.show_error("Search Failed (´;ω;`)", 
+        self.kawaii_msg.show_error("Search Failed", 
                                  f"Search failed: {error_msg}\nPlease try again later",
                                  'skull')
     
@@ -389,7 +402,7 @@ class MockTradingTab:
         symbol = stock_text.split(' - ')[0]
         
         self.selected_trading_stock = symbol
-        self.selected_stock_label.config(text=f"✓ {symbol} (Ready to trade!)", 
+        self.selected_stock_label.config(text=f"{symbol} (Ready to trade!)", 
                                         foreground=self.colors['mint'])
         self.update_estimated_cost()
     
@@ -449,7 +462,7 @@ class MockTradingTab:
     def place_order(self):
         """Place trading order"""
         if not self.selected_trading_stock:
-            self.kawaii_msg.show_warning("No Stock Selected (・・;)", 
+            self.kawaii_msg.show_warning("No Stock Selected", 
                                        "Please select a stock to trade first!\n\nTip: Double-click a stock from your watchlist",
                                        'bow')
             return
@@ -459,7 +472,7 @@ class MockTradingTab:
             if quantity <= 0:
                 raise ValueError("Quantity must be positive")
         except ValueError:
-            self.kawaii_msg.show_error("Invalid Quantity (´･ω･`)", 
+            self.kawaii_msg.show_error("Invalid Quantity", 
                                      "Please enter a valid quantity (positive number)\nExample: 10, 5, 100",
                                      'skull')
             return
@@ -474,7 +487,7 @@ class MockTradingTab:
                 if limit_price <= 0:
                     raise ValueError("Limit price must be positive")
             except ValueError:
-                self.kawaii_msg.show_error("Invalid Limit Price (；´Д｀)", 
+                self.kawaii_msg.show_error("Invalid Limit Price", 
                                          "Please enter a valid limit price (positive number)\nExample: 150.50, 25.00",
                                          'skull')
                 return
@@ -502,7 +515,7 @@ class MockTradingTab:
                           f"Price: ${transaction.price:.2f} per share\n"
                           f"Total: ${transaction.total_amount:.2f}")
             
-            self.kawaii_msg.show_success("Order Executed! (｡◕‿◕｡)", success_msg, 'heart')
+            self.kawaii_msg.show_success("Order Executed!", success_msg, 'heart')
             
             # Clear form
             self.quantity_var.set("")
@@ -512,13 +525,13 @@ class MockTradingTab:
             # Save data
             self.data_manager.save_data()
         else:
-            self.kawaii_msg.show_error("Order Failed (╥﹏╥)", message, 'skull')
+            self.kawaii_msg.show_error("Order Failed", message, 'skull')
     
     def remove_watched_stock(self):
         """Remove selected stock from watched list"""
         selection = self.watched_listbox.curselection()
         if not selection:
-            self.kawaii_msg.show_warning("No Stock Selected (´･ω･`)", 
+            self.kawaii_msg.show_warning("No Stock Selected", 
                                        "Please select a stock from the watchlist to remove\n\nTip: Click on a stock first, then click Remove",
                                        'bow')
             return
@@ -527,12 +540,12 @@ class MockTradingTab:
         symbol = stock_text.split(' - ')[0]
         
         # Ask for confirmation
-        if self.kawaii_msg.show_question("Remove Stock? (・_・?)", 
+        if self.kawaii_msg.show_question("Remove Stock?", 
                                        f"Are you sure you want to remove {symbol} from your watchlist?\n\nYou can always add it back later!",
                                        'glasses'):
             self.data_manager.remove_watched_stock(symbol)
             self.refresh_watched_stocks()
-            self.kawaii_msg.show_success("Stock Removed! ✧･ﾟ", 
+            self.kawaii_msg.show_success("Stock Removed!", 
                                        f"Removed {symbol} from your watchlist",
                                        'sparkle')
     
@@ -638,12 +651,12 @@ class MockTradingTab:
     
     def reset_portfolio_dialog(self):
         """Show reset portfolio dialog"""
-        if self.kawaii_msg.show_question("Reset Portfolio? (；´Д｀)", 
-                                        "This will delete all trading history and positions, resetting your account.\n\nAre you sure you want to continue?\n\n⚠️ This action cannot be undone!",
+        if self.kawaii_msg.show_question("Reset Portfolio?", 
+                                        "This will delete all trading history and positions, resetting your account.\n\nAre you sure you want to continue?\n\nThis action cannot be undone!",
                                         'bow'):
             # Ask for initial balance
             initial_balance = self.kawaii_input.ask_float(
-                "Set Initial Balance 💰",
+                "Set Initial Balance",
                 "Enter your starting balance (USD):",
                 initial_value=100000.0,
                 min_value=1000.0,
@@ -654,8 +667,8 @@ class MockTradingTab:
             if initial_balance:
                 self.data_manager.reset_portfolio(initial_balance)
                 self.refresh_all_data()
-                self.kawaii_msg.show_success("Portfolio Reset! (｡◕‿◕｡)", 
-                                           f"Your portfolio has been reset successfully!\nNew starting balance: ${initial_balance:,.2f}\n\nGood luck with your trading! ✨",
+                self.kawaii_msg.show_success("Portfolio Reset!", 
+                                           f"Your portfolio has been reset successfully!\nNew starting balance: ${initial_balance:,.2f}\n\nGood luck with your trading!",
                                            'heart')
     
     def show_help(self):
