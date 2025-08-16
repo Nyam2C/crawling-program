@@ -4,6 +4,7 @@ Trading Models - Data classes for mock trading system
 모의 투자를 위한 데이터 모델들
 """
 
+from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, List, Optional, Literal

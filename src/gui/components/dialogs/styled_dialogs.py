@@ -3,6 +3,7 @@
 Styled Dialog Components - Professional Theme Compatible
 """
 
+from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk
 import os

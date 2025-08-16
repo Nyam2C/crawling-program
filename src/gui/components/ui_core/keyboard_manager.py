@@ -3,6 +3,7 @@
 Keyboard Shortcut Manager - Handles all keyboard shortcuts and hotkeys
 """
 
+from __future__ import annotations
 import tkinter as tk
 try:
     from typing import Dict, Callable, Optional

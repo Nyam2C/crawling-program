@@ -3,6 +3,7 @@
 Action Manager - Handles undo/redo functionality for user actions
 """
 
+from __future__ import annotations
 try:
     from typing import List, Optional, Any, Dict, Callable
 except ImportError:
