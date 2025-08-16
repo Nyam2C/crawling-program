@@ -76,37 +76,37 @@ class KeyboardManager:
             '<Control-1>': KeyBinding(
                 'Ctrl+1', 
                 'Stock Data Tab', 
-                lambda: self.switch_tab(0)
+                self.switch_tab_0
             ),
             '<Control-2>': KeyBinding(
                 'Ctrl+2', 
                 'Recommendations Tab', 
-                lambda: self.switch_tab(1)
+                self.switch_tab_1
             ),
             '<Control-3>': KeyBinding(
                 'Ctrl+3', 
                 'Analysis Tab', 
-                lambda: self.switch_tab(2)
+                self.switch_tab_2
             ),
             '<Control-4>': KeyBinding(
                 'Ctrl+4', 
                 'Trading Tab', 
-                lambda: self.switch_tab(3)
+                self.switch_tab_3
             ),
             '<Control-5>': KeyBinding(
                 'Ctrl+5', 
                 'Scoreboard Tab', 
-                lambda: self.switch_tab(4)
+                self.switch_tab_4
             ),
             '<Control-6>': KeyBinding(
                 'Ctrl+6', 
                 'Investment Analysis Tab', 
-                lambda: self.switch_tab(5)
+                self.switch_tab_5
             ),
             '<Control-7>': KeyBinding(
                 'Ctrl+7', 
                 'Settings Tab', 
-                lambda: self.switch_tab(6)
+                self.switch_tab_6
             ),
         }
     
@@ -281,6 +281,35 @@ class KeyboardManager:
             self.main_app.update_status("Current action canceled (ESC)")
         except Exception as e:
             print(f"Error canceling action: {e}")
+    
+    # Individual tab switching methods
+    def switch_tab_0(self):
+        """Switch to Stock Data tab"""
+        self.switch_tab(0)
+    
+    def switch_tab_1(self):
+        """Switch to Recommendations tab"""
+        self.switch_tab(1)
+    
+    def switch_tab_2(self):
+        """Switch to Analysis tab"""
+        self.switch_tab(2)
+    
+    def switch_tab_3(self):
+        """Switch to Trading tab"""
+        self.switch_tab(3)
+    
+    def switch_tab_4(self):
+        """Switch to Scoreboard tab"""
+        self.switch_tab(4)
+    
+    def switch_tab_5(self):
+        """Switch to Investment Analysis tab"""
+        self.switch_tab(5)
+    
+    def switch_tab_6(self):
+        """Switch to Settings tab"""
+        self.switch_tab(6)
     
     def switch_tab(self, tab_index: int):
         """Switch tab"""
