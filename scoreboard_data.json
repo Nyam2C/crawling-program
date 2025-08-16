@@ -1,4 +1,17 @@
 {
-  "records": [],
-  "last_saved": "2025-08-16T17:15:58.317488"
+  "records": [
+    {
+      "nickname": "Player",
+      "date": "2025-08-16T17:34:59.790785",
+      "initial_balance": 100000.0,
+      "final_balance": 99900.0,
+      "return_rate": -0.1,
+      "holding_period_days": 1,
+      "best_stock": "NKE",
+      "best_stock_return": 0.0,
+      "total_trades": 1,
+      "result_type": "RESET"
+    }
+  ],
+  "last_saved": "2025-08-16T17:34:59.790969"
 }

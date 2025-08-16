@@ -42,7 +42,7 @@ class IconManager:
             'export':           'skull.png',
             'tab_data':         'sparkle.png',
             'tab_recommend':    'heart.png',
-            'tab_analysis':     'glasses.png',
+            'tab_analysis':     'rainbow.png',
             'tab_trading':      'folder.png',  # Mock trading tab
             'tab_scoreboard':   'bow.png',     # Scoreboard tab
             'tab_settings':     'skull.png',
