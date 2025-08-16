@@ -34,19 +34,19 @@ class SettingsTab:
         info_frame = ttk.LabelFrame(self.frame, text="About This App", padding="15")
         info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         
-        info_text = """Kawaii Stock Analysis Platform
+        info_text = """Kawaii StockEdu Platform
 
-Version: 2.5.0 - Universal Stock Analysis Edition
+Version: 3.0.0 - Educational Trading Simulation Edition
 Style: Adorable Pastel Purple/Pink with Retro Windows Aesthetics  
-Magic Level: Maximum Kawaii Cuteness!
+Purpose: Educational Stock Analysis & Virtual Trading
 
-This application provides advanced analysis and recommendations 
-for any stock symbol you want to analyze:
+This platform provides comprehensive stock market education 
+tools for risk-free learning:
 
-✧ Universal stock symbol support (not limited to M7)
-✧ Real-time data fetching with yfinance integration
-✧ Advanced multi-criteria investment analysis
-✧ Individual stock portfolio management
+✧ Real-time stock data analysis and AI recommendations
+✧ Virtual trading simulation with $100,000 virtual cash
+✧ Investment personality analysis and skill assessment
+✧ Educational market tools designed for safe learning
 ✧ Comprehensive recommendation reports
 ✧ Cute kawaii interface with pixel decorations
 

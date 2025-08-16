@@ -79,7 +79,7 @@ class UIBuilder:
         
         # Title and subtitle
         title_label = ttk.Label(title_frame, 
-                              text="Kawaii Stock Analysis Platform",
+                              text="Kawaii StockEdu Platform",
                               font=('Arial', 18, 'bold'),
                               foreground=self.theme_manager.colors['lavender'])
         title_label.grid(row=0, column=1)
@@ -92,7 +92,7 @@ class UIBuilder:
             icon_label.grid(row=1, column=1, pady=(5, 5))
         
         subtitle_label = ttk.Label(title_frame,
-                                 text="Kawaii stock analysis with rebellious attitude!",
+                                 text="Educational stock trading simulation platform!",
                                  font=('Arial', 12, 'italic'),
                                  foreground=self.theme_manager.colors['periwinkle'])
         subtitle_label.grid(row=2, column=1, pady=(5, 0))

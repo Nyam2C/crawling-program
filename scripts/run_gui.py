@@ -88,7 +88,7 @@ def show_welcome_message():
         root.withdraw()  # Hide the root window
         
         welcome = tk.Toplevel()
-        welcome.title("Welcome to Kawaii Stock Analysis Platform")
+        welcome.title("Welcome to Kawaii StockEdu Platform")
         welcome.configure(bg='#1F144A')  # Dark navy purple
         welcome.resizable(False, False)
         
@@ -112,7 +112,7 @@ def show_welcome_message():
         
         # Title
         title_label = tk.Label(main_frame, 
-                             text="✧･ﾟ: *✧･ﾟ:* Welcome *:･ﾟ✧*:･ﾟ✧",
+                             text="✧✿: *✧✿:* Welcome *:✿✧*:✿✧",
                              font=('Arial', 18, 'bold'),
                              fg='#A78BFA',  # Periwinkle
                              bg='#1F144A')
@@ -120,7 +120,7 @@ def show_welcome_message():
         
         # Subtitle
         subtitle_label = tk.Label(main_frame,
-                                text="Kawaii Stock Analysis Platform",
+                                text="Kawaii StockEdu Platform",
                                 font=('Arial', 14),
                                 fg='#C4B5FD',  # Lavender
                                 bg='#1F144A')
@@ -223,14 +223,14 @@ def show_kawaii_ascii():
 ██║░╚██╗██║░░██║░░╚██╔╝░╚██╔╝░██║░░██║██║██║
 ╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝╚═╝
 
-    ✧･ﾟ: *✧･ﾟ:* Kawaii Stock Analysis Platform *:･ﾟ✧*:･ﾟ✧
+    ✧･ﾟ: *✧･ﾟ:* Kawaii StockEdu Platform *:･ﾟ✧*:･ﾟ✧
 """
     print(kawaii_art)
 
 def main():
     """Main function to launch the GUI"""
     show_kawaii_ascii()
-    print("🚀 Starting Kawaii Stock Analysis Platform...")
+    print("🚀 Starting Kawaii StockEdu Platform...")
     
     # Check tkinter first
     tkinter_available, tkinter_error = check_tkinter()
