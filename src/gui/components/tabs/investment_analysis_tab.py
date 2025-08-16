@@ -84,7 +84,11 @@ class InvestmentAnalysisTab:
         
         refresh_btn = self.main_app.icon_button(controls_frame, 'sparkle', 'Analyze All Records',
                                                self.analyze_all_records, 'Pastel.Secondary.TButton')
-        refresh_btn.pack(side=tk.LEFT)
+        refresh_btn.pack(side=tk.LEFT, padx=(0, 5))
+        
+        clear_btn = self.main_app.icon_button(controls_frame, 'skull', 'Clear',
+                                             self.clear_analysis, 'Pastel.Ghost.TButton')
+        clear_btn.pack(side=tk.LEFT)
     
     def create_main_content(self):
         """Create main content area"""
@@ -108,8 +112,8 @@ class InvestmentAnalysisTab:
         analysis_frame.grid_rowconfigure(0, weight=1)
         analysis_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content with fixed height for consistent layout
-        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=300, highlightthickness=0)
+        # Scrollable content with reduced height to fit comprehensive status
+        canvas = tk.Canvas(analysis_frame, bg=self.colors['panel_light'], height=320)
         scrollbar = ttk.Scrollbar(analysis_frame, orient="vertical", command=canvas.yview)
         self.analysis_content_frame = ttk.Frame(canvas)
         
@@ -134,8 +138,8 @@ class InvestmentAnalysisTab:
         stats_frame.grid_rowconfigure(0, weight=1)
         stats_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content with fixed height for consistent layout
-        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=300, highlightthickness=0)
+        # Scrollable content for ability stats with reduced height to fit comprehensive status
+        canvas = tk.Canvas(stats_frame, bg=self.colors['panel_light'], height=320)
         scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
         self.ability_content_frame = ttk.Frame(canvas)
         
@@ -253,9 +257,10 @@ Your personality analysis will help you understand your trading behavior and imp
         welcome_label = ttk.Label(welcome_frame, text=welcome_text,
                                  font=('Arial', 10),
                                  foreground=self.colors['text'],
-                                 justify=tk.LEFT,
-                                 wraplength=400)
-        welcome_label.pack(anchor=tk.W)
+                                 justify=tk.CENTER,
+                                 wraplength=400,
+                                 background=self.colors['panel_light'])
+        welcome_label.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
     
     def show_initial_ability_message(self):
         """Show initial message when no analysis is loaded"""
@@ -281,8 +286,9 @@ Start an analysis to see your investor ability stats!"""
         welcome_label = ttk.Label(welcome_frame, text=welcome_text,
                                  font=('Arial', 11),
                                  foreground=self.colors['text'],
-                                 justify=tk.CENTER)
-        welcome_label.pack()
+                                 justify=tk.CENTER,
+                                 background=self.colors['panel_light'])
+        welcome_label.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
     
     def analyze_specific_trader(self):
         """Analyze specific trader by nickname"""
@@ -347,7 +353,24 @@ Start an analysis to see your investor ability stats!"""
         # Update main app evaluation area
         self.update_main_evaluation_area()
     
-    # Clear analysis method removed - functionality no longer needed
+    def clear_analysis(self):
+        """Clear current analysis"""
+        self.current_metrics = None
+        self.nickname_var.set("")
+        self.show_initial_message()
+        self.show_initial_ability_message()
+        
+        # Reset tab icon to default
+        icon = self.main_app.icon_manager.get_icon('level_3')
+        if icon:
+            for i in range(self.notebook.index("end")):
+                if self.notebook.tab(i, "text") == "Investment Analysis":
+                    self.notebook.tab(i, image=icon)
+                    break
+        
+        # Update footer
+        self.last_updated_label.config(text="Ready for analysis")
+        self.stats_label.config(text="")
     
     def display_analysis_results(self, title: str):
         """Display analysis results in the left panel"""
@@ -457,10 +480,10 @@ Volatility: {metrics.volatility:.2f}%"""
         title_frame = ttk.Frame(self.ability_content_frame)
         title_frame.pack(fill=tk.X, pady=(0, 20))
         
-        title_label = ttk.Label(title_frame, text="INVESTMENT ABILITY STATS",
+        title_label = ttk.Label(title_frame, text="INVESTOR ABILITY STATS",
                                font=('Arial', 14, 'bold'),
                                foreground=self.colors['magenta'])
-        title_label.pack(anchor=tk.W)
+        title_label.pack()
         
         # Create ability stats
         abilities = [
