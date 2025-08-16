@@ -15,6 +15,8 @@ from src.gui.components import (
     StockDataTab, RecommendationsTab, IndividualAnalysisTab, ScoreboardTab, SettingsTab, InvestmentAnalysisTab,
     MockTradingTab, ThemeManager, IconManager, UIBuilder
 )
+from src.gui.components.ui_core.keyboard_manager import KeyboardManager
+from src.gui.components.ui_core.action_manager import ActionManager
 
 
 class StockAnalysisGUI:
@@ -32,6 +34,11 @@ class StockAnalysisGUI:
         self.theme_manager = ThemeManager(self.root)
         self.icon_manager = IconManager()
         self.ui_builder = UIBuilder(self, self.icon_manager, self.theme_manager)
+        
+        # Initialize UX enhancement managers
+        self.action_manager = ActionManager(max_history=50)
+        self.action_manager.set_main_app(self)
+        self.keyboard_manager = KeyboardManager(self.root, self)
         
         # Apply theme and load icons
         self.theme_manager.apply_styles()
