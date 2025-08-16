@@ -36,7 +36,7 @@ class SettingsTab:
     def create_scrollable_frame(self):
         """Create a scrollable frame for the settings content"""
         # Create canvas and scrollbar with background color
-        self.canvas = tk.Canvas(self.main_frame, highlightthickness=0, bg=self.colors['background'])
+        self.canvas = tk.Canvas(self.main_frame, highlightthickness=0, bg=self.colors['bg'])
         self.scrollbar = ttk.Scrollbar(self.main_frame, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = ttk.Frame(self.canvas, padding="15")
         
