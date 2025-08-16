@@ -19,16 +19,10 @@ def main():
         gui_main()
     except ImportError as e:
         print(f"Failed to import GUI components: {e}")
-        print("Trying CLI fallback...")
-        try:
-            from scripts.cli import StockAnalysisCLI
-            cli = StockAnalysisCLI()
-            cli.run()
-        except Exception as cli_e:
-            print(f"CLI fallback also failed: {cli_e}")
-            print("\nPlease install missing dependencies:")
-            print("   pip install -r requirements.txt")
-            sys.exit(1)
+        print("\nPlease install missing dependencies:")
+        print("   pip install -r requirements.txt")
+        print("\nNote: This platform only supports GUI mode.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
