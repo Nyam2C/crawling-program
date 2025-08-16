@@ -34,7 +34,7 @@ class ActionManager:
     
     def __init__(self, max_history: int = 50):
         self.max_history = max_history
-        self.action_history: List[Action] = []
+        self.action_history = []  # List[Action] - removed type hint for Python 3.8
         self.current_position = -1
         self.main_app = None
         

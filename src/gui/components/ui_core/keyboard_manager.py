@@ -7,11 +7,14 @@ from __future__ import annotations
 import tkinter as tk
 try:
     from typing import Dict, Callable, Optional
+    # For Python 3.8 compatibility, avoid using Dict[...] syntax in class variables
+    TYPING_AVAILABLE = True
 except ImportError:
     # Fallback for very old Python versions
     Dict = dict
     Callable = object
     Optional = lambda x: x
+    TYPING_AVAILABLE = False
 
 class KeyBinding:
     """Key binding information"""
@@ -27,7 +30,8 @@ class KeyboardManager:
     def __init__(self, root: tk.Tk, main_app):
         self.root = root
         self.main_app = main_app
-        self.bindings: Dict[str, KeyBinding] = {}
+        # Use dict instead of Dict[str, KeyBinding] for Python 3.8 compatibility
+        self.bindings = {}
         self.setup_default_bindings()
         self.bind_all_shortcuts()
         

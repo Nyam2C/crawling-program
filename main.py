@@ -41,6 +41,13 @@ def main():
         sys.exit(1)
     except Exception as e:
         print(f"Error starting application: {e}")
+        print(f"Error type: {type(e).__name__}")
+        
+        # Print detailed traceback for debugging
+        import traceback
+        print("\nDetailed error traceback:")
+        traceback.print_exc()
+        
         print("\nIf you're getting a 'type object is not subscriptable' error,")
         print("this usually means you're using an older Python version.")
         print("Please upgrade to Python 3.9+ for best compatibility.")

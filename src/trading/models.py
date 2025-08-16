@@ -7,7 +7,11 @@ Trading Models - Data classes for mock trading system
 from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional, Literal
+# Removed specific typing imports for Python 3.8 compatibility
+try:
+    from typing import Dict, List, Optional, Literal
+except ImportError:
+    pass
 from enum import Enum
 
 
@@ -105,15 +109,15 @@ class Transaction:
 class Portfolio:
     """포트폴리오 (전체 계좌 정보)"""
     cash_balance: float = 100000.0  # 현금 잔고 (기본 $100,000)
-    positions: Dict[str, Position] = field(default_factory=dict)  # 보유 주식들
-    transactions: List[Transaction] = field(default_factory=list)  # 거래 내역
+    positions = field(default_factory=dict)  # 보유 주식들 Dict[str, Position]
+    transactions = field(default_factory=list)  # 거래 내역 List[Transaction]
     initial_balance: float = 100000.0  # 초기 자금 (기본 $100,000)
     
     def get_total_invested(self) -> float:
         """총 투자 금액"""
         return sum(pos.total_invested for pos in self.positions.values())
     
-    def get_total_value(self, stock_prices: Dict[str, float]) -> float:
+    def get_total_value(self, stock_prices) -> float:  # stock_prices: Dict[str, float]
         """총 평가 금액"""
         total = self.cash_balance
         for symbol, position in self.positions.items():
@@ -121,11 +125,11 @@ class Portfolio:
                 total += position.get_current_value(stock_prices[symbol])
         return total
     
-    def get_total_pnl(self, stock_prices: Dict[str, float]) -> float:
+    def get_total_pnl(self, stock_prices) -> float:  # stock_prices: Dict[str, float]
         """총 손익"""
         return self.get_total_value(stock_prices) - self.initial_balance
     
-    def get_total_pnl_percentage(self, stock_prices: Dict[str, float]) -> float:
+    def get_total_pnl_percentage(self, stock_prices) -> float:  # stock_prices: Dict[str, float]
         """총 손익률"""
         if self.initial_balance == 0:
             return 0
