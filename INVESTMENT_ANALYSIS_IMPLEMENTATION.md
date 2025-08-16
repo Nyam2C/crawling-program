@@ -15,11 +15,11 @@ Successfully implemented a comprehensive investment personality analysis system 
 
 ### 2. Investment Analysis GUI Tab (`src/gui/components/tabs/investment_analysis_tab.py`)
 - **Interactive Analysis Panel**: Scrollable results with detailed personality breakdown
-- **Data Visualization**: 4-panel matplotlib dashboard with:
-  - Performance scores radar chart
-  - Risk vs return profile scatter plot
-  - Trading characteristics bar chart
-  - Personality composition pie chart
+- **Text-Based Ability Stats**: Game-style ability scoring system with:
+  - Individual ability ratings (Patience, Consistency, Profitability, Discipline)
+  - Level classifications (Novice → Beginner → Intermediate → Advanced → Expert → Legendary)
+  - ASCII progress bars and star ratings
+  - Overall investor level with badges
 - **Trader-Specific Analysis**: Analyze individual traders by nickname
 - **Overall Market Analysis**: Analyze all trading records for market insights
 - **Real-time Updates**: Integrated with scoreboard data
@@ -86,19 +86,18 @@ Successfully implemented a comprehensive investment personality analysis system 
 - **Profitability** (High = Profitable): Overall success rate
 - **Discipline** (High = Controlled trading): Systematic approach
 
-#### Visualizations
-1. **Performance Radar**: 4-dimensional view of key metrics
-2. **Risk-Return Plot**: Risk tolerance vs return potential
-3. **Trading Characteristics**: Key trading statistics
-4. **Personality Composition**: Investment behavior breakdown
+#### Ability Stats Display
+1. **Individual Abilities**: 4 key investment skills with level rankings
+2. **Progress Visualization**: ASCII progress bars showing skill levels
+3. **Overall Rating**: Comprehensive investor level classification
+4. **Profile Summary**: Risk tolerance and trading style breakdown
 
 ## Technical Implementation Details
 
 ### Dependencies
-- `matplotlib`: For data visualization and charts
-- `numpy`: For numerical computations and radar charts
 - `tkinter`: For GUI components and layout
 - Integration with existing scoreboard system
+- No external visualization libraries required
 
 ### Data Flow
 1. **Data Source**: Scoreboard records from trading sessions

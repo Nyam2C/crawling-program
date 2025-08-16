@@ -4,9 +4,6 @@
 import tkinter as tk
 from tkinter import ttk
 from typing import Optional, List
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import numpy as np
 
 from src.analysis.investment_personality_analyzer import InvestmentPersonalityAnalyzer, PersonalityMetrics
 from src.trading.scoreboard_manager import ScoreboardManager
@@ -60,14 +57,14 @@ class InvestmentAnalysisTab:
         
         # Title
         title_label = ttk.Label(header_frame, 
-                               text="INVESTMENT PERSONALITY ANALYSIS",
+                               text="🎮 INVESTMENT PERSONALITY ANALYSIS 🎮",
                                font=('Arial', 16, 'bold'),
                                foreground=self.colors['magenta'])
         title_label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
         
         # Subtitle
         subtitle_label = ttk.Label(header_frame,
-                                  text="Analyze your trading patterns and investment personality",
+                                  text="Analyze your trading patterns and discover your investor ability stats",
                                   font=('Arial', 10),
                                   foreground=self.colors['text_muted'])
         subtitle_label.grid(row=1, column=0, columnspan=3, pady=(0, 15))
@@ -111,12 +108,12 @@ class InvestmentAnalysisTab:
         # Left panel - Analysis results
         self.create_analysis_panel(main_container)
         
-        # Right panel - Visualization
-        self.create_visualization_panel(main_container)
+        # Right panel - Investment Ability Stats
+        self.create_ability_stats_panel(main_container)
     
     def create_analysis_panel(self, parent):
         """Create analysis results panel"""
-        analysis_frame = ttk.LabelFrame(parent, text="Personality Analysis", padding="10")
+        analysis_frame = ttk.LabelFrame(parent, text="📊 Personality Analysis", padding="10")
         analysis_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
         
         # Scrollable content
@@ -138,24 +135,29 @@ class InvestmentAnalysisTab:
         # Initial message
         self.show_initial_message()
     
-    def create_visualization_panel(self, parent):
-        """Create visualization panel"""
-        viz_frame = ttk.LabelFrame(parent, text="Performance Metrics", padding="10")
-        viz_frame.grid(row=0, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
+    def create_ability_stats_panel(self, parent):
+        """Create investment ability stats panel"""
+        stats_frame = ttk.LabelFrame(parent, text="🎯 Investment Ability Stats", padding="10")
+        stats_frame.grid(row=0, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Matplotlib figure
-        self.fig, self.axes = plt.subplots(2, 2, figsize=(8, 6))
-        self.fig.patch.set_facecolor(self.colors['bg'])
+        # Scrollable content for ability stats
+        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'])
+        scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
+        self.ability_content_frame = ttk.Frame(canvas)
         
-        # Adjust layout
-        self.fig.tight_layout(pad=3.0)
+        self.ability_content_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
         
-        # Create canvas
-        self.canvas = FigureCanvasTkAgg(self.fig, viz_frame)
-        self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        canvas.create_window((0, 0), window=self.ability_content_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
         
-        # Initial empty charts
-        self.clear_charts()
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initial message
+        self.show_initial_ability_message()
     
     def create_footer(self):
         """Create footer with additional info"""
@@ -190,10 +192,10 @@ class InvestmentAnalysisTab:
 
 This tool analyzes your trading patterns from scoreboard records to determine:
 
-• Risk Tolerance (Conservative, Moderate, Aggressive)
-• Investment Style (Long-term, Short-term, Swing, Day Trading)
-• Trading Frequency (Minimal, Moderate, Active, Hyperactive)
-• Performance Metrics (Patience, Consistency, Profitability, Discipline)
+🎯 Risk Tolerance (Conservative, Moderate, Aggressive)
+📈 Investment Style (Long-term, Short-term, Swing, Day Trading)
+⚡ Trading Frequency (Minimal, Moderate, Active, Hyperactive)
+📊 Performance Metrics (Patience, Consistency, Profitability, Discipline)
 
 To get started:
 1. Enter a specific trader's nickname and click 'Analyze Trader'
@@ -207,6 +209,33 @@ Your personality analysis will help you understand your trading behavior and imp
                                  justify=tk.LEFT,
                                  wraplength=400)
         welcome_label.pack(anchor=tk.W)
+    
+    def show_initial_ability_message(self):
+        """Show initial message when no analysis is loaded"""
+        # Clear existing content
+        for widget in self.ability_content_frame.winfo_children():
+            widget.destroy()
+        
+        # Welcome message
+        welcome_frame = ttk.Frame(self.ability_content_frame)
+        welcome_frame.pack(fill=tk.X, pady=20)
+        
+        welcome_text = """Welcome to Investment Ability Analysis!
+
+Your trading performance will be analyzed across 4 key areas:
+
+🎯 PATIENCE: Long-term holding capability
+⚖️ CONSISTENCY: Stable return generation  
+💰 PROFITABILITY: Success rate and returns
+🎲 DISCIPLINE: Risk management skills
+
+Start an analysis to see your investor ability stats!"""
+        
+        welcome_label = ttk.Label(welcome_frame, text=welcome_text,
+                                 font=('Arial', 11),
+                                 foreground=self.colors['text'],
+                                 justify=tk.CENTER)
+        welcome_label.pack()
     
     def analyze_specific_trader(self):
         """Analyze specific trader by nickname"""
@@ -223,18 +252,20 @@ Your personality analysis will help you understand your trading behavior and imp
         
         if not trader_records:
             self.kawaii_msg.show_warning("Trader Not Found", 
-                                        f"No records found for trader '{nickname}'.\nPlease check the nickname and try again.", 
+                                        f"No records found for trader '{nickname}'.\\nPlease check the nickname and try again.", 
                                         'skull')
             return
         
         # Perform analysis
         self.current_metrics = self.analyzer.analyze_personality(trader_records)
         self.display_analysis_results(f"Analysis for {nickname}")
-        self.update_visualizations()
         
         # Update footer
         self.last_updated_label.config(text=f"Analyzed: {nickname}")
         self.stats_label.config(text=f"{len(trader_records)} records analyzed")
+        
+        # Update ability stats
+        self.update_ability_stats()
     
     def analyze_all_records(self):
         """Analyze all trading records"""
@@ -242,25 +273,27 @@ Your personality analysis will help you understand your trading behavior and imp
         
         if not all_records:
             self.kawaii_msg.show_info("No Data", 
-                                     "No trading records found in scoreboard.\nStart trading to generate analysis data!", 
+                                     "No trading records found in scoreboard.\\nStart trading to generate analysis data!", 
                                      'sparkle')
             return
         
         # Perform analysis on all records
         self.current_metrics = self.analyzer.analyze_personality(all_records)
         self.display_analysis_results("Overall Market Analysis")
-        self.update_visualizations()
         
         # Update footer
         self.last_updated_label.config(text="Analyzed: All traders")
         self.stats_label.config(text=f"{len(all_records)} total records")
+        
+        # Update ability stats
+        self.update_ability_stats()
     
     def clear_analysis(self):
         """Clear current analysis"""
         self.current_metrics = None
         self.nickname_var.set("")
         self.show_initial_message()
-        self.clear_charts()
+        self.show_initial_ability_message()
         
         # Update footer
         self.last_updated_label.config(text="Ready for analysis")
@@ -288,12 +321,12 @@ Your personality analysis will help you understand your trading behavior and imp
         title_label.pack(anchor=tk.W)
         
         # Personality Overview
-        overview_frame = ttk.LabelFrame(self.analysis_content_frame, text="Personality Overview", padding="10")
+        overview_frame = ttk.LabelFrame(self.analysis_content_frame, text="📋 Personality Overview", padding="10")
         overview_frame.pack(fill=tk.X, pady=(0, 10))
         
-        overview_text = f"""Risk Tolerance: {metrics.risk_tolerance.value}
-Investment Style: {metrics.investment_style.value}
-Trading Frequency: {metrics.trading_frequency.value}
+        overview_text = f"""🎯 Risk Tolerance: {metrics.risk_tolerance.value}
+📈 Investment Style: {metrics.investment_style.value}
+⚡ Trading Frequency: {metrics.trading_frequency.value}
 
 {metrics.personality_description}"""
         
@@ -302,41 +335,14 @@ Trading Frequency: {metrics.trading_frequency.value}
                                   justify=tk.LEFT)
         overview_label.pack(anchor=tk.W)
         
-        # Performance Scores
-        scores_frame = ttk.LabelFrame(self.analysis_content_frame, text="Performance Scores", padding="10")
-        scores_frame.pack(fill=tk.X, pady=(0, 10))
-        
-        scores_data = [
-            ("Patience", metrics.patience_score),
-            ("Consistency", metrics.consistency_score),
-            ("Profitability", metrics.profitability_score),
-            ("Discipline", metrics.discipline_score)
-        ]
-        
-        for i, (label, score) in enumerate(scores_data):
-            score_frame = ttk.Frame(scores_frame)
-            score_frame.pack(fill=tk.X, pady=2)
-            
-            ttk.Label(score_frame, text=f"{label}:", width=12).pack(side=tk.LEFT)
-            
-            # Progress bar
-            progress = ttk.Progressbar(score_frame, length=150, mode='determinate')
-            progress['value'] = score
-            progress.pack(side=tk.LEFT, padx=(5, 10))
-            
-            # Score text
-            color = self.colors['mint'] if score >= 70 else self.colors['coral'] if score < 40 else self.colors['text']
-            ttk.Label(score_frame, text=f"{score:.1f}%", 
-                     foreground=color, font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
-        
         # Statistics
-        stats_frame = ttk.LabelFrame(self.analysis_content_frame, text="Trading Statistics", padding="10")
+        stats_frame = ttk.LabelFrame(self.analysis_content_frame, text="📊 Trading Statistics", padding="10")
         stats_frame.pack(fill=tk.X, pady=(0, 10))
         
-        stats_text = f"""Average Holding Period: {metrics.average_holding_period:.1f} days
-Win Rate: {metrics.win_rate:.1f}%
-Average Return: {metrics.average_return:.2f}%
-Volatility: {metrics.volatility:.2f}%"""
+        stats_text = f"""📅 Average Holding Period: {metrics.average_holding_period:.1f} days
+🎯 Win Rate: {metrics.win_rate:.1f}%
+💰 Average Return: {metrics.average_return:.2f}%
+📈 Volatility: {metrics.volatility:.2f}%"""
         
         stats_label = ttk.Label(stats_frame, text=stats_text,
                                font=('Arial', 10),
@@ -345,7 +351,7 @@ Volatility: {metrics.volatility:.2f}%"""
         
         # Strengths
         if metrics.strengths:
-            strengths_frame = ttk.LabelFrame(self.analysis_content_frame, text="Strengths", padding="10")
+            strengths_frame = ttk.LabelFrame(self.analysis_content_frame, text="✅ Strengths", padding="10")
             strengths_frame.pack(fill=tk.X, pady=(0, 10))
             
             for strength in metrics.strengths:
@@ -359,7 +365,7 @@ Volatility: {metrics.volatility:.2f}%"""
         
         # Weaknesses
         if metrics.weaknesses:
-            weaknesses_frame = ttk.LabelFrame(self.analysis_content_frame, text="Areas for Improvement", padding="10")
+            weaknesses_frame = ttk.LabelFrame(self.analysis_content_frame, text="⚠️ Areas for Improvement", padding="10")
             weaknesses_frame.pack(fill=tk.X, pady=(0, 10))
             
             for weakness in metrics.weaknesses:
@@ -373,7 +379,7 @@ Volatility: {metrics.volatility:.2f}%"""
         
         # Recommendations
         if metrics.recommendations:
-            recommendations_frame = ttk.LabelFrame(self.analysis_content_frame, text="Recommendations", padding="10")
+            recommendations_frame = ttk.LabelFrame(self.analysis_content_frame, text="💡 Recommendations", padding="10")
             recommendations_frame.pack(fill=tk.X, pady=(0, 10))
             
             for recommendation in metrics.recommendations:
@@ -385,108 +391,203 @@ Volatility: {metrics.volatility:.2f}%"""
                          foreground=self.colors['text'],
                          wraplength=350).pack(anchor=tk.W)
     
-    def update_visualizations(self):
-        """Update visualization charts"""
+    def update_ability_stats(self):
+        """Update ability stats display"""
         if not self.current_metrics:
-            self.clear_charts()
+            self.show_initial_ability_message()
+            return
+        
+        # Clear existing content
+        for widget in self.ability_content_frame.winfo_children():
+            widget.destroy()
+        
+        metrics = self.current_metrics
+        
+        # Title
+        title_frame = ttk.Frame(self.ability_content_frame)
+        title_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_label = ttk.Label(title_frame, text="🎮 INVESTOR ABILITY STATS 🎮",
+                               font=('Arial', 14, 'bold'),
+                               foreground=self.colors['magenta'])
+        title_label.pack()
+        
+        # Create ability stats
+        abilities = [
+            ("🎯 PATIENCE", metrics.patience_score, "Long-term Investment Capability"),
+            ("⚖️ CONSISTENCY", metrics.consistency_score, "Stable Return Generation"),
+            ("💰 PROFITABILITY", metrics.profitability_score, "Success Rate & Returns"),
+            ("🎲 DISCIPLINE", metrics.discipline_score, "Risk Management Skills")
+        ]
+        
+        for ability_name, score, description in abilities:
+            self.create_ability_stat(ability_name, score, description)
+        
+        # Overall Investment Level
+        self.create_overall_level()
+        
+        # Investment Type Classification
+        self.create_investment_type()
+    
+    def create_ability_stat(self, name: str, score: float, description: str):
+        """Create individual ability stat display"""
+        stat_frame = ttk.LabelFrame(self.ability_content_frame, text=name, padding="15")
+        stat_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        # Score and level
+        score_frame = ttk.Frame(stat_frame)
+        score_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        # Determine level and color
+        if score >= 90:
+            level = "LEGENDARY"
+            level_color = self.colors['magenta']
+            stars = "⭐⭐⭐⭐⭐"
+        elif score >= 80:
+            level = "EXPERT"
+            level_color = self.colors['periwinkle']
+            stars = "⭐⭐⭐⭐"
+        elif score >= 70:
+            level = "ADVANCED"
+            level_color = self.colors['mint']
+            stars = "⭐⭐⭐"
+        elif score >= 60:
+            level = "INTERMEDIATE"
+            level_color = self.colors['lavender']
+            stars = "⭐⭐"
+        elif score >= 50:
+            level = "BEGINNER"
+            level_color = self.colors['text']
+            stars = "⭐"
+        else:
+            level = "NOVICE"
+            level_color = self.colors['coral']
+            stars = "☆"
+        
+        # Score display
+        score_text = f"{score:.1f}/100.0"
+        score_label = ttk.Label(score_frame, text=score_text,
+                               font=('Arial', 16, 'bold'),
+                               foreground=level_color)
+        score_label.pack(side=tk.LEFT)
+        
+        # Level display
+        level_label = ttk.Label(score_frame, text=f"  {level} {stars}",
+                               font=('Arial', 12, 'bold'),
+                               foreground=level_color)
+        level_label.pack(side=tk.LEFT)
+        
+        # Progress bar visualization
+        progress_frame = ttk.Frame(stat_frame)
+        progress_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        # ASCII progress bar
+        bar_length = 30
+        filled_length = int(bar_length * score / 100)
+        bar = "█" * filled_length + "░" * (bar_length - filled_length)
+        
+        progress_label = ttk.Label(progress_frame, text=f"[{bar}]",
+                                  font=('Courier', 10),
+                                  foreground=level_color)
+        progress_label.pack()
+        
+        # Description
+        desc_label = ttk.Label(stat_frame, text=description,
+                              font=('Arial', 9),
+                              foreground=self.colors['text_muted'])
+        desc_label.pack()
+    
+    def create_overall_level(self):
+        """Create overall investment level display"""
+        if not self.current_metrics:
+            return
+        
+        metrics = self.current_metrics
+        overall_score = (metrics.patience_score + metrics.consistency_score + 
+                        metrics.profitability_score + metrics.discipline_score) / 4
+        
+        level_frame = ttk.LabelFrame(self.ability_content_frame, text="🏆 OVERALL INVESTOR LEVEL", padding="15")
+        level_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        # Determine overall level
+        if overall_score >= 85:
+            level = "MASTER INVESTOR"
+            level_desc = "You demonstrate exceptional investment skills across all areas!"
+            level_color = self.colors['magenta']
+            badge = "🏆👑"
+        elif overall_score >= 75:
+            level = "SKILLED INVESTOR"
+            level_desc = "You have strong investment capabilities with room for optimization."
+            level_color = self.colors['periwinkle']
+            badge = "🥇✨"
+        elif overall_score >= 65:
+            level = "DEVELOPING INVESTOR"
+            level_desc = "You're building solid investment fundamentals. Keep practicing!"
+            level_color = self.colors['mint']
+            badge = "🥈💪"
+        elif overall_score >= 50:
+            level = "LEARNING INVESTOR"
+            level_desc = "You're on the right track. Focus on consistency and patience."
+            level_color = self.colors['lavender']
+            badge = "🥉📚"
+        else:
+            level = "BEGINNER INVESTOR"
+            level_desc = "Great start! Continue learning and practicing your skills."
+            level_color = self.colors['coral']
+            badge = "🌱🎯"
+        
+        # Level display
+        level_text = f"{badge} {level}"
+        level_label = ttk.Label(level_frame, text=level_text,
+                               font=('Arial', 16, 'bold'),
+                               foreground=level_color)
+        level_label.pack(pady=(0, 10))
+        
+        # Score display
+        score_text = f"Overall Score: {overall_score:.1f}/100.0"
+        score_label = ttk.Label(level_frame, text=score_text,
+                               font=('Arial', 12),
+                               foreground=level_color)
+        score_label.pack(pady=(0, 10))
+        
+        # Description
+        desc_label = ttk.Label(level_frame, text=level_desc,
+                              font=('Arial', 10),
+                              foreground=self.colors['text'],
+                              wraplength=400)
+        desc_label.pack()
+    
+    def create_investment_type(self):
+        """Create investment type classification"""
+        if not self.current_metrics:
             return
         
         metrics = self.current_metrics
         
-        # Clear all axes
-        for ax in self.axes.flat:
-            ax.clear()
+        type_frame = ttk.LabelFrame(self.ability_content_frame, text="🎭 INVESTOR TYPE PROFILE", padding="15")
+        type_frame.pack(fill=tk.X, pady=(0, 15))
         
-        # Chart 1: Performance Scores Radar
-        ax1 = self.axes[0, 0]
-        categories = ['Patience', 'Consistency', 'Profitability', 'Discipline']
-        values = [metrics.patience_score, metrics.consistency_score, 
-                 metrics.profitability_score, metrics.discipline_score]
+        # Investment profile based on metrics
+        risk_level = metrics.risk_tolerance.value
+        style = metrics.investment_style.value
+        frequency = metrics.trading_frequency.value
         
-        # Create radar chart
-        angles = np.linspace(0, 2*np.pi, len(categories), endpoint=False).tolist()
-        values += values[:1]  # Close the polygon
-        angles += angles[:1]
+        # Create profile text
+        profile_text = f"""🎯 Risk Profile: {risk_level} Investor
+📈 Trading Style: {style}
+⚡ Activity Level: {frequency}
+
+📊 Key Statistics:
+• Average Holding Period: {metrics.average_holding_period:.1f} days
+• Win Rate: {metrics.win_rate:.1f}%
+• Average Return: {metrics.average_return:.2f}%
+• Volatility: {metrics.volatility:.2f}%"""
         
-        ax1.plot(angles, values, 'o-', linewidth=2, color=self.colors['magenta'])
-        ax1.fill(angles, values, alpha=0.25, color=self.colors['magenta'])
-        ax1.set_xticks(angles[:-1])
-        ax1.set_xticklabels(categories, fontsize=8)
-        ax1.set_ylim(0, 100)
-        ax1.set_title('Performance Scores', fontsize=10, fontweight='bold')
-        ax1.grid(True)
-        
-        # Chart 2: Risk vs Return
-        ax2 = self.axes[0, 1]
-        risk_score = 100 - metrics.consistency_score  # Higher volatility = higher risk
-        return_score = metrics.profitability_score
-        
-        colors_map = {
-            'Conservative': self.colors['mint'],
-            'Moderate': self.colors['periwinkle'], 
-            'Aggressive': self.colors['coral']
-        }
-        point_color = colors_map.get(metrics.risk_tolerance.value, self.colors['text'])
-        
-        ax2.scatter([risk_score], [return_score], s=100, c=point_color, alpha=0.7)
-        ax2.set_xlabel('Risk Level', fontsize=9)
-        ax2.set_ylabel('Return Potential', fontsize=9)
-        ax2.set_title('Risk-Return Profile', fontsize=10, fontweight='bold')
-        ax2.set_xlim(0, 100)
-        ax2.set_ylim(0, 100)
-        ax2.grid(True, alpha=0.3)
-        
-        # Add quadrant labels
-        ax2.text(25, 75, 'Low Risk\nHigh Return', ha='center', va='center', fontsize=8, alpha=0.7)
-        ax2.text(75, 75, 'High Risk\nHigh Return', ha='center', va='center', fontsize=8, alpha=0.7)
-        ax2.text(25, 25, 'Low Risk\nLow Return', ha='center', va='center', fontsize=8, alpha=0.7)
-        ax2.text(75, 25, 'High Risk\nLow Return', ha='center', va='center', fontsize=8, alpha=0.7)
-        
-        # Chart 3: Trading Style Distribution
-        ax3 = self.axes[1, 0]
-        style_data = {
-            'Holding Period': metrics.average_holding_period,
-            'Win Rate': metrics.win_rate,
-            'Avg Return': max(metrics.average_return + 50, 0)  # Shift to positive
-        }
-        
-        bars = ax3.bar(style_data.keys(), style_data.values(), 
-                      color=[self.colors['lavender'], self.colors['mint'], self.colors['coral']])
-        ax3.set_title('Trading Characteristics', fontsize=10, fontweight='bold')
-        ax3.set_ylabel('Value', fontsize=9)
-        
-        # Rotate x labels
-        plt.setp(ax3.get_xticklabels(), rotation=45, ha='right', fontsize=8)
-        
-        # Chart 4: Investment Style Breakdown
-        ax4 = self.axes[1, 1]
-        
-        # Create pie chart for personality components
-        personality_weights = {
-            'Risk Tolerance': (100 - metrics.consistency_score) + 50,  # Risk component
-            'Trading Activity': min(metrics.average_holding_period / 10, 50),  # Activity component
-            'Performance': (metrics.profitability_score + metrics.discipline_score) / 2  # Performance component
-        }
-        
-        ax4.pie(personality_weights.values(), labels=personality_weights.keys(), 
-               autopct='%1.1f%%', startangle=90,
-               colors=[self.colors['coral'], self.colors['periwinkle'], self.colors['mint']])
-        ax4.set_title('Personality Composition', fontsize=10, fontweight='bold')
-        
-        # Update canvas
-        self.canvas.draw()
-    
-    def clear_charts(self):
-        """Clear all charts"""
-        for ax in self.axes.flat:
-            ax.clear()
-            ax.text(0.5, 0.5, 'No Data\nRun Analysis', 
-                   ha='center', va='center', transform=ax.transAxes,
-                   fontsize=12, alpha=0.5)
-            ax.set_xticks([])
-            ax.set_yticks([])
-        
-        self.canvas.draw()
+        profile_label = ttk.Label(type_frame, text=profile_text,
+                                 font=('Arial', 10),
+                                 foreground=self.colors['text'],
+                                 justify=tk.LEFT)
+        profile_label.pack(anchor=tk.W)
     
     def load_analysis(self):
         """Load initial analysis if data is available"""
