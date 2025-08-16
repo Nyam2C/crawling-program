@@ -233,6 +233,9 @@ Choose a symbol and analysis type to get started!
         
         self.analysis_text.insert(1.0, detail_text)
         
+        # Update main app evaluation area
+        self.update_main_evaluation_area(analysis)
+        
     def _format_advanced_analysis_display(self, analysis):
         """Format comprehensive stock analysis report in English"""
         detailed = analysis['detailed_analysis']
@@ -630,3 +633,29 @@ consult with qualified financial advisors before making investment decisions.
         
         dialog.wait_window()
         return result.get() if result.get() else None
+    
+    def update_main_evaluation_area(self, analysis):
+        """Update the main app's evaluation area with individual analysis status"""
+        overall_score = float(analysis['overall_score'])
+        recommendation = analysis['recommendation']
+        
+        # Determine level based on score
+        if overall_score >= 0.8:
+            level_icon = "level_5"
+            status_text = f"EXPERT - {recommendation}"
+        elif overall_score >= 0.7:
+            level_icon = "level_4" 
+            status_text = f"ADVANCED - {recommendation}"
+        elif overall_score >= 0.6:
+            level_icon = "level_3"
+            status_text = f"INTERMEDIATE - {recommendation}"
+        elif overall_score >= 0.5:
+            level_icon = "level_2"
+            status_text = f"BEGINNER - {recommendation}"
+        else:
+            level_icon = "level_1"
+            status_text = f"NOVICE - {recommendation}"
+        
+        # Update main app evaluation area
+        if hasattr(self.main_app, 'update_individual_status'):
+            self.main_app.update_individual_status(status_text, level_icon)

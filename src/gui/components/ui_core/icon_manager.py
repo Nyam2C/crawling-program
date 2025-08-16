@@ -53,16 +53,19 @@ class IconManager:
             'remove':           'skull.png',
             'reset':            'bow.png',
             'help':             'glasses.png',  # Help guide icon
+            'rainbow':          'rainbow.png',  # Rainbow button icon
+            # Level icons
+            'level_1':          'level_1.png',
+            'level_2':          'level_2.png',
+            'level_3':          'level_3.png',
+            'level_4':          'level_4.png',
+            'level_5':          'level_5.png',
         }
         for key, filename in button_map.items():
             icon_path = os.path.join(icons_path, filename)
             if os.path.exists(icon_path):
                 try:
-                    # Use smaller size for rainbow icons
-                    if filename == 'rainbow.png':
-                        img = Image.open(icon_path).resize((20, 20), Image.Resampling.NEAREST)
-                    else:
-                        img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
+                    img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
                     self.icons[key] = ImageTk.PhotoImage(img)
                 except Exception as e:
                     print(f"❌ Button icon load fail {filename}: {e}")

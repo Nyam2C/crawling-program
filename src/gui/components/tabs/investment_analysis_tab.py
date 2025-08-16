@@ -25,6 +25,7 @@ class InvestmentAnalysisTab:
         self.current_metrics: Optional[PersonalityMetrics] = None
         
         self.setup_tab()
+        self.refresh_trader_list()
         self.load_analysis()
     
     def setup_tab(self):
@@ -53,46 +54,37 @@ class InvestmentAnalysisTab:
     def create_header(self):
         """Create header section"""
         header_frame = ttk.Frame(self.frame)
-        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         header_frame.grid_columnconfigure(1, weight=1)
         
-        # Title
-        self.title_label = ttk.Label(header_frame, 
-                                    text="INVESTMENT PERSONALITY ANALYSIS",
-                                    font=('Arial', 16, 'bold'),
-                                    foreground=self.colors['magenta'])
-        self.title_label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
-        
-        # Subtitle
-        subtitle_label = ttk.Label(header_frame,
-                                  text="Analyze your trading patterns and discover your investor ability stats",
-                                  font=('Arial', 10),
-                                  foreground=self.colors['text_muted'])
-        subtitle_label.grid(row=1, column=0, columnspan=3, pady=(0, 15))
-        
-        # Controls
+        # Controls only - removed title and subtitle to save space
         controls_frame = ttk.Frame(header_frame)
-        controls_frame.grid(row=2, column=0, columnspan=3, pady=(0, 10))
+        controls_frame.grid(row=0, column=0, columnspan=3, pady=(0, 5))
         
-        # Nickname input
-        ttk.Label(controls_frame, text="Analyze specific trader:").pack(side=tk.LEFT, padx=(0, 5))
+        # Trader selection dropdown
+        ttk.Label(controls_frame, text="Select trader:").pack(side=tk.LEFT, padx=(0, 5))
         
         self.nickname_var = tk.StringVar()
-        nickname_entry = ttk.Entry(controls_frame, textvariable=self.nickname_var, width=20)
-        nickname_entry.pack(side=tk.LEFT, padx=(0, 10))
+        self.trader_combo = ttk.Combobox(controls_frame, textvariable=self.nickname_var, 
+                                        width=20, state='readonly', style='Pastel.TCombobox')
+        self.trader_combo.pack(side=tk.LEFT, padx=(0, 10))
         
-        # Buttons with rainbow icon
-        analyze_btn = self.main_app.icon_button(controls_frame, 'rainbow', 'Analyze Trader',
+        # Refresh traders button
+        refresh_traders_btn = self.main_app.icon_button(controls_frame, 'glasses', 'Refresh', 
+                                                       self.refresh_trader_list, 'Pastel.Ghost.TButton')
+        refresh_traders_btn.pack(side=tk.LEFT, padx=(0, 10))
+        
+        # Buttons with different icons
+        analyze_btn = self.main_app.icon_button(controls_frame, 'heart', 'Analyze Trader',
                                                self.analyze_specific_trader, 'Pastel.Primary.TButton')
         analyze_btn.pack(side=tk.LEFT, padx=(0, 5))
         
-        refresh_btn = self.main_app.icon_button(controls_frame, 'rainbow', 'Analyze All Records',
+        refresh_btn = self.main_app.icon_button(controls_frame, 'sparkle', 'Analyze All Records',
                                                self.analyze_all_records, 'Pastel.Secondary.TButton')
         refresh_btn.pack(side=tk.LEFT, padx=(0, 5))
         
-        clear_btn = ttk.Button(controls_frame, text="Clear",
-                             style='Pastel.Ghost.TButton',
-                             command=self.clear_analysis)
+        clear_btn = self.main_app.icon_button(controls_frame, 'skull', 'Clear',
+                                             self.clear_analysis, 'Pastel.Ghost.TButton')
         clear_btn.pack(side=tk.LEFT)
     
     def create_main_content(self):
@@ -114,9 +106,11 @@ class InvestmentAnalysisTab:
         """Create analysis results panel"""
         analysis_frame = ttk.LabelFrame(parent, text="Personality Analysis", padding="10")
         analysis_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
+        analysis_frame.grid_rowconfigure(0, weight=1)
+        analysis_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content
-        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'])
+        # Scrollable content with fixed height
+        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=400)
         scrollbar = ttk.Scrollbar(analysis_frame, orient="vertical", command=canvas.yview)
         self.analysis_content_frame = ttk.Frame(canvas)
         
@@ -128,8 +122,8 @@ class InvestmentAnalysisTab:
         canvas.create_window((0, 0), window=self.analysis_content_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
         
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         
         # Initial message
         self.show_initial_message()
@@ -138,9 +132,11 @@ class InvestmentAnalysisTab:
         """Create investment ability stats panel"""
         stats_frame = ttk.LabelFrame(parent, text="Investment Ability Stats", padding="10")
         stats_frame.grid(row=0, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
+        stats_frame.grid_rowconfigure(0, weight=1)
+        stats_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content for ability stats
-        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'])
+        # Scrollable content for ability stats with fixed height
+        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=400)
         scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
         self.ability_content_frame = ttk.Frame(canvas)
         
@@ -152,8 +148,8 @@ class InvestmentAnalysisTab:
         canvas.create_window((0, 0), window=self.ability_content_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
         
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         
         # Initial message
         self.show_initial_ability_message()
@@ -268,6 +264,9 @@ Start an analysis to see your investor ability stats!"""
         
         # Update tab icon based on overall score
         self.update_tab_icon()
+        
+        # Update main app evaluation area
+        self.update_main_evaluation_area()
     
     def analyze_all_records(self):
         """Analyze all trading records"""
@@ -292,6 +291,9 @@ Start an analysis to see your investor ability stats!"""
         
         # Update tab icon based on overall score
         self.update_tab_icon()
+        
+        # Update main app evaluation area
+        self.update_main_evaluation_area()
     
     def clear_analysis(self):
         """Clear current analysis"""
@@ -300,8 +302,7 @@ Start an analysis to see your investor ability stats!"""
         self.show_initial_message()
         self.show_initial_ability_message()
         
-        # Reset title to default
-        self.title_label.config(text="INVESTMENT PERSONALITY ANALYSIS")
+        # Title removed to save space - no reset needed
         
         # Reset tab icon to default
         icon = self.main_app.icon_manager.get_icon('level_3')
@@ -646,8 +647,7 @@ Key Statistics:
             icon_key = "level_1"
             level_name = "NOVICE"
         
-        # Update title with level
-        self.title_label.config(text=f"INVESTMENT PERSONALITY ANALYSIS - {level_name} LEVEL")
+        # Title removed to save space - no update needed
         
         # Get the icon
         icon = self.main_app.icon_manager.get_icon(icon_key)
@@ -657,6 +657,56 @@ Key Statistics:
                 if self.notebook.tab(i, "text") == "Investment Analysis":
                     self.notebook.tab(i, image=icon)
                     break
+    
+    def update_main_evaluation_area(self):
+        """Update the main app's evaluation area with investment analysis status"""
+        if not self.current_metrics:
+            return
+        
+        metrics = self.current_metrics
+        overall_score = (metrics.patience_score + metrics.consistency_score + 
+                        metrics.profitability_score + metrics.discipline_score) / 4
+        
+        # Determine level and status text
+        if overall_score >= 80:
+            level_icon = "level_5"
+            status_text = "EXPERT - Master Investor"
+        elif overall_score >= 70:
+            level_icon = "level_4"
+            status_text = "ADVANCED - Skilled Investor"
+        elif overall_score >= 60:
+            level_icon = "level_3"
+            status_text = "INTERMEDIATE - Developing Investor"
+        elif overall_score >= 50:
+            level_icon = "level_2"
+            status_text = "BEGINNER - Learning Investor"
+        else:
+            level_icon = "level_1"
+            status_text = "NOVICE - Beginner Investor"
+        
+        # Update main app evaluation area
+        if hasattr(self.main_app, 'update_investment_status'):
+            self.main_app.update_investment_status(status_text, level_icon)
+    
+    def refresh_trader_list(self):
+        """Refresh the trader dropdown list"""
+        try:
+            # Get all records and extract unique nicknames
+            all_records = self.scoreboard_manager.get_leaderboard(1000)  # Get many records
+            nicknames = list(set(record.nickname for record in all_records))
+            nicknames.sort()  # Sort alphabetically
+            
+            # Update combobox values
+            self.trader_combo['values'] = nicknames
+            
+            # Clear current selection if the selected trader is no longer in the list
+            current_selection = self.nickname_var.get()
+            if current_selection and current_selection not in nicknames:
+                self.nickname_var.set("")
+                
+        except Exception as e:
+            print(f"Error refreshing trader list: {e}")
+            self.trader_combo['values'] = []
     
     def load_analysis(self):
         """Load initial analysis if data is available"""

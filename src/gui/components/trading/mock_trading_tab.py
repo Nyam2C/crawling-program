@@ -448,13 +448,15 @@ Tip: Start with small positions to learn market behavior!"""
         self.limit_price_entry = ttk.Entry(price_container, textvariable=self.limit_price_var, width=15, state='disabled')
         self.limit_price_entry.grid(row=0, column=0, sticky=tk.W)
         
-        # Estimated cost - compact container
+        # Estimated cost - fixed width container
         cost_container = ttk.Frame(order_frame)
         cost_container.grid(row=5, column=0, columnspan=2, pady=(5, 5), sticky=(tk.W, tk.E))
         cost_container.grid_rowconfigure(0, minsize=25)  # Smaller height
+        cost_container.grid_columnconfigure(0, minsize=400, weight=1)  # Fixed minimum width
         
         self.cost_label = ttk.Label(cost_container, text="Estimated Cost: -", 
-                                   foreground=self.colors['text_accent'], font=('Arial', 9))
+                                   foreground=self.colors['text_accent'], font=('Arial', 9),
+                                   width=50)  # Fixed character width
         self.cost_label.grid(row=0, column=0, sticky=tk.W)
         
         # Place order button - compact but visible
