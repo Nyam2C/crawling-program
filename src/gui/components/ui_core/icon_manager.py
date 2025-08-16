@@ -42,9 +42,10 @@ class IconManager:
             'export':           'skull.png',
             'tab_data':         'sparkle.png',
             'tab_recommend':    'heart.png',
-            'tab_analysis':     'rainbow.png',
-            'tab_trading':      'folder.png',  # Mock trading tab
-            'tab_scoreboard':   'bow.png',     # Scoreboard tab
+            'tab_individual':   'glasses.png',  # Individual Analysis tab
+            'tab_analysis':     'rainbow.png',  # Investment Analysis tab
+            'tab_trading':      'folder.png',   # Mock trading tab
+            'tab_scoreboard':   'bow.png',      # Scoreboard tab
             'tab_settings':     'skull.png',
             # Trading specific icons
             'search':           'glasses.png',
@@ -57,7 +58,11 @@ class IconManager:
             icon_path = os.path.join(icons_path, filename)
             if os.path.exists(icon_path):
                 try:
-                    img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
+                    # Use smaller size for rainbow icons
+                    if filename == 'rainbow.png':
+                        img = Image.open(icon_path).resize((20, 20), Image.Resampling.NEAREST)
+                    else:
+                        img = Image.open(icon_path).resize((24, 24), Image.Resampling.NEAREST)
                     self.icons[key] = ImageTk.PhotoImage(img)
                 except Exception as e:
                     print(f"❌ Button icon load fail {filename}: {e}")

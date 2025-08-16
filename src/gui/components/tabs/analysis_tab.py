@@ -17,7 +17,7 @@ class IndividualAnalysisTab:
     def setup_tab(self):
         """Create the individual stock analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        icon = self.main_app.icon_manager.get_icon('tab_analysis')
+        icon = self.main_app.icon_manager.get_icon('tab_individual')
         if icon:
             self.notebook.add(self.frame, text='Individual Analysis', image=icon, compound='left')
         else:
