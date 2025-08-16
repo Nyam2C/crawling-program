@@ -124,10 +124,7 @@ Panel: Medium Purple (#2B1E6B)
 Lavender: Dreamy Lavender (#C4B5FD)
 Periwinkle: Soft Purple (#A78BFA)
 Pink: Accent Pink (#FBCFE8)
-Text: Ghost White (#F8F8FF)
-
-This theme combines professional aesthetics 
-with pleasant pastel colors and retro styling!"""
+Text: Ghost White (#F8F8FF)"""
         
         theme_label = ttk.Label(theme_frame, text=theme_text, justify=tk.LEFT,
                                foreground=self.colors['text'])
