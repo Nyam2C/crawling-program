@@ -5,6 +5,7 @@ Styled Dialog Components - Professional Theme Compatible
 
 import tkinter as tk
 from tkinter import ttk
+import os
 try:
     from typing import Optional, Callable
 except ImportError:
@@ -96,10 +97,15 @@ class StyledMessageBox(StyledDialog):
         content_frame = ttk.Frame(main_frame)
         content_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Icon
-        icon_text = self.get_icon_text()
-        icon_label = tk.Label(content_frame, text=icon_text, font=("Arial", 24), 
-                             fg=self.colors['lavender'], bg=self.colors['background'])
+        # Icon - try to load image first, fallback to text
+        icon_image = self.get_icon_image()
+        if icon_image:
+            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['background'])
+            icon_label.image = icon_image  # Keep a reference to prevent garbage collection
+        else:
+            icon_text = self.get_icon_text()
+            icon_label = tk.Label(content_frame, text=icon_text, font=("Arial", 24), 
+                                 fg=self.colors['lavender'], bg=self.colors['background'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
         # Message
@@ -124,16 +130,38 @@ class StyledMessageBox(StyledDialog):
         self.dialog.bind('<Return>', lambda e: self.close_dialog("ok"))
         self.dialog.bind('<Escape>', lambda e: self.close_dialog("cancel"))
     
+    def get_icon_image(self):
+        """Get icon image based on dialog type"""
+        icon_mapping = {
+            "info": "mail.png",
+            "warning": "level_3.png", 
+            "error": "skull.png",
+            "question": "glasses.png",
+            "success": "heart.png"
+        }
+        
+        icon_file = icon_mapping.get(self.dialog_type, "mail.png")
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
+                                "assets", "pixel_icons", icon_file)
+        
+        try:
+            if os.path.exists(icon_path):
+                return tk.PhotoImage(file=icon_path)
+        except Exception as e:
+            print(f"Error loading icon {icon_path}: {e}")
+        
+        return None
+    
     def get_icon_text(self) -> str:
-        """Get icon text based on dialog type"""
+        """Get icon text based on dialog type (fallback)"""
         icons = {
-            "info": "i",
-            "warning": "!",
-            "error": "X",
+            "info": "ℹ",
+            "warning": "⚠",
+            "error": "✗",
             "question": "?",
             "success": "✓"
         }
-        return icons.get(self.dialog_type, "i")
+        return icons.get(self.dialog_type, "ℹ")
 
 
 class StyledConfirmDialog(StyledDialog):
@@ -142,6 +170,19 @@ class StyledConfirmDialog(StyledDialog):
     def __init__(self, parent, title: str, message: str, width: int = 450, height: int = 180):
         self.message = message
         super().__init__(parent, title, width, height)
+    
+    def get_question_icon(self):
+        """Get question icon image"""
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
+                                "assets", "pixel_icons", "glasses.png")
+        
+        try:
+            if os.path.exists(icon_path):
+                return tk.PhotoImage(file=icon_path)
+        except Exception as e:
+            print(f"Error loading question icon {icon_path}: {e}")
+        
+        return None
     
     def setup_content(self):
         """Setup confirmation dialog content"""
@@ -152,9 +193,14 @@ class StyledConfirmDialog(StyledDialog):
         content_frame = ttk.Frame(main_frame)
         content_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Icon
-        icon_label = tk.Label(content_frame, text="?", font=("Arial", 24),
-                             fg=self.colors['lavender'], bg=self.colors['background'])
+        # Icon - use question icon for confirmation dialogs
+        icon_image = self.get_question_icon()
+        if icon_image:
+            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['background'])
+            icon_label.image = icon_image  # Keep a reference to prevent garbage collection
+        else:
+            icon_label = tk.Label(content_frame, text="?", font=("Arial", 24),
+                                 fg=self.colors['lavender'], bg=self.colors['background'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
         # Message

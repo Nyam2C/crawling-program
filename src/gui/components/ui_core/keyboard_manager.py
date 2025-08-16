@@ -120,11 +120,14 @@ class KeyboardManager:
         """Create event handler"""
         def handler(event):
             try:
+                print(f"Debug: Executing shortcut callback: {callback}")
                 callback()
                 return "break"  # Prevent default event handling
             except Exception as e:
                 print(f"Keyboard shortcut execution error: {e}")
-                self.main_app.show_error(f"Error executing shortcut: {e}")
+                if hasattr(self.main_app, 'show_error'):
+                    self.main_app.show_error(f"Error executing shortcut: {e}")
+                return "break"
         return handler
     
     def add_custom_binding(self, key_combo: str, description: str, callback: Callable):
@@ -282,25 +285,50 @@ class KeyboardManager:
     def switch_tab(self, tab_index: int):
         """Switch tab"""
         try:
+            print(f"Debug: switch_tab called with index {tab_index}")
             if hasattr(self.main_app, 'notebook') and self.main_app.notebook:
                 tabs = self.main_app.notebook.tabs()
                 print(f"Debug: Total tabs: {len(tabs)}, Switching to index: {tab_index}")
+                print(f"Debug: Available tabs: {tabs}")
                 
                 if 0 <= tab_index < len(tabs):
-                    # Select the tab by index
-                    self.main_app.notebook.select(tab_index)
+                    # Try multiple approaches to select tab
+                    try:
+                        # Method 1: Select by index directly
+                        self.main_app.notebook.select(tab_index)
+                        print(f"Debug: Method 1 - Selected tab by index {tab_index}")
+                    except Exception as e1:
+                        print(f"Debug: Method 1 failed: {e1}")
+                        try:
+                            # Method 2: Select by tab ID
+                            tab_id = tabs[tab_index]
+                            self.main_app.notebook.select(tab_id)
+                            print(f"Debug: Method 2 - Selected tab by ID {tab_id}")
+                        except Exception as e2:
+                            print(f"Debug: Method 2 failed: {e2}")
+                            raise e2
                     
                     tab_names = ["Stock Data", "Recommendations", "Analysis", "Trading", 
                                "Scoreboard", "Investment Analysis", "Settings"]
                     if tab_index < len(tab_names):
-                        self.main_app.update_status(f"Switched to {tab_names[tab_index]} tab")
+                        status_msg = f"Switched to {tab_names[tab_index]} tab (Ctrl+{tab_index+1})"
+                        if hasattr(self.main_app, 'update_status'):
+                            self.main_app.update_status(status_msg)
                         print(f"Debug: Successfully switched to {tab_names[tab_index]} tab")
                 else:
                     print(f"Debug: Tab index {tab_index} out of range (0-{len(tabs)-1})")
-                    self.main_app.update_status(f"Tab {tab_index + 1} not available")
+                    if hasattr(self.main_app, 'update_status'):
+                        self.main_app.update_status(f"Tab {tab_index + 1} not available")
             else:
                 print("Debug: Notebook not found or not initialized")
-                self.main_app.update_status("Tab switching not available")
+                print(f"Debug: main_app has notebook: {hasattr(self.main_app, 'notebook')}")
+                if hasattr(self.main_app, 'notebook'):
+                    print(f"Debug: notebook is: {self.main_app.notebook}")
+                if hasattr(self.main_app, 'update_status'):
+                    self.main_app.update_status("Tab switching not available")
         except Exception as e:
             print(f"Debug: Tab switching error: {e}")
-            self.main_app.show_error(f"Tab switching failed: {e}")
+            import traceback
+            traceback.print_exc()
+            if hasattr(self.main_app, 'show_error'):
+                self.main_app.show_error(f"Tab switching failed: {e}")
