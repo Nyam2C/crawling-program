@@ -162,7 +162,8 @@ class StockDataTab:
         """Get data for a single entered stock symbol"""
         symbol = self.stock_var.get().upper().strip()
         if not symbol:
-            messagebox.showwarning("Warning", "Please enter a stock symbol first!")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Warning", "Please enter a stock symbol first!")
             return
             
         def fetch_data():
@@ -248,9 +249,11 @@ class StockDataTab:
                 thread.daemon = True
                 thread.start()
             else:
-                messagebox.showinfo("Info", "No stocks to refresh!")
+                from src.gui.components.dialogs import show_info
+                show_info(self.main_app.root, "Info", "No stocks to refresh!")
         else:
-            messagebox.showinfo("Info", "No data to refresh. Please fetch stock data first!")
+            from src.gui.components.dialogs import show_info
+            show_info(self.main_app.root, "Info", "No data to refresh. Please fetch stock data first!")
             
     def update_stock_display(self, data):
         """Update the stock data treeview"""
@@ -350,7 +353,8 @@ class StockDataTab:
         """Remove selected stock from the list"""
         selected_items = self.stock_tree.selection()
         if not selected_items:
-            messagebox.showwarning("Warning", "Please select a stock to remove!")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Warning", "Please select a stock to remove!")
             return
         
         # Get symbol from selected item
@@ -380,7 +384,8 @@ class StockDataTab:
         """Refresh data for selected stock only"""
         selected_items = self.stock_tree.selection()
         if not selected_items:
-            messagebox.showwarning("Warning", "Please select a stock to refresh!")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Warning", "Please select a stock to refresh!")
             return
         
         # Get symbol from selected item

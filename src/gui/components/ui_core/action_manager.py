@@ -3,24 +3,33 @@
 Action Manager - Handles undo/redo functionality for user actions
 """
 
-from typing import List, Optional, Any, Dict, Callable
-from dataclasses import dataclass, field
+try:
+    from typing import List, Optional, Any, Dict, Callable
+except ImportError:
+    # Fallback for very old Python versions
+    List = list
+    Optional = lambda x: x
+    Any = object
+    Dict = dict
+    Callable = object
 from datetime import datetime
 import copy
 
-@dataclass
 class Action:
-    """사용자 액션 데이터 클래스"""
-    action_type: str
-    description: str
-    timestamp: datetime
-    undo_data: Dict[str, Any]
-    redo_data: Dict[str, Any]
-    undo_callback: Optional[Callable] = None
-    redo_callback: Optional[Callable] = None
+    """User action data class"""
+    def __init__(self, action_type: str, description: str, timestamp: datetime, 
+                 undo_data: Dict[str, Any], redo_data: Dict[str, Any],
+                 undo_callback: Optional[Callable] = None, redo_callback: Optional[Callable] = None):
+        self.action_type = action_type
+        self.description = description
+        self.timestamp = timestamp
+        self.undo_data = undo_data
+        self.redo_data = redo_data
+        self.undo_callback = undo_callback
+        self.redo_callback = redo_callback
 
 class ActionManager:
-    """실행취소/다시실행 관리 클래스"""
+    """Undo/redo action management class"""
     
     def __init__(self, max_history: int = 50):
         self.max_history = max_history

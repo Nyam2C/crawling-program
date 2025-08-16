@@ -63,7 +63,7 @@ class StockAnalysisGUI:
         
     def setup_main_window(self):
         """Configure the main window with retro pastel aesthetics"""
-        self.root.title("×✿𝑲𝒂𝒘𝒂𝒊𝒊✿× StockEdu Platform")
+        self.root.title("Professional Stock Analysis Platform")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -85,6 +85,9 @@ class StockAnalysisGUI:
         # Configure grid weights
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
+        
+        # Set window close protocol
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
     
     def center_window(self):
         """Center the window on screen for better UX"""
@@ -126,7 +129,7 @@ class StockAnalysisGUI:
         
         # Status bar
         self.status_var = tk.StringVar()
-        self.status_var.set("Ready to analyze the stock market (,,>﹏<,,) Let's find the best investment opportunities!")
+        self.status_var.set("Ready to analyze the stock market. Let's find the best investment opportunities!")
         status_frame, self.progress = self.ui_builder.create_status_bar(main_frame, self.status_var)
         
     def setup_effects(self):
@@ -190,8 +193,13 @@ class StockAnalysisGUI:
         self.status_var.set(message)
         
     def show_error(self, message):
-        """Show error dialog"""
-        messagebox.showerror("Error", message)
+        """Show error dialog with styled theme"""
+        try:
+            from src.gui.components.dialogs import show_error
+            show_error(self.root, "Error", message)
+        except ImportError:
+            # Fallback to standard messagebox
+            messagebox.showerror("Error", message)
         
     def on_closing(self):
         """Handle window closing event"""

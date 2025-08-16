@@ -108,7 +108,8 @@ Choose your analysis type above to get started!
         """Generate advanced multi-criteria recommendations for current stocks"""
         # Check if we have stock data to analyze
         if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
-            messagebox.showwarning("No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
             return
             
         def generate():
@@ -138,7 +139,8 @@ Choose your analysis type above to get started!
         """Generate basic recommendations for current stocks"""
         # Check if we have stock data to analyze
         if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
-            messagebox.showwarning("No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "No Data", "Please fetch stock data first before generating recommendations.\n\nUse the Stock Data tab to add stocks to analyze.")
             return
             
         def generate():

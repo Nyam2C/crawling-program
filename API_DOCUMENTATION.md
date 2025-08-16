@@ -11,7 +11,7 @@
 │  gui_app.py, tabs/, panels/, widgets/                 │
 ├─────────────────────────────────────────────────────────┤
 │                 Business Logic                         │
-│  analysis/, trading/, education/                       │  
+│  analysis/, trading/                                    │  
 ├─────────────────────────────────────────────────────────┤
 │                  Data Layer                            │
 │  data/, core/                                          │

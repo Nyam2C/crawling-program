@@ -4,19 +4,24 @@ Keyboard Shortcut Manager - Handles all keyboard shortcuts and hotkeys
 """
 
 import tkinter as tk
-from typing import Dict, Callable, Optional
-from dataclasses import dataclass
+try:
+    from typing import Dict, Callable, Optional
+except ImportError:
+    # Fallback for very old Python versions
+    Dict = dict
+    Callable = object
+    Optional = lambda x: x
 
-@dataclass
 class KeyBinding:
-    """키 바인딩 정보"""
-    key_combination: str
-    description: str
-    callback: Callable
-    enabled: bool = True
+    """Key binding information"""
+    def __init__(self, key_combination: str, description: str, callback: Callable, enabled: bool = True):
+        self.key_combination = key_combination
+        self.description = description
+        self.callback = callback
+        self.enabled = enabled
 
 class KeyboardManager:
-    """키보드 단축키 관리 클래스"""
+    """Keyboard shortcut management class"""
     
     def __init__(self, root: tk.Tk, main_app):
         self.root = root
@@ -26,260 +31,210 @@ class KeyboardManager:
         self.bind_all_shortcuts()
         
     def setup_default_bindings(self):
-        """기본 키보드 단축키 설정"""
+        """Setup default keyboard shortcuts"""
         self.bindings = {
             '<Control-r>': KeyBinding(
                 'Ctrl+R', 
-                '데이터 새로고침', 
-                self.refresh_all_data
+                'Refresh Data', 
+                self.refresh_data
             ),
             '<Control-s>': KeyBinding(
                 'Ctrl+S', 
-                '설정 저장', 
+                'Save Settings', 
                 self.save_settings
             ),
             '<Control-q>': KeyBinding(
                 'Ctrl+Q', 
-                '프로그램 종료', 
+                'Quit Application', 
                 self.quit_application
             ),
             '<F1>': KeyBinding(
                 'F1', 
-                '도움말', 
+                'Help', 
                 self.show_help
-            ),
-            '<F5>': KeyBinding(
-                'F5', 
-                '전체 새로고침', 
-                self.full_refresh
-            ),
-            '<Control-z>': KeyBinding(
-                'Ctrl+Z', 
-                '실행취소', 
-                self.undo_last_action
-            ),
-            '<Control-y>': KeyBinding(
-                'Ctrl+Y', 
-                '다시실행', 
-                self.redo_last_action
-            ),
-            '<Control-n>': KeyBinding(
-                'Ctrl+N', 
-                '새 주식 추가', 
-                self.add_new_stock
             ),
             '<Control-d>': KeyBinding(
                 'Ctrl+D', 
-                '선택 항목 삭제', 
+                'Delete Selected', 
                 self.delete_selected
             ),
             '<Control-e>': KeyBinding(
                 'Ctrl+E', 
-                '데이터 내보내기', 
+                'Export Data', 
                 self.export_data
             ),
             '<Control-i>': KeyBinding(
                 'Ctrl+I', 
-                '데이터 가져오기', 
+                'Import Data', 
                 self.import_data
             ),
             '<Escape>': KeyBinding(
                 'ESC', 
-                '현재 작업 취소', 
+                'Cancel Current Action', 
                 self.cancel_current_action
             ),
             '<Control-1>': KeyBinding(
                 'Ctrl+1', 
-                'Stock Data 탭', 
+                'Stock Data Tab', 
                 lambda: self.switch_tab(0)
             ),
             '<Control-2>': KeyBinding(
                 'Ctrl+2', 
-                'Recommendations 탭', 
+                'Recommendations Tab', 
                 lambda: self.switch_tab(1)
             ),
             '<Control-3>': KeyBinding(
                 'Ctrl+3', 
-                'Analysis 탭', 
+                'Analysis Tab', 
                 lambda: self.switch_tab(2)
             ),
             '<Control-4>': KeyBinding(
                 'Ctrl+4', 
-                'Trading 탭', 
+                'Trading Tab', 
                 lambda: self.switch_tab(3)
             ),
             '<Control-5>': KeyBinding(
                 'Ctrl+5', 
-                'Scoreboard 탭', 
+                'Scoreboard Tab', 
                 lambda: self.switch_tab(4)
             ),
             '<Control-6>': KeyBinding(
                 'Ctrl+6', 
-                'Investment Analysis 탭', 
+                'Investment Analysis Tab', 
                 lambda: self.switch_tab(5)
             ),
             '<Control-7>': KeyBinding(
                 'Ctrl+7', 
-                'Settings 탭', 
+                'Settings Tab', 
                 lambda: self.switch_tab(6)
             ),
         }
     
     def bind_all_shortcuts(self):
-        """모든 단축키를 tkinter에 바인딩"""
+        """Bind all shortcuts to tkinter"""
         for key_combo, binding in self.bindings.items():
             if binding.enabled:
                 self.root.bind_all(key_combo, self._create_handler(binding.callback))
     
     def _create_handler(self, callback: Callable):
-        """이벤트 핸들러 생성"""
+        """Create event handler"""
         def handler(event):
             try:
                 callback()
-                return "break"  # 기본 이벤트 처리 방지
+                return "break"  # Prevent default event handling
             except Exception as e:
-                print(f"키보드 단축키 실행 오류: {e}")
-                self.main_app.show_error(f"단축키 실행 중 오류가 발생했습니다: {e}")
+                print(f"Keyboard shortcut execution error: {e}")
+                self.main_app.show_error(f"Error executing shortcut: {e}")
         return handler
     
     def add_custom_binding(self, key_combo: str, description: str, callback: Callable):
-        """커스텀 키 바인딩 추가"""
+        """Add custom key binding"""
         binding = KeyBinding(key_combo, description, callback)
         self.bindings[key_combo] = binding
         self.root.bind_all(key_combo, self._create_handler(callback))
     
     def remove_binding(self, key_combo: str):
-        """키 바인딩 제거"""
+        """Remove key binding"""
         if key_combo in self.bindings:
             self.root.unbind_all(key_combo)
             del self.bindings[key_combo]
     
     def enable_binding(self, key_combo: str):
-        """키 바인딩 활성화"""
+        """Enable key binding"""
         if key_combo in self.bindings:
             self.bindings[key_combo].enabled = True
             self.root.bind_all(key_combo, self._create_handler(self.bindings[key_combo].callback))
     
     def disable_binding(self, key_combo: str):
-        """키 바인딩 비활성화"""
+        """Disable key binding"""
         if key_combo in self.bindings:
             self.bindings[key_combo].enabled = False
             self.root.unbind_all(key_combo)
     
     def get_help_text(self) -> str:
-        """도움말 텍스트 생성"""
-        help_lines = ["🎮 키보드 단축키:\n"]
+        """Generate help text"""
+        help_lines = ["Keyboard Shortcuts:\n"]
         for binding in self.bindings.values():
             if binding.enabled:
                 help_lines.append(f"  {binding.key_combination}: {binding.description}")
         return "\n".join(help_lines)
     
-    # === 단축키 액션 메서드들 ===
+    # === Shortcut Action Methods ===
     
-    def refresh_all_data(self):
-        """모든 데이터 새로고침"""
-        self.main_app.update_status("단축키: 데이터 새로고침 중...")
+    def refresh_data(self):
+        """Refresh data"""
+        self.main_app.update_status("Shortcut: Refreshing data...")
         try:
-            # Stock Data 탭 새로고침
+            # Stock Data tab refresh
             if hasattr(self.main_app, 'stock_data_tab'):
-                self.main_app.stock_data_tab.refresh_all_data()
-            
-            # Recommendations 탭 새로고침
-            if hasattr(self.main_app, 'recommendations_tab'):
-                self.main_app.recommendations_tab.refresh_data()
-            
-            # Mock Trading 탭 새로고침
-            if hasattr(self.main_app, 'mock_trading_tab'):
-                self.main_app.mock_trading_tab.refresh_data()
+                self.main_app.stock_data_tab.refresh_stock_data()
                 
-            self.main_app.update_status("데이터 새로고침 완료 (Ctrl+R)")
+            self.main_app.update_status("Data refresh completed (Ctrl+R)")
         except Exception as e:
-            self.main_app.show_error(f"데이터 새로고침 실패: {e}")
+            self.main_app.show_error(f"Data refresh failed: {e}")
     
     def save_settings(self):
-        """설정 저장"""
+        """Save settings"""
         try:
             if hasattr(self.main_app, 'settings_tab'):
                 self.main_app.settings_tab.save_settings()
-            self.main_app.update_status("설정 저장됨 (Ctrl+S)")
+            
+            # Show styled success dialog with centered OK button
+            from src.gui.components.dialogs import show_success
+            show_success(self.main_app.root, "Settings Saved", "Settings have been saved successfully!")
+            self.main_app.update_status("Settings saved (Ctrl+S)")
         except Exception as e:
-            self.main_app.show_error(f"설정 저장 실패: {e}")
+            self.main_app.show_error(f"Settings save failed: {e}")
     
     def quit_application(self):
-        """프로그램 종료"""
+        """Quit application"""
         self.main_app.on_closing()
     
     def show_help(self):
-        """도움말 표시"""
-        from tkinter import messagebox
-        help_text = self.get_help_text()
-        messagebox.showinfo("키보드 단축키 도움말", help_text)
-    
-    def full_refresh(self):
-        """전체 새로고침"""
-        self.main_app.update_status("전체 새로고침 중... (F5)")
-        self.refresh_all_data()
-        
-        # 추가로 GUI 컴포넌트들도 새로고침
+        """Show help"""
         try:
-            self.main_app.root.update_idletasks()
-            self.main_app.update_status("전체 새로고침 완료")
-        except Exception as e:
-            self.main_app.show_error(f"전체 새로고침 실패: {e}")
-    
-    def undo_last_action(self):
-        """마지막 작업 실행취소"""
-        if hasattr(self.main_app, 'action_manager'):
-            self.main_app.action_manager.undo()
-        else:
-            self.main_app.update_status("실행취소 기능을 사용할 수 없습니다")
-    
-    def redo_last_action(self):
-        """마지막 작업 다시실행"""
-        if hasattr(self.main_app, 'action_manager'):
-            self.main_app.action_manager.redo()
-        else:
-            self.main_app.update_status("다시실행 기능을 사용할 수 없습니다")
-    
-    def add_new_stock(self):
-        """새 주식 추가"""
-        try:
-            # Stock Data 탭으로 전환
-            self.switch_tab(0)
-            
-            # 주식 추가 입력 필드에 포커스
-            if hasattr(self.main_app, 'stock_data_tab'):
-                stock_tab = self.main_app.stock_data_tab
-                if hasattr(stock_tab, 'symbol_entry'):
-                    stock_tab.symbol_entry.focus_set()
-                    self.main_app.update_status("새 주식 심볼을 입력하세요 (Ctrl+N)")
-        except Exception as e:
-            self.main_app.show_error(f"주식 추가 모드 전환 실패: {e}")
+            from src.gui.components.dialogs.styled_dialogs import StyledScrollableDialog
+            help_text = self.get_help_text()
+            # Use smaller height for F1 dialog
+            dialog = StyledScrollableDialog(self.main_app.root, "Keyboard Shortcuts Help", help_text, width=600, height=350)
+        except ImportError:
+            # Fallback to standard messagebox
+            from tkinter import messagebox
+            help_text = self.get_help_text()
+            messagebox.showinfo("Keyboard Shortcuts Help", help_text)
     
     def delete_selected(self):
-        """선택된 항목 삭제"""
+        """Delete selected item"""
         current_tab = self.main_app.notebook.select()
         tab_index = self.main_app.notebook.index(current_tab)
         
         try:
-            if tab_index == 0:  # Stock Data 탭
-                if hasattr(self.main_app, 'stock_data_tab'):
-                    self.main_app.stock_data_tab.remove_selected_stock()
-            elif tab_index == 3:  # Mock Trading 탭
-                if hasattr(self.main_app, 'mock_trading_tab'):
-                    self.main_app.mock_trading_tab.cancel_selected_order()
+            # Show confirmation dialog with styled interface
+            from src.gui.components.dialogs import ask_yes_no
+            result = ask_yes_no(self.main_app.root, "Confirm Delete", 
+                               "Are you sure you want to delete the selected item?")
             
-            self.main_app.update_status("선택된 항목 삭제됨 (Ctrl+D)")
+            if result == "yes":
+                if tab_index == 0:  # Stock Data tab
+                    if hasattr(self.main_app, 'stock_data_tab'):
+                        self.main_app.stock_data_tab.remove_selected_stock()
+                elif tab_index == 3:  # Mock Trading tab
+                    if hasattr(self.main_app, 'mock_trading_tab'):
+                        self.main_app.mock_trading_tab.cancel_selected_order()
+                
+                self.main_app.update_status("Selected item deleted (Ctrl+D)")
+            else:
+                self.main_app.update_status("Delete operation canceled")
         except Exception as e:
-            self.main_app.show_error(f"항목 삭제 실패: {e}")
+            self.main_app.show_error(f"Failed to delete item: {e}")
     
     def export_data(self):
-        """데이터 내보내기"""
+        """Export data"""
         try:
             current_tab = self.main_app.notebook.select()
             tab_index = self.main_app.notebook.index(current_tab)
             
-            if tab_index == 3:  # Mock Trading 탭
+            if tab_index == 3:  # Mock Trading tab
                 if hasattr(self.main_app, 'mock_trading_tab'):
                     self.main_app.mock_trading_tab.export_portfolio_data()
             else:
@@ -289,51 +244,63 @@ class KeyboardManager:
                     filetypes=[("CSV files", "*.csv"), ("All files", "*.*")]
                 )
                 if filename:
-                    # 여기에 실제 내보내기 로직 구현
-                    messagebox.showinfo("내보내기", f"데이터가 {filename}에 저장되었습니다.")
+                    # Actual export logic implementation here
+                    messagebox.showinfo("Export", f"Data saved to {filename}")
             
-            self.main_app.update_status("데이터 내보내기 완료 (Ctrl+E)")
+            self.main_app.update_status("Data export completed (Ctrl+E)")
         except Exception as e:
-            self.main_app.show_error(f"데이터 내보내기 실패: {e}")
+            self.main_app.show_error(f"Data export failed: {e}")
     
     def import_data(self):
-        """데이터 가져오기"""
+        """Import data"""
         try:
             from tkinter import filedialog, messagebox
             filename = filedialog.askopenfilename(
                 filetypes=[("CSV files", "*.csv"), ("JSON files", "*.json"), ("All files", "*.*")]
             )
             if filename:
-                # 여기에 실제 가져오기 로직 구현
-                messagebox.showinfo("가져오기", f"{filename}에서 데이터를 가져왔습니다.")
-                self.main_app.update_status("데이터 가져오기 완료 (Ctrl+I)")
+                # Actual import logic implementation here
+                messagebox.showinfo("Import", f"Data imported from {filename}")
+                self.main_app.update_status("Data import completed (Ctrl+I)")
         except Exception as e:
-            self.main_app.show_error(f"데이터 가져오기 실패: {e}")
+            self.main_app.show_error(f"Data import failed: {e}")
     
     def cancel_current_action(self):
-        """현재 작업 취소"""
+        """Cancel current action"""
         try:
-            # 진행중인 작업이 있다면 취소
+            # Cancel any ongoing operations
             if hasattr(self.main_app, 'progress'):
                 self.main_app.hide_progress()
             
-            # 모든 입력 필드의 포커스 해제
+            # Remove focus from all input fields
             self.main_app.root.focus_set()
             
-            self.main_app.update_status("현재 작업이 취소되었습니다 (ESC)")
+            self.main_app.update_status("Current action canceled (ESC)")
         except Exception as e:
-            print(f"작업 취소 중 오류: {e}")
+            print(f"Error canceling action: {e}")
     
     def switch_tab(self, tab_index: int):
-        """탭 전환"""
+        """Switch tab"""
         try:
-            if hasattr(self.main_app, 'notebook'):
+            if hasattr(self.main_app, 'notebook') and self.main_app.notebook:
                 tabs = self.main_app.notebook.tabs()
+                print(f"Debug: Total tabs: {len(tabs)}, Switching to index: {tab_index}")
+                
                 if 0 <= tab_index < len(tabs):
+                    # Select the tab by index
                     self.main_app.notebook.select(tab_index)
+                    
                     tab_names = ["Stock Data", "Recommendations", "Analysis", "Trading", 
                                "Scoreboard", "Investment Analysis", "Settings"]
                     if tab_index < len(tab_names):
-                        self.main_app.update_status(f"{tab_names[tab_index]} 탭으로 전환됨")
+                        self.main_app.update_status(f"Switched to {tab_names[tab_index]} tab")
+                        print(f"Debug: Successfully switched to {tab_names[tab_index]} tab")
+                else:
+                    print(f"Debug: Tab index {tab_index} out of range (0-{len(tabs)-1})")
+                    self.main_app.update_status(f"Tab {tab_index + 1} not available")
+            else:
+                print("Debug: Notebook not found or not initialized")
+                self.main_app.update_status("Tab switching not available")
         except Exception as e:
-            self.main_app.show_error(f"탭 전환 실패: {e}")
+            print(f"Debug: Tab switching error: {e}")
+            self.main_app.show_error(f"Tab switching failed: {e}")

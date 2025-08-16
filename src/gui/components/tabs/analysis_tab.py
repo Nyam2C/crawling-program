@@ -147,16 +147,19 @@ Choose a symbol and analysis type to get started!
         """Analyze individual stock with advanced multi-criteria analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze!")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Notice", "Please select a stock symbol to analyze!")
             return
         
         # Check if we have stock data
         if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
-            messagebox.showwarning("No Data", "No stock data available. Please fetch stock data first in the Stock Data tab.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "No Data", "No stock data available. Please fetch stock data first in the Stock Data tab.")
             return
         
         if symbol not in self.main_app.current_stock_data:
-            messagebox.showwarning("Symbol Not Found", f"Symbol '{symbol}' not found in current stock data. Please refresh the list or add it in Stock Data tab.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Symbol Not Found", f"Symbol '{symbol}' not found in current stock data. Please refresh the list or add it in Stock Data tab.")
             return
             
         def analyze():
@@ -184,16 +187,19 @@ Choose a symbol and analysis type to get started!
         """Analyze individual stock with basic analysis"""
         symbol = self.analysis_stock_var.get()
         if not symbol:
-            messagebox.showwarning("Notice", "Please select a stock symbol to analyze!")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Notice", "Please select a stock symbol to analyze!")
             return
         
         # Check if we have stock data
         if not hasattr(self.main_app, 'current_stock_data') or not self.main_app.current_stock_data:
-            messagebox.showwarning("No Data", "No stock data available. Please fetch stock data first in the Stock Data tab.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "No Data", "No stock data available. Please fetch stock data first in the Stock Data tab.")
             return
         
         if symbol not in self.main_app.current_stock_data:
-            messagebox.showwarning("Symbol Not Found", f"Symbol '{symbol}' not found in current stock data. Please refresh the list or add it in Stock Data tab.")
+            from src.gui.components.dialogs import show_warning
+            show_warning(self.main_app.root, "Symbol Not Found", f"Symbol '{symbol}' not found in current stock data. Please refresh the list or add it in Stock Data tab.")
             return
             
         def analyze():
