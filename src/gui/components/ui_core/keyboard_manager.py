@@ -30,6 +30,9 @@ class KeyboardManager:
         self.setup_default_bindings()
         self.bind_all_shortcuts()
         
+        # Add global key press handler for debugging
+        self.root.bind('<Key>', self._global_key_handler)
+        
     def setup_default_bindings(self):
         """Setup default keyboard shortcuts"""
         self.bindings = {
@@ -114,7 +117,39 @@ class KeyboardManager:
         """Bind all shortcuts to tkinter"""
         for key_combo, binding in self.bindings.items():
             if binding.enabled:
-                self.root.bind_all(key_combo, self._create_handler(binding.callback))
+                # Use bind instead of bind_all for better event handling
+                self.root.bind(key_combo, self._create_handler(binding.callback))
+                
+                # Also bind to notebook widget if it exists (for tab switching)
+                if hasattr(self.main_app, 'notebook') and self.main_app.notebook:
+                    try:
+                        self.main_app.notebook.bind(key_combo, self._create_handler(binding.callback))
+                    except Exception as e:
+                        print(f"Warning: Could not bind {key_combo} to notebook: {e}")
+                        
+                # Ensure focus is set properly for keyboard events
+                try:
+                    self.root.focus_set()
+                except Exception as e:
+                    print(f"Warning: Could not set focus: {e}")
+    
+    def _global_key_handler(self, event):
+        """Global key handler for debugging and manual processing"""
+        # Check for Control key combinations
+        if event.state & 0x4:  # Control key is pressed
+            key_combo = f"<Control-{event.keysym}>"
+            print(f"Debug: Global key handler detected: {key_combo}")
+            
+            # Manual handling for problematic keys
+            if key_combo in self.bindings and self.bindings[key_combo].enabled:
+                print(f"Debug: Manually executing binding for {key_combo}")
+                try:
+                    self.bindings[key_combo].callback()
+                    return "break"
+                except Exception as e:
+                    print(f"Error in global key handler: {e}")
+        
+        return None
     
     def _create_handler(self, callback: Callable):
         """Create event handler"""
