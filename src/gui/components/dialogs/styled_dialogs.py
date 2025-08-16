@@ -142,15 +142,39 @@ class StyledMessageBox(StyledDialog):
         }
         
         icon_file = icon_mapping.get(self.dialog_type, "mail.png")
-        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
-                                "assets", "pixel_icons", icon_file)
+        
+        # Try multiple possible paths for cross-platform compatibility
+        possible_paths = [
+            # Method 1: Relative to current script
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
+                        "assets", "pixel_icons", icon_file),
+            # Method 2: From working directory
+            os.path.join("assets", "pixel_icons", icon_file),
+            # Method 3: Absolute path using sys.path[0]
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))), 
+                        "assets", "pixel_icons", icon_file),
+        ]
         
         try:
-            if os.path.exists(icon_path):
-                return tk.PhotoImage(file=icon_path)
-        except Exception as e:
-            print(f"Error loading icon {icon_path}: {e}")
+            import sys
+            # Method 4: Based on main script location
+            if hasattr(sys, '_getframe'):
+                script_dir = os.path.dirname(sys.argv[0]) if sys.argv[0] else os.getcwd()
+                possible_paths.append(os.path.join(script_dir, "assets", "pixel_icons", icon_file))
+        except:
+            pass
         
+        for icon_path in possible_paths:
+            try:
+                print(f"Debug: Trying icon path: {icon_path}")
+                if os.path.exists(icon_path):
+                    print(f"Debug: Found icon at: {icon_path}")
+                    return tk.PhotoImage(file=icon_path)
+            except Exception as e:
+                print(f"Debug: Error loading icon from {icon_path}: {e}")
+                continue
+        
+        print(f"Debug: No icon found for {self.dialog_type}, trying fallback paths")
         return None
     
     def get_icon_text(self) -> str:
@@ -174,15 +198,40 @@ class StyledConfirmDialog(StyledDialog):
     
     def get_question_icon(self):
         """Get question icon image"""
-        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
-                                "assets", "pixel_icons", "glasses.png")
+        icon_file = "glasses.png"
+        
+        # Try multiple possible paths for cross-platform compatibility
+        possible_paths = [
+            # Method 1: Relative to current script
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
+                        "assets", "pixel_icons", icon_file),
+            # Method 2: From working directory
+            os.path.join("assets", "pixel_icons", icon_file),
+            # Method 3: Absolute path using different depth
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))), 
+                        "assets", "pixel_icons", icon_file),
+        ]
         
         try:
-            if os.path.exists(icon_path):
-                return tk.PhotoImage(file=icon_path)
-        except Exception as e:
-            print(f"Error loading question icon {icon_path}: {e}")
+            import sys
+            # Method 4: Based on main script location
+            if hasattr(sys, '_getframe'):
+                script_dir = os.path.dirname(sys.argv[0]) if sys.argv[0] else os.getcwd()
+                possible_paths.append(os.path.join(script_dir, "assets", "pixel_icons", icon_file))
+        except:
+            pass
         
+        for icon_path in possible_paths:
+            try:
+                print(f"Debug: Trying question icon path: {icon_path}")
+                if os.path.exists(icon_path):
+                    print(f"Debug: Found question icon at: {icon_path}")
+                    return tk.PhotoImage(file=icon_path)
+            except Exception as e:
+                print(f"Debug: Error loading question icon from {icon_path}: {e}")
+                continue
+        
+        print(f"Debug: No question icon found, using text fallback")
         return None
     
     def setup_content(self):
