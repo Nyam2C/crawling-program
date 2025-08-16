@@ -132,12 +132,33 @@ This will validate:
 - GUI integration is successful
 - Component accessibility from main application
 
+## Platform Information
+
+### Kawaii StockEdu Platform
+This feature is part of the **Kawaii StockEdu Platform** - an educational stock market simulation and analysis platform designed for safe learning and risk-free trading practice.
+
+### Educational Purpose
+- **Virtual Trading Environment**: Practice with $100,000 virtual cash
+- **No Real Money Risk**: All trading is simulated for educational purposes only
+- **Learning Focus**: Designed to teach investment concepts and trading strategies
+- **Personality Analysis**: Helps users understand their trading behavior patterns
+
+### Platform Features
+- Real-time stock data analysis with AI recommendations
+- Virtual trading simulation with comprehensive portfolio management
+- Investment personality analysis and skill assessment
+- Educational market tools and analysis capabilities
+- Kawaii-themed interface with retro Windows aesthetics
+
 ## Future Enhancements
 - **Comparison Mode**: Side-by-side analysis of multiple traders
 - **Historical Trends**: Track personality changes over time
 - **Export Reports**: PDF/CSV export of analysis results
 - **Advanced Metrics**: Sharpe ratio, maximum drawdown analysis
-- **Machine Learning**: Predictive models for future performance
+- **Educational Modules**: Interactive lessons on investment strategies
 
 ## Integration Complete
-The investment personality analysis feature is now fully integrated into the Kawaii Stock Analysis Platform and ready for use with existing scoreboard data.
+The investment personality analysis feature is now fully integrated into the **Kawaii StockEdu Platform** and ready for use with existing scoreboard data in the educational trading environment.
+
+## Disclaimer
+This platform is designed for educational purposes only. All trading is simulated and no real financial transactions occur. This is not investment advice - always do your own research before making real investment decisions.
