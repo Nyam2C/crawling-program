@@ -112,8 +112,8 @@ class InvestmentAnalysisTab:
         analysis_frame.grid_rowconfigure(0, weight=1)
         analysis_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content with reduced height to fit comprehensive status
-        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=320)
+        # Scrollable content with dynamic height but minimum size constraint
+        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=300)
         scrollbar = ttk.Scrollbar(analysis_frame, orient="vertical", command=canvas.yview)
         self.analysis_content_frame = ttk.Frame(canvas)
         
@@ -138,8 +138,8 @@ class InvestmentAnalysisTab:
         stats_frame.grid_rowconfigure(0, weight=1)
         stats_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content for ability stats with reduced height to fit comprehensive status
-        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=320)
+        # Scrollable content for ability stats with dynamic height but minimum size constraint
+        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=300)
         scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
         self.ability_content_frame = ttk.Frame(canvas)
         
@@ -159,8 +159,8 @@ class InvestmentAnalysisTab:
     
     def create_comprehensive_status(self):
         """Create comprehensive analysis status section"""
-        status_frame = ttk.LabelFrame(self.frame, text="Comprehensive Analysis Status", padding="10")
-        status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        status_frame = ttk.LabelFrame(self.frame, text="Comprehensive Analysis Status", padding="8")
+        status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(8, 0))
         status_frame.grid_columnconfigure(0, weight=1)
         status_frame.grid_columnconfigure(1, weight=1)
         
@@ -213,7 +213,7 @@ class InvestmentAnalysisTab:
     def create_footer(self):
         """Create footer with additional info"""
         footer_frame = ttk.Frame(self.frame)
-        footer_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        footer_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(5, 0))
         
         # Last updated
         self.last_updated_label = ttk.Label(footer_frame, 

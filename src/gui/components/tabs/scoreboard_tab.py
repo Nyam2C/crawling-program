@@ -66,7 +66,7 @@ class ScoreboardTab:
         
         # Subtitle
         subtitle_label = ttk.Label(header_frame,
-                                  text="✨ Hall of Fame - Top Trading Legends ✨",
+                                  text="Hall of Fame - Top Trading Legends",
                                   font=('Arial', 12),
                                   foreground=self.colors['lavender'])
         subtitle_label.grid(row=1, column=0, columnspan=3, pady=(0, 15))
@@ -103,7 +103,7 @@ class ScoreboardTab:
     
     def create_leaderboard_table(self, parent):
         """Create the main leaderboard table"""
-        table_frame = ttk.LabelFrame(parent, text="🎮 Leaderboard", padding="10")
+        table_frame = ttk.LabelFrame(parent, text="Leaderboard", padding="10")
         table_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
         table_frame.grid_rowconfigure(0, weight=1)
         table_frame.grid_columnconfigure(0, weight=1)
@@ -167,7 +167,7 @@ class ScoreboardTab:
         footer_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(15, 0))
         
         # Info label
-        info_text = "💡 Tip: Double-click any record to view detailed information"
+        info_text = "Tip: Double-click any record to view detailed information"
         info_label = ttk.Label(footer_frame, text=info_text,
                               foreground=self.colors['text_muted'],
                               font=('Arial', 9))

@@ -438,6 +438,10 @@ Tip: Start with small positions to learn market behavior!"""
         self.quantity_entry = ttk.Entry(qty_container, textvariable=self.quantity_var, width=15)
         self.quantity_entry.grid(row=0, column=0, sticky=tk.W)
         
+        # Add validation for quantity input
+        self.quantity_entry.bind('<KeyRelease>', self.validate_quantity_input)
+        self.quantity_entry.bind('<FocusOut>', self.validate_quantity_input)
+        
         # Limit price - fixed width container
         ttk.Label(order_frame, text="Limit Price:", foreground=self.colors['text']).grid(row=4, column=0, sticky=tk.W, pady=2)
         price_container = ttk.Frame(order_frame)
@@ -779,6 +783,61 @@ Tip: Start with small positions to learn market behavior!"""
                 
         except Exception as e:
             self.cost_label.config(text=f"Estimated Cost: Error - {str(e)}")
+    
+    def validate_quantity_input(self, event=None):
+        """Validate quantity input to ensure it doesn't exceed available limits"""
+        if not self.selected_trading_stock:
+            return
+        
+        try:
+            current_value = self.quantity_var.get()
+            if not current_value.isdigit():
+                return  # Allow empty or non-numeric input for user typing
+            
+            quantity = int(current_value)
+            if quantity <= 0:
+                return
+            
+            trading_engine = self.data_manager.get_trading_engine()
+            
+            if self.transaction_type_var.get() == "buy":
+                # Calculate max buyable shares
+                current_price = trading_engine.get_stock_price(self.selected_trading_stock)
+                cash_balance = trading_engine.portfolio.cash_balance
+                
+                if current_price and current_price > 0:
+                    commission_rate = 0.00015
+                    min_commission = 100
+                    max_shares = 0
+                    
+                    for shares in range(1, int(cash_balance / current_price) + 100):
+                        net_amount = shares * current_price
+                        commission = max(net_amount * commission_rate, min_commission)
+                        total_cost = net_amount + commission
+                        
+                        if total_cost <= cash_balance:
+                            max_shares = shares
+                        else:
+                            break
+                    
+                    # Limit quantity to max buyable shares
+                    if quantity > max_shares:
+                        self.quantity_var.set(str(max_shares))
+                        self.update_estimated_cost()
+            else:  # sell
+                # Limit to available shares
+                if self.selected_trading_stock in trading_engine.portfolio.positions:
+                    available_shares = trading_engine.portfolio.positions[self.selected_trading_stock].quantity
+                    if quantity > available_shares:
+                        self.quantity_var.set(str(available_shares))
+                        self.update_estimated_cost()
+                else:
+                    # No shares to sell
+                    self.quantity_var.set("0")
+                    self.update_estimated_cost()
+                    
+        except Exception as e:
+            print(f"Quantity validation error: {e}")
     
     def place_order(self):
         """Place trading order"""
