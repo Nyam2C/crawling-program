@@ -101,19 +101,22 @@ class StyledMessageBox(StyledDialog):
         # Icon - try to load image first, fallback to text
         icon_image = self.get_icon_image()
         if icon_image:
-            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['background'])
+            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['panel'])
             icon_label.image = icon_image  # Keep a reference to prevent garbage collection
         else:
             icon_text = self.get_icon_text()
             icon_label = tk.Label(content_frame, text=icon_text, font=("Arial", 24), 
-                                 fg=self.colors['lavender'], bg=self.colors['background'])
+                                 fg=self.colors['lavender'], bg=self.colors['panel'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
-        # Message
-        message_label = tk.Label(content_frame, text=self.message, font=("Arial", 11),
+        # Message - with thin white border
+        message_frame = tk.Frame(content_frame, bg='white', relief=tk.SOLID, bd=0.5)
+        message_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10, padx=(0, 10))
+        
+        message_label = tk.Label(message_frame, text=self.message, font=("Arial", 11),
                                 fg=self.colors['text'], bg=self.colors['background'],
-                                wraplength=350, justify=tk.LEFT)
-        message_label.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10)
+                                wraplength=320, justify=tk.LEFT)
+        message_label.pack(fill=tk.BOTH, expand=True, padx=8, pady=8)
         
         # Button frame
         button_frame = ttk.Frame(main_frame)
@@ -169,7 +172,11 @@ class StyledMessageBox(StyledDialog):
                 print(f"Debug: Trying icon path: {icon_path}")
                 if os.path.exists(icon_path):
                     print(f"Debug: Found icon at: {icon_path}")
-                    return tk.PhotoImage(file=icon_path)
+                    # Load and resize icon to smaller size for dialogs
+                    image = tk.PhotoImage(file=icon_path)
+                    # Resize to smaller size for better dialog appearance
+                    image = image.subsample(6, 6)  # Reduce size more for compact dialog icons
+                    return image
             except Exception as e:
                 print(f"Debug: Error loading icon from {icon_path}: {e}")
                 continue
@@ -226,7 +233,11 @@ class StyledConfirmDialog(StyledDialog):
                 print(f"Debug: Trying question icon path: {icon_path}")
                 if os.path.exists(icon_path):
                     print(f"Debug: Found question icon at: {icon_path}")
-                    return tk.PhotoImage(file=icon_path)
+                    # Load and resize icon to smaller size for dialogs
+                    image = tk.PhotoImage(file=icon_path)
+                    # Resize to smaller size for better dialog appearance
+                    image = image.subsample(6, 6)  # Reduce size more for compact dialog icons
+                    return image
             except Exception as e:
                 print(f"Debug: Error loading question icon from {icon_path}: {e}")
                 continue
@@ -246,18 +257,21 @@ class StyledConfirmDialog(StyledDialog):
         # Icon - use question icon for confirmation dialogs
         icon_image = self.get_question_icon()
         if icon_image:
-            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['background'])
+            icon_label = tk.Label(content_frame, image=icon_image, bg=self.colors['panel'])
             icon_label.image = icon_image  # Keep a reference to prevent garbage collection
         else:
             icon_label = tk.Label(content_frame, text="?", font=("Arial", 24),
-                                 fg=self.colors['lavender'], bg=self.colors['background'])
+                                 fg=self.colors['lavender'], bg=self.colors['panel'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
-        # Message
-        message_label = tk.Label(content_frame, text=self.message, font=("Arial", 11),
+        # Message - with thin white border
+        message_frame = tk.Frame(content_frame, bg='white', relief=tk.SOLID, bd=0.5)
+        message_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10, padx=(0, 10))
+        
+        message_label = tk.Label(message_frame, text=self.message, font=("Arial", 11),
                                 fg=self.colors['text'], bg=self.colors['background'],
-                                wraplength=350, justify=tk.LEFT)
-        message_label.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10)
+                                wraplength=320, justify=tk.LEFT)
+        message_label.pack(fill=tk.BOTH, expand=True, padx=8, pady=8)
         
         # Button frame
         button_frame = ttk.Frame(main_frame)

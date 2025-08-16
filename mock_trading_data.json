@@ -9,7 +9,7 @@
     "NKE": {
       "symbol": "NKE",
       "current_price": 76.97,
-      "last_updated": "2025-08-17T06:38:25.378286",
+      "last_updated": "2025-08-17T07:53:04.212491",
       "company_name": "NIKE, Inc."
     },
     "PLTR": {
@@ -21,34 +21,34 @@
     "NVDA": {
       "symbol": "NVDA",
       "current_price": 180.45,
-      "last_updated": "2025-08-17T06:38:24.513634",
+      "last_updated": "2025-08-17T07:53:05.176755",
       "company_name": "NVIDIA Corporation"
     },
     "GOOGL": {
       "symbol": "GOOGL",
       "current_price": 203.9,
-      "last_updated": "2025-08-17T06:38:25.819244",
+      "last_updated": "2025-08-17T07:53:05.714699",
       "company_name": "Alphabet Inc."
     },
     "AMZN": {
       "symbol": "AMZN",
       "current_price": 231.03,
-      "last_updated": "2025-08-17T06:38:24.946257",
+      "last_updated": "2025-08-17T07:53:04.702030",
       "company_name": "Amazon.com, Inc."
     },
     "TSLL": {
       "symbol": "TSLL",
       "current_price": 12.19,
-      "last_updated": "2025-08-17T06:38:24.085768",
+      "last_updated": "2025-08-17T07:53:06.206913",
       "company_name": "Direxion Daily TSLA Bull 2X Shares"
     }
   },
   "watched_stocks": [
-    "TSLL",
+    "NKE",
     "AMZN",
-    "GOOGL",
     "NVDA",
-    "NKE"
+    "GOOGL",
+    "TSLL"
   ],
-  "last_saved": "2025-08-17T06:38:44.023298"
+  "last_saved": "2025-08-17T07:53:21.557697"
 }
