@@ -1,67 +1,68 @@
-# 📚 StockEdu - 종합 주식 교육 플랫폼
+# 📊 StockEdu - Stock Analysis & Trading Simulation Platform
 
-**실전 주식 투자를 위한 올인원 교육 및 실습 플랫폼**
+**A comprehensive stock analysis and virtual trading platform for educational purposes**
 
-> *"이론부터 실전까지, 체계적인 주식 투자 교육의 완성"*
+> *"Practical stock market tools designed for educational use and risk-free learning"*
 
-## 🎯 플랫폼 개요
+## 🎯 Platform Overview
 
-StockEdu는 주식 투자 초보자부터 중급자까지를 위한 종합 교육 플랫폼입니다. 이론 학습부터 가상 트레이딩 실습까지 원스톱으로 제공하여 안전하고 체계적인 투자 교육을 실현합니다.
+StockEdu is a stock analysis and virtual trading platform designed for educational purposes. It provides real-time stock data analysis, AI-powered recommendations, and risk-free trading simulation to help users understand stock market mechanics without financial risk.
 
-### 🌟 핵심 가치
-- **📖 체계적 교육**: 기초부터 고급까지 단계별 학습 커리큘럼
-- **🎮 실전 시뮬레이션**: 위험 없는 가상 트레이딩 환경
-- **🧠 개인 맞춤 분석**: AI 기반 투자 성향 분석 및 피드백
-- **📊 실시간 데이터**: 실제 주식 시장 데이터 기반 학습
+### 🌟 Core Philosophy
+- **📚 Educational Focus**: All features designed for learning, not real trading
+- **🛡️ Risk-Free Environment**: Virtual trading with no real money involved
+- **📊 Real Data**: Actual market data for realistic learning experience
+- **🤖 AI Insights**: Intelligent analysis to understand market patterns
 
-## ✨ 주요 기능
+## ✨ Key Features
 
-### 📚 교육 모듈
-- **주식 기초 개념**: 주식의 기본 원리와 시장 구조 이해
-- **재무제표 분석**: 기업 가치 평가를 위한 재무 지표 해석
-- **기술적 분석**: 차트 패턴과 기술적 지표 활용법
-- **리스크 관리**: 포트폴리오 리스크 관리 전략
+### 📈 Stock Analysis Tools
+- **Real-time Stock Data**: Live stock prices via Yahoo Finance API
+- **AI-Powered Analysis**: Comprehensive stock analysis reports
+- **Individual Stock Analysis**: Deep-dive analysis of specific stocks
+- **Market Recommendations**: AI-based buy/sell recommendations
 
-### 🎮 모의 투자 시스템
-- **가상 포트폴리오**: $100,000 가상 자금으로 실전 연습
-- **실시간 거래**: 실제 주식 시세로 매수/매도 체험
-- **거래 내역 추적**: 모든 투자 결정과 결과 기록
-- **성과 분석**: 투자 수익률 및 리스크 지표 분석
+### 🎮 Virtual Trading System
+- **Mock Portfolio**: Start with $100,000 virtual cash
+- **Real-time Trading**: Buy and sell stocks with live market prices
+- **Portfolio Tracking**: Monitor positions, P&L, and performance
+- **Transaction History**: Complete record of all virtual trades
+- **Realistic Fees**: Simulated commission (0.015%) and tax (0.25%)
 
-### 🤖 AI 투자 분석
-- **투자 성향 분석**: 개인의 투자 패턴과 성향 진단
-- **개인 맞춤 조언**: AI 기반 투자 전략 추천
-- **리스크 프로파일**: 위험 감수 능력 평가 및 관리 방안
-- **성과 평가**: 5단계 투자 능력 등급 시스템
+### 🧠 Investment Analysis
+- **Personality Analysis**: AI-based investment style assessment
+- **Performance Evaluation**: 5-tier skill rating system (NOVICE to EXPERT)
+- **Risk Profiling**: Personal risk tolerance evaluation
+- **Investment Metrics**: Comprehensive performance analytics
 
-### 📊 시장 분석 도구
-- **실시간 주가**: 야후 파이낸스 API 연동 실시간 데이터
-- **종목 분석**: 개별 종목 심층 분석 리포트
-- **시장 동향**: 전체 시장 트렌드 및 섹터 분석
-- **추천 시스템**: AI 기반 매수/매도 추천
+### 📊 Market Data & Tools
+- **Watchlist Management**: Track multiple stocks of interest
+- **Scoreboard System**: Performance rankings and achievements
+- **Data Export**: Save analysis reports and trading history
+- **Auto-refresh**: Real-time price updates every 20 seconds
 
-## 🚀 시작하기
+## 🚀 Getting Started
 
-### 📋 시스템 요구사항
-- **Python 3.8+** (Python 3.9+ 권장)
-- **운영체제**: Windows, macOS, Linux
-- **메모리**: 최소 4GB RAM
-- **디스크**: 1GB 이상 여유 공간
+### 📋 System Requirements
+- **Python 3.8+** (Python 3.9+ recommended)
+- **Operating System**: Windows, macOS, Linux
+- **Memory**: Minimum 4GB RAM
+- **Storage**: 1GB+ free space
 
-### ⚙️ 설치 방법
+### ⚙️ Installation
 
-1. **저장소 클론**
+1. **Clone Repository**
 ```bash
-git clone https://github.com/Nyam2C/stockedu.git
-cd stockedu
+git clone https://github.com/Nyam2C/crawling-program.git
+cd crawling-program
 ```
 
-2. **의존성 설치**
+2. **Install Dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **GUI 라이브러리 설치**
+3. **Install GUI Library**
 
 **Ubuntu/Debian:**
 ```bash
@@ -73,172 +74,126 @@ sudo apt-get install python3-tk
 sudo dnf install python3-tkinter
 ```
 
-**Windows/macOS:** Python 설치 시 포함됨
+**Windows/macOS:** Included with Python installation
 
-### 🎮 플랫폼 실행
+### 🎮 Running the Platform
 
-**GUI 모드 (권장):**
+**Launch GUI Application:**
 ```bash
 python main.py
 ```
 
-**CLI 모드:**
-```bash
-python scripts/cli.py
-```
+## 🖥️ Platform Interface
 
-## 🖥️ 플랫폼 구성
+### 📱 Main Tabs Overview
 
-### 📱 주요 탭 구성
+1. **📊 Stock Data**: Manage and add stocks for analysis
+2. **🤖 AI Recommendations**: Get intelligent investment suggestions
+3. **🔍 Individual Analysis**: Detailed analysis of specific stocks
+4. **💰 Mock Trading**: Virtual trading simulation
+5. **📈 Investment Analysis**: Personal investment style assessment
+6. **🏆 Scoreboard**: Performance rankings and achievements
+7. **⚙️ Settings**: Platform configuration and preferences
 
-1. **📊 종목 데이터**: 분석할 주식 종목 관리
-2. **🤖 AI 추천**: 인공지능 기반 투자 추천
-3. **🔍 개별 분석**: 특정 종목 심층 분석
-4. **💰 모의 투자**: 가상 트레이딩 실습
-5. **📈 투자 분석**: 개인 투자 성향 및 실력 분석
-6. **🏆 스코어보드**: 투자 성과 순위 및 기록
-7. **⚙️ 설정**: 플랫폼 환경 설정
+### 💼 How to Use
 
-### 🎯 학습 단계별 가이드
+**Getting Started:**
+1. Launch the application with `python main.py`
+2. Add stocks of interest in the **Stock Data** tab
+3. Explore AI recommendations for market insights
+4. Practice trading in the **Mock Trading** tab with virtual money
+5. Analyze your investment style in the **Investment Analysis** tab
 
-**🔰 초급 과정 (1-2주)**
-- 주식 기본 개념 학습
-- 간단한 모의 투자 시작
-- 기본적인 차트 읽기
+**Virtual Trading:**
+- Start with $100,000 virtual cash
+- Buy and sell stocks using real market prices
+- Track your portfolio performance over time
+- Learn from trading decisions without financial risk
 
-**📈 중급 과정 (3-4주)**  
-- 재무제표 분석 실습
-- 다양한 투자 전략 체험
-- 포트폴리오 다양화 연습
+**Analysis Features:**
+- Get comprehensive stock analysis reports
+- Understand your investment personality and risk tolerance
+- Track performance with detailed metrics and rankings
 
-**🎖️ 고급 과정 (5-8주)**
-- 고급 기술적 분석
-- 리스크 관리 전략 수립
-- 실전 투자 시뮬레이션
+## 🛠️ Technical Architecture
 
-## 🛠️ 기술 스택
+### 🔧 Core Technologies
+- **Python 3.8+**: Core application logic
+- **tkinter**: Cross-platform GUI framework
+- **yfinance**: Real-time stock data integration
+- **Pillow**: Image processing and icon management
 
-### 🔧 Backend
-- **Python 3.8+**: 핵심 로직 및 데이터 처리
-- **yfinance**: 실시간 주식 데이터 수집
-- **pandas**: 데이터 분석 및 처리
-- **numpy**: 수치 계산 및 통계 분석
-
-### 🎨 Frontend  
-- **tkinter**: 크로스 플랫폼 GUI 프레임워크
-- **Pillow**: 이미지 처리 및 아이콘 관리
-- **Custom Theming**: 일관된 UI/UX 디자인
-
-### 📁 프로젝트 구조
+### 📁 Project Structure
 ```
 📂 stockedu/
-├── 🚀 main.py                    # 메인 실행 파일
-├── 📋 requirements.txt           # 의존성 목록
-├── 📖 README.md                  # 프로젝트 문서
-├── 🛠️ scripts/                  # 실행 스크립트
-│   ├── 🖥️ run_gui.py            # GUI 실행기
-│   └── 💬 cli.py                 # CLI 인터페이스
-├── 🧬 src/                       # 소스 코드
-│   ├── 📚 education/             # 교육 모듈
-│   │   ├── stock_fundamentals.py  # 주식 기초 교육
-│   │   ├── trading_strategies.py  # 투자 전략 교육
-│   │   └── risk_management.py     # 리스크 관리 교육
-│   ├── 🤖 analysis/              # 분석 엔진
-│   │   ├── recommendation_engine.py    # AI 추천 시스템
-│   │   ├── investment_personality_analyzer.py  # 투자 성향 분석
-│   │   └── advanced_financial_analyzer.py     # 고급 재무 분석
-│   ├── 💾 data/                  # 데이터 수집
-│   │   ├── stock_crawler.py      # 주식 데이터 수집
-│   │   └── yfinance_data_source.py  # 야후 파이낸스 연동
-│   ├── 🖥️ gui/                   # 사용자 인터페이스
-│   │   ├── gui_app.py            # 메인 GUI 애플리케이션
-│   │   └── components/           # GUI 컴포넌트
-│   │       ├── tabs/             # 탭 컴포넌트
-│   │       ├── panels/           # 패널 컴포넌트
-│   │       ├── dialogs/          # 다이얼로그 컴포넌트
-│   │       └── ui_core/          # 핵심 UI 요소
-│   ├── 📈 trading/               # 트레이딩 시스템
-│   │   ├── models.py             # 데이터 모델
-│   │   ├── trading_engine.py     # 거래 엔진
-│   │   └── data_manager.py       # 데이터 관리
-│   └── ⚙️ core/                  # 핵심 유틸리티
-│       ├── config.py             # 설정 관리
-│       └── http_client.py        # HTTP 클라이언트
-├── 🎨 assets/                    # 리소스 파일
-│   └── pixel_icons/              # 아이콘 이미지
-└── 📚 docs/                      # 문서 파일
-    ├── user_guide.md             # 사용자 가이드
-    ├── api_reference.md          # API 문서
-    └── contributing.md           # 기여 가이드
+├── 🚀 main.py                    # Main application entry point
+├── 📋 requirements.txt           # Python dependencies
+├── 🛠️ scripts/                  # Launch scripts
+├── 🧬 src/                       # Source code
+│   ├── 📚 education/             # Educational modules
+│   ├── 🤖 analysis/              # AI analysis engines
+│   ├── 💾 data/                  # Data collection and processing
+│   ├── 🖥️ gui/                   # User interface components
+│   ├── 📈 trading/               # Virtual trading system
+│   └── ⚙️ core/                  # Core utilities
+├── 🎨 assets/                    # UI assets and icons
+└── 📚 docs/                      # Documentation
 ```
 
-## 🎓 교육 커리큘럼
+## 🏅 Performance Evaluation
 
-### 📚 기초 과정
-- **주식 시장 이해**: 주식의 정의, 시장 구조, 참가자
-- **기본 투자 개념**: PER, PBR, ROE 등 핵심 지표
-- **거래 방법**: 매수/매도 주문, 호가, 체결 원리
+### 📈 5-Tier Rating System
+- **🥇 EXPERT (80-100 points)**: Master-level performance
+- **🥈 ADVANCED (70-79 points)**: Skilled investor profile
+- **🥉 INTERMEDIATE (60-69 points)**: Developing investor
+- **📚 BEGINNER (50-59 points)**: Learning phase
+- **🔰 NOVICE (0-49 points)**: Starting level
 
-### 📊 중급 과정  
-- **재무제표 분석**: 손익계산서, 재무상태표, 현금흐름표
-- **기업 가치 평가**: DCF, 상대 가치 평가법
-- **섹터별 분석**: 업종 특성과 투자 포인트
+### 📊 Evaluation Metrics
+- **PATIENCE**: Long-term investment capability
+- **CONSISTENCY**: Stable return generation
+- **PROFITABILITY**: Success rate and returns
+- **DISCIPLINE**: Risk management skills
 
-### 🏆 고급 과정
-- **포트폴리오 이론**: 분산투자, 자산배분 전략
-- **기술적 분석**: 차트 패턴, 보조지표 활용
-- **리스크 관리**: VaR, 헤지 전략, 손절매 기법
+## 🛡️ Educational Purpose & Disclaimers
 
-## 🏅 성과 평가 시스템
+### ⚠️ Important Notice
+- This platform is designed for **educational purposes only**
+- All trading is virtual with **no real money involved**
+- **Not intended for actual investment advice**
+- Users should **consult qualified financial advisors** for real investments
+- **Past performance does not guarantee future results**
 
-### 📈 5단계 투자 등급
-- **🥇 EXPERT (80점+)**: 마스터 투자자
-- **🥈 ADVANCED (70-79점)**: 숙련 투자자  
-- **🥉 INTERMEDIATE (60-69점)**: 중급 투자자
-- **📚 BEGINNER (50-59점)**: 초급 투자자
-- **🔰 NOVICE (50점 미만)**: 신규 투자자
+### 🔒 Data & Privacy
+- Personal data stored locally only
+- No real financial information collected
+- All transactions are virtual simulations
+- Real market data used for educational realism
 
-### 📊 평가 항목
-- **인내심 (PATIENCE)**: 장기 투자 능력
-- **일관성 (CONSISTENCY)**: 안정적 수익 창출
-- **수익성 (PROFITABILITY)**: 투자 성공률과 수익률
-- **규율성 (DISCIPLINE)**: 리스크 관리 역량
+## 🧪 Testing & Validation
 
-## 🛡️ 안전 및 주의사항
+**Run Application:**
+```bash
+python main.py
+```
 
-### ⚠️ 투자 위험 고지
-- 본 플랫폼은 **교육 목적**으로 제작되었습니다
-- 실제 투자 시에는 **충분한 연구와 신중한 판단**이 필요합니다
-- 투자 결과에 대한 **책임은 투자자 본인**에게 있습니다
-- **전문가 상담**을 받으시기를 권장합니다
+**Check Dependencies:**
+```bash
+python -c "import tkinter, yfinance, PIL; print('All dependencies installed successfully')"
+```
 
-### 🔒 데이터 보안
-- 개인 정보는 로컬에만 저장됩니다
-- 실제 금융 정보는 수집하지 않습니다
-- 모든 거래는 가상 환경에서만 이루어집니다
+## 📄 License
 
-## 🤝 커뮤니티
+This project is open source and available for educational use.
 
-### 📞 지원 및 문의
-- **GitHub Issues**: 버그 리포트 및 기능 요청
-- **Discussions**: 사용법 질문 및 의견 교환
-- **Wiki**: 상세한 사용 가이드 및 팁
+## ⚠️ Disclaimer
 
-### 🚀 기여하기
-1. 저장소 Fork
-2. 기능 브랜치 생성 (`git checkout -b feature/amazing-feature`)
-3. 변경사항 커밋 (`git commit -m 'Add amazing feature'`)
-4. 브랜치 푸시 (`git push origin feature/amazing-feature`)
-5. Pull Request 생성
-
-## 📄 라이선스
-
-이 프로젝트는 교육 목적으로 개발되었으며, 오픈소스로 제공됩니다.
-
-## 🙏 감사의 말
-
-StockEdu는 주식 투자에 관심이 있는 모든 분들의 안전하고 체계적인 학습을 위해 개발되었습니다. 여러분의 성공적인 투자 여정을 응원합니다!
+**This platform is for educational purposes only.** It provides virtual trading simulation and analysis tools to help users understand stock market mechanics. Always:
+- Verify information from official financial sources
+- Consult qualified financial advisors for investment decisions
+- Understand that virtual performance may not reflect real trading results
+- Use this platform as a learning tool, not for actual investment guidance
 
 ---
 
-**🎯 "교육이 최고의 투자입니다" - StockEdu Team**
+*Educational stock analysis and trading simulation platform*
