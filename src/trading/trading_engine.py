@@ -4,6 +4,7 @@ Trading Engine - Core trading logic for mock trading system
 모의 투자의 핵심 거래 로직
 """
 
+from __future__ import annotations
 import uuid
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple

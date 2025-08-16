@@ -2,6 +2,7 @@
 Main stock crawler implementation
 """
 
+from __future__ import annotations
 import logging
 from typing import List
 from src.core.config import MAGNIFICENT_SEVEN, YAHOO_FINANCE_BASE_URL, DEFAULT_DELAY, STOCK_CATEGORIES

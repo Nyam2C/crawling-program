@@ -4,6 +4,7 @@ Data Manager for Mock Trading - Handles persistence and stock data
 모의 투자 데이터 관리자 - 데이터 저장 및 주식 정보 관리
 """
 
+from __future__ import annotations
 import json
 import os
 import threading

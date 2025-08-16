@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Mock Trading Tab Component - Kawaii Retro Style"""
 
+from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 import threading

@@ -2,6 +2,7 @@
 Universal Stock recommendation engine with advanced analysis for any stock
 """
 
+from __future__ import annotations
 from typing import Dict, List
 from src.analysis.financial_analyzer import FinancialAnalyzer
 from src.analysis.advanced_financial_analyzer import AdvancedFinancialAnalyzer
