@@ -30,7 +30,8 @@ class InvestmentAnalysisTab:
     def setup_tab(self):
         """Create the investment analysis tab"""
         self.frame = ttk.Frame(self.notebook, padding="15")
-        icon = self.main_app.icon_manager.get_icon('tab_analysis')
+        # Start with default level_3 icon, will be updated based on analysis
+        icon = self.main_app.icon_manager.get_icon('level_3')
         if icon:
             self.notebook.add(self.frame, text='Investment Analysis', image=icon, compound='left')
         else:
@@ -56,11 +57,11 @@ class InvestmentAnalysisTab:
         header_frame.grid_columnconfigure(1, weight=1)
         
         # Title
-        title_label = ttk.Label(header_frame, 
-                               text="INVESTMENT PERSONALITY ANALYSIS",
-                               font=('Arial', 16, 'bold'),
-                               foreground=self.colors['magenta'])
-        title_label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
+        self.title_label = ttk.Label(header_frame, 
+                                    text="INVESTMENT PERSONALITY ANALYSIS",
+                                    font=('Arial', 16, 'bold'),
+                                    foreground=self.colors['magenta'])
+        self.title_label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
         
         # Subtitle
         subtitle_label = ttk.Label(header_frame,
@@ -264,6 +265,9 @@ Start an analysis to see your investor ability stats!"""
         
         # Update ability stats
         self.update_ability_stats()
+        
+        # Update tab icon based on overall score
+        self.update_tab_icon()
     
     def analyze_all_records(self):
         """Analyze all trading records"""
@@ -285,6 +289,9 @@ Start an analysis to see your investor ability stats!"""
         
         # Update ability stats
         self.update_ability_stats()
+        
+        # Update tab icon based on overall score
+        self.update_tab_icon()
     
     def clear_analysis(self):
         """Clear current analysis"""
@@ -292,6 +299,17 @@ Start an analysis to see your investor ability stats!"""
         self.nickname_var.set("")
         self.show_initial_message()
         self.show_initial_ability_message()
+        
+        # Reset title to default
+        self.title_label.config(text="INVESTMENT PERSONALITY ANALYSIS")
+        
+        # Reset tab icon to default
+        icon = self.main_app.icon_manager.get_icon('level_3')
+        if icon:
+            for i in range(self.notebook.index("end")):
+                if self.notebook.tab(i, "text") == "Investment Analysis":
+                    self.notebook.tab(i, image=icon)
+                    break
         
         # Update footer
         self.last_updated_label.config(text="Ready for analysis")
@@ -601,6 +619,44 @@ Key Statistics:
                                  foreground=self.colors['text'],
                                  justify=tk.LEFT)
         profile_label.pack(anchor=tk.W)
+    
+    def update_tab_icon(self):
+        """Update tab icon and title based on overall score"""
+        if not self.current_metrics:
+            return
+        
+        metrics = self.current_metrics
+        overall_score = (metrics.patience_score + metrics.consistency_score + 
+                        metrics.profitability_score + metrics.discipline_score) / 4
+        
+        # Determine icon and level name based on overall score (5 levels)
+        if overall_score >= 80:
+            icon_key = "level_5"
+            level_name = "EXPERT"
+        elif overall_score >= 70:
+            icon_key = "level_4"
+            level_name = "ADVANCED"
+        elif overall_score >= 60:
+            icon_key = "level_3"
+            level_name = "INTERMEDIATE"
+        elif overall_score >= 50:
+            icon_key = "level_2"
+            level_name = "BEGINNER"
+        else:
+            icon_key = "level_1"
+            level_name = "NOVICE"
+        
+        # Update title with level
+        self.title_label.config(text=f"INVESTMENT PERSONALITY ANALYSIS - {level_name} LEVEL")
+        
+        # Get the icon
+        icon = self.main_app.icon_manager.get_icon(icon_key)
+        if icon:
+            # Find the tab index and update its icon
+            for i in range(self.notebook.index("end")):
+                if self.notebook.tab(i, "text") == "Investment Analysis":
+                    self.notebook.tab(i, image=icon)
+                    break
     
     def load_analysis(self):
         """Load initial analysis if data is available"""
