@@ -1,312 +1,244 @@
-# ✧✿: *✧✿:* Kawaii Stock Analysis Platform *:✿✧*:✿✧
+# 📚 StockEdu - 종합 주식 교육 플랫폼
 
-A comprehensive **Python-based stock analysis platform** with a beautiful **kawaii retro pastel GUI**! Analyze any stock symbol with AI-powered recommendations, professional English reports, and now featuring **mock trading functionality**!
+**실전 주식 투자를 위한 올인원 교육 및 실습 플랫폼**
 
-> *"Let's make stock analysis as cute as it is powerful! ♡"* - Kawaii Analytics
+> *"이론부터 실전까지, 체계적인 주식 투자 교육의 완성"*
 
-## ✨ What's New
+## 🎯 플랫폼 개요
 
-**📈 Mock Trading Platform**: Complete virtual trading system with portfolio management!
-**💰 Virtual Portfolio**: Start with $100,000 virtual cash for risk-free trading practice
-**📊 Real-time Updates**: Live stock prices with 20-second auto-refresh intervals
-**🎯 Universal Stock Analysis**: No longer limited to specific stocks - analyze ANY stock symbol!
-**🇬🇧 English Reports**: Professional analysis reports in English for global users
-**🎨 Kawaii Design**: Beautiful retro pastel purple/pink theme with Windows 95/98 aesthetics
-**📊 Comprehensive Analysis**: Deep financial analysis with industry comparisons and risk strategies
-**💾 Save Reports**: Export individual and recommendation reports to files
-**🌸 Enhanced UI**: Pink/purple refresh buttons and consistent kawaii styling
+StockEdu는 주식 투자 초보자부터 중급자까지를 위한 종합 교육 플랫폼입니다. 이론 학습부터 가상 트레이딩 실습까지 원스톱으로 제공하여 안전하고 체계적인 투자 교육을 실현합니다.
 
-## 🚀 Features
+### 🌟 핵심 가치
+- **📖 체계적 교육**: 기초부터 고급까지 단계별 학습 커리큘럼
+- **🎮 실전 시뮬레이션**: 위험 없는 가상 트레이딩 환경
+- **🧠 개인 맞춤 분석**: AI 기반 투자 성향 분석 및 피드백
+- **📊 실시간 데이터**: 실제 주식 시장 데이터 기반 학습
 
-### 📈 Mock Trading System
-- **Virtual Portfolio Management**: Start with $100,000 virtual cash
-- **Real-time Stock Trading**: Buy and sell stocks with live market prices
-- **Order Types**: Market orders (instant) and Limit orders (price-specific)
-- **Portfolio Tracking**: Monitor positions, P&L, and total portfolio value
-- **Transaction History**: Complete record of all trades with timestamps
-- **Auto-refresh System**: Stock prices update every 20 seconds with countdown timer
-- **Commission & Tax Simulation**: Realistic 0.015% commission + 0.25% tax on sells
-- **Watchlist Management**: Add and track multiple stocks for trading
+## ✨ 주요 기능
 
-### 📊 Stock Analysis Capabilities
-- **Universal Stock Support**: Analyze ANY stock symbol, not just pre-defined lists
-- **Real-time Data**: Fetch current stock prices and market data
-- **Dual Analysis Modes**:
-  - **Deep Analysis**: Comprehensive English reports with 9+ analysis sections
-  - **Quick Analysis**: Fast technical analysis for rapid insights
+### 📚 교육 모듈
+- **주식 기초 개념**: 주식의 기본 원리와 시장 구조 이해
+- **재무제표 분석**: 기업 가치 평가를 위한 재무 지표 해석
+- **기술적 분석**: 차트 패턴과 기술적 지표 활용법
+- **리스크 관리**: 포트폴리오 리스크 관리 전략
 
-### 🤖 AI-Powered Intelligence
-- **Multi-criteria Analysis Engine**: Advanced scoring across multiple factors
-- **Professional English Reports**: Detailed analysis including:
-  - Company Overview & Stock Information
-  - Fundamental Analysis (ROE, ROA, Debt ratios)
-  - Valuation Analysis (P/E, P/B, EV/EBITDA, PEG)
-  - Industry Comparison Analysis
-  - Risk Factors & Mitigation Strategies
-  - Technical Analysis (RSI, MACD, Support/Resistance)
-  - Investment Recommendations with price targets
+### 🎮 모의 투자 시스템
+- **가상 포트폴리오**: $100,000 가상 자금으로 실전 연습
+- **실시간 거래**: 실제 주식 시세로 매수/매도 체험
+- **거래 내역 추적**: 모든 투자 결정과 결과 기록
+- **성과 분석**: 투자 수익률 및 리스크 지표 분석
 
-### 🖥️ Beautiful Kawaii GUI
-- **Retro Pastel Theme**: Deep navy purple (#1F144A) with lavender (#C4B5FD) and pink (#F9A8D4) accents
-- **Tab-based Interface**: Organized into intuitive sections
-- **Consistent Styling**: All dialogs match the kawaii theme
-- **Save Functionality**: Export reports directly from the interface
+### 🤖 AI 투자 분석
+- **투자 성향 분석**: 개인의 투자 패턴과 성향 진단
+- **개인 맞춤 조언**: AI 기반 투자 전략 추천
+- **리스크 프로파일**: 위험 감수 능력 평가 및 관리 방안
+- **성과 평가**: 5단계 투자 능력 등급 시스템
 
-### 📊 GUI Tabs
-1. **Stock Data**: Add and manage stock symbols to analyze
-2. **Recommendations**: Generate AI-powered buy/sell recommendations
-3. **Individual Analysis**: Deep-dive analysis of specific stocks
-4. **Mock Trading**: Virtual trading platform with portfolio management
-5. **Settings**: Configure application preferences
+### 📊 시장 분석 도구
+- **실시간 주가**: 야후 파이낸스 API 연동 실시간 데이터
+- **종목 분석**: 개별 종목 심층 분석 리포트
+- **시장 동향**: 전체 시장 트렌드 및 섹터 분석
+- **추천 시스템**: AI 기반 매수/매도 추천
 
-## 🛠️ Installation
+## 🚀 시작하기
 
-1. **Clone the repository:**
+### 📋 시스템 요구사항
+- **Python 3.8+** (Python 3.9+ 권장)
+- **운영체제**: Windows, macOS, Linux
+- **메모리**: 최소 4GB RAM
+- **디스크**: 1GB 이상 여유 공간
+
+### ⚙️ 설치 방법
+
+1. **저장소 클론**
 ```bash
-git clone https://github.com/your-username/claude.git
-cd claude
+git clone https://github.com/Nyam2C/stockedu.git
+cd stockedu
 ```
 
-2. **Install dependencies:**
+2. **의존성 설치**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Install tkinter (for GUI):**
+3. **GUI 라이브러리 설치**
 
-**Linux (Ubuntu/Debian):**
+**Ubuntu/Debian:**
 ```bash
 sudo apt-get install python3-tk
 ```
 
-**Linux (CentOS/Fedora):**
+**CentOS/Fedora:**
 ```bash
 sudo dnf install python3-tkinter
 ```
 
-**Windows/macOS:** tkinter is usually included with Python.
+**Windows/macOS:** Python 설치 시 포함됨
 
-## 🎮 Usage
+### 🎮 플랫폼 실행
 
-### 🖥️ GUI Application (Recommended)
-
-Launch the kawaii interface:
+**GUI 모드 (권장):**
 ```bash
 python main.py
-# OR
-python scripts/run_gui.py
 ```
 
-**How to Use:**
-1. **Stock Data Tab**: Add stock symbols you want to analyze
-2. **Recommendations Tab**: Generate comprehensive investment recommendations
-3. **Individual Analysis Tab**: Deep analysis of specific stocks with save functionality
-4. **Mock Trading Tab**: Practice trading with virtual money - includes:
-   - Portfolio management with real-time P&L tracking
-   - Stock watchlist with live price updates
-   - Buy/sell orders with realistic commission and tax
-   - Complete transaction history and performance analytics
-5. **Settings Tab**: View application information and settings
-
-### 💻 Command Line Interface
-
-For CLI usage:
+**CLI 모드:**
 ```bash
 python scripts/cli.py
 ```
 
-### 🔬 Programmatic Usage
+## 🖥️ 플랫폼 구성
 
-```python
-from src.data.stock_crawler import StockCrawler
-from src.analysis.recommendation_engine import RecommendationEngine
+### 📱 주요 탭 구성
 
-# Initialize components
-crawler = StockCrawler(delay=2)
-engine = RecommendationEngine(delay=2)
+1. **📊 종목 데이터**: 분석할 주식 종목 관리
+2. **🤖 AI 추천**: 인공지능 기반 투자 추천
+3. **🔍 개별 분석**: 특정 종목 심층 분석
+4. **💰 모의 투자**: 가상 트레이딩 실습
+5. **📈 투자 분석**: 개인 투자 성향 및 실력 분석
+6. **🏆 스코어보드**: 투자 성과 순위 및 기록
+7. **⚙️ 설정**: 플랫폼 환경 설정
 
-# Get stock data
-stock_data = crawler.get_stock_data('AAPL')
+### 🎯 학습 단계별 가이드
 
-# Generate AI recommendation
-analysis = engine.analyze_single_stock('AAPL', use_advanced=True)
-print(f"Recommendation: {analysis['recommendation']}")
-print(f"Score: {analysis['overall_score']:.3f}")
+**🔰 초급 과정 (1-2주)**
+- 주식 기본 개념 학습
+- 간단한 모의 투자 시작
+- 기본적인 차트 읽기
 
-# Clean up
-crawler.close()
-engine.close()
+**📈 중급 과정 (3-4주)**  
+- 재무제표 분석 실습
+- 다양한 투자 전략 체험
+- 포트폴리오 다양화 연습
+
+**🎖️ 고급 과정 (5-8주)**
+- 고급 기술적 분석
+- 리스크 관리 전략 수립
+- 실전 투자 시뮬레이션
+
+## 🛠️ 기술 스택
+
+### 🔧 Backend
+- **Python 3.8+**: 핵심 로직 및 데이터 처리
+- **yfinance**: 실시간 주식 데이터 수집
+- **pandas**: 데이터 분석 및 처리
+- **numpy**: 수치 계산 및 통계 분석
+
+### 🎨 Frontend  
+- **tkinter**: 크로스 플랫폼 GUI 프레임워크
+- **Pillow**: 이미지 처리 및 아이콘 관리
+- **Custom Theming**: 일관된 UI/UX 디자인
+
+### 📁 프로젝트 구조
+```
+📂 stockedu/
+├── 🚀 main.py                    # 메인 실행 파일
+├── 📋 requirements.txt           # 의존성 목록
+├── 📖 README.md                  # 프로젝트 문서
+├── 🛠️ scripts/                  # 실행 스크립트
+│   ├── 🖥️ run_gui.py            # GUI 실행기
+│   └── 💬 cli.py                 # CLI 인터페이스
+├── 🧬 src/                       # 소스 코드
+│   ├── 📚 education/             # 교육 모듈
+│   │   ├── stock_fundamentals.py  # 주식 기초 교육
+│   │   ├── trading_strategies.py  # 투자 전략 교육
+│   │   └── risk_management.py     # 리스크 관리 교육
+│   ├── 🤖 analysis/              # 분석 엔진
+│   │   ├── recommendation_engine.py    # AI 추천 시스템
+│   │   ├── investment_personality_analyzer.py  # 투자 성향 분석
+│   │   └── advanced_financial_analyzer.py     # 고급 재무 분석
+│   ├── 💾 data/                  # 데이터 수집
+│   │   ├── stock_crawler.py      # 주식 데이터 수집
+│   │   └── yfinance_data_source.py  # 야후 파이낸스 연동
+│   ├── 🖥️ gui/                   # 사용자 인터페이스
+│   │   ├── gui_app.py            # 메인 GUI 애플리케이션
+│   │   └── components/           # GUI 컴포넌트
+│   │       ├── tabs/             # 탭 컴포넌트
+│   │       ├── panels/           # 패널 컴포넌트
+│   │       ├── dialogs/          # 다이얼로그 컴포넌트
+│   │       └── ui_core/          # 핵심 UI 요소
+│   ├── 📈 trading/               # 트레이딩 시스템
+│   │   ├── models.py             # 데이터 모델
+│   │   ├── trading_engine.py     # 거래 엔진
+│   │   └── data_manager.py       # 데이터 관리
+│   └── ⚙️ core/                  # 핵심 유틸리티
+│       ├── config.py             # 설정 관리
+│       └── http_client.py        # HTTP 클라이언트
+├── 🎨 assets/                    # 리소스 파일
+│   └── pixel_icons/              # 아이콘 이미지
+└── 📚 docs/                      # 문서 파일
+    ├── user_guide.md             # 사용자 가이드
+    ├── api_reference.md          # API 문서
+    └── contributing.md           # 기여 가이드
 ```
 
-## 📊 Sample Analysis Output
+## 🎓 교육 커리큘럼
 
-### Deep Analysis Report (English)
-```
-COMPREHENSIVE STOCK ANALYSIS REPORT
-==========================================================================================
+### 📚 기초 과정
+- **주식 시장 이해**: 주식의 정의, 시장 구조, 참가자
+- **기본 투자 개념**: PER, PBR, ROE 등 핵심 지표
+- **거래 방법**: 매수/매도 주문, 호가, 체결 원리
 
-COMPANY OVERVIEW
-──────────────────────────────────────────────────────────────────────────────────────
-Company Name: Apple Inc.
-Ticker Symbol: AAPL
-Listed Exchange: NASDAQ
-Industry Sector: Technology
-Market Capitalization: Large Cap
+### 📊 중급 과정  
+- **재무제표 분석**: 손익계산서, 재무상태표, 현금흐름표
+- **기업 가치 평가**: DCF, 상대 가치 평가법
+- **섹터별 분석**: 업종 특성과 투자 포인트
 
-STOCK PRICE INFORMATION
-──────────────────────────────────────────────────────────────────────────────────────
-Current Price: $185.64
-52-Week Range: $150.00 - $200.00
-Beta (Volatility): 1.2
-Average Daily Volume: High volume trading
-Price Change (%): +1.19%
+### 🏆 고급 과정
+- **포트폴리오 이론**: 분산투자, 자산배분 전략
+- **기술적 분석**: 차트 패턴, 보조지표 활용
+- **리스크 관리**: VaR, 헤지 전략, 손절매 기법
 
-FUNDAMENTAL ANALYSIS
-──────────────────────────────────────────────────────────────────────────────────────
-Revenue Growth Trend: Consistent growth trajectory
-Operating Margin Analysis: Above average
-Profitability Assessment: Strong profitability metrics
-Debt-to-Equity Ratio: 1.73
-Financial Health Rating: Excellent
-Return on Equity (ROE): 25.0%
-Return on Assets (ROA): 15.0%
+## 🏅 성과 평가 시스템
 
-VALUATION ANALYSIS
-──────────────────────────────────────────────────────────────────────────────────────
-P/E Ratio (Price-to-Earnings): 25.0
-P/B Ratio (Price-to-Book): 4.5
-EV/EBITDA Multiple: 20.0
-PEG Ratio (Growth-adjusted): 1.5
-Valuation Assessment: Fair Value
+### 📈 5단계 투자 등급
+- **🥇 EXPERT (80점+)**: 마스터 투자자
+- **🥈 ADVANCED (70-79점)**: 숙련 투자자  
+- **🥉 INTERMEDIATE (60-69점)**: 중급 투자자
+- **📚 BEGINNER (50-59점)**: 초급 투자자
+- **🔰 NOVICE (50점 미만)**: 신규 투자자
 
-INDUSTRY COMPARISON ANALYSIS
-──────────────────────────────────────────────────────────────────────────────────────
-Sector Performance vs Market: Above average growth potential
-Competitive Position: Strong market position
-Industry Growth Rate: 12.0% annual growth expected
-Market Entry Barriers: High barriers to entry
+### 📊 평가 항목
+- **인내심 (PATIENCE)**: 장기 투자 능력
+- **일관성 (CONSISTENCY)**: 안정적 수익 창출
+- **수익성 (PROFITABILITY)**: 투자 성공률과 수익률
+- **규율성 (DISCIPLINE)**: 리스크 관리 역량
 
-RISK FACTORS & MITIGATION STRATEGIES
-──────────────────────────────────────────────────────────────────────────────────────
-Economic Sensitivity: Medium
-→ Mitigation: Diversified revenue streams and strong cash position
-Regulatory/Policy Risk: Moderate
-→ Mitigation: Proactive compliance and government relations
+## 🛡️ 안전 및 주의사항
 
-COMPREHENSIVE INVESTMENT OPINION
-──────────────────────────────────────────────────────────────────────────────────────
-Overall Score: 0.847/1.000
-Investment Recommendation: STRONG BUY
-Target Price: Based on DCF analysis
-Risk Management: Stop-loss recommended at -15% from entry
-Expected Investment Period: Medium-term (6-18 months)
-```
+### ⚠️ 투자 위험 고지
+- 본 플랫폼은 **교육 목적**으로 제작되었습니다
+- 실제 투자 시에는 **충분한 연구와 신중한 판단**이 필요합니다
+- 투자 결과에 대한 **책임은 투자자 본인**에게 있습니다
+- **전문가 상담**을 받으시기를 권장합니다
 
-## 🏗️ Project Structure
+### 🔒 데이터 보안
+- 개인 정보는 로컬에만 저장됩니다
+- 실제 금융 정보는 수집하지 않습니다
+- 모든 거래는 가상 환경에서만 이루어집니다
 
-```
-📁 kawaii-stock-analysis/
-├── 🚀 main.py                          # Main entry point
-├── 📋 requirements.txt                 # Dependencies
-├── 📖 README.md                        # This file
-├── 🛠️ scripts/                        # Launcher scripts
-│   ├── 🖥️ run_gui.py                  # GUI launcher
-│   └── 💬 cli.py                      # CLI interface
-├── 🧬 src/                            # Source code
-│   ├── 🤖 analysis/                   # Analysis engines
-│   │   ├── recommendation_engine.py   # AI recommendations
-│   │   └── advanced_financial_analyzer.py # Financial analysis
-│   ├── 💾 data/                       # Data collection
-│   │   ├── stock_crawler.py          # Stock data fetching
-│   │   └── data_extractors.py         # HTML parsing
-│   ├── 🖥️ gui/                        # User interface
-│   │   ├── gui_app.py                 # Main GUI application
-│   │   └── components/                # GUI components
-│   │       ├── stock_data_tab.py      # Stock data management
-│   │       ├── recommendations_tab.py # AI recommendations
-│   │       ├── analysis_tab.py        # Individual analysis
-│   │       ├── mock_trading_tab.py    # Mock trading platform
-│   │       ├── kawaii_dialogs.py      # Custom themed dialogs
-│   │       ├── settings_tab.py        # Settings
-│   │       ├── theme_manager.py       # Kawaii styling
-│   │       ├── icon_manager.py        # Icon management
-│   │       └── ui_builder.py          # UI components
-│   ├── 📈 trading/                    # Trading system
-│   │   ├── models.py                  # Data models (Portfolio, Transaction)
-│   │   ├── trading_engine.py          # Trading logic and calculations
-│   │   └── data_manager.py            # Data persistence and stock updates
-│   └── ⚙️ core/                       # Core utilities
-│       ├── http_client.py             # HTTP requests
-│       └── config.py                  # Configuration
-└── 🧪 tests/                          # Test suite
-    ├── test_crawler.py                # Crawler tests
-    └── test_recommendation_system.py  # Analysis tests
-```
+## 🤝 커뮤니티
 
-## 📋 Requirements
+### 📞 지원 및 문의
+- **GitHub Issues**: 버그 리포트 및 기능 요청
+- **Discussions**: 사용법 질문 및 의견 교환
+- **Wiki**: 상세한 사용 가이드 및 팁
 
-- **Python 3.7+** (Python 3.8+ recommended)
-- **requests** - HTTP client
-- **beautifulsoup4** - HTML parsing
-- **lxml** - XML/HTML parser
-- **tkinter** - GUI framework
-- **Pillow** - Image processing
-- **yfinance** - Yahoo Finance API for real-time stock data
-- **json** - Data persistence for mock trading
+### 🚀 기여하기
+1. 저장소 Fork
+2. 기능 브랜치 생성 (`git checkout -b feature/amazing-feature`)
+3. 변경사항 커밋 (`git commit -m 'Add amazing feature'`)
+4. 브랜치 푸시 (`git push origin feature/amazing-feature`)
+5. Pull Request 생성
 
-## 🎨 Kawaii Design Features
+## 📄 라이선스
 
-- **Color Palette**: Retro pastel purple/pink with deep navy backgrounds
-- **Typography**: Clean fonts with kawaii ASCII art
-- **Interactions**: Smooth hover effects and 3D button styling
-- **Consistency**: All dialogs and components match the kawaii theme
-- **Accessibility**: High contrast and readable text
+이 프로젝트는 교육 목적으로 개발되었으며, 오픈소스로 제공됩니다.
 
-## 🧪 Testing
+## 🙏 감사의 말
 
-Run test suites:
-```bash
-# Test crawler functionality
-python tests/test_crawler.py
-
-# Test recommendation system
-python tests/test_recommendation_system.py
-```
-
-## ⚖️ Legal Notice
-
-This tool is for **educational and research purposes only**. Please:
-- Respect website terms of service
-- Use appropriate delays between requests
-- Consider robots.txt files
-- Use data responsibly
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes (maintain kawaii theme!)
-4. Add tests if applicable
-5. Submit a pull request
-
-**Kawaii Theme Guidelines:**
-- Maintain retro pastel purple/pink colors
-- Use consistent styling across components
-- Include appropriate kawaii ASCII art
-- Follow Windows 95/98 aesthetic principles
-
-## 📄 License
-
-This project is open source. Use responsibly.
-
-## ⚠️ Disclaimer
-
-**This tool does not provide investment advice.** Stock analysis is for informational purposes only. Always:
-- Verify data from official sources
-- Consult qualified financial advisors
-- Do your own research before investing
-- Understand the risks of stock trading
+StockEdu는 주식 투자에 관심이 있는 모든 분들의 안전하고 체계적인 학습을 위해 개발되었습니다. 여러분의 성공적인 투자 여정을 응원합니다!
 
 ---
 
-*✧✿: *✧✿:* Made with kawaii love and retro aesthetics! *:✿✧*:✿✧*
+**🎯 "교육이 최고의 투자입니다" - StockEdu Team**

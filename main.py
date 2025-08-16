@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Main entry point for the Magnificent Seven Stock Analysis System
-くるみ様の優雅なる株式分析システム 🌹⏰
+📚 StockEdu - 종합 주식 교육 플랫폼
+Main entry point for Stock Education Platform
+실전 주식 투자를 위한 올인원 교육 및 실습 플랫폼 🎓📈
 """
 
 import sys
@@ -12,7 +13,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 def main():
-    """Main function - launch the GUI application"""
+    """StockEdu 메인 함수 - 교육 플랫폼 GUI 실행"""
     try:
         from scripts.run_gui import main as gui_main
         gui_main()
