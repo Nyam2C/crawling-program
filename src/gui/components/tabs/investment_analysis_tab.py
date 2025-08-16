@@ -77,18 +77,10 @@ class InvestmentAnalysisTab:
                                                        self.refresh_trader_list, 'Pastel.Ghost.TButton')
         refresh_traders_btn.pack(side=tk.LEFT, padx=(0, 10))
         
-        # Buttons with different icons
+        # Analyze Trader button only
         analyze_btn = self.main_app.icon_button(controls_frame, 'heart', 'Analyze Trader',
                                                self.analyze_specific_trader, 'Pastel.Primary.TButton')
-        analyze_btn.pack(side=tk.LEFT, padx=(0, 5))
-        
-        refresh_btn = self.main_app.icon_button(controls_frame, 'sparkle', 'Analyze All Records',
-                                               self.analyze_all_records, 'Pastel.Secondary.TButton')
-        refresh_btn.pack(side=tk.LEFT, padx=(0, 5))
-        
-        clear_btn = self.main_app.icon_button(controls_frame, 'skull', 'Clear',
-                                             self.clear_analysis, 'Pastel.Ghost.TButton')
-        clear_btn.pack(side=tk.LEFT)
+        analyze_btn.pack(side=tk.LEFT)
     
     def create_main_content(self):
         """Create main content area"""
@@ -112,17 +104,20 @@ class InvestmentAnalysisTab:
         analysis_frame.grid_rowconfigure(0, weight=1)
         analysis_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content with reduced height to fit comprehensive status
-        canvas = tk.Canvas(analysis_frame, bg=self.colors['panel_light'], height=320)
+        # Scrollable content with adjusted height to match content
+        canvas = tk.Canvas(analysis_frame, bg=self.colors['panel'], height=220, width=480, highlightthickness=0, bd=0)
         scrollbar = ttk.Scrollbar(analysis_frame, orient="vertical", command=canvas.yview)
-        self.analysis_content_frame = ttk.Frame(canvas)
+        self.analysis_content_frame = tk.Frame(canvas, bg=self.colors['panel'])
         
-        self.analysis_content_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
+        def configure_scroll_analysis(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            # Ensure content doesn't exceed canvas width
+            if self.analysis_content_frame.winfo_reqwidth() > 480:
+                canvas.itemconfig(canvas_window, width=480)
         
-        canvas.create_window((0, 0), window=self.analysis_content_frame, anchor="nw")
+        self.analysis_content_frame.bind("<Configure>", configure_scroll_analysis)
+        
+        canvas_window = canvas.create_window((250, 0), window=self.analysis_content_frame, anchor="n")
         canvas.configure(yscrollcommand=scrollbar.set)
         
         canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -138,17 +133,20 @@ class InvestmentAnalysisTab:
         stats_frame.grid_rowconfigure(0, weight=1)
         stats_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content for ability stats with reduced height to fit comprehensive status
-        canvas = tk.Canvas(stats_frame, bg=self.colors['panel_light'], height=320)
+        # Scrollable content for ability stats with adjusted height to match content
+        canvas = tk.Canvas(stats_frame, bg=self.colors['panel'], width=480, height=220, highlightthickness=0, bd=0)
         scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
-        self.ability_content_frame = ttk.Frame(canvas)
+        self.ability_content_frame = tk.Frame(canvas, bg=self.colors['panel'])
         
-        self.ability_content_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
+        def configure_scroll_ability(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            # Ensure content doesn't exceed canvas width
+            if self.ability_content_frame.winfo_reqwidth() > 480:
+                canvas.itemconfig(ability_canvas_window, width=480)
         
-        canvas.create_window((0, 0), window=self.ability_content_frame, anchor="nw")
+        self.ability_content_frame.bind("<Configure>", configure_scroll_ability)
+        
+        ability_canvas_window = canvas.create_window((250, 0), window=self.ability_content_frame, anchor="n")
         canvas.configure(yscrollcommand=scrollbar.set)
         
         canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -237,7 +235,7 @@ class InvestmentAnalysisTab:
         
         # Welcome message
         welcome_frame = ttk.Frame(self.analysis_content_frame)
-        welcome_frame.pack(fill=tk.X, pady=20)
+        welcome_frame.pack(anchor=tk.CENTER, pady=20)
         
         welcome_text = """Welcome to Investment Personality Analysis!
 
@@ -258,8 +256,8 @@ Your personality analysis will help you understand your trading behavior and imp
                                  font=('Arial', 10),
                                  foreground=self.colors['text'],
                                  justify=tk.CENTER,
-                                 wraplength=400,
-                                 background=self.colors['panel_light'])
+                                 wraplength=500,
+                                 background=self.colors['panel'])
         welcome_label.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
     
     def show_initial_ability_message(self):
@@ -270,7 +268,7 @@ Your personality analysis will help you understand your trading behavior and imp
         
         # Welcome message
         welcome_frame = ttk.Frame(self.ability_content_frame)
-        welcome_frame.pack(fill=tk.X, pady=20)
+        welcome_frame.pack(anchor=tk.CENTER, pady=20)
         
         welcome_text = """Welcome to Investment Ability Analysis!
 
@@ -287,7 +285,7 @@ Start an analysis to see your investor ability stats!"""
                                  font=('Arial', 11),
                                  foreground=self.colors['text'],
                                  justify=tk.CENTER,
-                                 background=self.colors['panel_light'])
+                                 background=self.colors['panel'])
         welcome_label.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
     
     def analyze_specific_trader(self):
@@ -353,24 +351,6 @@ Start an analysis to see your investor ability stats!"""
         # Update main app evaluation area
         self.update_main_evaluation_area()
     
-    def clear_analysis(self):
-        """Clear current analysis"""
-        self.current_metrics = None
-        self.nickname_var.set("")
-        self.show_initial_message()
-        self.show_initial_ability_message()
-        
-        # Reset tab icon to default
-        icon = self.main_app.icon_manager.get_icon('level_3')
-        if icon:
-            for i in range(self.notebook.index("end")):
-                if self.notebook.tab(i, "text") == "Investment Analysis":
-                    self.notebook.tab(i, image=icon)
-                    break
-        
-        # Update footer
-        self.last_updated_label.config(text="Ready for analysis")
-        self.stats_label.config(text="")
     
     def display_analysis_results(self, title: str):
         """Display analysis results in the left panel"""
@@ -386,16 +366,16 @@ Start an analysis to see your investor ability stats!"""
         
         # Title
         title_frame = ttk.Frame(self.analysis_content_frame)
-        title_frame.pack(fill=tk.X, pady=(0, 15))
+        title_frame.pack(anchor=tk.CENTER, pady=(0, 15))
         
         title_label = ttk.Label(title_frame, text=title,
                                font=('Arial', 14, 'bold'),
                                foreground=self.colors['magenta'])
-        title_label.pack(anchor=tk.W)
+        title_label.pack(anchor=tk.CENTER)
         
         # Personality Overview
         overview_frame = ttk.LabelFrame(self.analysis_content_frame, text="Personality Overview", padding="10")
-        overview_frame.pack(fill=tk.X, pady=(0, 10))
+        overview_frame.pack(anchor=tk.CENTER, pady=(0, 10))
         
         overview_text = f"""Risk Tolerance: {metrics.risk_tolerance.value}
 Investment Style: {metrics.investment_style.value}
@@ -405,12 +385,12 @@ Trading Frequency: {metrics.trading_frequency.value}
         
         overview_label = ttk.Label(overview_frame, text=overview_text,
                                   font=('Arial', 10),
-                                  justify=tk.LEFT)
-        overview_label.pack(anchor=tk.W)
+                                  justify=tk.CENTER)
+        overview_label.pack(anchor=tk.CENTER)
         
         # Statistics
         stats_frame = ttk.LabelFrame(self.analysis_content_frame, text="Trading Statistics", padding="10")
-        stats_frame.pack(fill=tk.X, pady=(0, 10))
+        stats_frame.pack(anchor=tk.CENTER, pady=(0, 10))
         
         stats_text = f"""Average Holding Period: {metrics.average_holding_period:.1f} days
 Win Rate: {metrics.win_rate:.1f}%
@@ -419,13 +399,13 @@ Volatility: {metrics.volatility:.2f}%"""
         
         stats_label = ttk.Label(stats_frame, text=stats_text,
                                font=('Arial', 10),
-                               justify=tk.LEFT)
-        stats_label.pack(anchor=tk.W)
+                               justify=tk.CENTER)
+        stats_label.pack(anchor=tk.CENTER)
         
         # Strengths
         if metrics.strengths:
             strengths_frame = ttk.LabelFrame(self.analysis_content_frame, text="Strengths", padding="10")
-            strengths_frame.pack(fill=tk.X, pady=(0, 10))
+            strengths_frame.pack(anchor=tk.CENTER, pady=(0, 10))
             
             for strength in metrics.strengths:
                 strength_frame = ttk.Frame(strengths_frame)
@@ -434,12 +414,12 @@ Volatility: {metrics.volatility:.2f}%"""
                 ttk.Label(strength_frame, text="• " + strength,
                          font=('Arial', 9),
                          foreground=self.colors['mint'],
-                         wraplength=350).pack(anchor=tk.W)
+                         wraplength=450).pack(anchor=tk.CENTER)
         
         # Weaknesses
         if metrics.weaknesses:
             weaknesses_frame = ttk.LabelFrame(self.analysis_content_frame, text="Areas for Improvement", padding="10")
-            weaknesses_frame.pack(fill=tk.X, pady=(0, 10))
+            weaknesses_frame.pack(anchor=tk.CENTER, pady=(0, 10))
             
             for weakness in metrics.weaknesses:
                 weakness_frame = ttk.Frame(weaknesses_frame)
@@ -448,12 +428,12 @@ Volatility: {metrics.volatility:.2f}%"""
                 ttk.Label(weakness_frame, text="• " + weakness,
                          font=('Arial', 9),
                          foreground=self.colors['coral'],
-                         wraplength=350).pack(anchor=tk.W)
+                         wraplength=450).pack(anchor=tk.CENTER)
         
         # Recommendations
         if metrics.recommendations:
             recommendations_frame = ttk.LabelFrame(self.analysis_content_frame, text="Recommendations", padding="10")
-            recommendations_frame.pack(fill=tk.X, pady=(0, 10))
+            recommendations_frame.pack(anchor=tk.CENTER, pady=(0, 10))
             
             for recommendation in metrics.recommendations:
                 rec_frame = ttk.Frame(recommendations_frame)
@@ -462,7 +442,7 @@ Volatility: {metrics.volatility:.2f}%"""
                 ttk.Label(rec_frame, text="• " + recommendation,
                          font=('Arial', 9),
                          foreground=self.colors['text'],
-                         wraplength=350).pack(anchor=tk.W)
+                         wraplength=450).pack(anchor=tk.CENTER)
     
     def update_ability_stats(self):
         """Update ability stats display"""
@@ -478,7 +458,7 @@ Volatility: {metrics.volatility:.2f}%"""
         
         # Title
         title_frame = ttk.Frame(self.ability_content_frame)
-        title_frame.pack(fill=tk.X, pady=(0, 20))
+        title_frame.pack(fill=tk.X, pady=(0, 20), padx=20)
         
         title_label = ttk.Label(title_frame, text="INVESTOR ABILITY STATS",
                                font=('Arial', 14, 'bold'),
@@ -505,7 +485,7 @@ Volatility: {metrics.volatility:.2f}%"""
     def create_ability_stat(self, name: str, score: float, description: str):
         """Create individual ability stat display"""
         stat_frame = ttk.LabelFrame(self.ability_content_frame, text=name, padding="15")
-        stat_frame.pack(fill=tk.X, pady=(0, 15))
+        stat_frame.pack(anchor=tk.CENTER, pady=(0, 15))
         
         # Score and level
         score_frame = ttk.Frame(stat_frame)
@@ -586,7 +566,7 @@ Volatility: {metrics.volatility:.2f}%"""
                         metrics.profitability_score + metrics.discipline_score) / 4
         
         level_frame = ttk.LabelFrame(self.ability_content_frame, text="OVERALL INVESTOR LEVEL", padding="15")
-        level_frame.pack(fill=tk.X, pady=(0, 15))
+        level_frame.pack(anchor=tk.CENTER, pady=(0, 15))
         
         # Determine overall level
         if overall_score >= 80:
@@ -642,7 +622,7 @@ Volatility: {metrics.volatility:.2f}%"""
         desc_label = ttk.Label(level_frame, text=level_desc,
                               font=('Arial', 10),
                               foreground=self.colors['text'],
-                              wraplength=400)
+                              wraplength=500)
         desc_label.pack()
     
     def create_investment_type(self):
@@ -653,7 +633,7 @@ Volatility: {metrics.volatility:.2f}%"""
         metrics = self.current_metrics
         
         type_frame = ttk.LabelFrame(self.ability_content_frame, text="INVESTOR TYPE PROFILE", padding="15")
-        type_frame.pack(fill=tk.X, pady=(0, 15))
+        type_frame.pack(anchor=tk.CENTER, pady=(0, 15))
         
         # Investment profile based on metrics
         risk_level = metrics.risk_tolerance.value
@@ -674,8 +654,8 @@ Key Statistics:
         profile_label = ttk.Label(type_frame, text=profile_text,
                                  font=('Arial', 10),
                                  foreground=self.colors['text'],
-                                 justify=tk.LEFT)
-        profile_label.pack(anchor=tk.W)
+                                 justify=tk.CENTER)
+        profile_label.pack(anchor=tk.CENTER)
     
     def update_tab_icon(self):
         """Update tab icon and title based on overall score"""

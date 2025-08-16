@@ -54,6 +54,9 @@ class IconManager:
             'reset':            'bow.png',
             'help':             'glasses.png',  # Help guide icon
             'rainbow':          'rainbow.png',  # Rainbow button icon
+            # Additional icon aliases
+            'glasses':          'glasses.png',  # Direct glasses icon
+            'heart':            'heart.png',    # Direct heart icon
             # Level icons
             'level_1':          'level_1.png',
             'level_2':          'level_2.png',
