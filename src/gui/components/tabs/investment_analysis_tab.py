@@ -48,6 +48,9 @@ class InvestmentAnalysisTab:
         # Create main content
         self.create_main_content()
         
+        # Create comprehensive analysis status
+        self.create_comprehensive_status()
+        
         # Create footer
         self.create_footer()
     
@@ -109,8 +112,8 @@ class InvestmentAnalysisTab:
         analysis_frame.grid_rowconfigure(0, weight=1)
         analysis_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content with fixed height
-        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=400)
+        # Scrollable content with reduced height to fit comprehensive status
+        canvas = tk.Canvas(analysis_frame, bg=self.colors['bg'], height=320)
         scrollbar = ttk.Scrollbar(analysis_frame, orient="vertical", command=canvas.yview)
         self.analysis_content_frame = ttk.Frame(canvas)
         
@@ -135,8 +138,8 @@ class InvestmentAnalysisTab:
         stats_frame.grid_rowconfigure(0, weight=1)
         stats_frame.grid_columnconfigure(0, weight=1)
         
-        # Scrollable content for ability stats with fixed height
-        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=400)
+        # Scrollable content for ability stats with reduced height to fit comprehensive status
+        canvas = tk.Canvas(stats_frame, bg=self.colors['bg'], height=320)
         scrollbar = ttk.Scrollbar(stats_frame, orient="vertical", command=canvas.yview)
         self.ability_content_frame = ttk.Frame(canvas)
         
@@ -154,10 +157,63 @@ class InvestmentAnalysisTab:
         # Initial message
         self.show_initial_ability_message()
     
+    def create_comprehensive_status(self):
+        """Create comprehensive analysis status section"""
+        status_frame = ttk.LabelFrame(self.frame, text="Comprehensive Analysis Status", padding="10")
+        status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        status_frame.grid_columnconfigure(0, weight=1)
+        status_frame.grid_columnconfigure(1, weight=1)
+        
+        # Individual Analysis Status
+        individual_frame = ttk.Frame(status_frame)
+        individual_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 10))
+        
+        ttk.Label(individual_frame, text="Individual Analysis:", 
+                 font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        self.individual_icon_label = ttk.Label(individual_frame)
+        self.individual_icon_label.pack(side=tk.LEFT, padx=(5, 5))
+        
+        self.individual_status_label = ttk.Label(individual_frame, text="Ready", 
+                                               foreground=self.colors['text'])
+        self.individual_status_label.pack(side=tk.LEFT)
+        
+        # Investment Analysis Status  
+        investment_frame = ttk.Frame(status_frame)
+        investment_frame.grid(row=0, column=1, sticky=(tk.W, tk.E))
+        
+        ttk.Label(investment_frame, text="Investment Analysis:", 
+                 font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        
+        self.investment_icon_label = ttk.Label(investment_frame)
+        self.investment_icon_label.pack(side=tk.LEFT, padx=(5, 5))
+        
+        self.investment_status_label = ttk.Label(investment_frame, text="Ready", 
+                                               foreground=self.colors['text'])
+        self.investment_status_label.pack(side=tk.LEFT)
+        
+        # Initialize with default icons
+        self.update_individual_status("Ready", "level_3")
+        self.update_investment_status("Ready", "level_3")
+    
+    def update_individual_status(self, status_text, icon_key):
+        """Update individual analysis status"""
+        icon = self.main_app.icon_manager.get_icon(icon_key)
+        if icon:
+            self.individual_icon_label.config(image=icon)
+        self.individual_status_label.config(text=status_text)
+        
+    def update_investment_status(self, status_text, icon_key):
+        """Update investment analysis status"""
+        icon = self.main_app.icon_manager.get_icon(icon_key)
+        if icon:
+            self.investment_icon_label.config(image=icon)
+        self.investment_status_label.config(text=status_text)
+    
     def create_footer(self):
         """Create footer with additional info"""
         footer_frame = ttk.Frame(self.frame)
-        footer_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(20, 0))
+        footer_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
         
         # Last updated
         self.last_updated_label = ttk.Label(footer_frame, 
@@ -684,9 +740,8 @@ Key Statistics:
             level_icon = "level_1"
             status_text = "NOVICE - Beginner Investor"
         
-        # Update main app evaluation area
-        if hasattr(self.main_app, 'update_investment_status'):
-            self.main_app.update_investment_status(status_text, level_icon)
+        # Update investment status in comprehensive status area
+        self.update_investment_status(status_text, level_icon)
     
     def refresh_trader_list(self):
         """Refresh the trader dropdown list"""

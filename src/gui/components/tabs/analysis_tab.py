@@ -656,6 +656,6 @@ consult with qualified financial advisors before making investment decisions.
             level_icon = "level_1"
             status_text = f"NOVICE - {recommendation}"
         
-        # Update main app evaluation area
-        if hasattr(self.main_app, 'update_individual_status'):
-            self.main_app.update_individual_status(status_text, level_icon)
+        # Update individual status in investment analysis tab
+        if hasattr(self.main_app, 'investment_analysis_tab') and hasattr(self.main_app.investment_analysis_tab, 'update_individual_status'):
+            self.main_app.investment_analysis_tab.update_individual_status(status_text, level_icon)

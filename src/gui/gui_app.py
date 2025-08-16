@@ -115,8 +115,7 @@ class StockAnalysisGUI:
         self.investment_analysis_tab = InvestmentAnalysisTab(self.notebook, self)
         self.settings_tab = SettingsTab(self.notebook, self)
         
-        # Comprehensive evaluation area
-        self.create_evaluation_area(main_frame)
+        # Comprehensive evaluation area moved to investment analysis tab
         
         # Status bar
         self.status_var = tk.StringVar()
@@ -150,58 +149,7 @@ class StockAnalysisGUI:
             
             cycle_colors()
     
-    def create_evaluation_area(self, parent):
-        """Create comprehensive evaluation area below tabs"""
-        eval_frame = ttk.LabelFrame(parent, text="Comprehensive Analysis Status", padding="10")
-        eval_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
-        eval_frame.grid_columnconfigure(0, weight=1)
-        eval_frame.grid_columnconfigure(1, weight=1)
-        
-        # Individual Analysis Status
-        individual_frame = ttk.Frame(eval_frame)
-        individual_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 10))
-        
-        ttk.Label(individual_frame, text="Individual Analysis:", 
-                 font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
-        
-        self.individual_icon_label = ttk.Label(individual_frame)
-        self.individual_icon_label.pack(side=tk.LEFT, padx=(5, 5))
-        
-        self.individual_status_label = ttk.Label(individual_frame, text="Ready", 
-                                               foreground=self.theme_manager.colors['text'])
-        self.individual_status_label.pack(side=tk.LEFT)
-        
-        # Investment Analysis Status  
-        investment_frame = ttk.Frame(eval_frame)
-        investment_frame.grid(row=0, column=1, sticky=(tk.W, tk.E))
-        
-        ttk.Label(investment_frame, text="Investment Analysis:", 
-                 font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
-        
-        self.investment_icon_label = ttk.Label(investment_frame)
-        self.investment_icon_label.pack(side=tk.LEFT, padx=(5, 5))
-        
-        self.investment_status_label = ttk.Label(investment_frame, text="Ready", 
-                                               foreground=self.theme_manager.colors['text'])
-        self.investment_status_label.pack(side=tk.LEFT)
-        
-        # Initialize with default icons
-        self.update_individual_status("Ready", "level_3")
-        self.update_investment_status("Ready", "level_3")
-        
-    def update_individual_status(self, status_text, icon_key):
-        """Update individual analysis status"""
-        icon = self.icon_manager.get_icon(icon_key)
-        if icon:
-            self.individual_icon_label.config(image=icon)
-        self.individual_status_label.config(text=status_text)
-        
-    def update_investment_status(self, status_text, icon_key):
-        """Update investment analysis status"""
-        icon = self.icon_manager.get_icon(icon_key)
-        if icon:
-            self.investment_icon_label.config(image=icon)
-        self.investment_status_label.config(text=status_text)
+    # Evaluation area methods moved to investment analysis tab
         
     # Delegation methods for backward compatibility
     def icon_button(self, parent, key, text, command, style='Pastel.Primary.TButton', spacing=None):
