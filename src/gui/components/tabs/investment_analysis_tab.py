@@ -62,6 +62,52 @@ class InvestmentAnalysisTab:
         except Exception as e:
             print(f"Error in delayed initialization: {e}")
     
+    def _get_current_session_record(self):
+        """Get current session trading record from Mock Trading tab"""
+        try:
+            # Check if Mock Trading tab exists and has portfolio data
+            if hasattr(self.main_app, 'mock_trading_tab'):
+                trading_tab = self.main_app.mock_trading_tab
+                if hasattr(trading_tab, 'data_manager'):
+                    portfolio = trading_tab.data_manager.get_portfolio()
+                    
+                    # Only create record if there are actual transactions
+                    if portfolio.transactions:
+                        stock_prices = trading_tab._get_current_stock_prices()
+                        
+                        # Create a temporary record for current session
+                        from src.trading.scoreboard_models import ScoreboardResult
+                        record = self.scoreboard_manager.create_record_from_portfolio(
+                            "Current Session",
+                            portfolio,
+                            ScoreboardResult.ACTIVE,
+                            stock_prices,
+                            getattr(trading_tab, 'session_start_time', None)
+                        )
+                        return record
+        except Exception as e:
+            print(f"Error getting current session record: {e}")
+            import traceback
+            traceback.print_exc()
+        return None
+    
+    def _show_welcome_message(self):
+        """Show welcome message when no data is available"""
+        try:
+            # Use the same display method as show_initial_message
+            self.show_initial_message()
+            self.show_initial_ability_message()
+            
+            # Update footer
+            self.last_updated_label.config(text="No data available")
+            self.stats_label.config(text="Start trading to generate analysis")
+            
+            # Clear any selected trader
+            self.nickname_var.set("")
+            
+        except Exception as e:
+            print(f"Error showing welcome message: {e}")
+    
     def create_header(self):
         """Create header section"""
         header_frame = ttk.Frame(self.frame)
@@ -305,13 +351,31 @@ Start an analysis to see your investor ability stats!"""
                                         'bow')
             return
         
-        # Get records for specific trader
+        # Handle Current Session specially
+        if nickname == "Current Session":
+            current_session_record = self._get_current_session_record()
+            if current_session_record:
+                self.current_metrics = self.analyzer.analyze_personality([current_session_record])
+                self.display_analysis_results("Current Session Analysis")
+                self.last_updated_label.config(text="Analyzed: Current Session")
+                self.stats_label.config(text="1 session analyzed")
+                self.update_ability_stats()
+                self.update_tab_icon()
+                self.update_main_evaluation_area()
+                return
+            else:
+                self.kawaii_msg.show_warning("No Current Session", 
+                                            "No active trading session found. Start trading in Mock Trading tab first.", 
+                                            'skull')
+                return
+        
+        # Get records for specific trader from scoreboard
         all_records = self.scoreboard_manager.get_leaderboard(100)  # Get more records
         trader_records = [r for r in all_records if r.nickname.lower() == nickname.lower()]
         
         if not trader_records:
             self.kawaii_msg.show_warning("Trader Not Found", 
-                                        f"No records found for trader '{nickname}'.\\nPlease check the nickname and try again.", 
+                                        f"No records found for trader '{nickname}'.\nPlease check the nickname and try again.", 
                                         'skull')
             return
         
@@ -336,10 +400,14 @@ Start an analysis to see your investor ability stats!"""
         """Analyze all trading records"""
         all_records = self.scoreboard_manager.get_leaderboard(100)
         
+        # Always try to include current session if available
+        current_session_record = self._get_current_session_record()
+        if current_session_record:
+            all_records.append(current_session_record)
+        
         if not all_records:
-            self.kawaii_msg.show_info("No Data", 
-                                     "No trading records found in scoreboard.\\nStart trading to generate analysis data!", 
-                                     'sparkle')
+            # Show welcome message instead of error
+            self._show_welcome_message()
             return
         
         # Perform analysis on all records
@@ -734,10 +802,21 @@ Key Statistics:
     def refresh_trader_list(self):
         """Refresh the trader dropdown list and update analysis results"""
         try:
+            # Reload scoreboard data first
+            self.scoreboard_manager.load_data()
+            
             # Get all records and extract unique nicknames
             all_records = self.scoreboard_manager.get_leaderboard(1000)  # Get many records
             nicknames = list(set(record.nickname for record in all_records))
             nicknames.sort()  # Sort alphabetically
+            
+            # Check for current session data regardless of scoreboard records
+            current_session_record = self._get_current_session_record()
+            
+            # Always include Current Session if available
+            if current_session_record:
+                if "Current Session" not in nicknames:
+                    nicknames.insert(0, "Current Session")  # Add at the beginning
             
             # Update combobox values
             self.trader_combo['values'] = nicknames
@@ -747,29 +826,54 @@ Key Statistics:
             if current_selection and current_selection not in nicknames:
                 self.nickname_var.set("")
             
-            # Refresh analysis results automatically
-            if all_records:
-                # If a specific trader is selected, analyze that trader
-                if current_selection and current_selection in nicknames:
-                    trader_records = [r for r in all_records if r.nickname.lower() == current_selection.lower()]
-                    if trader_records:
-                        self.current_metrics = self.analyzer.analyze_personality(trader_records)
-                        self.display_analysis_results(f"Analysis for {current_selection}")
-                        self.last_updated_label.config(text=f"Analyzed: {current_selection}")
-                        self.stats_label.config(text=f"{len(trader_records)} records analyzed")
-                        self.update_ability_stats()
-                        self.update_tab_icon()
-                        self.update_main_evaluation_area()
-                else:
-                    # No specific trader selected, analyze all records
-                    self.analyze_all_records()
+            # Determine what to analyze
+            analysis_performed = False
+            
+            # Priority 1: If Current Session is selected or available and no selection
+            if current_session_record and (current_selection == "Current Session" or not current_selection):
+                self.nickname_var.set("Current Session")
+                self.current_metrics = self.analyzer.analyze_personality([current_session_record])
+                self.display_analysis_results("Current Session Analysis")
+                self.last_updated_label.config(text="Analyzed: Current Session")
+                self.stats_label.config(text="1 session analyzed")
+                self.update_ability_stats()
+                self.update_tab_icon()
+                self.update_main_evaluation_area()
+                analysis_performed = True
+                
+            # Priority 2: If a specific trader is selected and exists
+            elif current_selection and current_selection in nicknames and current_selection != "Current Session":
+                trader_records = [r for r in all_records if r.nickname.lower() == current_selection.lower()]
+                if trader_records:
+                    self.current_metrics = self.analyzer.analyze_personality(trader_records)
+                    self.display_analysis_results(f"Analysis for {current_selection}")
+                    self.last_updated_label.config(text=f"Analyzed: {current_selection}")
+                    self.stats_label.config(text=f"{len(trader_records)} records analyzed")
+                    self.update_ability_stats()
+                    self.update_tab_icon()
+                    self.update_main_evaluation_area()
+                    analysis_performed = True
+                    
+            # Priority 3: If there are scoreboard records, analyze all
+            elif all_records:
+                self.analyze_all_records()
+                analysis_performed = True
+                
+            # Priority 4: Show welcome message
+            if not analysis_performed:
+                self._show_welcome_message()
             
             # Update status (with safe check)
+            total_available = len(nicknames)
+            status_message = f"Investment analysis refreshed - {total_available} data sources found"
+            
             if hasattr(self.main_app, 'update_status') and hasattr(self.main_app, 'status_var'):
-                self.main_app.update_status(f"Investment analysis refreshed - {len(nicknames)} traders found")
+                self.main_app.update_status(status_message)
                 
         except Exception as e:
             print(f"Error refreshing trader list: {e}")
+            import traceback
+            traceback.print_exc()
             self.trader_combo['values'] = []
             if hasattr(self.main_app, 'update_status') and hasattr(self.main_app, 'status_var'):
                 self.main_app.update_status("Failed to refresh investment analysis")

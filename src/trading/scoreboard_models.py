@@ -15,6 +15,7 @@ class ScoreboardResult(Enum):
     RESET = "RESET"  # 포트폴리오 리셋
     BANKRUPTCY = "BANKRUPTCY"  # 파산 (자산 < 1000)
     MANUAL_SAVE = "MANUAL_SAVE"  # 수동 저장
+    ACTIVE = "ACTIVE"  # 현재 활성 세션
 
 
 @dataclass
