@@ -25,8 +25,8 @@ class InvestmentAnalysisTab:
         self.current_metrics: Optional[PersonalityMetrics] = None
         
         self.setup_tab()
-        self.refresh_trader_list()
-        self.load_analysis()
+        # Delay initialization to ensure main app is fully loaded
+        self.main_app.root.after(100, self._delayed_initialization)
     
     def setup_tab(self):
         """Create the investment analysis tab"""
@@ -53,6 +53,14 @@ class InvestmentAnalysisTab:
         
         # Create footer
         self.create_footer()
+    
+    def _delayed_initialization(self):
+        """Delayed initialization to ensure main app is fully loaded"""
+        try:
+            self.refresh_trader_list()
+            self.load_analysis()
+        except Exception as e:
+            print(f"Error in delayed initialization: {e}")
     
     def create_header(self):
         """Create header section"""
@@ -756,14 +764,14 @@ Key Statistics:
                     # No specific trader selected, analyze all records
                     self.analyze_all_records()
             
-            # Update status
-            if hasattr(self.main_app, 'update_status'):
+            # Update status (with safe check)
+            if hasattr(self.main_app, 'update_status') and hasattr(self.main_app, 'status_var'):
                 self.main_app.update_status(f"Investment analysis refreshed - {len(nicknames)} traders found")
                 
         except Exception as e:
             print(f"Error refreshing trader list: {e}")
             self.trader_combo['values'] = []
-            if hasattr(self.main_app, 'update_status'):
+            if hasattr(self.main_app, 'update_status') and hasattr(self.main_app, 'status_var'):
                 self.main_app.update_status("Failed to refresh investment analysis")
     
     def load_analysis(self):
