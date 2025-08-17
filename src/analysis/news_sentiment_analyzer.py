@@ -242,10 +242,12 @@ class NewsSentimentAnalyzer:
             
             for seen_title in seen_titles:
                 seen_words = set(seen_title.lower().split())
-                similarity = len(title_words & seen_words) / len(title_words | seen_words)
-                if similarity > 0.8:  # 80% 유사도 임계값
-                    is_duplicate = True
-                    break
+                union_words = title_words | seen_words
+                if len(union_words) > 0:  # division by zero 방지
+                    similarity = len(title_words & seen_words) / len(union_words)
+                    if similarity > 0.8:  # 80% 유사도 임계값
+                        is_duplicate = True
+                        break
             
             if not is_duplicate:
                 unique_articles.append(article)
@@ -302,19 +304,25 @@ class NewsSentimentAnalyzer:
             else:
                 neutral_count += 1
         
-        # 전체 감정 점수
-        overall_score = sum(total_scores) / len(total_scores)
+        # 전체 감정 점수 - division by zero 방지
+        if len(total_scores) > 0:
+            overall_score = sum(total_scores) / len(total_scores)
+        else:
+            overall_score = 0.0
         overall_sentiment = self._score_to_sentiment_type(overall_score)
         
         # 신뢰도 계산 (점수의 분산 기반)
         import statistics
         confidence = 1.0 - min(statistics.stdev(total_scores) if len(total_scores) > 1 else 0, 1.0)
         
-        # 비율 계산
+        # 비율 계산 - division by zero 방지
         total_articles = len(articles)
-        positive_ratio = positive_count / total_articles
-        negative_ratio = negative_count / total_articles
-        neutral_ratio = neutral_count / total_articles
+        if total_articles > 0:
+            positive_ratio = positive_count / total_articles
+            negative_ratio = negative_count / total_articles
+            neutral_ratio = neutral_count / total_articles
+        else:
+            positive_ratio = negative_ratio = neutral_ratio = 0.0
         
         return SentimentAnalysis(
             overall_sentiment=overall_sentiment,
@@ -479,7 +487,7 @@ class NewsSentimentAnalyzer:
             vader_score = self._analyze_with_vader(text)
             total_score += (textblob_score + vader_score) / 2
         
-        return total_score / len(relevant_texts)
+        return total_score / len(relevant_texts) if len(relevant_texts) > 0 else 0.0
     
     def clear_cache(self):
         """캐시 초기화"""
