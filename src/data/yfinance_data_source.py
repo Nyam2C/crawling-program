@@ -1,22 +1,26 @@
 """
-YFinance-based data source for reliable stock data retrieval
+Enhanced Data Source with Multi-Source Support
+다중 데이터 소스를 지원하는 향상된 데이터 소스
 """
 
 import yfinance as yf
 from typing import Dict, Optional, List, Tuple
 import logging
 from datetime import datetime
+from .multi_data_source import MultiDataSourceManager, DataSourceType
 
 class YFinanceDataSource:
-    """YFinance-based stock data source - reliable and fast"""
+    """Enhanced stock data source with multi-source support"""
     
-    def __init__(self, delay=0.1):  # Much faster than web scraping
+    def __init__(self, delay=0.1):
         self.delay = delay
         self._cache = {}
+        self.multi_data_manager = MultiDataSourceManager()
+        self.logger = logging.getLogger(__name__)
         
     def get_stock_data(self, symbol: str) -> Dict:
         """
-        Get comprehensive stock data for a symbol
+        Get comprehensive stock data using multi-source approach
         
         Args:
             symbol: Stock symbol (e.g., 'AAPL')
@@ -29,6 +33,45 @@ class YFinanceDataSource:
             
         symbol = symbol.upper().strip()
         
+        try:
+            # Try multi-source data first
+            multi_result = self.multi_data_manager.get_stock_data_sync(symbol)
+            
+            if multi_result:
+                # Convert to legacy format for compatibility
+                stock_data = {
+                    'symbol': symbol,
+                    'company': f"{symbol} Corp.",  # Will be enhanced with company data
+                    'current_price': f"${multi_result.price:.2f}",
+                    'change': f"{multi_result.change:+.2f}",
+                    'change_percent': f"({multi_result.change_percent:+.2f}%)",
+                    'market_cap': self._format_market_cap(multi_result.market_cap or 0),
+                    'volume': self._format_volume(multi_result.volume),
+                    'high': multi_result.fifty_two_week_high or 0,
+                    'low': multi_result.fifty_two_week_low or 0,
+                    'pe_ratio': multi_result.pe_ratio or 'N/A',
+                    'dividend_yield': multi_result.dividend_yield or 0,
+                    'valid': True,
+                    'source': multi_result.data_source,
+                    'timestamp': multi_result.timestamp.isoformat(),
+                    'raw_data': multi_result  # Store raw data for advanced analysis
+                }
+                
+                return stock_data
+            
+            # Fallback to original yfinance method
+            return self._get_yfinance_data_legacy(symbol)
+            
+        except Exception as e:
+            self.logger.error(f"Error fetching data for {symbol}: {str(e)}")
+            return {
+                'error': f'Failed to fetch data for {symbol}: {str(e)}',
+                'symbol': symbol,
+                'valid': False
+            }
+    
+    def _get_yfinance_data_legacy(self, symbol: str) -> Dict:
+        """Legacy yfinance data retrieval method"""
         try:
             # Create ticker object
             ticker = yf.Ticker(symbol)
@@ -73,19 +116,14 @@ class YFinanceDataSource:
                 'pe_ratio': info.get('forwardPE', info.get('trailingPE', 'N/A')),
                 'dividend_yield': info.get('dividendYield', 0),
                 'valid': True,
-                'source': 'yfinance',
+                'source': 'yfinance (fallback)',
                 'timestamp': datetime.now().isoformat()
             }
             
             return stock_data
             
         except Exception as e:
-            logging.error(f"Error fetching data for {symbol}: {str(e)}")
-            return {
-                'error': f'Failed to fetch data for {symbol}: {str(e)}',
-                'symbol': symbol,
-                'valid': False
-            }
+            raise e
     
     def validate_symbol(self, symbol: str) -> Tuple[bool, Optional[str], Optional[str]]:
         """
@@ -227,6 +265,74 @@ class YFinanceDataSource:
         """Clear the validation cache"""
         self._cache.clear()
     
+    def configure_data_source(self, source_type: str, api_key: str = None, enabled: bool = True):
+        """
+        Configure additional data sources
+        
+        Args:
+            source_type: Type of data source (alpha_vantage, finnhub, twelve_data)
+            api_key: API key for the service
+            enabled: Whether to enable this source
+        """
+        try:
+            if source_type == "alpha_vantage":
+                self.multi_data_manager.configure_data_source(
+                    DataSourceType.ALPHA_VANTAGE, api_key, enabled
+                )
+            elif source_type == "finnhub":
+                self.multi_data_manager.configure_data_source(
+                    DataSourceType.FINNHUB, api_key, enabled
+                )
+            elif source_type == "twelve_data":
+                self.multi_data_manager.configure_data_source(
+                    DataSourceType.TWELVE_DATA, api_key, enabled
+                )
+            else:
+                raise ValueError(f"Unsupported data source type: {source_type}")
+                
+            self.logger.info(f"Configured {source_type} with enabled={enabled}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Failed to configure {source_type}: {e}")
+            return False
+    
+    def get_data_source_status(self) -> Dict:
+        """Get status of all configured data sources"""
+        return self.multi_data_manager.get_data_source_status()
+    
+    def test_data_sources(self, test_symbol: str = "AAPL") -> Dict[str, bool]:
+        """Test all configured data sources"""
+        return self.multi_data_manager.test_data_sources(test_symbol)
+    
+    def get_multiple_stocks_data_enhanced(self, symbols: List[str]) -> Dict[str, Dict]:
+        """
+        Enhanced bulk data retrieval using multi-source approach
+        """
+        results = {}
+        
+        try:
+            # Try to get data for all symbols using multi-source
+            for symbol in symbols:
+                print(f"Fetching {symbol}...")
+                stock_data = self.get_stock_data(symbol)
+                results[symbol] = stock_data
+                
+                # Respect rate limiting
+                if self.delay > 0:
+                    import time
+                    time.sleep(self.delay)
+                    
+        except Exception as e:
+            self.logger.error(f"Error in enhanced bulk fetch: {str(e)}")
+            
+        return results
+    
     def close(self):
-        """Clean up resources - not needed for yfinance"""
-        pass
+        """Clean up resources"""
+        try:
+            # Close multi-data manager if needed
+            if hasattr(self.multi_data_manager, 'close'):
+                self.multi_data_manager.close()
+        except Exception as e:
+            self.logger.error(f"Error closing resources: {e}")

@@ -13,7 +13,7 @@ from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
 from src.gui.components import (
     StockDataTab, RecommendationsTab, IndividualAnalysisTab, ScoreboardTab, SettingsTab, InvestmentAnalysisTab,
-    MockTradingTab, ThemeManager, IconManager, UIBuilder
+    MockTradingTab, NewsSentimentTab, ThemeManager, IconManager, UIBuilder
 )
 from src.gui.components.ui_core.keyboard_manager import KeyboardManager
 from src.gui.components.ui_core.action_manager import ActionManager
@@ -120,6 +120,7 @@ class StockAnalysisGUI:
         self.stock_data_tab = StockDataTab(self.notebook, self)
         self.recommendations_tab = RecommendationsTab(self.notebook, self)
         self.analysis_tab = IndividualAnalysisTab(self.notebook, self)
+        self.news_sentiment_tab = NewsSentimentTab(self.notebook, self.icon_manager, self.theme_manager)
         self.mock_trading_tab = MockTradingTab(self.notebook, self)
         self.scoreboard_tab = ScoreboardTab(self.notebook, self)
         self.investment_analysis_tab = InvestmentAnalysisTab(self.notebook, self)

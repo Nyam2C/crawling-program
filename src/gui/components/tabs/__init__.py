@@ -9,6 +9,7 @@ from .recommendations_tab import RecommendationsTab
 from .scoreboard_tab import ScoreboardTab
 from .settings_tab import SettingsTab
 from .investment_analysis_tab import InvestmentAnalysisTab
+from .news_sentiment_tab import NewsSentimentTab
 
 __all__ = [
     'StockDataTab',
@@ -16,5 +17,6 @@ __all__ = [
     'RecommendationsTab',
     'ScoreboardTab',
     'SettingsTab',
-    'InvestmentAnalysisTab'
+    'InvestmentAnalysisTab',
+    'NewsSentimentTab'
 ]

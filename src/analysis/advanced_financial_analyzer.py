@@ -1,5 +1,6 @@
 """
-Advanced Financial Analysis Engine with Comprehensive Investment Criteria
+Enhanced Advanced Financial Analysis Engine
+통합된 기술적 분석, 뉴스 감정 분석, 다중 데이터 소스를 활용한 고급 금융 분석
 """
 
 import re
@@ -7,6 +8,10 @@ import math
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 import logging
+
+# Import enhanced analyzers
+from .advanced_technical_analyzer import advanced_technical_analyzer
+from .news_sentiment_analyzer import news_sentiment_analyzer
 
 
 class AdvancedFinancialAnalyzer:
@@ -753,3 +758,329 @@ class AdvancedFinancialAnalyzer:
             'META': ['Metaverse investment', 'Advertising technology improvement', 'VR/AR business']
         }
         return drivers_map.get(symbol, ['New product launches', 'Market share expansion', 'Technology innovation'])
+    
+    def generate_enhanced_comprehensive_analysis(self, symbol: str, stock_data: Dict = None) -> Dict:
+        """
+        향상된 종합 분석: 기술적 분석, 뉴스 감정 분석, 기본 분석을 통합
+        
+        Args:
+            symbol: 주식 심볼
+            stock_data: 기존 주식 데이터 (선택사항)
+            
+        Returns:
+            Dict: 종합 분석 결과
+        """
+        try:
+            analysis_results = {}
+            
+            # 1. 기본 금융 분석
+            if stock_data:
+                fundamental_analysis = self.generate_comprehensive_analysis(stock_data)
+                analysis_results['fundamental'] = fundamental_analysis
+            
+            # 2. 고급 기술적 분석
+            try:
+                technical_analysis = advanced_technical_analyzer.generate_comprehensive_analysis(symbol)
+                analysis_results['technical'] = technical_analysis
+            except Exception as e:
+                self.logger.warning(f"Technical analysis failed for {symbol}: {e}")
+                analysis_results['technical'] = {"error": "Technical analysis unavailable"}
+            
+            # 3. 뉴스 감정 분석
+            try:
+                news_articles = news_sentiment_analyzer.get_stock_news(symbol, limit=15)
+                sentiment_analysis = news_sentiment_analyzer.analyze_sentiment(news_articles)
+                
+                analysis_results['sentiment'] = {
+                    'overall_sentiment': sentiment_analysis.overall_sentiment.value,
+                    'sentiment_score': sentiment_analysis.sentiment_score,
+                    'confidence': sentiment_analysis.confidence,
+                    'positive_ratio': sentiment_analysis.positive_ratio,
+                    'negative_ratio': sentiment_analysis.negative_ratio,
+                    'neutral_ratio': sentiment_analysis.neutral_ratio,
+                    'article_count': sentiment_analysis.article_count,
+                    'recent_articles': [
+                        {
+                            'title': article.title[:100] + "..." if len(article.title) > 100 else article.title,
+                            'source': article.source,
+                            'sentiment_score': article.sentiment_score,
+                            'published_date': article.published_date.isoformat()
+                        } for article in news_articles[:5]
+                    ]
+                }
+            except Exception as e:
+                self.logger.warning(f"Sentiment analysis failed for {symbol}: {e}")
+                analysis_results['sentiment'] = {"error": "Sentiment analysis unavailable"}
+            
+            # 4. 통합 점수 계산
+            integrated_score = self._calculate_integrated_score(analysis_results)
+            
+            # 5. 최종 투자 추천
+            final_recommendation = self._generate_integrated_recommendation(
+                symbol, analysis_results, integrated_score
+            )
+            
+            return {
+                'symbol': symbol,
+                'analysis_timestamp': datetime.now().isoformat(),
+                'integrated_score': integrated_score,
+                'final_recommendation': final_recommendation,
+                'detailed_analysis': analysis_results,
+                'analysis_summary': self._generate_analysis_summary(analysis_results)
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Enhanced comprehensive analysis failed for {symbol}: {e}")
+            return {
+                'symbol': symbol,
+                'error': str(e),
+                'analysis_timestamp': datetime.now().isoformat()
+            }
+    
+    def _calculate_integrated_score(self, analysis_results: Dict) -> Dict[str, float]:
+        """통합 분석 점수 계산"""
+        scores = {}
+        weights = {
+            'fundamental': 0.4,
+            'technical': 0.3,
+            'sentiment': 0.3
+        }
+        
+        # 기본 분석 점수
+        if 'fundamental' in analysis_results and 'overall_score' in analysis_results['fundamental']:
+            scores['fundamental'] = analysis_results['fundamental']['overall_score']
+        else:
+            scores['fundamental'] = 0.5  # 중립
+        
+        # 기술적 분석 점수
+        if 'technical' in analysis_results and 'overall_score' in analysis_results['technical']:
+            scores['technical'] = analysis_results['technical']['overall_score'] / 100.0  # 0-1 스케일로 변환
+        else:
+            scores['technical'] = 0.5  # 중립
+        
+        # 감정 분석 점수
+        if 'sentiment' in analysis_results and 'sentiment_score' in analysis_results['sentiment']:
+            # 감정 점수를 0-1 스케일로 변환 (-1~1 -> 0~1)
+            sentiment_score = (analysis_results['sentiment']['sentiment_score'] + 1) / 2
+            scores['sentiment'] = sentiment_score
+        else:
+            scores['sentiment'] = 0.5  # 중립
+        
+        # 가중 평균 계산
+        weighted_score = sum(scores[key] * weights[key] for key in scores.keys())
+        
+        return {
+            'fundamental_score': scores['fundamental'],
+            'technical_score': scores['technical'],
+            'sentiment_score': scores['sentiment'],
+            'integrated_score': weighted_score,
+            'score_breakdown': scores
+        }
+    
+    def _generate_integrated_recommendation(self, symbol: str, analysis_results: Dict, integrated_score: Dict) -> Dict:
+        """통합 투자 추천 생성"""
+        overall_score = integrated_score['integrated_score']
+        
+        # 추천 등급 결정
+        if overall_score >= 0.8:
+            recommendation = "STRONG BUY"
+            confidence = "Very High"
+            action_priority = "Immediate action recommended"
+        elif overall_score >= 0.7:
+            recommendation = "BUY"
+            confidence = "High"
+            action_priority = "Consider buying"
+        elif overall_score >= 0.6:
+            recommendation = "MODERATE BUY"
+            confidence = "Medium-High"
+            action_priority = "Good opportunity"
+        elif overall_score >= 0.4:
+            recommendation = "HOLD"
+            confidence = "Medium"
+            action_priority = "Monitor closely"
+        elif overall_score >= 0.3:
+            recommendation = "WEAK SELL"
+            confidence = "Medium-Low"
+            action_priority = "Consider reducing position"
+        else:
+            recommendation = "STRONG SELL"
+            confidence = "Low"
+            action_priority = "Consider exit strategy"
+        
+        # 지지 요인과 우려 요인 분석
+        supporting_factors = []
+        concern_factors = []
+        
+        # 기본 분석 기반
+        if integrated_score['fundamental_score'] > 0.6:
+            supporting_factors.append("Strong fundamental metrics")
+        elif integrated_score['fundamental_score'] < 0.4:
+            concern_factors.append("Weak fundamental performance")
+        
+        # 기술적 분석 기반
+        if integrated_score['technical_score'] > 0.6:
+            supporting_factors.append("Positive technical indicators")
+        elif integrated_score['technical_score'] < 0.4:
+            concern_factors.append("Negative technical signals")
+        
+        # 감정 분석 기반
+        if integrated_score['sentiment_score'] > 0.6:
+            supporting_factors.append("Positive market sentiment")
+        elif integrated_score['sentiment_score'] < 0.4:
+            concern_factors.append("Negative news sentiment")
+        
+        # 투자 시간 프레임 추천
+        if overall_score > 0.7:
+            time_horizon = "Long-term (1-3 years)"
+        elif overall_score > 0.5:
+            time_horizon = "Medium-term (6-12 months)"
+        else:
+            time_horizon = "Short-term monitoring"
+        
+        return {
+            'recommendation': recommendation,
+            'confidence_level': confidence,
+            'action_priority': action_priority,
+            'time_horizon': time_horizon,
+            'supporting_factors': supporting_factors,
+            'concern_factors': concern_factors,
+            'risk_level': self._assess_integrated_risk(integrated_score),
+            'key_insights': self._generate_key_insights(symbol, analysis_results)
+        }
+    
+    def _assess_integrated_risk(self, integrated_score: Dict) -> str:
+        """통합 리스크 평가"""
+        score_variance = max(integrated_score['score_breakdown'].values()) - min(integrated_score['score_breakdown'].values())
+        
+        if score_variance > 0.4:
+            return "High (conflicting signals)"
+        elif integrated_score['integrated_score'] > 0.7:
+            return "Medium (growth potential)"
+        elif integrated_score['integrated_score'] < 0.3:
+            return "High (downside risk)"
+        else:
+            return "Medium"
+    
+    def _generate_key_insights(self, symbol: str, analysis_results: Dict) -> List[str]:
+        """핵심 인사이트 생성"""
+        insights = []
+        
+        # 기술적 분석 인사이트
+        if 'technical' in analysis_results:
+            tech_data = analysis_results['technical']
+            if 'recommendation' in tech_data:
+                insights.append(f"Technical analysis suggests: {tech_data['recommendation']['action']}")
+        
+        # 감정 분석 인사이트
+        if 'sentiment' in analysis_results and 'overall_sentiment' in analysis_results['sentiment']:
+            sentiment = analysis_results['sentiment']['overall_sentiment']
+            insights.append(f"Market sentiment is currently {sentiment}")
+        
+        # 기본 분석 인사이트
+        if 'fundamental' in analysis_results:
+            fund_data = analysis_results['fundamental']
+            if 'recommendation' in fund_data:
+                insights.append(f"Fundamental analysis rating: {fund_data['recommendation']}")
+        
+        # 회사별 특별 인사이트
+        company_insights = {
+            'AAPL': "Monitor iPhone sales trends and services revenue growth",
+            'MSFT': "Focus on Azure cloud growth and AI integration progress",
+            'GOOGL': "Watch advertising revenue trends and regulatory developments",
+            'AMZN': "Track AWS growth rates and e-commerce margin improvements",
+            'NVDA': "Monitor AI chip demand and data center expansion",
+            'TSLA': "Watch EV market share and autonomous driving progress",
+            'META': "Focus on metaverse investments and advertising efficiency"
+        }
+        
+        if symbol in company_insights:
+            insights.append(company_insights[symbol])
+        
+        return insights[:4]  # 최대 4개 인사이트 반환
+    
+    def _generate_analysis_summary(self, analysis_results: Dict) -> Dict:
+        """분석 요약 생성"""
+        summary = {
+            'analysis_coverage': [],
+            'data_quality': 'Good',
+            'last_updated': datetime.now().isoformat()
+        }
+        
+        if 'fundamental' in analysis_results:
+            summary['analysis_coverage'].append('Fundamental Analysis')
+        
+        if 'technical' in analysis_results and 'error' not in analysis_results['technical']:
+            summary['analysis_coverage'].append('Technical Analysis')
+        
+        if 'sentiment' in analysis_results and 'error' not in analysis_results['sentiment']:
+            summary['analysis_coverage'].append('Sentiment Analysis')
+        
+        # 데이터 품질 평가
+        if len(summary['analysis_coverage']) == 3:
+            summary['data_quality'] = 'Excellent'
+        elif len(summary['analysis_coverage']) == 2:
+            summary['data_quality'] = 'Good'
+        elif len(summary['analysis_coverage']) == 1:
+            summary['data_quality'] = 'Limited'
+        else:
+            summary['data_quality'] = 'Poor'
+        
+        return summary
+    
+    def get_market_overview_analysis(self, symbols: List[str]) -> Dict:
+        """시장 전체 개요 분석"""
+        try:
+            market_analysis = {}
+            
+            # 각 주식별 간단한 분석
+            for symbol in symbols:
+                try:
+                    # 감정 분석만 빠르게 수행
+                    articles = news_sentiment_analyzer.get_stock_news(symbol, limit=5)
+                    sentiment = news_sentiment_analyzer.analyze_sentiment(articles)
+                    
+                    market_analysis[symbol] = {
+                        'sentiment_score': sentiment.sentiment_score,
+                        'sentiment_type': sentiment.overall_sentiment.value,
+                        'article_count': sentiment.article_count
+                    }
+                    
+                except Exception as e:
+                    market_analysis[symbol] = {
+                        'sentiment_score': 0.0,
+                        'sentiment_type': 'neutral',
+                        'article_count': 0,
+                        'error': str(e)
+                    }
+            
+            # 시장 전체 감정 계산
+            valid_scores = [data['sentiment_score'] for data in market_analysis.values() 
+                          if 'error' not in data]
+            
+            if valid_scores:
+                market_sentiment = sum(valid_scores) / len(valid_scores)
+                if market_sentiment > 0.2:
+                    market_mood = "Bullish"
+                elif market_sentiment < -0.2:
+                    market_mood = "Bearish"
+                else:
+                    market_mood = "Neutral"
+            else:
+                market_sentiment = 0.0
+                market_mood = "Unknown"
+            
+            return {
+                'analysis_timestamp': datetime.now().isoformat(),
+                'market_sentiment_score': market_sentiment,
+                'market_mood': market_mood,
+                'analyzed_symbols': len(symbols),
+                'successful_analysis': len([s for s in market_analysis.values() if 'error' not in s]),
+                'individual_analysis': market_analysis,
+                'market_summary': f"Market shows {market_mood.lower()} sentiment with average score of {market_sentiment:.3f}"
+            }
+            
+        except Exception as e:
+            return {
+                'error': str(e),
+                'analysis_timestamp': datetime.now().isoformat()
+            }

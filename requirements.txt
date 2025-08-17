@@ -3,6 +3,23 @@ beautifulsoup4==4.12.2
 lxml==4.9.3
 yfinance>=0.2.18
 
+# Multi-source data requirements
+aiohttp>=3.8.0
+asyncio-throttle>=1.0.2
+
+# News and sentiment analysis
+textblob>=0.17.1
+vaderSentiment>=3.3.2
+newspaper3k>=0.2.8
+feedparser>=6.0.10
+
+# Advanced analysis requirements
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
 # GUI Requirements
 # Note: tkinter is usually included with Python, but may need separate installation:
 # Ubuntu/Debian: sudo apt-get install python3-tk
