@@ -906,6 +906,9 @@ Tip: Start with small positions to learn market behavior!"""
             # Save data
             self.data_manager.save_data()
             
+            # Notify Investment Analysis tab to refresh
+            self._notify_investment_analysis_update()
+            
             # Check for bankruptcy after each trade
             self._check_for_bankruptcy()
         else:
@@ -1221,6 +1224,15 @@ Tip: Start with small positions to learn market behavior!"""
         self.main_app.root.after(20000, refresh_ui)
         # 첫 번째 경고 메시지 (15초 후)
         self.main_app.root.after(15000, show_warning)
+    
+    def _notify_investment_analysis_update(self):
+        """Notify Investment Analysis tab that new trading data is available"""
+        try:
+            # Check if Investment Analysis tab exists and refresh it
+            if hasattr(self.main_app, 'investment_analysis_tab'):
+                self.main_app.investment_analysis_tab.refresh_trader_list()
+        except Exception as e:
+            print(f"Failed to notify Investment Analysis tab: {e}")
     
     def cleanup(self):
         """Cleanup resources when tab is destroyed"""

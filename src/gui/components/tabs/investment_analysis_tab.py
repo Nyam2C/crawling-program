@@ -72,8 +72,8 @@ class InvestmentAnalysisTab:
                                         width=20, state='readonly', style='Pastel.TCombobox')
         self.trader_combo.pack(side=tk.LEFT, padx=(0, 10))
         
-        # Refresh traders button
-        refresh_traders_btn = self.main_app.icon_button(controls_frame, 'glasses', 'Refresh', 
+        # Refresh analysis button
+        refresh_traders_btn = self.main_app.icon_button(controls_frame, 'glasses', 'Refresh Analysis', 
                                                        self.refresh_trader_list, 'Pastel.Ghost.TButton')
         refresh_traders_btn.pack(side=tk.LEFT, padx=(0, 10))
         
@@ -724,7 +724,7 @@ Key Statistics:
         self.update_investment_status(status_text, level_icon)
     
     def refresh_trader_list(self):
-        """Refresh the trader dropdown list"""
+        """Refresh the trader dropdown list and update analysis results"""
         try:
             # Get all records and extract unique nicknames
             all_records = self.scoreboard_manager.get_leaderboard(1000)  # Get many records
@@ -738,10 +738,33 @@ Key Statistics:
             current_selection = self.nickname_var.get()
             if current_selection and current_selection not in nicknames:
                 self.nickname_var.set("")
+            
+            # Refresh analysis results automatically
+            if all_records:
+                # If a specific trader is selected, analyze that trader
+                if current_selection and current_selection in nicknames:
+                    trader_records = [r for r in all_records if r.nickname.lower() == current_selection.lower()]
+                    if trader_records:
+                        self.current_metrics = self.analyzer.analyze_personality(trader_records)
+                        self.display_analysis_results(f"Analysis for {current_selection}")
+                        self.last_updated_label.config(text=f"Analyzed: {current_selection}")
+                        self.stats_label.config(text=f"{len(trader_records)} records analyzed")
+                        self.update_ability_stats()
+                        self.update_tab_icon()
+                        self.update_main_evaluation_area()
+                else:
+                    # No specific trader selected, analyze all records
+                    self.analyze_all_records()
+            
+            # Update status
+            if hasattr(self.main_app, 'update_status'):
+                self.main_app.update_status(f"Investment analysis refreshed - {len(nicknames)} traders found")
                 
         except Exception as e:
             print(f"Error refreshing trader list: {e}")
             self.trader_combo['values'] = []
+            if hasattr(self.main_app, 'update_status'):
+                self.main_app.update_status("Failed to refresh investment analysis")
     
     def load_analysis(self):
         """Load initial analysis if data is available"""
