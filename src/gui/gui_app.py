@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Magnificent Seven Stock Analysis - Retro Pastel GUI Application (Refactored)
-Modern stock analysis with retro 90s styling
+StockEdu - Enhanced Stock Analysis & Trading Simulation Platform
+Modern stock analysis with advanced reliability and performance features
 """
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
 import random
+import atexit
 
 from src.analysis.recommendation_engine import RecommendationEngine
 from src.data.stock_crawler import StockCrawler
@@ -18,17 +19,45 @@ from src.gui.components import (
 from src.gui.components.ui_core.keyboard_manager import KeyboardManager
 from src.gui.components.ui_core.action_manager import ActionManager
 
+# Import enhanced core systems
+from src.core.data_integrity import DataIntegrityManager
+from src.core.performance_optimizer import PerformanceOptimizer
+from src.core.async_manager import TkinterAsyncManager, get_async_manager
+from src.core.error_handler import (
+    ErrorHandler, get_error_handler, setup_global_exception_handler, 
+    setup_tkinter_error_handling, ErrorCategory, handle_errors
+)
+from src.data.multi_source_provider import MultiSourceDataProvider
+
 
 class StockAnalysisGUI:
     """Main GUI application for stock analysis and recommendations - Retro Pastel Edition!"""
     
+    @handle_errors(category=ErrorCategory.SYSTEM, user_action="Application initialization")
     def __init__(self):
+        # Setup global error handling first
+        setup_global_exception_handler()
+        
         self.root = tk.Tk()
+        
+        # Setup GUI error handling
+        setup_tkinter_error_handling(self.root)
         
         # Show splash screen first
         self.show_kawaii_splash()
         
         self.setup_main_window()
+        
+        # Initialize enhanced core systems
+        self.data_integrity = DataIntegrityManager()
+        self.performance_optimizer = PerformanceOptimizer()
+        self.async_manager = TkinterAsyncManager(self.root)
+        self.error_handler = get_error_handler()
+        
+        # Start enhanced systems
+        self.performance_optimizer.start()
+        self.async_manager.start(num_workers=3)
+        self.data_integrity.start_auto_backup()
         
         # Initialize component managers
         self.theme_manager = ThemeManager(self.root)
@@ -44,9 +73,13 @@ class StockAnalysisGUI:
         self.theme_manager.apply_styles()
         self.icon_manager.load_icons()
         
-        # Initialize engines
+        # Initialize engines with enhanced data source
+        self.multi_source_provider = MultiSourceDataProvider()
         self.recommendation_engine = RecommendationEngine(delay=1)
         self.stock_crawler = StockCrawler(delay=1)
+        
+        # Register cleanup on exit
+        atexit.register(self.cleanup_on_exit)
         
         # Data storage
         self.current_stock_data = {}
@@ -190,8 +223,21 @@ class StockAnalysisGUI:
         self.progress.stop()
         
     def update_status(self, message):
-        """Update status bar message"""
-        self.status_var.set(message)
+        """Update status bar message with performance info"""
+        # Add performance metrics to status
+        try:
+            if hasattr(self, 'performance_optimizer'):
+                metrics = self.performance_optimizer.monitor.get_current_metrics()
+                if metrics:
+                    enhanced_message = f"{message} | Mem: {metrics.memory_usage:.1f}MB | CPU: {metrics.cpu_usage:.1f}%"
+                    self.status_var.set(enhanced_message)
+                else:
+                    self.status_var.set(message)
+            else:
+                self.status_var.set(message)
+        except Exception as e:
+            # Fallback to simple message if performance monitoring fails
+            self.status_var.set(message)
         
     def show_error(self, message):
         """Show error dialog with styled theme"""
@@ -303,9 +349,33 @@ class StockAnalysisGUI:
         splash.after(3000, close_splash)  # 3 seconds
         splash.update()
 
+    @handle_errors(category=ErrorCategory.SYSTEM, user_action="Application shutdown")
+    def cleanup_on_exit(self):
+        """Enhanced cleanup for all systems"""
+        print("Performing enhanced cleanup...")
+        
+        # Stop enhanced systems
+        if hasattr(self, 'performance_optimizer'):
+            self.performance_optimizer.stop()
+        
+        if hasattr(self, 'async_manager'):
+            self.async_manager.stop()
+        
+        if hasattr(self, 'data_integrity'):
+            self.data_integrity.stop_auto_backup()
+            # Force final backup
+            self.data_integrity.create_incremental_backup()
+        
+        # Clean up data providers
+        if hasattr(self, 'multi_source_provider'):
+            self.multi_source_provider.clear_cache()
+    
     def on_closing(self):
         """Handle application closing - cleanup resources"""
         try:
+            # Enhanced cleanup
+            self.cleanup_on_exit()
+            
             # Cleanup mock trading tab resources
             if hasattr(self, 'mock_trading_tab'):
                 self.mock_trading_tab.cleanup()

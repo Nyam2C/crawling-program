@@ -8,7 +8,7 @@ import platform
 
 def check_python_version():
     """Check if Python version is compatible"""
-    required_version = (3, 7)
+    required_version = (3, 9)
     current_version = sys.version_info[:2]
     
     if current_version < required_version:
@@ -43,7 +43,7 @@ def show_compatibility_error():
         
         print()
         print("Solutions:")
-        print("1. Upgrade Python to version 3.7 or higher")
+        print("1. Upgrade Python to version 3.9 or higher")
         print("2. Use a virtual environment with a compatible Python version")
         print("3. Check if you have multiple Python installations")
         

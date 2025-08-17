@@ -23,7 +23,7 @@ def main():
             print("PYTHON VERSION ERROR")
             print("="*60)
             print(f"Error: {error}")
-            print("\nThis application requires Python 3.7 or higher.")
+            print("\nThis application requires Python 3.9 or higher.")
             print("Please upgrade your Python installation.")
             sys.exit(1)
     except ImportError:

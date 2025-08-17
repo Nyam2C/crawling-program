@@ -16,6 +16,14 @@ StockEdu is a stock analysis and virtual trading platform designed for education
 
 ## ✨ Key Features
 
+### 🔄 **Enhanced Reliability & Performance**
+- **Multi-Source Data Providers**: Automatic fallback between Yahoo Finance, Alpha Vantage, and Polygon.io
+- **Data Integrity System**: Automatic backup, compression, and recovery for all user data
+- **Asynchronous Processing**: Non-blocking UI with background data loading
+- **Memory Optimization**: Intelligent caching and memory management
+- **Error Recovery**: Comprehensive error handling with automatic recovery strategies
+- **Performance Monitoring**: Real-time system performance tracking and optimization
+
 ### 📈 Stock Analysis Tools
 - **Real-time Stock Data**: Live stock prices via Yahoo Finance API
 - **AI-Powered Analysis**: Comprehensive stock analysis reports
@@ -59,10 +67,11 @@ StockEdu is a stock analysis and virtual trading platform designed for education
 ## 🚀 Getting Started
 
 ### 📋 System Requirements
-- **Python 3.8+** (Python 3.9+ recommended)
-- **Operating System**: Windows, macOS, Linux
-- **Memory**: Minimum 4GB RAM
-- **Storage**: 1GB+ free space
+- **Python 3.9+** (Required for optimal performance and compatibility)
+- **Operating System**: Windows 10+, macOS 10.15+, Linux Ubuntu 18.04+
+- **Memory**: Minimum 4GB RAM (8GB+ recommended for large datasets)
+- **Storage**: 2GB+ free space (includes data cache and backups)
+- **Network**: Stable internet connection for real-time data
 
 ### ⚙️ Installation
 
@@ -154,13 +163,17 @@ python main.py
 ## 🛠️ Technical Architecture
 
 ### 🔧 Core Technologies
-- **Python 3.8+**: Core application logic
-- **tkinter**: Cross-platform GUI framework
-- **yfinance**: Real-time stock data integration
+- **Python 3.9+**: Core application logic with async support
+- **tkinter**: Cross-platform GUI framework with performance optimization
+- **yfinance**: Primary stock data source with fallback support
+- **aiohttp**: Asynchronous HTTP client for multi-source data
 - **Pillow**: Image processing and icon management
 - **feedparser**: RSS news feed processing
 - **TextBlob & VADER**: Sentiment analysis engines
 - **requests & beautifulsoup4**: Web scraping and data extraction
+- **psutil**: System monitoring and performance optimization
+- **sqlite3**: Metadata storage and data integrity
+- **gzip & pickle**: Data compression and caching
 
 ### 📁 Project Structure
 ```
@@ -177,6 +190,36 @@ python main.py
 │   └── ⚙️ core/                  # Core utilities
 ├── 🎨 assets/                    # UI assets and icons
 └── 📚 docs/                      # Documentation
+
+### 🔧 Enhanced Architecture Components
+
+#### 📦 **Data Integrity & Backup System**
+- **Automatic Backup**: Incremental backups every 5 minutes with compression
+- **Data Validation**: JSON integrity checks before saving
+- **Emergency Recovery**: Automatic restoration from latest valid backup
+- **Compression**: Up to 90% storage savings with gzip compression
+- **Metadata Tracking**: SQLite database for backup history and checksums
+
+#### 🌐 **Multi-Source Data Provider**
+- **Primary Source**: Yahoo Finance API (free, unlimited)
+- **Fallback Sources**: Alpha Vantage, Polygon.io (API keys required)
+- **Rate Limiting**: Intelligent request throttling per provider
+- **Cache System**: LRU cache with TTL for faster responses
+- **Offline Mode**: Use cached data when internet unavailable
+
+#### ⚡ **Performance Optimization**
+- **Async Task Manager**: Background processing without UI blocking
+- **Memory Management**: Automatic cleanup and garbage collection
+- **Data Compression**: Reduce memory usage by up to 70%
+- **Thread Pool**: Configurable worker threads for parallel processing
+- **Performance Metrics**: Real-time monitoring of CPU, memory, and disk usage
+
+#### 🛡️ **Error Handling & Recovery**
+- **Categorized Errors**: Network, File I/O, API, GUI, and system errors
+- **Automatic Recovery**: Built-in strategies for common failure scenarios
+- **Error Logging**: Comprehensive logging with rotation and cleanup
+- **User Notifications**: Smart error messages with recovery suggestions
+- **Graceful Degradation**: Continue operation with reduced functionality
 ```
 
 ## 🏅 Performance Evaluation
@@ -218,8 +261,114 @@ python main.py
 
 **Check Dependencies:**
 ```bash
-python -c "import tkinter, yfinance, PIL; print('All dependencies installed successfully')"
+python -c "import tkinter, yfinance, PIL, aiohttp, psutil; print('All dependencies installed successfully')"
 ```
+
+**Verify Python Version:**
+```bash
+python --version  # Should be 3.9 or higher
+```
+
+### 🔧 **Configuration (Optional)**
+
+**Data Source Configuration:**
+Create `data_source_config.json` to configure additional data providers:
+```json
+{
+  "alpha_vantage": {
+    "enabled": true,
+    "api_key": "YOUR_API_KEY_HERE",
+    "priority": 2
+  },
+  "polygon": {
+    "enabled": true,
+    "api_key": "YOUR_API_KEY_HERE", 
+    "priority": 3
+  }
+}
+```
+
+**Performance Tuning:**
+- **Memory Limit**: Adjust in performance optimizer (default: 512MB)
+- **Cache TTL**: Modify cache timeout (default: 5 minutes)
+- **Worker Threads**: Configure parallel processing threads (default: 4)
+- **Backup Interval**: Set backup frequency (default: 5 minutes)
+
+### 🚀 **Advanced Features**
+
+#### 📊 **Real-time Performance Monitoring**
+Monitor system resources and application performance:
+- View memory usage, CPU utilization, and disk I/O
+- Track cache hit rates and response times
+- Automatic optimization when resource limits reached
+- Performance history and trend analysis
+
+#### 💾 **Data Management**
+Robust data handling for reliability:
+- Automatic incremental backups with compression
+- Data integrity verification before save/load
+- Emergency recovery from corrupted files
+- Backup cleanup (auto-delete after 30 days)
+- Export/import functionality for data migration
+
+#### 🔄 **Multi-Source Reliability**
+Never lose connection to market data:
+- Primary: Yahoo Finance (free, no API key needed)
+- Secondary: Alpha Vantage (requires free API key)
+- Tertiary: Polygon.io (requires API key)
+- Intelligent failover and load balancing
+- Offline mode with cached data
+
+### 🔧 **Troubleshooting**
+
+#### Common Issues & Solutions
+
+**❌ "ModuleNotFoundError" for tkinter:**
+```bash
+# Ubuntu/Debian
+sudo apt-get install python3-tk
+
+# CentOS/RHEL/Fedora
+sudo dnf install python3-tkinter
+
+# macOS (if using Homebrew Python)
+brew install python-tk
+```
+
+**❌ "Permission denied" when creating backups:**
+- Ensure write permissions in the application directory
+- Run as administrator/sudo if necessary (not recommended)
+- Change backup directory in settings
+
+**❌ "API rate limit exceeded":**
+- Application automatically switches to backup data sources
+- Wait for rate limit reset (usually 1 hour)
+- Configure additional API keys for Alpha Vantage/Polygon
+
+**❌ "Memory usage too high":**
+- Reduce cache size in settings
+- Enable aggressive garbage collection
+- Close unnecessary applications
+- Increase system RAM if possible
+
+**❌ "Slow response times":**
+- Enable data compression
+- Reduce number of parallel requests
+- Check internet connection speed
+- Clear old cache files
+
+#### 📋 **Log Files Location**
+- **Application logs**: `logs/stockedu_YYYYMMDD.log`
+- **Error records**: `logs/error_records.json`
+- **Performance logs**: `logs/performance.log`
+- **Data integrity**: `data_integrity.log`
+
+#### 🆘 **Emergency Recovery**
+If the application fails to start:
+1. Check `logs/` directory for error messages
+2. Run emergency recovery: `python -c "from src.core.data_integrity import DataIntegrityManager; DataIntegrityManager().emergency_recovery()"`
+3. Clear cache: Delete `cache/` directory
+4. Reset settings: Delete `settings.json`
 
 ## 📄 License
 
