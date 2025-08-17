@@ -21,6 +21,16 @@ StockEdu is a stock analysis and virtual trading platform designed for education
 - **AI-Powered Analysis**: Comprehensive stock analysis reports
 - **Individual Stock Analysis**: Deep-dive analysis of specific stocks
 - **Market Recommendations**: AI-based buy/sell recommendations
+- **Advanced Technical Analysis**: Multi-criteria evaluation with 20+ indicators
+- **Quick Analysis**: Basic technical evaluation for rapid insights
+
+### 📰 News & Sentiment Analysis
+- **Multi-Source News Feed**: Aggregated news from various financial sources
+- **3-Step Analysis Algorithm**: Symbol → Keywords → News discovery
+- **Sentiment Analysis**: AI-powered sentiment scoring using VADER and TextBlob
+- **Keyword Extraction**: Company-specific keyword identification
+- **Trending Topics**: GUI-styled trending topics display
+- **Article Details**: Full article content with double-click activation
 
 ### 🎮 Virtual Trading System
 - **Mock Portfolio**: Start with $100,000 virtual cash
@@ -28,18 +38,23 @@ StockEdu is a stock analysis and virtual trading platform designed for education
 - **Portfolio Tracking**: Monitor positions, P&L, and performance
 - **Transaction History**: Complete record of all virtual trades
 - **Realistic Fees**: Simulated commission (0.015%) and tax (0.25%)
+- **Order Management**: Market and limit orders with validation
 
 ### 🧠 Investment Analysis
 - **Personality Analysis**: AI-based investment style assessment
 - **Performance Evaluation**: 5-tier skill rating system (NOVICE to EXPERT)
 - **Risk Profiling**: Personal risk tolerance evaluation
 - **Investment Metrics**: Comprehensive performance analytics
+- **Individual Status Updates**: Real-time analysis results integration
 
 ### 📊 Market Data & Tools
+- **Universal Symbol Support**: Not limited to Magnificent 7 stocks
+- **Dynamic Symbol Loading**: Pull from Stock Data tab's symbol list
 - **Watchlist Management**: Track multiple stocks of interest
 - **Scoreboard System**: Performance rankings and achievements
 - **Data Export**: Save analysis reports and trading history
 - **Auto-refresh**: Real-time price updates every 20 seconds
+- **Keyboard Shortcuts**: Full keyboard navigation support (Ctrl+1-8)
 
 ## 🚀 Getting Started
 
@@ -91,9 +106,10 @@ python main.py
 2. **🤖 AI Recommendations**: Get intelligent investment suggestions
 3. **🔍 Individual Analysis**: Detailed analysis of specific stocks
 4. **💰 Mock Trading**: Virtual trading simulation
-5. **📈 Investment Analysis**: Personal investment style assessment
-6. **🏆 Scoreboard**: Performance rankings and achievements
+5. **🏆 Scoreboard**: Performance rankings and achievements
+6. **📈 Investment Analysis**: Personal investment style assessment
 7. **⚙️ Settings**: Platform configuration and preferences
+8. **📰 News & Sentiment**: News analysis with sentiment scoring
 
 ### 💼 How to Use
 
@@ -115,6 +131,26 @@ python main.py
 - Understand your investment personality and risk tolerance
 - Track performance with detailed metrics and rankings
 
+**News & Sentiment Analysis:**
+- Browse news articles with sentiment scoring
+- View trending topics in a styled popup window
+- Use keyword-based news discovery algorithm
+- Double-click articles for detailed content view
+
+### ⌨️ Keyboard Shortcuts
+- **Ctrl+1**: Stock Data Tab
+- **Ctrl+2**: Recommendations Tab  
+- **Ctrl+3**: Analysis Tab
+- **Ctrl+4**: Trading Tab
+- **Ctrl+5**: Scoreboard Tab
+- **Ctrl+6**: Investment Analysis Tab
+- **Ctrl+7**: Settings Tab
+- **Ctrl+8**: News & Sentiment Tab
+- **Ctrl+R**: Refresh Data
+- **Ctrl+S**: Save Settings
+- **F1**: Help Dialog
+- **ESC**: Cancel Current Action
+
 ## 🛠️ Technical Architecture
 
 ### 🔧 Core Technologies
@@ -122,6 +158,9 @@ python main.py
 - **tkinter**: Cross-platform GUI framework
 - **yfinance**: Real-time stock data integration
 - **Pillow**: Image processing and icon management
+- **feedparser**: RSS news feed processing
+- **TextBlob & VADER**: Sentiment analysis engines
+- **requests & beautifulsoup4**: Web scraping and data extraction
 
 ### 📁 Project Structure
 ```

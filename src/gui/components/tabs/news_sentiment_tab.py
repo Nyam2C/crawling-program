@@ -18,10 +18,11 @@ from src.analysis.news_sentiment_analyzer import (
 class NewsSentimentTab:
     """뉴스 및 감정 분석 탭"""
     
-    def __init__(self, parent_notebook, icon_manager, theme_manager):
+    def __init__(self, parent_notebook, icon_manager, theme_manager, main_app=None):
         self.parent_notebook = parent_notebook
         self.icon_manager = icon_manager
         self.theme_manager = theme_manager
+        self.main_app = main_app
         
         # 현재 분석 중인 심볼
         self.current_symbol = None
@@ -32,17 +33,14 @@ class NewsSentimentTab:
         
     def setup_tab(self):
         """탭 UI 설정"""
-        # 메인 프레임 생성
-        self.tab_frame = ttk.Frame(self.parent_notebook)
+        # 메인 프레임 생성 - Individual Analysis 탭과 동일한 패딩
+        self.tab_frame = ttk.Frame(self.parent_notebook, padding="15")
         
-        # 아이콘 이미지 사용 (이모티콘 제거)
-        try:
-            tab_icon = self.icon_manager.get_icon("mail")  # 뉴스용 아이콘
-            if tab_icon:
-                self.parent_notebook.add(self.tab_frame, text=" News & Sentiment", image=tab_icon, compound="left")
-            else:
-                self.parent_notebook.add(self.tab_frame, text="News & Sentiment")
-        except:
+        # 아이콘 설정 - 다른 탭과 동일한 방식
+        tab_icon = self.icon_manager.get_icon("add_4")  # 뉴스용 아이콘 (mail 대신)
+        if tab_icon:
+            self.parent_notebook.add(self.tab_frame, text="News & Sentiment", image=tab_icon, compound="left")
+        else:
             self.parent_notebook.add(self.tab_frame, text="News & Sentiment")
         
         # 상단 컨트롤 패널
@@ -58,88 +56,54 @@ class NewsSentimentTab:
         self.setup_trending_panel()
     
     def setup_control_panel(self):
-        """상단 컨트롤 패널 설정"""
+        """상단 컨트롤 패널 설정 - Analysis 탭과 완전히 동일한 스타일 적용"""
         control_frame = ttk.LabelFrame(self.tab_frame, text="News Analysis Control", padding="15")
-        control_frame.pack(fill="x", padx=15, pady=(0, 15))
+        control_frame.pack(fill="x", pady=(0, 15))
         
-        # 컨트롤 프레임 내부 구성
-        input_frame = ttk.Frame(control_frame)
-        input_frame.pack(fill="x")
-        
-        # 주식 심볼 입력
-        ttk.Label(input_frame, text="Enter Symbol:", 
-                 font=("Segoe UI", 10, "bold")).pack(side="left", padx=(0, 8))
+        # Analysis 탭과 동일한 grid 레이아웃 설정
+        ttk.Label(control_frame, text="Stock Symbol:", 
+                 font=("Segoe UI", 10, "bold")).grid(row=0, column=0, padx=(0, 10))
         
         self.symbol_var = tk.StringVar(value="AAPL")
-        symbol_entry = ttk.Entry(input_frame, textvariable=self.symbol_var, 
-                               width=12, font=("Segoe UI", 10))
-        symbol_entry.pack(side="left", padx=(0, 15))
         
-        # 분석 버튼 - 통일된 스타일
-        analyze_icon = self.icon_manager.get_icon("glasses")
-        if analyze_icon:
-            analyze_btn = ttk.Button(
-                input_frame, 
-                text="Analyze News",
-                image=analyze_icon,
-                compound="left",
-                command=self.analyze_news_async
-            )
-        else:
-            analyze_btn = ttk.Button(
-                input_frame, 
-                text="Analyze News",
-                command=self.analyze_news_async
-            )
-        analyze_btn.pack(side="left", padx=(0, 10))
+        # 컴보박스 - Analysis 탭과 동일한 크기와 스타일
+        self.symbol_combo = ttk.Combobox(control_frame, textvariable=self.symbol_var,
+                                       values=self._get_current_stock_symbols(),
+                                       width=15, font=("Segoe UI", 10), 
+                                       style='Pastel.TCombobox', state='readonly')
+        self.symbol_combo.grid(row=0, column=1, padx=(0, 15))
         
-        # 새로고침 버튼 - 통일된 스타일
-        refresh_icon = self.icon_manager.get_icon("sparkle")
-        if refresh_icon:
-            refresh_btn = ttk.Button(
-                input_frame,
-                text="Refresh",
-                image=refresh_icon,
-                compound="left",
-                command=self.refresh_news
-            )
-        else:
-            refresh_btn = ttk.Button(
-                input_frame,
-                text="Refresh",
-                command=self.refresh_news
-            )
-        refresh_btn.pack(side="left", padx=(0, 10))
+        # 버튼들을 Analysis 탭과 완전히 동일한 방식으로 배치
+        if self.main_app:
+            # 새로고침 버튼 - Analysis 탭의 'Refresh List'와 동일
+            self.main_app.icon_button(control_frame, 'refresh', 'Refresh List',
+                                      self._refresh_stock_list,
+                                      style='Pastel.Ghost.TButton').grid(row=0, column=2, padx=(0, 10))
+            
+            # 분석 버튼 - Analysis 탭의 'Deep Analysis'와 동일
+            self.main_app.icon_button(control_frame, 'analyze_advanced', 'Analyze News',
+                                      self.analyze_news_async,
+                                      style='Pastel.Primary.TButton').grid(row=0, column=3, padx=(0, 10))
+            
+            # 트렌딩 토픽 버튼 - Analysis 탭의 'Quick Analysis'와 동일
+            self.main_app.icon_button(control_frame, 'rainbow', 'Trending Topics',
+                                      self.show_trending_topics,
+                                      style='Pastel.Secondary.TButton').grid(row=0, column=4, padx=(0, 10))
         
-        # 트렌딩 토픽 버튼 - 통일된 스타일
-        trending_icon = self.icon_manager.get_icon("rainbow")
-        if trending_icon:
-            trending_btn = ttk.Button(
-                input_frame,
-                text="Trending Topics",
-                image=trending_icon,
-                compound="left",
-                command=self.show_trending_topics
-            )
-        else:
-            trending_btn = ttk.Button(
-                input_frame,
-                text="Trending Topics",
-                command=self.show_trending_topics
-            )
-        trending_btn.pack(side="left", padx=(0, 10))
-        
-        # 상태 라벨
+        # 상태 라벨 - 오른쪽 끝에 배치
         self.status_var = tk.StringVar(value="Ready to analyze stock news")
-        status_label = ttk.Label(input_frame, textvariable=self.status_var, 
+        status_label = ttk.Label(control_frame, textvariable=self.status_var, 
                                font=("Segoe UI", 9, "italic"))
-        status_label.pack(side="right", padx=(15, 0))
+        status_label.grid(row=0, column=5, padx=(15, 0), sticky="e")
+        
+        # 키워드 초기화
+        self.current_keywords = []
     
     def setup_news_list_panel(self):
         """뉴스 리스트 패널 설정"""
         # 메인 컨테이너
         main_container = ttk.Frame(self.tab_frame)
-        main_container.pack(fill="both", expand=True, padx=15, pady=(0, 15))
+        main_container.pack(fill="both", expand=True, pady=(0, 15))
         
         # 좌측 뉴스 리스트
         news_frame = ttk.LabelFrame(main_container, text="Latest News", padding="10")
@@ -160,10 +124,10 @@ class NewsSentimentTab:
         self.news_tree.column("Source", width=130, anchor="center")
         self.news_tree.column("Sentiment", width=100, anchor="center")
         
-        # 트리뷰 스타일링
-        self.news_tree.tag_configure('positive', background='#E8F5E8')
-        self.news_tree.tag_configure('negative', background='#FFE8E8')
-        self.news_tree.tag_configure('neutral', background='#F5F5F5')
+        # 트리뷰 스타일링 - 검정색 텍스트 적용
+        self.news_tree.tag_configure('positive', background='#E8F5E8', foreground='black')
+        self.news_tree.tag_configure('negative', background='#FFE8E8', foreground='black')
+        self.news_tree.tag_configure('neutral', background='#F5F5F5', foreground='black')
         
         # 스크롤바
         news_scrollbar = ttk.Scrollbar(news_frame, orient="vertical", command=self.news_tree.yview)
@@ -172,9 +136,8 @@ class NewsSentimentTab:
         self.news_tree.pack(side="left", fill="both", expand=True)
         news_scrollbar.pack(side="right", fill="y")
         
-        # 뉴스 클릭 이벤트
-        self.news_tree.bind("<Double-1>", self.on_news_click)
-        self.news_tree.bind("<Button-1>", self.on_news_select)
+        # 뉴스 더블클릭 이벤트로 상세 정보 표시
+        self.news_tree.bind("<Double-1>", self.on_news_select)
     
     def setup_sentiment_panel(self):
         """감정 분석 패널 설정"""
@@ -210,12 +173,6 @@ class NewsSentimentTab:
         )
         overall_label.pack(pady=(0, 15))
         
-        # 감정 점수 - 통일된 폰트
-        self.sentiment_score_var = tk.StringVar(value="Score: --")
-        score_label = ttk.Label(sentiment_frame, textvariable=self.sentiment_score_var,
-                              font=("Segoe UI", 9))
-        score_label.pack(pady=2)
-        
         # 신뢰도 - 통일된 폰트
         self.confidence_var = tk.StringVar(value="Confidence: --")
         confidence_label = ttk.Label(sentiment_frame, textvariable=self.confidence_var,
@@ -235,35 +192,91 @@ class NewsSentimentTab:
         self.neutral_var = tk.StringVar(value="Neutral: --%")
         
         ttk.Label(sentiment_frame, textvariable=self.positive_var, 
-                 foreground="#2E8B57", font=("Segoe UI", 9)).pack(pady=1)
+                 foreground="white", font=("Segoe UI", 9)).pack(pady=1)
         ttk.Label(sentiment_frame, textvariable=self.negative_var, 
-                 foreground="#DC143C", font=("Segoe UI", 9)).pack(pady=1)
+                 foreground="white", font=("Segoe UI", 9)).pack(pady=1)
         ttk.Label(sentiment_frame, textvariable=self.neutral_var, 
-                 foreground="#696969", font=("Segoe UI", 9)).pack(pady=1)
+                 foreground="white", font=("Segoe UI", 9)).pack(pady=1)
         
-        # 기사 상세 정보 - 통일된 폰트
-        ttk.Label(sentiment_frame, text="Article Details:", 
+        # 키워드 표시 섹션 (Article Details 자리에 배치)
+        ttk.Label(sentiment_frame, text="Analysis Keywords:", 
                  font=("Segoe UI", 10, "bold")).pack(pady=(20, 8))
         
-        self.article_detail = scrolledtext.ScrolledText(
+        # 키워드 표시 영역 (sentiment score 제거로 공간 확장)
+        self.keywords_text = scrolledtext.ScrolledText(
             sentiment_frame, 
-            height=9, 
+            height=11, 
             width=42, 
             wrap=tk.WORD,
-            font=("Segoe UI", 9)
+            font=('Consolas', 9),
+            bg=self.theme_manager.colors['panel_light'] if hasattr(self.theme_manager, 'colors') else '#F8F8FF',
+            fg=self.theme_manager.colors['text'] if hasattr(self.theme_manager, 'colors') else '#1B1350',
+            insertbackground=self.theme_manager.colors['hotpink'] if hasattr(self.theme_manager, 'colors') else '#FF69B4',
+            selectbackground=self.theme_manager.colors['magenta'] if hasattr(self.theme_manager, 'colors') else '#DDA0DD',
+            state='disabled'
         )
-        self.article_detail.pack(fill="both", expand=True)
+        self.keywords_text.pack(fill="both", expand=True)
+        
+        # 초기 메시지
+        self.update_keywords_display("Analyze a stock to see keywords used for news search...")
     
     def setup_trending_panel(self):
         """트렌딩 토픽 패널 설정"""
         trending_frame = ttk.LabelFrame(self.tab_frame, text="Trending Topics", padding="10")
-        trending_frame.pack(fill="x", padx=15, pady=(0, 15))
+        trending_frame.pack(fill="both", expand=True, padx=15, pady=(0, 15))
         
-        # 트렌딩 토픽 리스트 - 통일된 폰트
-        self.trending_var = tk.StringVar(value="Click 'Trending Topics' button to load trending market topics...")
-        trending_label = ttk.Label(trending_frame, textvariable=self.trending_var, 
-                                  wraplength=900, font=("Segoe UI", 9))
-        trending_label.pack(pady=8)
+        # 트렌딩 토픽을 스크롤 가능한 텍스트 영역으로 변경
+        self.trending_text = scrolledtext.ScrolledText(
+            trending_frame,
+            height=6,
+            wrap=tk.WORD,
+            font=("Segoe UI", 9),
+            bg=self.theme_manager.colors['panel_light'] if hasattr(self.theme_manager, 'colors') else '#F8F8FF',
+            fg=self.theme_manager.colors['text'] if hasattr(self.theme_manager, 'colors') else '#1B1350',
+            insertbackground=self.theme_manager.colors['hotpink'] if hasattr(self.theme_manager, 'colors') else '#FF69B4',
+            selectbackground=self.theme_manager.colors['magenta'] if hasattr(self.theme_manager, 'colors') else '#DDA0DD',
+            state='disabled'  # 읽기 전용
+        )
+        self.trending_text.pack(fill="both", expand=True, pady=5)
+        
+        # 초기 메시지 설정
+        self.update_trending_display("Click 'Trending Topics' button to load trending market topics...")
+    
+    def update_keywords_display(self, text):
+        """키워드 디스플레이 업데이트"""
+        if hasattr(self, 'keywords_text') and self.keywords_text:
+            self.keywords_text.config(state='normal')
+            self.keywords_text.delete(1.0, tk.END)
+            self.keywords_text.insert(1.0, text)
+            self.keywords_text.config(state='disabled')
+    
+    def update_trending_display(self, text):
+        """트렌딩 토픽 디스플레이 업데이트"""
+        self.trending_text.config(state='normal')
+        self.trending_text.delete(1.0, tk.END)
+        self.trending_text.insert(1.0, text)
+        self.trending_text.config(state='disabled')
+    
+    def _get_current_stock_symbols(self):
+        """Stock Data 탭에서 현재 로드된 주식 심볼 목록 가져오기"""
+        if self.main_app and hasattr(self.main_app, 'current_stock_data') and self.main_app.current_stock_data:
+            return list(self.main_app.current_stock_data.keys())
+        # Fallback: 기본 심볼들
+        return ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA", "META", "NVDA"]
+    
+    def _refresh_stock_list(self):
+        """주식 심볼 목록 새로고침"""
+        current_symbols = self._get_current_stock_symbols()
+        self.symbol_combo['values'] = current_symbols
+        
+        if current_symbols:
+            self.status_var.set(f"Found {len(current_symbols)} stocks for news analysis")
+            # 현재 선택된 심볼이 목록에 없으면 첫 번째 심볼로 설정
+            if not self.symbol_var.get() or self.symbol_var.get() not in current_symbols:
+                self.symbol_var.set(current_symbols[0])
+        else:
+            self.status_var.set("No stocks found. Add stocks in Stock Data tab first.")
+            self.symbol_var.set("AAPL")  # 기본값
     
     def analyze_news_async(self):
         """비동기로 뉴스 분석 실행"""
@@ -281,9 +294,50 @@ class NewsSentimentTab:
     def analyze_news(self):
         """뉴스 분석 실행"""
         try:
-            # 뉴스 수집
-            self.status_var.set("Fetching latest news articles...")
-            articles = news_sentiment_analyzer.get_stock_news(self.current_symbol, limit=30)
+            # 새로운 3단계 뉴스 분석 알고리즘 적용
+            self.status_var.set(f"Step 1/3: Starting analysis for {self.current_symbol}...")
+            self.tab_frame.update()
+            
+            self.status_var.set(f"Step 2/3: Finding relevant keywords for {self.current_symbol}...")
+            self.tab_frame.update()
+            
+            # 키워드 찾기 및 표시
+            keywords = news_sentiment_analyzer._get_symbol_keywords(self.current_symbol)
+            self.current_keywords = keywords
+            
+            # 키워드 표시 업데이트 (Company & Business Keywords에만 집중)
+            keywords_display = f"Keywords found for {self.current_symbol}:\n\n"
+            if keywords:
+                # Company & Business Keywords만 필터링
+                company_keywords = [kw for kw in keywords 
+                                  if kw.upper() not in ['EARNINGS', 'REVENUE', 'PROFIT', 'STOCK', 'SHARES', 'MARKET CAP', 'DIVIDEND']
+                                  and kw.upper() != self.current_symbol.upper() 
+                                  and kw.lower() != self.current_symbol.lower()]
+                
+                if company_keywords:
+                    keywords_display += f"Company & Business Keywords ({len(company_keywords)}):\n\n"
+                    # 키워드를 줄바꿈으로 표시하여 가독성 향상
+                    for i, keyword in enumerate(company_keywords[:20], 1):
+                        keywords_display += f"{i:2d}. {keyword}\n"
+                    
+                    if len(company_keywords) > 20:
+                        keywords_display += f"\n... and {len(company_keywords) - 20} more keywords\n"
+                    
+                    keywords_display += f"\nTotal keywords: {len(company_keywords)}\n"
+                    keywords_display += f"Search strategy: Company-focused keyword matching"
+                else:
+                    keywords_display += "No company-specific keywords found.\n"
+                    keywords_display += "Using symbol-based search only."
+            else:
+                keywords_display += "No specific keywords found. Using symbol-based search."
+            
+            # UI 업데이트
+            self.tab_frame.after(0, lambda: self.update_keywords_display(keywords_display))
+            
+            self.status_var.set(f"Step 3/3: Collecting keyword-based news for {self.current_symbol}...")
+            self.tab_frame.update()
+            
+            articles = news_sentiment_analyzer.get_stock_news(self.current_symbol, limit=50)
             
             if not articles:
                 self.status_var.set("No news articles found for " + self.current_symbol)
@@ -349,8 +403,7 @@ class NewsSentimentTab:
         sentiment_label = self.get_sentiment_label(sentiment.overall_sentiment)
         self.overall_sentiment_var.set(f"Overall Sentiment: {sentiment_label}")
         
-        # 점수 및 신뢰도 - 영어로 표시
-        self.sentiment_score_var.set(f"Sentiment Score: {sentiment.sentiment_score:.3f}")
+        # 신뢰도 - 영어로 표시
         self.confidence_var.set(f"Analysis Confidence: {sentiment.confidence:.1%}")
         
         # 분포 - 영어로 표시
@@ -373,22 +426,8 @@ class NewsSentimentTab:
         
         return label_map.get(sentiment_type, "Unknown")
     
-    def on_news_click(self, event):
-        """뉴스 더블클릭 이벤트"""
-        selection = self.news_tree.selection()
-        if not selection:
-            return
-        
-        item = selection[0]
-        index = self.news_tree.index(item)
-        
-        if index < len(self.current_articles):
-            article = self.current_articles[index]
-            if article.url:
-                webbrowser.open(article.url)
-    
     def on_news_select(self, event):
-        """뉴스 선택 이벤트"""
+        """뉴스 선택 이벤트 - 알림창으로 상세 정보 표시"""
         selection = self.news_tree.selection()
         if not selection:
             return
@@ -398,21 +437,122 @@ class NewsSentimentTab:
         
         if index < len(self.current_articles):
             article = self.current_articles[index]
-            
-            # 기사 상세 정보 표시
-            self.article_detail.delete(1.0, tk.END)
-            
-            detail_text = f"Title: {article.title}\n\n"
-            detail_text += f"Source: {article.source}\n"
-            detail_text += f"Date: {article.published_date.strftime('%Y-%m-%d %H:%M')}\n"
-            
-            if article.sentiment_score is not None:
-                detail_text += f"Sentiment: {article.sentiment_score:.3f}\n"
-            
-            detail_text += f"\nContent:\n{article.content}\n\n"
-            detail_text += f"URL: {article.url}"
-            
-            self.article_detail.insert(1.0, detail_text)
+            self.show_article_details_popup(article)
+    
+    def show_article_details_popup(self, article):
+        """기사 상세 정보를 알림창으로 표시"""
+        dialog = tk.Toplevel(self.parent_notebook)
+        dialog.title(f"Article Details - {article.source}")
+        
+        # 테마 적용
+        if hasattr(self.theme_manager, 'colors'):
+            colors = self.theme_manager.colors
+        else:
+            colors = {
+                'panel': '#1F144A',
+                'panel_light': '#F8F8FF',
+                'text': '#1B1350',
+                'periwinkle': '#A78BFA',
+                'lavender': '#C4B5FD',
+                'hotpink': '#FF69B4',
+                'magenta': '#DDA0DD'
+            }
+        
+        dialog.configure(bg=colors['panel'])
+        dialog.resizable(True, True)
+        
+        # 창 크기와 위치 설정
+        width, height = 700, 600
+        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        dialog.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # 창이 완전히 표시된 후 모달 설정
+        dialog.update_idletasks()
+        dialog.deiconify()  # 창을 확실히 표시
+        dialog.lift()       # 창을 맨 앞으로
+        dialog.focus_set()  # 포커스 설정
+        try:
+            dialog.grab_set()  # 모달 창으로 설정
+        except tk.TclError:
+            # grab_set 실패시 무시하고 계속 진행
+            pass
+        
+        # 메인 프레임
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 제목
+        title_label = ttk.Label(main_frame, 
+                              text="Article Details",
+                              font=('Arial', 14, 'bold'),
+                              foreground=colors['periwinkle'])
+        title_label.pack(pady=(0, 15))
+        
+        # 내용을 위한 스크롤 가능한 텍스트 영역
+        content_text = scrolledtext.ScrolledText(
+            main_frame,
+            wrap=tk.WORD,
+            height=25,
+            width=80,
+            font=('Arial', 11),
+            bg=colors['panel_light'],
+            fg=colors['text'],
+            insertbackground=colors['hotpink'],
+            selectbackground=colors['magenta'],
+            state='normal'
+        )
+        content_text.pack(fill="both", expand=True, pady=(0, 15))
+        
+        # 내용 삽입
+        detail_text = f"Title: {article.title}\n\n"
+        detail_text += f"Source: {article.source}\n"
+        detail_text += f"Date: {article.published_date.strftime('%Y-%m-%d %H:%M')}\n"
+        
+        if article.sentiment_score is not None:
+            sentiment_label = self.get_sentiment_label(article.sentiment_type)
+            detail_text += f"Sentiment: {article.sentiment_score:.3f} ({sentiment_label})\n"
+        
+        if hasattr(article, 'keywords') and article.keywords:
+            detail_text += f"Keywords: {', '.join(article.keywords)}\n"
+        
+        # 기사 내용 처리 - 내용이 없거나 매우 짧을 경우 처리
+        content = article.content.strip() if article.content else ""
+        
+        detail_text += f"\nContent:\n{'-'*50}\n"
+        
+        if content and len(content) > 10:
+            detail_text += f"{content}\n\n"
+        else:
+            detail_text += "Content not available or too short.\n"
+            detail_text += "This may be due to RSS feed limitations or content protection.\n\n"
+        
+        content_text.insert(1.0, detail_text)
+        content_text.config(state='disabled')
+        
+        # 버튼 프레임
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        # 닫기 버튼
+        def close_dialog():
+            dialog.destroy()
+        
+        if self.main_app:
+            close_btn = self.main_app.icon_button(
+                button_frame, 'save', 'Close',
+                close_dialog, style='Pastel.Primary.TButton'
+            )
+        else:
+            close_btn = ttk.Button(
+                button_frame, text='Close',
+                command=close_dialog
+            )
+        close_btn.pack(side=tk.RIGHT)
+        
+        # 키보드 바인딩
+        dialog.bind('<Escape>', lambda e: close_dialog())
+        close_btn.focus_set()
     
     def refresh_news(self):
         """뉴스 새로고침"""
@@ -425,35 +565,148 @@ class NewsSentimentTab:
             messagebox.showinfo("Information", "Please analyze a stock symbol first before refreshing.")
     
     def show_trending_topics(self):
-        """트렌딩 토픽 표시"""
+        """트렌딩 토픽을 GUI 스타일 적용된 팝업 창으로 표시"""
         self.status_var.set("Loading trending market topics...")
         
         def load_trending():
             try:
-                topics = news_sentiment_analyzer.get_trending_topics(limit=10)
+                topics = news_sentiment_analyzer.get_trending_topics(limit=15)
                 
                 if topics:
-                    trending_text = "Current trending market topics: "
+                    # 트렌딩 토픽을 더 읽기 쉽게 포맷팅
                     trending_items = []
                     
-                    for topic in topics[:5]:  # 상위 5개만 표시
-                        sentiment_indicator = "[Positive]" if topic['sentiment'] > 0.1 else "[Negative]" if topic['sentiment'] < -0.1 else "[Neutral]"
-                        trending_items.append(f"{topic['topic']} {sentiment_indicator} ({topic['mention_count']} mentions)")
+                    for topic in topics[:10]:  # 상위 10개 표시
+                        sentiment_score = topic['sentiment']
+                        mention_count = topic['mention_count']
+                        
+                        # 감정 표시 (이모티콘 제거)
+                        if sentiment_score > 0.1:
+                            sentiment_indicator = "Positive"
+                        elif sentiment_score < -0.1:
+                            sentiment_indicator = "Negative" 
+                        else:
+                            sentiment_indicator = "Neutral"
+                        
+                        trending_items.append(f"• {topic['topic'].title()} ({mention_count} mentions) - {sentiment_indicator}")
                     
-                    trending_text += " • ".join(trending_items)
+                    trending_text = f"Top Market Trends Today:\n\n" + "\n".join(trending_items)
+                    trending_text += f"\n\nLast updated: {datetime.now().strftime('%H:%M:%S')}"
+                    
+                    # GUI 스타일 적용된 팝업 창으로 표시
+                    self.tab_frame.after(0, lambda: self.show_trending_popup("Trending Market Topics", trending_text))
+                    self.tab_frame.after(0, lambda: self.status_var.set(f"Trending topics loaded - {len(topics)} topics found"))
                 else:
-                    trending_text = "No trending topics available at the moment. Please try again later."
-                
-                # UI 업데이트
-                self.tab_frame.after(0, lambda: self.trending_var.set(trending_text))
-                self.tab_frame.after(0, lambda: self.status_var.set("Trending topics loaded successfully"))
+                    error_text = "No trending topics available at the moment.\n\nThis could be due to:\n• Network connectivity issues\n• RSS feed temporarily unavailable\n• Low news activity\n\nPlease try again in a few minutes."
+                    self.tab_frame.after(0, lambda: self.show_trending_popup("Trending Topics - No Data", error_text))
+                    self.tab_frame.after(0, lambda: self.status_var.set("No trending topics found"))
                 
             except Exception as e:
+                error_msg = f"Unable to load trending topics.\n\nError: {str(e)}\n\nPlease check your internet connection and try again."
+                self.tab_frame.after(0, lambda: self.show_trending_popup("Trending Topics - Error", error_msg))
                 self.tab_frame.after(0, lambda: self.status_var.set("Failed to load trending topics"))
-                self.tab_frame.after(0, lambda: self.trending_var.set("Unable to load trending topics. Please check your internet connection and try again."))
                 print(f"Error loading trending topics: {e}")
         
         threading.Thread(target=load_trending, daemon=True).start()
+    
+    def show_trending_popup(self, title, content):
+        """GUI 스타일 적용된 트렌딩 토픽 팝업 창 표시"""
+        dialog = tk.Toplevel(self.parent_notebook)
+        dialog.title(title)
+        
+        # 테마 적용
+        if hasattr(self.theme_manager, 'colors'):
+            colors = self.theme_manager.colors
+        else:
+            colors = {
+                'panel': '#1F144A',
+                'panel_light': '#F8F8FF',
+                'text': '#1B1350',
+                'periwinkle': '#A78BFA',
+                'lavender': '#C4B5FD',
+                'hotpink': '#FF69B4',
+                'magenta': '#DDA0DD'
+            }
+        
+        dialog.configure(bg=colors['panel'])
+        dialog.resizable(False, False)
+        dialog.grab_set()  # 모달 창으로 설정
+        
+        # 창 크기와 위치 설정
+        width, height = 600, 500
+        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        dialog.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # 메인 프레임
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 제목
+        title_label = ttk.Label(main_frame, 
+                              text=title,
+                              font=('Arial', 14, 'bold'),
+                              foreground=colors['periwinkle'])
+        title_label.pack(pady=(0, 15))
+        
+        # 내용을 위한 스크롤 가능한 텍스트 영역
+        content_text = scrolledtext.ScrolledText(
+            main_frame,
+            wrap=tk.WORD,
+            height=18,
+            width=70,
+            font=('Arial', 11),
+            bg=colors['panel_light'],
+            fg=colors['text'],
+            insertbackground=colors['hotpink'],
+            selectbackground=colors['magenta'],
+            state='disabled'
+        )
+        content_text.pack(fill="both", expand=True, pady=(0, 15))
+        
+        # 내용 삽입
+        content_text.config(state='normal')
+        content_text.insert(1.0, content)
+        content_text.config(state='disabled')
+        
+        # 버튼 프레임
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        # 닫기 버튼
+        def close_dialog():
+            dialog.destroy()
+        
+        if self.main_app:
+            close_btn = self.main_app.icon_button(
+                button_frame, 'save', 'Close',
+                close_dialog, style='Pastel.Primary.TButton'
+            )
+        else:
+            close_btn = ttk.Button(
+                button_frame, text='Close',
+                command=close_dialog, style='Pastel.Primary.TButton'
+            )
+        close_btn.pack(side=tk.RIGHT)
+        
+        # 새로고침 버튼
+        if self.main_app:
+            refresh_btn = self.main_app.icon_button(
+                button_frame, 'refresh', 'Refresh',
+                lambda: [dialog.destroy(), self.show_trending_topics()], 
+                style='Pastel.Ghost.TButton'
+            )
+        else:
+            refresh_btn = ttk.Button(
+                button_frame, text='Refresh',
+                command=lambda: [dialog.destroy(), self.show_trending_topics()], 
+                style='Pastel.Ghost.TButton'
+            )
+        refresh_btn.pack(side=tk.RIGHT, padx=(0, 10))
+        
+        # 키보드 바인딩
+        dialog.bind('<Escape>', lambda e: close_dialog())
+        close_btn.focus_set()
     
     def get_tab_frame(self):
         """탭 프레임 반환"""

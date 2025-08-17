@@ -64,6 +64,7 @@ class IconManager:
             'level_3':          'level_3.png',
             'level_4':          'level_4.png',
             'level_5':          'level_5.png',
+            'add_4':            'add_4.png',
         }
         for key, filename in button_map.items():
             icon_path = os.path.join(icons_path, filename)

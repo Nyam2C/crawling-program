@@ -116,6 +116,11 @@ class KeyboardManager:
                 'Settings Tab', 
                 self.switch_tab_6
             ),
+            '<Control-8>': KeyBinding(
+                'Ctrl+8', 
+                'News & Sentiment Tab', 
+                self.switch_tab_7
+            ),
         }
     
     def bind_all_shortcuts(self):
@@ -351,6 +356,10 @@ class KeyboardManager:
         """Switch to Settings tab"""
         self.switch_tab(6)
     
+    def switch_tab_7(self):
+        """Switch to News & Sentiment tab"""
+        self.switch_tab(7)
+    
     def switch_tab(self, tab_index: int):
         """Switch tab"""
         try:
@@ -378,7 +387,7 @@ class KeyboardManager:
                             raise e2
                     
                     tab_names = ["Stock Data", "Recommendations", "Analysis", "Trading", 
-                               "Scoreboard", "Investment Analysis", "Settings"]
+                               "Scoreboard", "Investment Analysis", "Settings", "News & Sentiment"]
                     if tab_index < len(tab_names):
                         status_msg = f"Switched to {tab_names[tab_index]} tab (Ctrl+{tab_index+1})"
                         if hasattr(self.main_app, 'update_status'):

@@ -64,8 +64,8 @@ class StockAnalysisGUI:
     def setup_main_window(self):
         """Configure the main window with retro pastel aesthetics"""
         self.root.title("Professional Stock Analysis Platform")
-        self.root.geometry("1200x800")
-        self.root.minsize(1000, 600)
+        self.root.geometry("1250x800")
+        self.root.minsize(1050, 600)
         
         # Center window on screen for better UX
         self.center_window()
@@ -120,7 +120,7 @@ class StockAnalysisGUI:
         self.stock_data_tab = StockDataTab(self.notebook, self)
         self.recommendations_tab = RecommendationsTab(self.notebook, self)
         self.analysis_tab = IndividualAnalysisTab(self.notebook, self)
-        self.news_sentiment_tab = NewsSentimentTab(self.notebook, self.icon_manager, self.theme_manager)
+        self.news_sentiment_tab = NewsSentimentTab(self.notebook, self.icon_manager, self.theme_manager, self)
         self.mock_trading_tab = MockTradingTab(self.notebook, self)
         self.scoreboard_tab = ScoreboardTab(self.notebook, self)
         self.investment_analysis_tab = InvestmentAnalysisTab(self.notebook, self)

@@ -109,14 +109,14 @@ class StyledMessageBox(StyledDialog):
                                  fg=self.colors['lavender'], bg=self.colors['panel'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
-        # Message - with thin white border
-        message_frame = tk.Frame(content_frame, bg='white', relief=tk.SOLID, bd=0.5)
+        # Message - clean background without border
+        message_frame = tk.Frame(content_frame, bg=self.colors['background'], relief=tk.FLAT, bd=0)
         message_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10, padx=(0, 10))
         
         message_label = tk.Label(message_frame, text=self.message, font=("Arial", 11),
                                 fg=self.colors['text'], bg=self.colors['background'],
                                 wraplength=320, justify=tk.LEFT)
-        message_label.pack(fill=tk.BOTH, expand=True, padx=8, pady=8)
+        message_label.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
         
         # Button frame
         button_frame = ttk.Frame(main_frame)
@@ -264,14 +264,14 @@ class StyledConfirmDialog(StyledDialog):
                                  fg=self.colors['lavender'], bg=self.colors['panel'])
         icon_label.pack(side=tk.LEFT, padx=(0, 15), pady=10)
         
-        # Message - with thin white border
-        message_frame = tk.Frame(content_frame, bg='white', relief=tk.SOLID, bd=0.5)
+        # Message - clean background without border
+        message_frame = tk.Frame(content_frame, bg=self.colors['background'], relief=tk.FLAT, bd=0)
         message_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=10, padx=(0, 10))
         
         message_label = tk.Label(message_frame, text=self.message, font=("Arial", 11),
                                 fg=self.colors['text'], bg=self.colors['background'],
                                 wraplength=320, justify=tk.LEFT)
-        message_label.pack(fill=tk.BOTH, expand=True, padx=8, pady=8)
+        message_label.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
         
         # Button frame
         button_frame = ttk.Frame(main_frame)

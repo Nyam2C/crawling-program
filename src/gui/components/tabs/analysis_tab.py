@@ -108,10 +108,10 @@ class IndividualAnalysisTab:
         # Add kawaii initial message
         initial_message = """Individual Stock Analysis
 
-✧ Select a stock symbol from the dropdown above
-✧ Click "Refresh List" to update available stocks from Stock Data tab
-✧ Click "Deep Analysis" for comprehensive multi-criteria analysis  
-✧ Click "Quick Analysis" for basic technical analysis
+• Select a stock symbol from the dropdown above
+• Click "Refresh List" to update available stocks from Stock Data tab
+• Click "Deep Analysis" for comprehensive multi-criteria analysis  
+• Click "Quick Analysis" for basic technical analysis
 
 NOTE: Analysis will be performed on stocks from your current Stock Data.
 Use the Stock Data tab to add stocks you want to analyze.

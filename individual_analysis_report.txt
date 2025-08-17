@@ -3,20 +3,20 @@ COMPREHENSIVE STOCK ANALYSIS REPORT
 
 COMPANY OVERVIEW
 ──────────────────────────────────────────────────────────────────────────────────────────
-Company Name: NIKE, Inc.
+Company Name: NKE Corp.
 Ticker Symbol: NKE
 Listed Exchange: NASDAQ
 Industry Sector: General
 Main Products/Services: Technology products and services
-Market Capitalization: $112.58B
+Market Capitalization: $113.68B
 
 STOCK PRICE INFORMATION
 ──────────────────────────────────────────────────────────────────────────────────────────
-Current Price: $76.23
-52-Week Range: $61.90 - $92.49
-Beta (Volatility): 0.83
-Average Daily Volume: 4.83M
-Price Change (%): (-1.26%)
+Current Price: $76.97
+52-Week Range: $54.44 - $89.19
+Beta (Volatility): 1.24
+Average Daily Volume: 9.77M
+Price Change (%): (+0.76%)
 1-Year Price Trend: Upward trending
 
 FUNDAMENTAL ANALYSIS
@@ -26,14 +26,14 @@ Operating Margin Analysis: Below average
 Profitability Assessment: 10.0% margin vs 20.0% sector average
 Debt-to-Equity Ratio: 1.00
 Financial Health Rating: Fair
-Return on Equity (ROE): 27.0%
-Return on Assets (ROA): 9.2%
+Return on Equity (ROE): 35.5%
+Return on Assets (ROA): 10.3%
 
 VALUATION ANALYSIS  
 ──────────────────────────────────────────────────────────────────────────────────────────
-P/E Ratio (Price-to-Earnings): 22.4
-P/B Ratio (Price-to-Book): 4.2
-EV/EBITDA Multiple: 21.6
+P/E Ratio (Price-to-Earnings): 20.9
+P/B Ratio (Price-to-Book): 7.0
+EV/EBITDA Multiple: 22.5
 PEG Ratio (Growth-adjusted): 1.0
 Valuation Assessment: Fair Value
 
@@ -60,7 +60,7 @@ Key Competitors: Major tech companies
 Market Share: Industry leader
 Technology & Patents: Strong IP portfolio
 Brand Value: Premium brand recognition
-ESG Rating: B- grade
+ESG Rating: B grade
 
 RISK FACTORS & MITIGATION STRATEGIES
 ──────────────────────────────────────────────────────────────────────────────────────────
@@ -75,19 +75,19 @@ Competition Risk: Increasing competition
 
 TECHNICAL ANALYSIS
 ──────────────────────────────────────────────────────────────────────────────────────────
-Key Support Level: $72.42
-Key Resistance Level: $80.04
-Price Momentum Analysis: Upward trend
-RSI (Relative Strength Index): 62.9 (Neutral)
-MACD Signal: Neutral
+Key Support Level: $73.12
+Key Resistance Level: $80.82
+Price Momentum Analysis: Sideways trend
+RSI (Relative Strength Index): 37.4 (Neutral)
+MACD Signal: Buy
 Volume Analysis: Stable trading volume
-Moving Average Trend: Downtrend
+Moving Average Trend: Uptrend
 
 COMPREHENSIVE INVESTMENT OPINION
 ──────────────────────────────────────────────────────────────────────────────────────────
 Overall Score: 0.392/1.000
 Investment Recommendation: WEAK HOLD
-Target Price: $72.42 (-5.0%)
+Target Price: $73.12 (-5.0%)
 Risk Management: Stop-loss recommended at -15% from entry
 Expected Investment Period: Consider exit strategy
 
@@ -98,8 +98,8 @@ Scenario Analysis:
 
 ANALYSIS TIMESTAMP
 ──────────────────────────────────────────────────────────────────────────────────────────
-Data Reference Date: 2025-08-15
-Analysis Date: 2025-08-15
+Data Reference Date: 2025-08-18
+Analysis Date: 2025-08-18
 
 DISCLAIMER
 ──────────────────────────────────────────────────────────────────────────────────────────

@@ -88,9 +88,12 @@ class NewsSentimentAnalyzer:
         self.article_cache = {}
         self.cache_duration = 3600  # 1 hour
         
-    def get_stock_news(self, symbol: str, limit: int = 20) -> List[NewsArticle]:
+    def get_stock_news(self, symbol: str, limit: int = 50) -> List[NewsArticle]:
         """
-        특정 주식 심볼에 대한 뉴스 수집
+        새로운 3단계 뉴스 분석 알고리즘
+        1단계: 심볼 분석 시작
+        2단계: 해당 심볼과 관련된 주요 키워드 탐색
+        3단계: 해당 키워드와 관련된 뉴스 탐색
         
         Args:
             symbol: 주식 심볼 (예: 'AAPL')
@@ -104,18 +107,28 @@ class NewsSentimentAnalyzer:
         if cache_key in self.article_cache:
             return self.article_cache[cache_key][:limit]
         
+        # 1단계: 심볼 분석 시작
+        self.logger.info(f"Starting 3-step news analysis for {symbol}")
+        
+        # 2단계: 해당 심볼과 관련된 주요 키워드 탐색
+        relevant_keywords = self._get_symbol_keywords(symbol)
+        self.logger.info(f"Found {len(relevant_keywords)} relevant keywords for {symbol}: {relevant_keywords}")
+        
+        # 3단계: 해당 키워드와 관련된 뉴스 탐색
         all_articles = []
         
-        # RSS 피드에서 뉴스 수집
-        for source_name, config in self.news_sources.items():
-            try:
-                if config['type'] == 'rss':
-                    articles = self._fetch_rss_news(source_name, config['url'], symbol)
-                    all_articles.extend(articles)
-            except Exception as e:
-                self.logger.warning(f"Failed to fetch from {source_name}: {e}")
+        # 키워드 기반 뉴스 수집
+        for keyword in relevant_keywords:
+            # RSS 피드에서 키워드 기반 뉴스 수집
+            for source_name, config in self.news_sources.items():
+                try:
+                    if config['type'] == 'rss':
+                        articles = self._fetch_keyword_based_news(source_name, config['url'], symbol, keyword)
+                        all_articles.extend(articles)
+                except Exception as e:
+                    self.logger.warning(f"Failed to fetch from {source_name} for keyword {keyword}: {e}")
         
-        # Yahoo Finance API를 통한 특정 주식 뉴스
+        # Yahoo Finance API를 통한 특정 주식 뉴스 (기존 방식 유지)
         try:
             yahoo_articles = self._fetch_yahoo_stock_news(symbol)
             all_articles.extend(yahoo_articles)
@@ -129,7 +142,337 @@ class NewsSentimentAnalyzer:
         # 캐시 저장
         self.article_cache[cache_key] = unique_articles
         
+        self.logger.info(f"Completed 3-step analysis: collected {len(unique_articles)} unique articles for {symbol}")
         return unique_articles[:limit]
+    
+    def _get_symbol_keywords(self, symbol: str) -> List[str]:
+        """2단계: 심볼과 관련된 주요 키워드 탐색 (외부 소스 활용)"""
+        symbol_upper = symbol.upper()
+        
+        # 기본 키워드 (회사 심볼과 일반적인 주식 관련 용어)
+        base_keywords = [symbol_upper, symbol.lower()]
+        
+        # 일반적인 주식 관련 키워드
+        stock_keywords = ['earnings', 'revenue', 'profit', 'stock', 'shares', 'market cap', 'dividend']
+        base_keywords.extend(stock_keywords)
+        
+        # 외부 소스에서 키워드 찾기
+        external_keywords = self._fetch_external_keywords(symbol_upper)
+        if external_keywords:
+            base_keywords.extend(external_keywords)
+            self.logger.info(f"Found {len(external_keywords)} external keywords for {symbol}: {external_keywords[:5]}...")
+        
+        return base_keywords
+    
+    def _fetch_external_keywords(self, symbol: str) -> List[str]:
+        """외부 소스에서 키워드 찾기"""
+        keywords = []
+        
+        try:
+            # 방법1: Yahoo Finance 주식 정보에서 키워드 추출
+            yahoo_keywords = self._get_yahoo_finance_keywords(symbol)
+            keywords.extend(yahoo_keywords)
+            
+            # 방법2: 주식 관련 뉴스 제목에서 키워드 추출  
+            news_keywords = self._extract_keywords_from_recent_news(symbol)
+            keywords.extend(news_keywords)
+            
+            # 방법3: 기본 회사 정보 매핑 (fallback)
+            fallback_keywords = self._get_fallback_keywords(symbol)
+            keywords.extend(fallback_keywords)
+            
+        except Exception as e:
+            self.logger.warning(f"Error fetching external keywords for {symbol}: {e}")
+            # 오류 시 fallback 키워드만 사용
+            keywords = self._get_fallback_keywords(symbol)
+        
+        # 중복 제거 및 강화된 필터링
+        unique_keywords = list(set(keywords))
+        
+        # 강화된 키워드 필터링
+        filtered_keywords = []
+        for kw in unique_keywords:
+            if self._is_relevant_keyword(kw, symbol):
+                filtered_keywords.append(kw)
+        
+        return filtered_keywords[:15]  # 최대 15개로 제한
+    
+    def _is_relevant_keyword(self, keyword: str, symbol: str) -> bool:
+        """키워드가 해당 주식과 관련성이 있는지 강화된 검사"""
+        keyword_lower = keyword.lower().strip()
+        symbol_lower = symbol.lower()
+        
+        # 기본 필터링: 길이, 문자 타입 검사
+        if len(keyword_lower) < 3 or len(keyword_lower) > 25:
+            return False
+        
+        if not keyword.replace(' ', '').replace('-', '').isalnum():
+            return False
+        
+        # 너무 일반적인 단어들 제외 (대폭 강화된 불용어 리스트)
+        common_words = {
+            'company', 'companies', 'corporation', 'corp', 'inc', 'ltd', 'llc',
+            'business', 'industry', 'market', 'markets', 'financial', 'finance',
+            'stock', 'stocks', 'share', 'shares', 'investment', 'invest', 'investor',
+            'trading', 'trade', 'trader', 'money', 'cash', 'profit', 'revenue',
+            'sales', 'growth', 'development', 'service', 'services', 'product',
+            'products', 'technology', 'tech', 'digital', 'online', 'internet',
+            'global', 'international', 'national', 'american', 'united', 'states',
+            'world', 'worldwide', 'network', 'system', 'systems', 'solutions',
+            'software', 'hardware', 'platform', 'platforms', 'data', 'information',
+            'management', 'operations', 'operational', 'strategic', 'strategy',
+            'million', 'billion', 'dollar', 'dollars', 'percent', 'percentage',
+            'quarter', 'quarterly', 'annual', 'yearly', 'report', 'reports',
+            'news', 'media', 'communication', 'communications', 'group', 'holdings',
+            # 추가 일반적인 단어들
+            'company\'s', 'business\'s', 'people', 'person', 'human', 'customer',
+            'customers', 'client', 'clients', 'team', 'teams', 'leader', 'leaders',
+            'employee', 'employees', 'worker', 'workers', 'staff', 'user', 'users',
+            'time', 'times', 'year', 'years', 'day', 'days', 'week', 'weeks',
+            'month', 'months', 'today', 'tomorrow', 'yesterday', 'future', 'past',
+            'first', 'second', 'third', 'last', 'next', 'previous', 'current',
+            'new', 'old', 'good', 'bad', 'best', 'better', 'great', 'excellent',
+            'high', 'low', 'big', 'small', 'large', 'huge', 'tiny', 'major', 'minor',
+            'more', 'most', 'less', 'least', 'many', 'much', 'few', 'little',
+            'market', 'markets', 'economy', 'economic', 'economics', 'analyst',
+            'analysts', 'expert', 'experts', 'research', 'researcher', 'study',
+            'studies', 'survey', 'surveys', 'analysis', 'analytics'
+        }
+        
+        if keyword_lower in common_words:
+            return False
+        
+        # 심볼과 동일한 경우 제외
+        if keyword_lower == symbol_lower:
+            return False
+        
+        # 숫자만 있는 키워드 제외
+        if keyword.isdigit():
+            return False
+        
+        # 특정 회사별 엄격한 필터링
+        if symbol_lower == 'nke':  # Nike 특별 필터링
+            nike_irrelevant = {
+                'brand', 'brands', 'fashion', 'style', 'design', 'designer',
+                'retail', 'retailer', 'store', 'stores', 'shop', 'shopping',
+                'consumer', 'consumers', 'lifestyle', 'culture', 'trend', 'trends',
+                'marketing', 'advertisement', 'campaign', 'promotion', 'celebrity',
+                'endorsement', 'partnership', 'collaboration', 'athlete', 'athletes',
+                'sport', 'sports', 'fitness', 'training', 'performance', 'competition'
+            }
+            if keyword_lower in nike_irrelevant:
+                return False
+        
+        # 너무 짧은 약어 제외 (단, 잘 알려진 브랜드명은 허용)
+        known_brands = {'nike', 'apple', 'google', 'meta', 'tesla', 'amazon', 'microsoft', 'aws', 'ios'}
+        if len(keyword_lower) <= 3 and keyword_lower not in known_brands:
+            return False
+        
+        # 특정 패턴 제외
+        if any(pattern in keyword_lower for pattern in ['www.', 'http', '.com', '.org', '.net', 'email', 'phone']):
+            return False
+        
+        # 관사, 전치사, 접속사 등 제외
+        function_words = {'the', 'and', 'for', 'with', 'but', 'not', 'are', 'was', 'were', 'been', 'have', 'has', 'had', 'will', 'would', 'could', 'should'}
+        if keyword_lower in function_words:
+            return False
+        
+        return True
+    
+    def _get_yahoo_finance_keywords(self, symbol: str) -> List[str]:
+        """야후 파이낸스에서 키워드 추출"""
+        keywords = []
+        try:
+            import yfinance as yf
+            ticker = yf.Ticker(symbol)
+            info = ticker.info
+            
+            # 회사 이름 및 비즈니스 설명에서 키워드 추출
+            company_name = info.get('longName', '')
+            business_summary = info.get('longBusinessSummary', '')
+            industry = info.get('industry', '')
+            sector = info.get('sector', '')
+            
+            # 회사 이름에서 키워드 추출
+            if company_name:
+                # 회사 이름을 단어별로 분리
+                name_words = company_name.replace(',', '').replace('.', '').split()
+                keywords.extend([word for word in name_words if len(word) > 2])
+            
+            # 산업 및 섹터 정보
+            if industry:
+                keywords.extend(industry.split())
+            if sector:
+                keywords.extend(sector.split())
+            
+            # 비즈니스 설명에서 주요 키워드 추출
+            if business_summary and len(business_summary) > 50:
+                # 비즈니스 설명에서 주요 단어 추출
+                summary_keywords = self._extract_business_keywords(business_summary)
+                keywords.extend(summary_keywords)
+                
+        except ImportError:
+            self.logger.warning(f"yfinance not available for keyword extraction")
+        except Exception as e:
+            self.logger.warning(f"Error extracting Yahoo Finance keywords for {symbol}: {e}")
+        
+        return keywords
+    
+    def _extract_business_keywords(self, business_summary: str) -> List[str]:
+        """비즈니스 설명에서 키워드 추출"""
+        import re
+        
+        # 매우 구체적인 제품/브랜드명 패턴만 (일반적인 단어 완전 제외)
+        business_patterns = [
+            r'\b(jordan|swoosh|dunk|blazer|react|airmax|cortez)\b',  # Nike 전용 제품
+            r'\b(iphone|ipad|macbook|airpods|imac|appletv)\b',  # Apple 제품
+            r'\b(android|pixel|chrome|youtube|gmail|nest)\b',  # Google 제품
+            r'\b(windows|office|azure|xbox|teams|surface)\b',  # Microsoft 제품
+            r'\b(prime|alexa|kindle|aws|echo|firestick)\b',  # Amazon 제품
+            r'\b(cybertruck|gigafactory|supercharger|autopilot|roadster)\b',  # Tesla 제품
+            r'\b(instagram|whatsapp|metaverse|oculus|quest)\b',  # Meta 제품
+            r'\b(geforce|rtx|cuda|omniverse|shield)\b',  # NVIDIA 제품
+            r'\b(photoshop|creative|acrobat|illustrator|premiere)\b',  # Adobe 제품
+            r'\b(salesforce|trailhead|einstein|mulesoft|slack)\b',  # CRM 제품
+            r'\b(netflix|streaming|originals|stranger|bridgerton)\b',  # Netflix 제품
+            r'\b(disney|marvel|pixar|espn|hulu)\b',  # Disney 제품
+            r'\b(paypal|venmo|braintree|xoom|hyperwallet)\b'  # PayPal 제품
+        ]
+        
+        keywords = []
+        text_lower = business_summary.lower()
+        
+        for pattern in business_patterns:
+            matches = re.findall(pattern, text_lower, re.IGNORECASE)
+            if isinstance(matches[0] if matches else None, tuple):
+                keywords.extend([match[0] for match in matches if match[0]])
+            else:
+                keywords.extend(matches)
+        
+        # 길이 제한 및 정리
+        filtered_keywords = [kw.strip() for kw in keywords if 3 <= len(kw.strip()) <= 25]
+        return list(set(filtered_keywords))[:10]  # 상위 10개
+    
+    def _extract_keywords_from_recent_news(self, symbol: str) -> List[str]:
+        """최근 뉴스 제목에서 키워드 추출"""
+        keywords = []
+        try:
+            # 간단한 뉴스 검색으로 최근 뉴스 제목 수집
+            for source_name, config in list(self.news_sources.items())[:2]:  # 상위 2개 소스만 사용
+                try:
+                    feed = feedparser.parse(config['url'])
+                    for entry in feed.entries[:5]:  # 각 소스에서 5개만
+                        title = entry.get('title', '').strip()
+                        if symbol.upper() in title.upper() and len(title) > 10:
+                            # 제목에서 주요 단어 추출
+                            title_keywords = self._extract_title_keywords(title, symbol)
+                            keywords.extend(title_keywords)
+                except Exception as e:
+                    continue
+        except Exception as e:
+            self.logger.warning(f"Error extracting news keywords for {symbol}: {e}")
+        
+        return keywords
+    
+    def _extract_title_keywords(self, title: str, symbol: str) -> List[str]:
+        """뉴스 제목에서 키워드 추출"""
+        import re
+        
+        # 제목에서 주요 비즈니스 용어 추출
+        business_words = re.findall(r'\b[A-Z][a-z]{3,}\b', title)
+        
+        # 너무 일반적인 단어 제외
+        common_words = {'Stock', 'News', 'Report', 'Update', 'Price', 'Market', 'Today', 'This', 'That', 'With', 'From'}
+        filtered_words = [word for word in business_words if word not in common_words and word.upper() != symbol.upper()]
+        
+        return filtered_words[:3]  # 상위 3개
+    
+    def _get_fallback_keywords(self, symbol: str) -> List[str]:
+        """외부 소스 실패 시 사용할 기본 키워드 매핑 (핵심 비즈니스 키워드만)"""
+        # 주요 주식들에 대한 핵심 비즈니스 키워드 (일반적인 용어 제외)
+        basic_mapping = {
+            'AAPL': ['iPhone', 'iPad', 'MacBook', 'AirPods', 'iOS'],
+            'GOOGL': ['Alphabet', 'Android', 'YouTube', 'Chrome', 'Pixel'],
+            'MSFT': ['Windows', 'Office', 'Azure', 'Xbox', 'Teams'],
+            'AMZN': ['AWS', 'Prime', 'Alexa', 'Kindle', 'Echo'],
+            'TSLA': ['Cybertruck', 'Gigafactory', 'Supercharger', 'Autopilot', 'FSD'],
+            'META': ['Instagram', 'WhatsApp', 'Metaverse', 'Oculus', 'Reality'],
+            'NVDA': ['GeForce', 'RTX', 'GPU', 'CUDA', 'Omniverse'],
+            'NKE': ['Jordan', 'swoosh', 'Dunk', 'Blazer', 'React'],  # Nike 전용 제품명
+            'ADBE': ['Photoshop', 'Creative', 'Acrobat', 'Illustrator', 'Premiere'],
+            'CRM': ['Salesforce', 'Trailhead', 'Einstein', 'MuleSoft', 'Slack'],
+            'NFLX': ['Netflix', 'streaming', 'originals', 'subscribers', 'Stranger'],
+            'DIS': ['Disney', 'Marvel', 'Pixar', 'Star Wars', 'ESPN'],
+            'PYPL': ['PayPal', 'Venmo', 'Braintree', 'checkout', 'wallet'],
+            'INTC': ['Intel', 'processor', 'semiconductor', 'Xeon', 'Core'],
+            'AMD': ['Ryzen', 'Radeon', 'EPYC', 'Threadripper', 'GPU']
+        }
+        
+        return basic_mapping.get(symbol.upper(), [])
+    
+    def _fetch_keyword_based_news(self, source_name: str, rss_url: str, symbol: str, keyword: str) -> List[NewsArticle]:
+        """3단계: 키워드 기반 뉴스 탐색"""
+        articles = []
+        
+        try:
+            feed = feedparser.parse(rss_url)
+            
+            for entry in feed.entries[:30]:  # 각 키워드당 최대 30개 처리
+                title = entry.get('title', '').strip()
+                summary = entry.get('summary', entry.get('description', '')).strip()
+                
+                # 빈 제목 필터링
+                if not title or len(title) < 5:
+                    continue
+                
+                # 키워드 관련성 확인 (더 유연한 매칭)
+                if self._is_keyword_relevant(title + ' ' + summary, keyword):
+                    # 날짜 파싱
+                    published_date = datetime.now()
+                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                        published_date = datetime(*entry.published_parsed[:6])
+                    elif hasattr(entry, 'updated_parsed') and entry.updated_parsed:
+                        published_date = datetime(*entry.updated_parsed[:6])
+                    
+                    article = NewsArticle(
+                        title=title,
+                        content=summary,
+                        url=entry.get('link', ''),
+                        source=source_name,
+                        published_date=published_date,
+                        symbol=symbol,
+                        keywords=[keyword]  # 관련 키워드 저장
+                    )
+                    
+                    articles.append(article)
+                    
+        except Exception as e:
+            self.logger.error(f"Error fetching keyword-based news from {source_name} for keyword {keyword}: {e}")
+        
+        return articles
+    
+    def _is_keyword_relevant(self, text: str, keyword: str) -> bool:
+        """키워드 관련성 확인 (유연한 매칭)"""
+        text_upper = text.upper()
+        keyword_upper = keyword.upper()
+        
+        # 정확한 매칭
+        if keyword_upper in text_upper:
+            return True
+        
+        # 부분 매칭 (3글자 이상인 키워드)
+        if len(keyword_upper) >= 3:
+            # 단어 경계를 고려한 매칭
+            import re
+            pattern = r'\b' + re.escape(keyword_upper) + r'\b'
+            if re.search(pattern, text_upper):
+                return True
+            
+            # 부분 문자열 매칭 (더 유연함)
+            if keyword_upper in text_upper.replace(' ', '').replace('-', ''):
+                return True
+        
+        return False
     
     def _fetch_rss_news(self, source_name: str, rss_url: str, symbol: str) -> List[NewsArticle]:
         """RSS 피드에서 뉴스 수집"""
@@ -138,11 +481,17 @@ class NewsSentimentAnalyzer:
         try:
             feed = feedparser.parse(rss_url)
             
-            for entry in feed.entries:
+            # 각 RSS 소스에서 더 많은 entries 처리 (기본적으로 모든 entries 처리)
+            for entry in feed.entries[:50]:  # 최대 50개까지 처리
                 # 제목이나 내용에 심볼이 포함된 경우만 필터링
-                title = entry.get('title', '')
-                summary = entry.get('summary', entry.get('description', ''))
+                title = entry.get('title', '').strip()
+                summary = entry.get('summary', entry.get('description', '')).strip()
                 
+                # 빈 제목이나 너무 짧은 제목 필터링 (완화)
+                if not title or len(title) < 5:  # 10에서 5로 완화
+                    continue
+                
+                # 심볼 관련성 확인
                 if not self._is_relevant_to_symbol(title + ' ' + summary, symbol):
                     continue
                 
@@ -179,27 +528,42 @@ class NewsSentimentAnalyzer:
             ticker = yf.Ticker(symbol)
             news = ticker.news
             
-            for item in news[:10]:  # 최대 10개
+            for item in news[:20]:  # 최대 20개로 증가
+                title = item.get('title', '').strip()
+                summary = item.get('summary', '').strip()
+                
+                # 빈 제목 필터링
+                if not title or len(title) < 5:
+                    continue
+                    
+                # 내용이 없으면 제목을 내용으로 사용
+                if not summary:
+                    summary = title
+                
                 published_date = datetime.fromtimestamp(item.get('providerPublishTime', time.time()))
                 
                 article = NewsArticle(
-                    title=item.get('title', ''),
-                    content=item.get('summary', ''),
+                    title=title,
+                    content=summary,
                     url=item.get('link', ''),
                     source='Yahoo Finance',
                     published_date=published_date,
                     symbol=symbol
                 )
                 
-                articles.append(article)
+                # 기사 품질 체크 - 제목과 내용이 모두 있는지 확인
+                if title and (summary or len(title) > 20):
+                    articles.append(article)
                 
+        except ImportError:
+            self.logger.warning(f"yfinance not installed, skipping Yahoo Finance news for {symbol}")
         except Exception as e:
             self.logger.warning(f"Error fetching Yahoo news for {symbol}: {e}")
         
         return articles
     
     def _is_relevant_to_symbol(self, text: str, symbol: str) -> bool:
-        """텍스트가 주식 심볼과 관련이 있는지 확인"""
+        """텍스트가 주식 심볼과 관련이 있는지 확인 (완화된 필터링)"""
         text_upper = text.upper()
         symbol_upper = symbol.upper()
         
@@ -207,21 +571,34 @@ class NewsSentimentAnalyzer:
         if symbol_upper in text_upper:
             return True
         
-        # 회사명 기반 필터링 (간단한 버전)
+        # 확장된 회사명 및 관련 키워드 매핑
         company_names = {
-            'AAPL': ['APPLE', 'IPHONE', 'IPAD', 'MAC'],
-            'GOOGL': ['GOOGLE', 'ALPHABET', 'ANDROID'],
-            'MSFT': ['MICROSOFT', 'WINDOWS', 'OFFICE', 'AZURE'],
-            'AMZN': ['AMAZON', 'AWS', 'PRIME'],
-            'TSLA': ['TESLA', 'MUSK', 'ELECTRIC'],
-            'META': ['META', 'FACEBOOK', 'INSTAGRAM', 'WHATSAPP'],
-            'NVDA': ['NVIDIA', 'GPU', 'AI CHIP']
+            'AAPL': ['APPLE', 'IPHONE', 'IPAD', 'MAC', 'MACBOOK', 'IOS', 'ITUNES', 'APP STORE', 'TIM COOK', 'CUPERTINO'],
+            'GOOGL': ['GOOGLE', 'ALPHABET', 'ANDROID', 'YOUTUBE', 'GMAIL', 'CHROME', 'SEARCH', 'PIXEL', 'SUNDAR PICHAI'],
+            'MSFT': ['MICROSOFT', 'WINDOWS', 'OFFICE', 'AZURE', 'XBOX', 'TEAMS', 'OUTLOOK', 'SATYA NADELLA'],
+            'AMZN': ['AMAZON', 'AWS', 'PRIME', 'ALEXA', 'KINDLE', 'BEZOS', 'CLOUD', 'E-COMMERCE'],
+            'TSLA': ['TESLA', 'MUSK', 'ELECTRIC', 'EV', 'AUTOPILOT', 'GIGAFACTORY', 'MODEL', 'SPACEX'],
+            'META': ['META', 'FACEBOOK', 'INSTAGRAM', 'WHATSAPP', 'ZUCKERBERG', 'METAVERSE', 'VR'],
+            'NVDA': ['NVIDIA', 'GPU', 'AI CHIP', 'GRAPHICS', 'GAMING', 'CUDA', 'TENSOR']
         }
         
         if symbol_upper in company_names:
             for keyword in company_names[symbol_upper]:
                 if keyword in text_upper:
                     return True
+        
+        # 더 유연한 검색 - 부분 매칭도 허용
+        if len(symbol_upper) >= 3:
+            # 3글자 이상인 심볼의 경우 부분 매칭도 허용
+            if symbol_upper in text_upper.replace(' ', ''):
+                return True
+        
+        # 일반적인 기술/금융 뉴스도 포함 (너무 제한적이지 않도록)
+        general_keywords = ['STOCK', 'MARKET', 'TRADING', 'INVESTMENT', 'TECHNOLOGY', 'EARNINGS', 'REVENUE']
+        if any(keyword in text_upper for keyword in general_keywords):
+            # 일반 키워드가 포함된 경우, 심볼이 언급되지 않아도 50% 확률로 포함
+            import random
+            return random.random() > 0.5
         
         return False
     
@@ -245,7 +622,7 @@ class NewsSentimentAnalyzer:
                 union_words = title_words | seen_words
                 if len(union_words) > 0:  # division by zero 방지
                     similarity = len(title_words & seen_words) / len(union_words)
-                    if similarity > 0.8:  # 80% 유사도 임계값
+                    if similarity > 0.9:  # 90% 유사도 임계값 (80%에서 90%로 완화)
                         is_duplicate = True
                         break
             
@@ -413,17 +790,32 @@ class NewsSentimentAnalyzer:
             for source_name, config in self.news_sources.items():
                 try:
                     feed = feedparser.parse(config['url'])
-                    for entry in feed.entries[:20]:  # 각 소스에서 최대 20개
+                    for entry in feed.entries[:30]:  # 각 소스에서 최대 30개로 증가
+                        title = entry.get('title', '').strip()
+                        summary = entry.get('summary', entry.get('description', '')).strip()
+                        
+                        # 빈 제목 필터링 (완화)
+                        if not title or len(title) < 5:  # 10에서 5로 완화
+                            continue
+                        
+                        # 날짜 파싱
+                        published_date = datetime.now()
+                        if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                            published_date = datetime(*entry.published_parsed[:6])
+                        elif hasattr(entry, 'updated_parsed') and entry.updated_parsed:
+                            published_date = datetime(*entry.updated_parsed[:6])
+                        
                         article = NewsArticle(
-                            title=entry.get('title', ''),
-                            content=entry.get('summary', ''),
+                            title=title,
+                            content=summary,
                             url=entry.get('link', ''),
                             source=source_name,
-                            published_date=datetime.now()
+                            published_date=published_date
                         )
                         all_articles.append(article)
                 except Exception as e:
                     self.logger.warning(f"Error fetching trending topics from {source_name}: {e}")
+                    continue
             
             # 키워드 추출 및 빈도 계산
             keyword_counts = {}
@@ -451,23 +843,49 @@ class NewsSentimentAnalyzer:
     
     def _extract_keywords(self, text: str) -> List[str]:
         """텍스트에서 키워드 추출"""
-        # 간단한 키워드 추출 (실제로는 더 정교한 NLP 기법 사용 가능)
         import re
         
-        # 불용어 제거
-        stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'can', 'may', 'might', 'must', 'shall'}
+        # 확장된 불용어 제거
+        stop_words = {
+            'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 
+            'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 
+            'did', 'will', 'would', 'should', 'could', 'can', 'may', 'might', 'must', 'shall',
+            'this', 'that', 'these', 'those', 'up', 'down', 'out', 'off', 'over', 'under', 'again',
+            'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any',
+            'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not',
+            'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'll', 'just',
+            'says', 'said', 'get', 'go', 'know', 'take', 'see', 'come', 'think', 'look', 'want',
+            'give', 'use', 'find', 'tell', 'ask', 'work', 'seem', 'feel', 'try', 'leave', 'call'
+        }
+        
+        # 금융 관련 주요 키워드들
+        financial_keywords = {
+            'stock', 'stocks', 'market', 'markets', 'trading', 'price', 'prices', 'shares', 'share',
+            'earnings', 'revenue', 'profit', 'loss', 'growth', 'decline', 'investors', 'investment',
+            'company', 'companies', 'business', 'financial', 'economy', 'economic', 'billion',
+            'million', 'quarter', 'quarterly', 'annual', 'sales', 'acquisition', 'merger', 'deal',
+            'ceo', 'technology', 'tech', 'energy', 'healthcare', 'bank', 'banks', 'federal',
+            'dollar', 'dollars', 'percent', 'inflation', 'interest', 'rates', 'crypto', 'bitcoin'
+        }
         
         # 단어 추출 및 정제
-        words = re.findall(r'\b[A-Za-z]{3,}\b', text.lower())
-        keywords = [word for word in words if word not in stop_words and len(word) > 3]
+        words = re.findall(r'\b[A-Za-z]{4,}\b', text.lower())
+        keywords = []
         
-        # 빈도 기반 필터링
-        word_counts = {}
-        for word in keywords:
-            word_counts[word] = word_counts.get(word, 0) + 1
+        for word in words:
+            if word not in stop_words and len(word) >= 4:
+                # 금융 관련 키워드는 우선적으로 선택
+                if word in financial_keywords:
+                    keywords.append(word)
+                # 대문자로 시작하는 단어들 (회사명, 브랜드명 등)
+                elif word.istitle() and len(word) >= 3:
+                    keywords.append(word.lower())
+                # 일반 키워드
+                elif len(word) >= 5:
+                    keywords.append(word)
         
-        # 최소 2번 이상 언급된 단어만 반환
-        return [word for word, count in word_counts.items() if count >= 2]
+        # 중복 제거 및 반환
+        return list(set(keywords))
     
     def _get_keyword_sentiment(self, keyword: str, articles: List[NewsArticle]) -> float:
         """특정 키워드의 감정 점수 계산"""
