@@ -38,12 +38,12 @@ class DataIntegrityManager:
         self.stop_backup = threading.Event()
         self.backup_interval = 300  # 5분마다 백업
         
-        # 모니터링할 파일들
+        # 모니터링할 파일들 (절대 경로로 설정)
         self.monitored_files = [
-            "mock_trading_data.json",
-            "scoreboard_data.json",
-            "stock_data.json",
-            "settings.json"
+            self.base_dir / "mock_trading_data.json",
+            self.base_dir / "scoreboard_data.json", 
+            self.base_dir / "stock_data.json",
+            self.base_dir / "settings.json"
         ]
         
         # 파일 체크섬 캐시
@@ -152,8 +152,7 @@ class DataIntegrityManager:
         """변경된 파일만 증분 백업"""
         backup_count = 0
         
-        for filename in self.monitored_files:
-            file_path = self.base_dir / filename
+        for file_path in self.monitored_files:
             if not file_path.exists():
                 continue
                 
@@ -320,9 +319,7 @@ class DataIntegrityManager:
         """긴급 복구 - 모든 파일의 최신 백업으로 복원"""
         recovery_count = 0
         
-        for filename in self.monitored_files:
-            file_path = self.base_dir / filename
-            
+        for file_path in self.monitored_files:
             # 현재 파일이 손상되었는지 확인
             if file_path.exists():
                 is_valid, _ = self.verify_json_integrity(file_path)
@@ -330,15 +327,16 @@ class DataIntegrityManager:
                     continue  # 정상 파일은 건드리지 않음
             
             # 최신 백업 찾기
-            backups = self.list_backups(filename.replace('.json', ''))
+            filename_pattern = file_path.stem  # .json 확장자 제거
+            backups = self.list_backups(filename_pattern)
             if not backups:
-                self.logger.warning(f"No backup found for {filename}")
+                self.logger.warning(f"No backup found for {file_path.name}")
                 continue
             
             latest_backup = backups[0]
             if self.restore_backup(latest_backup["path"], file_path):
                 recovery_count += 1
-                self.logger.info(f"Emergency recovery completed for {filename}")
+                self.logger.info(f"Emergency recovery completed for {file_path.name}")
         
         return recovery_count > 0
     

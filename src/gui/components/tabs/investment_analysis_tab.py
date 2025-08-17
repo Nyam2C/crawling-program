@@ -73,7 +73,15 @@ class InvestmentAnalysisTab:
                     
                     # Only create record if there are actual transactions
                     if portfolio.transactions:
-                        stock_prices = trading_tab._get_current_stock_prices()
+                        # Get stock prices safely
+                        if hasattr(trading_tab, '_get_current_stock_prices'):
+                            stock_prices = trading_tab._get_current_stock_prices()
+                        else:
+                            # Fallback: get stock prices from trading engine
+                            trading_engine = trading_tab.data_manager.get_trading_engine()
+                            stock_prices = {}
+                            for symbol, stock in trading_engine.stock_prices.items():
+                                stock_prices[symbol] = stock.current_price
                         
                         # Create a temporary record for current session
                         from src.trading.scoreboard_models import ScoreboardResult
@@ -86,9 +94,20 @@ class InvestmentAnalysisTab:
                         )
                         return record
         except Exception as e:
-            print(f"Error getting current session record: {e}")
-            import traceback
-            traceback.print_exc()
+            # Use enhanced error handling
+            try:
+                from src.core.error_handler import get_error_handler, ErrorCategory
+                error_handler = get_error_handler()
+                error_handler.handle_exception(
+                    e, 
+                    ErrorCategory.DATA, 
+                    context={"component": "investment_analysis", "method": "_get_current_session_record"},
+                    user_action="Getting current trading session data"
+                )
+            except ImportError:
+                print(f"Error getting current session record: {e}")
+                import traceback
+                traceback.print_exc()
         return None
     
     def _show_welcome_message(self):

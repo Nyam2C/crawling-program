@@ -46,6 +46,14 @@ class TradingDataManager:
         """감시 주식 제거"""
         self.watched_stocks.discard(symbol.upper())
     
+    def get_portfolio(self) -> Portfolio:
+        """현재 포트폴리오 반환"""
+        return self.trading_engine.portfolio
+    
+    def get_trading_engine(self) -> TradingEngine:
+        """트레이딩 엔진 반환"""
+        return self.trading_engine
+    
     def get_watched_stocks(self) -> List[str]:
         """감시 중인 주식 목록"""
         return list(self.watched_stocks)
